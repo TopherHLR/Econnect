@@ -14,9 +14,11 @@
     <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-50 bg-white shadow transition-colors duration-500">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <!-- Left: Logo -->
-            <a href="/" class="flex items-center space-x-2">
-                <img src="{{ Vite::asset('resources/images/logo/greenLogo.png') }}" alt="EcoConnect Logo" class="h-10 w-auto">
+            <a href="/" class="flex items-center space-x-1">
+                <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo" class="h-12 w-auto">
+                <span class="logo-text text-green-800 text-2xl font-semibold tracking-wide">nnect</span>
             </a>
+
 
             <!-- Center: Navigation links -->
             <div class="flex-1 flex justify-center space-x-8">
