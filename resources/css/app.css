@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* === EcoConnect Navbar Styles === */
+
+.navbar {
+    @apply backdrop-blur-md shadow-none transition-all duration-500;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.navbar-solid {
+    background-color: rgba(0, 0, 0, 0.9);
+    @apply shadow-md;
+}
+
+
+/* Text links */
+.nav-link {
+    @apply text-green-900 font-medium hover:text-green-700 transition-colors duration-300;
+}
+
+/* Logo */
+.nav-logo {
+    font-family: 'Instrument Sans', sans-serif;
+    letter-spacing: 1px;
+}
+
+/* Sign Up button */
+.nav-button {
+    @apply bg-green-700 text-white px-4 py-2 rounded-full font-semibold hover:bg-green-800 transition-all duration-300;
+}
