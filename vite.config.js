@@ -10,11 +10,11 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
-    server: {
-        host: '0.0.0.0', // allows external access (from your phone)
-        port: 5173,       // default vite port
-        hmr: {
-            host: '192.168.1.15', // <-- your computer's local IP
-        },
-    },
+    // server: {
+    //     host: '0.0.0.0', // allows external access (from your phone)
+    //     port: 5173,       // default vite port
+    //     hmr: {
+    //         host: '192.168.1.15', // <-- your computer's local IP
+    //     },
+    // },
 });

@@ -30,12 +30,10 @@
                 <a href="/rewards" class="nav-link text-green-900 hover:text-green-700">Rewards</a>
             </div>
 
-            <!-- Right: Button -->
-            <div class="space-x-4">
-                <a href="/signup" class="nav-button bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 transition">
-                    Sign Up
-                </a>
-            </div>
+            <a href="{{ route('signup') }}"
+                class="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 transition">
+                Sign Up
+            </a>
         </div>
     </nav>
 
@@ -51,18 +49,17 @@
     </footer>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('navbar-solid');
-            } else {
-                navbar.classList.remove('navbar-solid');
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('navbar-solid');
+                } else {
+                    navbar.classList.remove('navbar-solid');
+                }
+            });
         });
-    });
     </script>
-
 
 </body>
 </html>
