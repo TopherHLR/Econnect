@@ -4,9 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 //---------------------------------------------------- AUTH -------------------------------------------------
+
+Route::get('/verify-email', [AuthController::class, 'showVerificationForm'])->name('verify.email.form');
+Route::post('/verify-email', [AuthController::class, 'verifyAndCreate'])->name('verify.email.submit');
+
 // Sign up routes
 Route::get('/signup', [AuthController::class, 'showRegisterForm'])->name('signup');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+
+Route::post('/register', [AuthController::class, 'sendVerificationCode'])->name('register');
 
 // Login routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

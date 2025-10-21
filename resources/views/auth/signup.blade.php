@@ -42,13 +42,14 @@
                     class="w-full border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-600 outline-none"
                     placeholder="••••••••" required>
         </div>
-        <!-- Input fields for first name, email, etc. -->
+        <div class="mb-4">
+            <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+            @error('g-recaptcha-response')
+                <span class="text-red-600 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
 
-        <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
-
-        @error('g-recaptcha-response')
-            <div class="text-danger mt-2">{{ $message }}</div>
-        @enderror
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 
         <button type="submit"
@@ -62,6 +63,4 @@
         </p>
     </form>
 </div>
-
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 @endsection

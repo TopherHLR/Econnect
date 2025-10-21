@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http; 
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LoginNotificationMail; 
+use App\Mail\VerificationCodeMail;
 use Illuminate\Support\Facades\Log; 
 
-class AuthController extends Controller
+class AuthController extends Controller 
 {
     /**
      * Show the registration form.
@@ -19,75 +23,98 @@ class AuthController extends Controller
     {
         return view('auth.signup');
     }
-
-    /**
-     * Handle registration submission.
-     */
-    public function register(Request $request)
+    public function sendVerificationCode(Request $request)
     {
-        // 🚨 LOG 1: Check if the request reached the controller and what data it contains
-        Log::info('Registration attempt started.', $request->all());
+        Log::info('📩 STEP 1: sendVerificationCode() called', $request->all());
 
         try {
-            // Validate form input
-            $request->validate([
+            // STEP 2 — Validate inputs
+            Log::info('📋 STEP 2: Starting validation');
+            $validated = $request->validate([
                 'first_name'  => 'required|string|max:100',
                 'middle_name' => 'nullable|string|max:100',
                 'last_name'   => 'required|string|max:100',
                 'email'       => 'required|email|max:150|unique:users,email',
                 'password'    => 'required|string|min:8|confirmed',
-                'g-recaptcha-response' => 'required',
             ]);
-            
-            // Verify Google reCAPTCHA
-            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                'secret' => env('RECAPTCHA_SECRET_KEY'),
-                'response' => $request->input('g-recaptcha-response'),
-            ]);
+            Log::info('✅ STEP 2: Validation passed', $validated);
 
-            $responseBody = $response->json();
+            // STEP 3 — Generate verification code
+            $code = rand(100000, 999999);
+            Log::info("🔢 STEP 3: Generated verification code: {$code}");
 
-            if (!$responseBody['success']) {
-                return back()->withErrors(['g-recaptcha-response' => 'Captcha verification failed. Please try again.'])->withInput();
-            }
+            // STEP 4 — Store pending registration in session
+            Log::info('💾 STEP 4: Storing pending registration in session');
+            Session::put('pending_registration', array_merge($validated, [
+                'verification_code' => $code,
+            ]));
+            Log::info('✅ STEP 4: Session data stored successfully');
 
-            // 🚨 LOG 2: Check if validation passed
-            Log::info('Registration validation passed for email: ' . $request->email);
+            // STEP 5 — Send verification email
+            Log::info('📧 STEP 5: Preparing to send email to ' . $validated['email']);
+            Mail::to($validated['email'])->send(new VerificationCodeMail((object)[
+                'first_name' => $validated['first_name'],
+                'verification_code' => $code,
+            ]));
+            Log::info('✅ STEP 5: Verification email sent successfully');
 
-            // Create a new user
-            $user = User::create([
-                'first_name'  => $request->first_name,
-                'middle_name' => $request->middle_name,
-                'last_name'   => $request->last_name,
-                'email'       => $request->email,
-                'password'    => Hash::make($request->password),
-                'qr_code'     => null,
-                'user_type'   => 'guest',
-                'is_verified' => false,
-            ]);
-            
-            // 🚨 LOG 3: Check if user creation was successful
-            Log::info('User created successfully. ID: ' . $user->id);
-
-            // Automatically log in the user (optional)
-            Auth::login($user);
-            
-            // 🚨 LOG 4: Check successful login and redirection
-            Log::info('User logged in and redirecting to home.');
-
-            return redirect()->route('home')->with('success', 'Account created successfully!');
+            // STEP 6 — Redirect to verification form
+            Log::info('➡️ STEP 6: Redirecting to verify.email.form route');
+            return redirect()->route('verify.email.form')
+                ->with('info', 'A verification code has been sent to your email.');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // 🚨 LOG CATCH 1: Log validation errors
-            Log::warning('Registration validation failed for email: ' . $request->email, ['errors' => $e->errors()]);
-            throw $e; // Re-throw the exception to allow Laravel to handle flashing errors back
+            Log::warning('❌ VALIDATION FAILED', ['errors' => $e->errors()]);
+            throw $e;
+
+        } catch (\Illuminate\Mail\Mailable $e) {
+            Log::error('📮 MAIL ERROR', ['error' => $e->getMessage()]);
+
+            return back()->with('error', 'Failed to send verification email. Please try again.');
+
         } catch (\Throwable $e) {
-            // 🚨 LOG CATCH 2: Catch any other unexpected errors
-            Log::error('Registration failed with an unexpected error.', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            // You might redirect with a generic error message here
-            return redirect()->back()->withInput()->with('error', 'An unexpected error occurred during registration.');
+            Log::error('💥 UNEXPECTED ERROR', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return back()->with('error', 'Something went wrong during registration.');
         }
     }
+
+    public function showVerificationForm()
+    {
+        if (!Session::has('pending_registration')) {
+            return redirect()->route('register')->with('error', 'Please fill out the registration form first.');
+        }
+        return view('auth.verify-email');
+    }
+
+    public function verifyAndCreate(Request $request)
+    {
+        $request->validate(['code' => 'required|digits:6']);
+
+        $pending = Session::get('pending_registration');
+
+        if (!$pending || $request->code != $pending['verification_code']) {
+            return back()->withErrors(['code' => 'Invalid verification code.']);
+        }
+
+        // Create user after successful verification
+        $user = \App\Models\User::create([
+            'first_name'  => $pending['first_name'],
+            'middle_name' => $pending['middle_name'],
+            'last_name'   => $pending['last_name'],
+            'email'       => $pending['email'],
+            'password'    => Hash::make($pending['password']),
+            'is_verified' => true,
+        ]);
+
+        Session::forget('pending_registration');
+
+        return redirect()->route('login')->with('success', 'Account created successfully. You may now log in.');
+    }
+
     /**
      * Show the login form.
      */
@@ -96,9 +123,6 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    /**
-     * Handle login submission.
-     */
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -108,6 +132,15 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            $user = Auth::user();
+
+            // 📨 Send Gmail notification
+            try {
+                Mail::to($user->email)->send(new LoginNotificationMail($user));
+                Log::info("📧 Login notification email sent to {$user->email}");
+            } catch (\Throwable $e) {
+                Log::error("❌ Failed to send login notification email: " . $e->getMessage());
+            }
 
             return redirect()->route('home')->with('success', 'Welcome back!');
         }
@@ -116,7 +149,6 @@ class AuthController extends Controller
             'email' => 'Invalid email or password.',
         ])->onlyInput('email');
     }
-
     /**
      * Logout the user.
      */
