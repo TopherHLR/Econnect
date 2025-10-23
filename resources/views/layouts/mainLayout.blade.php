@@ -11,35 +11,72 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 
-    <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-50 bg-white shadow transition-colors duration-500">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-8 py-3 flex items-center justify-between">
             <!-- Left: Logo -->
             <a href="/" class="flex items-center space-x-1">
-                <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo" class="h-12 w-auto">
-                <span class="logo-text text-green-800 text-2xl font-semibold tracking-wide">nnect</span>
+                <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo" class="h-10 w-auto">
             </a>
 
+            <!-- Hamburger (Mobile) -->
+            <button id="menu-toggle" class="block md:hidden text-green-900 focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
 
-            <!-- Center: Navigation links -->
-            <div class="flex-1 flex justify-center space-x-8">
-                <a href="/" class="nav-link text-green-900 hover:text-green-700">Home</a>
-                <a href="/lifestyle" class="nav-link text-green-900 hover:text-green-700">Lifestyle</a>
-                <a href="/quests" class="nav-link text-green-900 hover:text-green-700">Quests</a>
-                <a href="/about" class="nav-link text-green-900 hover:text-green-700">About</a>
-                <a href="/progress" class="nav-link text-green-900 hover:text-green-700">Progress</a>
-                <a href="/rewards" class="nav-link text-green-900 hover:text-green-700">Rewards</a>
+            <!-- Center: Navigation Links (Desktop) -->
+            <div class="hidden md:flex flex-1 justify-center space-x-10">
+                <a href="/" class="nav-link font-semibold text-green-900 hover:text-green-800">HOME</a>
+                <a href="/lifestyle" class="nav-link text-green-900 hover:text-green-800">LIFESTYLE</a>
+                <a href="/quests" class="nav-link text-green-900 hover:text-green-800">QUESTS</a>
+                <a href="/about" class="nav-link text-green-900 hover:text-green-800">ABOUT</a>
+                <a href="/progress" class="nav-link text-green-900 hover:text-green-800">PROGRESS</a>
+                <a href="/rewards" class="nav-link text-green-900 hover:text-green-800">REWARDS</a>
             </div>
 
-            <a href="{{ route('signup') }}"
-                class="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 transition">
-                Sign Up
-            </a>
+            <!-- Right: Profile (Desktop) -->
+            <div class="hidden md:flex items-center space-x-3">
+                <span class="italic text-green-900 font-semibold">Hi, Allen</span>
+                <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile" class="h-10 w-11">
+            </div>
         </div>
     </nav>
 
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo" class="h-10">
+            <button id="close-sidebar" class="text-green-900">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="sidebar-links">
+            <a href="/" class="nav-link">HOME</a>
+            <a href="/lifestyle" class="nav-link">LIFESTYLE</a>
+            <a href="/quests" class="nav-link">QUESTS</a>
+            <a href="/about" class="nav-link">ABOUT</a>
+            <a href="/progress" class="nav-link">PROGRESS</a>
+            <a href="/rewards" class="nav-link">REWARDS</a>
+        </div>
+
+        <div class="sidebar-footer">
+            <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile">
+            <span class="italic text-green-900 font-semibold">Hi, Allen</span>
+        </div>
+    </aside>
+
+    <!-- Overlay -->
+    <div id="overlay"></div>
+
+
+
 
     {{-- Main Content --}}
-    <main class="px-4">
+    <main>
         @yield('content')
     </main>
 
@@ -51,6 +88,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const navbar = document.getElementById('navbar');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
+
+            // Navbar scroll behavior
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) {
                     navbar.classList.add('navbar-solid');
@@ -58,8 +101,24 @@
                     navbar.classList.remove('navbar-solid');
                 }
             });
+
+            // Sidebar open/close
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+            });
+
+            const close = () => {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            };
+
+            closeSidebar.addEventListener('click', close);
+            overlay.addEventListener('click', close);
         });
     </script>
+
+
 
 </body>
 </html>
