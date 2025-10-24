@@ -8,16 +8,8 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]"
 >
     <!-- 🪶 Modal Container -->
-    <div 
-        @click.outside="$store.authModal.open = false"
-        id="authModalContainer"
-        class="relative w-[850px] h-[470px] bg-white rounded-2xl shadow-xl overflow-hidden"
-    >
-        <div 
-            class="container text-sm" 
-            id="container"
-            :class="{ 'right-panel-active': $store.authModal.mode === 'signup' }"
-        >
+    <div @click.outside="$store.authModal.open = false" id="authModalContainer" class="relative w-[850px] h-[470px] bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="container text-sm" id="container":class="{ 'right-panel-active': $store.authModal.mode === 'signup' }">
 
             <!-- 🌱 Sign Up -->
             <div class="form-container sign-up-container">
@@ -120,5 +112,8 @@
 
         </div>
     </div>
+    
 </div>
+
+
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>

@@ -32,45 +32,68 @@
                 <a href="/lifestyle" class="nav-link text-green-900 hover:text-green-800">LIFESTYLE</a>
                 <a href="/quests" class="nav-link text-green-900 hover:text-green-800">QUESTS</a>
                 <a href="/about" class="nav-link text-green-900 hover:text-green-800">ABOUT</a>
-                <a href="/progress" class="nav-link text-green-900 hover:text-green-800">PROGRESS</a>
-                <a href="/rewards" class="nav-link text-green-900 hover:text-green-800">REWARDS</a>
+
+                @auth
+                    <!-- Only visible when logged in -->
+                    <a href="/progress" class="nav-link text-green-900 hover:text-green-800">PROGRESS</a>
+                    <a href="/rewards" class="nav-link text-green-900 hover:text-green-800">REWARDS</a>
+                @endauth
             </div>
 
+            <!-- Right: Profile / Auth Buttons -->
             <div x-data class="hidden md:flex items-center relative" id="profileDropdown">
-                <button id="dropdownButton" class="flex items-center space-x-3 focus:outline-none">
-                    <span class="italic text-green-900 font-semibold">Hi, Allen</span>
-                    <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile" class="h-10 w-11 rounded-full">
-                    <svg class="w-4 h-4 ml-1 text-green-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
+                @guest
+                    <!-- When not logged in -->
+                    <div class="flex items-center space-x-4">
+                        <button 
+                            @click="$store.authModal.open = true; $store.authModal.mode = 'signin'"
+                            class="text-green-900 font-semibold hover:text-green-800 transition"
+                        >
+                            Log In
+                        </button>
+                        <span class="text-green-900 font-semibold">|</span>
+                        <button 
+                            @click="$store.authModal.open = true; $store.authModal.mode = 'signup'"
+                            class="text-green-900 font-semibold hover:text-green-800 transition"
+                        >
+                            Sign Up
+                        </button>
+                    </div>
+                @endguest
 
-                <!-- Dropdown Menu -->
-                <div id="dropdownMenu" class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg hidden z-50">
-                    <ul class="flex flex-col py-1">
-                        <li>
-                            <button 
-                                @click="$store.authModal.open = true; $store.authModal.mode = 'signin'"
-                                class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-green-100"
-                            >
-                                Login
-                            </button>
-                        </li>
-                        <li>
-                            <button 
-                                @click="$store.authModal.open = true; $store.authModal.mode = 'signup'"
-                                class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-green-100"
-                            >
-                                Sign Up
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+                @auth
+                    <!-- When logged in -->
+                    <button id="dropdownButton" class="flex items-center space-x-3 focus:outline-none">
+                        <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile" class="h-10 w-11 rounded-full">
+                        <svg class="w-4 h-4 ml-1 text-green-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="dropdownMenu" class="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg hidden z-50">
+                        <ul class="flex flex-col py-1">
+                            <li>
+                                <a href="/" 
+                                class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-green-100">
+                                    My Account Settings
+                                </a>
+                            </li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-green-100">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @endauth
             </div>
-
-
         </div>
     </nav>
+
 
     <!-- Sidebar -->
     <aside id="sidebar" class="sidebar">
@@ -111,6 +134,5 @@
     <footer class="bg-white shadow-inner mt-10 py-4 text-center text-sm text-gray-500">
         © {{ date('Y') }} Econnect. All rights reserved.
     </footer>
-
 </body>
 </html>
