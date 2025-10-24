@@ -8,10 +8,10 @@
 
     {{-- Vite CSS & JS --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/js/app.js'], 'resources/js/app.js')
     
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
-
     <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-50">
         <div class="max-w-7xl mx-auto px-8 py-3 flex items-center justify-between">
             <!-- Left: Logo -->
@@ -36,11 +36,29 @@
                 <a href="/rewards" class="nav-link text-green-900 hover:text-green-800">REWARDS</a>
             </div>
 
-            <!-- Right: Profile (Desktop) -->
-            <div class="hidden md:flex items-center space-x-3">
-                <span class="italic text-green-900 font-semibold">Hi, Allen</span>
-                <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile" class="h-10 w-11">
+            <!-- Right: Profile with Click Dropdown (Desktop) -->
+            <div class="hidden md:flex items-center relative" id="profileDropdown">
+                <button id="dropdownButton" class="flex items-center space-x-3 focus:outline-none">
+                    <span class="italic text-green-900 font-semibold">Hi, Allen</span>
+                    <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile" class="h-10 w-11 rounded-full">
+                    <svg class="w-4 h-4 ml-1 text-green-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div id="dropdownMenu" class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg hidden z-50">
+                    <ul class="flex flex-col py-1">
+                        <li>
+                            <a href="/login" class="block px-4 py-2 text-gray-700 hover:bg-green-100">Login</a>
+                        </li>
+                        <li>
+                            <a href="/signup" class="block px-4 py-2 text-gray-700 hover:bg-green-100">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
         </div>
     </nav>
 
@@ -78,6 +96,8 @@
 
     {{-- Main Content --}}
     <main>
+        @include('modal.loginModal')
+        @include('modal.signupModal')
         @yield('content')
     </main>
 
@@ -85,73 +105,6 @@
     <footer class="bg-white shadow-inner mt-10 py-4 text-center text-sm text-gray-500">
         © {{ date('Y') }} Econnect. All rights reserved.
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const navbar = document.getElementById('navbar');
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            const menuToggle = document.getElementById('menu-toggle');
-            const closeSidebar = document.getElementById('close-sidebar');
-
-            // Navbar scroll behavior
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('navbar-solid');
-                } else {
-                    navbar.classList.remove('navbar-solid');
-                }
-            });
-
-            // Sidebar open/close
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-            });
-
-            const close = () => {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-            };
-
-            closeSidebar.addEventListener('click', close);
-            overlay.addEventListener('click', close);
-        });
-
-        window.addEventListener('scroll', () => {
-            const plant = document.getElementById('plant-container');
-            const textDiv = document.getElementById('plant-text');
-            const textEl = textDiv.querySelector('h1');
-            const progressBar = document.getElementById('growth-bar');
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
-
-            if (scrollY > windowHeight * 0.3) {
-                // 🌿 Move & scale plant
-                plant.style.transform = 'translateY(400px) scale(1.2)';
-                
-                // 🌱 Move text below plant
-                textDiv.style.top = '550px';
-                textEl.textContent = 'We all yearn to make a difference...';
-                textEl.style.fontSize = window.innerWidth > 768 ? '4rem' : '2.5rem';
-                textEl.style.opacity = '0.9';
-
-                // 🌾 Reveal progress bar
-                progressBar.style.opacity = '1';
-            } else {
-                // Reset position and scale
-                plant.style.transform = 'translateY(0px) scale(1)';
-                textDiv.style.top = '0px';
-                textEl.textContent = 'Even in small ways';
-                textEl.style.fontSize = window.innerWidth > 768 ? '3rem' : '1.8rem';
-                textEl.style.opacity = '1';
-                progressBar.style.opacity = '0';
-            }
-        });
-
-    </script>
-
-
 
 </body>
 </html>

@@ -8,6 +8,8 @@
 
     {{-- Vite CSS & JS --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/js/app.js'], 'resources/js/app.js')
+    
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 
