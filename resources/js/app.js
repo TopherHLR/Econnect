@@ -74,3 +74,4 @@ document.addEventListener('click', (event) => {
         dropdownMenu.classList.add('hidden');
     }
 });
+

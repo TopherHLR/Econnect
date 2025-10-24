@@ -1,8 +1,8 @@
 @extends('layouts.authLayout')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#f7f8f3] to-[#e8eedf]">
-  <div class="relative flex w-[800px] h-[500px] bg-[#f8f9f4] rounded-xl overflow-hidden shadow-xl">
+<div class="min-h-screen flex items-center justify-center">
+  <div class="relative flex w-[1000px] h-[750px] bg-[#f8f9f4] rounded-xl overflow-hidden shadow-xl">
 
     <!-- 🌿 Left Panel - Create Account -->
     <div class="w-1/2 p-10 flex flex-col justify-center relative z-10 bg-[#f8f9f4]">

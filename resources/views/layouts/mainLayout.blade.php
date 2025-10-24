@@ -106,5 +106,7 @@
         © {{ date('Y') }} Econnect. All rights reserved.
     </footer>
 
+
+
 </body>
 </html>
