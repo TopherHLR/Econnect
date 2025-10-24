@@ -36,7 +36,7 @@
         <div id="plant-text" 
             class="absolute top-0 left-1/2 z-50 -translate-x-1/2 w-max text-center transition-all duration-700 ease-out">
             <h1 class="italic text-3xl md:text-5xl font-serif font-semibold text-[#625237] leading-snug whitespace-nowrap">
-                Even in small ways test
+                Even in small ways 
             </h1>
         </div>
 
