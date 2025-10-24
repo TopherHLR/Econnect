@@ -1,4 +1,16 @@
 import './bootstrap';
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+// ✅ Define stores BEFORE start
+Alpine.store('authModal', {
+    open: false,
+    mode: 'signin', // or 'signup'
+});
+
+Alpine.start(); 
+
 document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.getElementById('navbar');
     const sidebar = document.getElementById('sidebar');
@@ -75,3 +87,17 @@ document.addEventListener('click', (event) => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('container');
+    const overlayBtn = document.getElementById('overlayBtn');
+
+    if (overlayBtn) {
+        overlayBtn.addEventListener('click', () => {
+            container.classList.toggle('right-panel-active');
+            overlayBtn.classList.remove('btnScaled');
+            window.requestAnimationFrame(() => {
+                overlayBtn.classList.add('btnScaled');
+            });
+        });
+    }
+});

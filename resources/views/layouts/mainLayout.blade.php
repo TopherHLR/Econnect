@@ -7,9 +7,9 @@
     <title>{{ config('app.name', 'Econnect') }}</title>
 
     {{-- Vite CSS & JS --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @vite(['resources/js/app.js'], 'resources/js/app.js')
-    
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/auth.css'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
     <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-50">
@@ -36,8 +36,7 @@
                 <a href="/rewards" class="nav-link text-green-900 hover:text-green-800">REWARDS</a>
             </div>
 
-            <!-- Right: Profile with Click Dropdown (Desktop) -->
-            <div class="hidden md:flex items-center relative" id="profileDropdown">
+            <div x-data class="hidden md:flex items-center relative" id="profileDropdown">
                 <button id="dropdownButton" class="flex items-center space-x-3 focus:outline-none">
                     <span class="italic text-green-900 font-semibold">Hi, Allen</span>
                     <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile" class="h-10 w-11 rounded-full">
@@ -50,14 +49,25 @@
                 <div id="dropdownMenu" class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg hidden z-50">
                     <ul class="flex flex-col py-1">
                         <li>
-                            <a href="/login" class="block px-4 py-2 text-gray-700 hover:bg-green-100">Login</a>
+                            <button 
+                                @click="$store.authModal.open = true; $store.authModal.mode = 'signin'"
+                                class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-green-100"
+                            >
+                                Login
+                            </button>
                         </li>
                         <li>
-                            <a href="/signup" class="block px-4 py-2 text-gray-700 hover:bg-green-100">Sign Up</a>
+                            <button 
+                                @click="$store.authModal.open = true; $store.authModal.mode = 'signup'"
+                                class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-green-100"
+                            >
+                                Sign Up
+                            </button>
                         </li>
                     </ul>
                 </div>
             </div>
+
 
         </div>
     </nav>
@@ -91,13 +101,9 @@
     <!-- Overlay -->
     <div id="overlay"></div>
 
-
-
-
     {{-- Main Content --}}
     <main>
-        @include('modal.loginModal')
-        @include('modal.signupModal')
+        @include('modal.authModal')
         @yield('content')
     </main>
 
@@ -105,8 +111,6 @@
     <footer class="bg-white shadow-inner mt-10 py-4 text-center text-sm text-gray-500">
         © {{ date('Y') }} Econnect. All rights reserved.
     </footer>
-
-
 
 </body>
 </html>
