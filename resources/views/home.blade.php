@@ -1,7 +1,6 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-@section('content')
 <section class="relative overflow-hidden min-h-screen flex items-center justify-center viewport1BG">
     <!-- Clouds -->
     <img 
