@@ -127,7 +127,7 @@
             src="{{ Vite::asset('resources/images/plants/small_plant.png') }}" 
             alt="plant"
             class="w-full relative z-10"
-            style="clip-path: inset(80% 0 0 0); transform-origin: center 80%;"
+            style="clip-path: inset(86% 0 0 0); transform-origin: center 80%;"
         />
 
         <!-- 🌿 Animated Top Image -->
@@ -135,7 +135,7 @@
             src="{{ Vite::asset('resources/images/plants/small_plant.png') }}" 
             alt="plant-top"
             class="absolute top-0 left-0 w-full animate-sway-top z-20"
-            style="clip-path: inset(0 0 15% 0); transform-origin: center 80%;"
+            style="clip-path: inset(0 0 14% 0); transform-origin: center 80%;"
         />
 
         <!-- 🌾 Horizontal Progress Bar -->
