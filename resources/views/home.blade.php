@@ -2,71 +2,106 @@
 
 @section('content')
 <section class="relative overflow-hidden min-h-screen flex items-center justify-center viewport1BG">
-    <!-- Clouds -->
-     @if (session('success'))
-    <div class="bg-green-100 text-green-800 p-3 rounded-md text-center mb-4">
-        {{ session('success') }}
-    </div>
-@endif
+
+    <!-- 🌿 Left Branch -->
+    <img 
+        src="{{ Vite::asset('resources/images/viewport1/branch-left.svg') }}" 
+        alt="Left branch" 
+        class="absolute top-[-40px] left-[-80px] w-[700px] z-[30] animate-sway-left
+               max-lg:w-[350px] max-md:top-[40px] max-md:left-[-40px]" />
+
+    <!-- 🌿 Right Branch -->
+    <img 
+        src="{{ Vite::asset('resources/images/viewport1/branch-right.svg') }}" 
+        alt="Right branch" 
+        class="absolute top-0 right-0 w-[600px] z-[30] animate-sway-right
+               max-lg:w-[350px] max-md:top-[30px]" />
+
+    <!-- 🏔️ Mountains -->
+    <img 
+        src="{{ Vite::asset('resources/images/viewport1/terrains.png') }}" 
+        alt="Terrains" 
+        class="absolute top-[190px] bottom-0 left-0 w-screen h-auto z-[3]" />
+
+    <!-- 🌍 Globe (enlarged) -->
+    <img 
+        src="{{ Vite::asset('resources/images/viewport1/earth-blue.png') }}" 
+        alt="Globe" 
+        class="absolute top-90 left-1/2 -translate-x-1/2 w-[1500px] z-[4]
+               max-lg:w-[1100px] max-md:w-[900px] max-md:bottom-[-50px]" />
+
+    <!-- 🌫️ Soft Fog Layer -->
+    <div class="absolute bottom-0 left-0 w-full h-[200px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]"></div>
+
+    <!-- 🌿 Feedback Notification -->
+    @if (session('success'))
+        <div 
+            id="feedback-toast"
+            class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100"
+        >
+            🌱 {{ session('success') }}
+        </div>
+
+        <script>
+            setTimeout(() => {
+                const toast = document.getElementById('feedback-toast');
+                if (toast) {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 1000);
+                }
+            }, 3000);
+        </script>
+    @endif
+
+    <!-- ☁️ Clouds (top-most layer) -->
     <img 
         src="{{ Vite::asset('resources/images/viewport1/realistic-cloud.png') }}" 
         alt="cloud" 
-        class="absolute top-[-150px] left-0 w-[1000px] opacity-80 animate-[cloud1_60s_linear_infinite]
-               max-md:top-[-100px] max-md:w-[700px]
+        class="absolute top-[100px] left-0 w-[1000px] opacity-90 z-[20]
+               animate-[cloud1_60s_linear_infinite]
+               max-md:top-[0px] max-md:w-[700px]
                max-sm:top-[-50px] max-sm:w-[500px]" 
     />
 
     <img 
         src="{{ Vite::asset('resources/images/viewport1/realistic-cloud2.png') }}" 
         alt="cloud" 
-        class="absolute top-50 right-0 w-[1000px] opacity-80 animate-[cloud2_60s_linear_infinite]
+        class="absolute top-[100px] right-0 w-[1000px] opacity-90 z-[20]
+               animate-[cloud2_60s_linear_infinite]
                max-md:top-[0px] max-md:w-[700px]
                max-sm:top-[50px] max-sm:w-[500px]" 
     />
 
-    <!-- Centered Text -->
-    <div class="absolute top-50 text-center px-4">
-        <h1 class="italic text-3xl md:text-4xl font-serif font-semibold text-[#5C7919] leading-snug">
+    <!-- 🌏 Centered Text (top-most) -->
+    <div class="absolute top-[20%] left-1/2 -translate-x-1/2 text-center px-4 z-[60]">
+        <h1 class="italic text-3xl md:text-4xl font-serif font-semibold text-[#5C7919] leading-snug drop-shadow-[0_2px_3px_rgba(255,255,255,0.8)]">
             You’re here because you care<br class="hidden md:block">
             about the planet we call home.
         </h1>
     </div>
 
-    <!-- 🌿 Widgets for Logged-in Users -->
-    @auth
-    <div class="absolute bottom-35 left-1/2 -translate-x-1/2 flex gap-10 max-md:flex-col max-md:items-center z-40">
-
-            <!-- 🌱 Saved Eco-Actions Widget -->
-            <div class="relative bg-[url('/images/viewport1/widgetcloud1.svg')] bg-contain bg-no-repeat bg-center px-8 py-10 shadow-lg flex flex-col items-center w-[250px] text-center">
-                <button class="absolute -top-5 bg-[#5C7919] text-white px-3 py-1 rounded-full text-sm italic font-semibold shadow-md">
-                    My Eco-actions
-                </button>
-                <p class="text-[#625237] font-serif text-xl font-semibold mt-6">
-                    “Turn Off Unused Lights”
-                </p>
-                <a href="#" class="text-sm text-[#5C7919] underline mt-2">
-                    View saved eco-actions >
-                </a>
-            </div>
-
-            <!-- 🌎 Saved Eco-Topics Widget -->
-            <div class="relative bg-[url('/images/viewport1/widgetcloud1.svg')] bg-contain bg-no-repeat bg-center px-8 py-10 shadow-lg flex flex-col items-center w-[250px] text-center">
-                <button class="absolute -top-5 bg-[#5C7919] text-white px-3 py-1 rounded-full text-sm italic font-semibold shadow-md">
-                    Saved Eco-topics
-                </button>
-                <p class="text-[#625237] font-serif text-xl font-semibold mt-6">
-                    “The Impact of Plastic”
-                </p>
-                <a href="#" class="text-sm text-[#5C7919] underline mt-2">
-                    Continue reading >
-                </a>
-            </div>
-
-
-
-    </div>
-    @endauth
 </section>
+
+<!-- 🌿 Widgets for Logged-in Users -->
+@auth
+<div class="eco-widgets-container">
+    <!-- 🌱 Saved Eco-Actions Widget -->
+    <div class="eco-widget eco-actions"
+         style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+        <button class="eco-widget-btn">My Eco-actions</button>
+        <p class="eco-widget-text">“Turn Off Unused Lights”</p>
+        <a href="#" class="eco-widget-link">View saved eco-actions ></a>
+    </div>
+
+    <!-- 🌎 Saved Eco-Topics Widget -->
+    <div class="eco-widget eco-topics"
+         style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+        <button class="eco-widget-btn">Saved Eco-topics</button>
+        <p class="eco-widget-text">“The Impact of Plastic”</p>
+        <a href="#" class="eco-widget-link">Continue reading ></a>
+    </div>
+</div>
+@endauth
 
 <section class="relative -top-75 min-h-[200vh] flex items-center justify-center viewport2BG">
     <div 
@@ -75,7 +110,7 @@
 
         <!-- 🌿 Text Above Plant -->
         <div id="plant-text" 
-            class="absolute top-0 left-1/2 z-50 -translate-x-1/2 w-max text-center transition-all duration-700 ease-out">
+            class="absolute top-0 left-1/2 z-70 -translate-x-1/2 w-max text-center transition-all duration-700 ease-out">
             <h1 class="italic text-3xl md:text-5xl font-serif font-semibold text-[#625237] leading-snug whitespace-nowrap">
                 Even in small ways 
             </h1>
@@ -92,6 +127,7 @@
             src="{{ Vite::asset('resources/images/plants/small_plant.png') }}" 
             alt="plant"
             class="w-full relative z-10"
+            style="clip-path: inset(80% 0 0 0); transform-origin: center 80%;"
         />
 
         <!-- 🌿 Animated Top Image -->
