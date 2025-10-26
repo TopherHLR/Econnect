@@ -42,6 +42,11 @@
                     {{ session('info') }}
                 </div>
             @endif
+            @if ($errors->has('code'))
+                <div class="bg-red-100 text-red-700 p-3 rounded-md text-center mb-4">
+                    {{ $errors->first('code') }}
+                </div>
+            @endif
 
             <!-- ✉️ Verification Form -->
             <form method="POST" action="{{ route('verify.email.submit') }}" class="space-y-5">

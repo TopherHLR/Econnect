@@ -96,8 +96,9 @@ class AuthController extends Controller
 
         $pending = Session::get('pending_registration');
 
+        // 🧩 Check verification code
         if (!$pending || $request->code != $pending['verification_code']) {
-            return response()->json(['error' => 'Invalid verification code.'], 422);
+            return back()->withErrors(['code' => 'Invalid or expired verification code.'])->withInput();
         }
 
         // 🧩 Create user after successful verification
@@ -110,14 +111,16 @@ class AuthController extends Controller
             'is_verified' => true,
         ]);
 
-        // 🧩 Log the user in immediately
+        // 🧩 Log the user in
         Auth::login($user);
 
         // 🧩 Clear pending registration
         Session::forget('pending_registration');
 
-        return redirect()->route('home')->with('success', 'Account verified and logged in successfully!');
+        // 🧩 Redirect to home with success message
+        return redirect()->route('home')->with('success', 'Your account has been verified and you are now logged in!');
     }
+
 
 
     /**

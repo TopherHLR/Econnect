@@ -47,14 +47,14 @@
                     <div class="flex items-center space-x-4">
                         <button 
                             @click="$store.authModal.open = true; $store.authModal.mode = 'signin'"
-                            class="text-green-900 font-semibold hover:text-green-800 transition cursor-pointer"
+                            class="text-green-900 font-semibold hover:text-green-800 transition"
                         >
                             Log In
                         </button>
                         <span class="text-green-900 font-semibold">|</span>
                         <button 
                             @click="$store.authModal.open = true; $store.authModal.mode = 'signup'"
-                            class="text-green-900 font-semibold hover:text-green-800 transition cursor-pointer"
+                            class="text-green-900 font-semibold hover:text-green-800 transition"
                         >
                             Sign Up
                         </button>
@@ -63,7 +63,7 @@
 
                 @auth
                     <!-- When logged in -->
-                    <button id="dropdownButton" class="flex items-center space-x-3 focus:outline-none cursor-pointer">
+                    <button id="dropdownButton" class="flex items-center space-x-3 focus:outline-none">
                         <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile" class="h-10 w-11 rounded-full">
                         <svg class="w-4 h-4 ml-1 text-green-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
