@@ -12,7 +12,6 @@
 
 /* =========================================================== NAVBAR =========================================================== */
 
-
 .navbar {
     @apply fixed top-0 left-1/2 z-50 transition-all duration-500 backdrop-blur-md;
     transform: translateX(-50%);
@@ -21,12 +20,10 @@
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     
-    /* Transparent soft green gradient */
     background: linear-gradient(to bottom, rgba(126, 166, 94, 0.4) 0%, rgba(224, 233, 214, 0.2) 90%);
     box-shadow: none;
 }
 
-/* On scroll: darker but still transparent */
 .navbar.navbar-solid {
     width: 98%;
     border-bottom-left-radius: 25px;
@@ -36,39 +33,32 @@
     transition: all 0.5s ease;
 }
 
-
-
-/* Text Links */
 .nav-link {
     @apply tracking-wide text-green-900 font-medium transition-colors duration-300;
 }
 
-/* Hover effect */
 .nav-link:hover {
     color: #335C2F;
 }
 
-/* Active link */
 .nav-link.active {
     @apply font-semibold text-green-800;
 }
 
-/* Logo font */
 .nav-logo {
     font-family: 'Instrument Sans', sans-serif;
     letter-spacing: 1px;
 }
 
-/* =========================================================== NAVBAR =========================================================== */
-
 /* =========================================================== SIDEBAR =========================================================== */
+
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
     width: 270px;
-    background: #ffffff; /* clean white for contrast */
+    background: #ffffff;
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
     transform: translateX(-100%);
     transition: transform 0.4s ease;
@@ -82,7 +72,6 @@
     transform: translateX(0);
 }
 
-/* Sidebar header */
 .sidebar-header {
     display: flex;
     align-items: center;
@@ -91,7 +80,6 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* Sidebar links */
 .sidebar-links {
     display: flex;
     flex-direction: column;
@@ -110,7 +98,6 @@
     color: #1E3A1A;
 }
 
-/* Sidebar footer (profile section) */
 .sidebar-footer {
     padding: 1.5rem;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -125,7 +112,6 @@
     border-radius: 50%;
 }
 
-/* Overlay (background dim when sidebar is open) */
 #overlay {
     position: fixed;
     inset: 0;
@@ -140,42 +126,31 @@
     display: block;
     opacity: 1;
 }
-/* =========================================================== SIDEBAR =========================================================== */
 
 /* =========================================================== VIEWPORT1 ================================================================== */
+
 @keyframes cloud1 {
-    0% { transform: translateX(-100%); }   /* Start fully off-screen left */
-    100% { transform: translateX(120vw); } /* Move fully across to the right */
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(120vw); }
 }
 
 @keyframes cloud2 {
-    0% { transform: translateX(100%); }    /* Start fully off-screen right */
-    100% { transform: translateX(-120vw); } /* Move fully across to the left */
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-120vw); }
 }
 
 .viewport1BG {
     position: relative;
-    background-image: url('/resources/images/backgrounds/viewport1_bg.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
     background-color: #E0E9D6;
     min-height: 100vh;
-    
-    /* Ensure responsiveness */
     width: 100%;
-    height: 100%;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Optimize for small devices */
+/* Mobile adjustments */
 @media (max-width: 1024px) {
     .viewport1BG {
         background-position: center top;
@@ -183,21 +158,12 @@
     }
 }
 
-/* Small screens (≤ 640px) */
 @media (max-width: 640px) {
-    .viewport2BG {
-        background-size: 180%;
-        background-position: center top;
-    }
-}
-/* Extra responsiveness for very small screens (phones) */
-@media (max-width: 420px) {
     .viewport1BG {
         background-size: 100%;
         background-position: center top;
     }
 }
-/* =========================================================== VIEWPORT1 ================================================================== */
 
 /* =========================================================== VIEWPORT2 ================================================================== */
 
@@ -210,21 +176,17 @@
     min-height: 200vh;
     width: 100%;
     z-index: 10;
-
-    /* Works together with -top-[70px] for overlap */
-    margin-top: 0; /* default reset to let your -top-70 take effect */
+    margin-top: 0;
 }
 
-/* Medium screens (≤ 1024px) */
 @media (max-width: 1024px) {
     .viewport2BG {
         background-position: center top;
         background-size: contain;
-        top: -400px; /* slightly reduce the overlap */
+        top: -400px;
     }
 }
 
-/* Small screens (≤ 640px) */
 @media (max-width: 640px) {
     .viewport2BG {
         background-size: 180%;
@@ -233,7 +195,6 @@
     }
 }
 
-/* Very small screens (≤ 420px) */
 @media (max-width: 420px) {
     .viewport2BG {
         background-size: 200%;
@@ -242,22 +203,148 @@
     }
 }
 
-/* =========================================================== VIEWPORT2 ================================================================== */
-
 /* =========================================================== SMALL PLANT ================================================================== */
+
 @keyframes sway-top {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(5deg);
-  }
-  75% {
-    transform: rotate(-5deg);
-  }
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
 }
 
 .animate-sway-top {
   animation: sway-top 4s ease-in-out infinite;
 }
-/* =========================================================== SMALL PLANT ================================================================== */
+
+/* =========================================================== BRANCH SWAY ANIMATIONS ================================================================== */
+
+@keyframes sway-left {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-2deg); }
+  75%      { transform: rotate(2deg); }
+}
+
+@keyframes sway-right {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(2deg); }
+  75%      { transform: rotate(-2deg); }
+}
+
+.animate-sway-left {
+  transform-origin: left center;
+  animation: sway-left 8s ease-in-out infinite;
+}
+
+.animate-sway-right {
+  transform-origin: right center;
+  animation: sway-right 8s ease-in-out infinite;
+}
+
+/* =========================================================== FOG LAYER FIX (CRITICAL) ================================================================== */
+
+/* Ensure gradient fog always covers the bottom edge of globe on all screens */
+.viewport1BG .bg-gradient-to-t {
+    /* This ensures it extends to the very bottom */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    z-index: 5;
+    pointer-events: none; /* prevent blocking interactions */
+}
+
+/* =========================================================== ECO WIDGETS ================================================================== */
+
+.eco-widgets-container { 
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    width: 114vw;
+    max-width: 2300px;
+    z-index: 40;
+    padding: 0 9rem;
+    gap: 40rem;
+}
+
+@media (max-width: 768px) {
+    .eco-widgets-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 3rem;
+        padding: 0;
+    }
+}
+
+.eco-widget {
+    position: relative;
+    width: 450px;
+    height: 320px;
+    text-align: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 5rem 2rem 6vh 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 30;
+}
+
+.eco-widget-btn {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #5C7919;
+    color: #ffffff;
+    padding: 0.6rem 1.5rem;
+    border-radius: 9999px;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    width: max-content;
+}
+
+.eco-widget-text {
+    color: #625237;
+    font-family: serif;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.eco-widget-link {
+    margin-top: 0rem;
+    color: #5C7919;
+    font-size: 0.875rem;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+    margin-bottom: 0.8rem;
+}
+
+.eco-widget-link:hover {
+    color: #4A6614;
+}
+
+.eco-widget-text,
+.eco-widget-link {
+    transform: translateY(-3.3rem);
+}
+
+.eco-widget-text {
+    margin-bottom: 0.4rem;
+}
+
+.eco-widget-link {
+    margin-bottom: 0.5rem;
+}
