@@ -12,7 +12,7 @@
         
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
-    <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-50">
+    <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-100">
         <div class="max-w-7xl mx-auto px-8 py-3 flex items-center justify-between">
             <!-- Left: Logo -->
             <a href="/" class="flex items-center space-x-1">
