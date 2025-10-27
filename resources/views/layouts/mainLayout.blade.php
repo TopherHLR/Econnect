@@ -131,8 +131,97 @@
     </main>
 
     {{-- Footer --}}
-    <footer class="bg-white shadow-inner mt-10 py-4 text-center text-sm text-gray-500">
-        © {{ date('Y') }} Econnect. All rights reserved.
-    </footer>
+   <footer class="bg-[#7a8c4f] text-white pt-8 pb-6 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+
+        <!-- ECOnnect -->
+        <div>
+            <h3 class="font-semibold text-lg mb-3">ECOnnect</h3>
+            <p class="text-sm text-gray-200 leading-relaxed">
+                Your companion for everyday sustainable living.<br>
+                Built to guide, inspire, and connect eco-conscious individuals.
+            </p>
+        </div>
+
+        <!-- Learn More -->
+        <div>
+            <h3 class="font-semibold text-lg mb-3">Learn More</h3>
+            <ul class="space-y-2 text-sm">
+                <li><a href="#" class="text-gray-200 hover:text-white transition">Sustainability Guides</a></li>
+                <li><a href="#" class="text-gray-200 hover:text-white transition">Community Partners</a></li>
+                <li><a href="#" class="text-gray-200 hover:text-white transition">Educational Resources</a></li>
+                <li><a href="#" class="text-gray-200 hover:text-white transition">FAQs</a></li>
+            </ul>
+        </div>
+
+        <!-- About ECOnnect -->
+        <div>
+            <h3 class="font-semibold text-lg mb-3">About ECOnnect</h3>
+            <ul class="space-y-2 text-sm">
+                <li><a href="#" class="text-gray-200 hover:text-white transition">About ECOnnect</a></li>
+                <li><a href="#" class="text-gray-200 hover:text-white transition">Team Members</a></li>
+                <li><a href="#" class="text-gray-200 hover:text-white transition">Contact Us</a></li>
+            </ul>
+        </div>
+
+        <!-- Quick Links + Legal + Social -->
+        <div>
+            <!-- Quick Links -->
+            <h3 class="font-semibold text-lg mb-3">Quick Links</h3>
+            <ul class="space-y-2 text-sm mb-6">
+                <li><a href="/" class="text-gray-200 hover:text-white transition">Home</a></li>
+                <li><a href="/lifestyle" class="text-gray-200 hover:text-white transition">Lifestyle (Eco Actions & Library)</a></li>
+                <li><a href="/quests" class="text-gray-200 hover:text-white transition">Quests</a></li>
+                <li><a href="/progress" class="text-gray-200 hover:text-white transition">My Progress</a></li>
+                <li><a href="/about" class="text-gray-200 hover:text-white transition">About</a></li>
+            </ul>
+
+            <!-- Legal -->
+            <h3 class="font-semibold text-lg mb-3">Legal</h3>
+            <ul class="space-y-2 text-sm mb-6">
+                <li><a href="#" class="text-gray-200 hover:text-white transition">Privacy Policy</a></li>
+                <li><a href="#" class="text-gray-200 hover:text-white transition">Terms of Use</a></li>
+            </ul>
+
+            <!-- Social Icons (as image assets) -->
+            <div class="flex space-x-4">
+                <a href="#" class="block">
+                    <img 
+                        src="{{ Vite::asset('resources/images/icons/social-x.png') }}" 
+                        alt="X (Twitter)"
+                        class="w-5 h-5"
+                    />
+                </a>
+                <a href="#" class="block">
+                    <img 
+                        src="{{ Vite::asset('resources/images/icons/social-instagram.png') }}" 
+                        alt="Instagram"
+                        class="w-5 h-5"
+                    />
+                </a>
+                <a href="#" class="block">
+                    <img 
+                        src="{{ Vite::asset('resources/images/icons/social-youtube.png') }}" 
+                        alt="YouTube"
+                        class="w-5 h-5"
+                    />
+                </a>
+                <a href="#" class="block">
+                    <img 
+                        src="{{ Vite::asset('resources/images/icons/social-linkedin.png') }}" 
+                        alt="LinkedIn"
+                        class="w-5 h-5"
+                    />
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-8 pt-4 border-t border-gray-600 text-center text-xs text-gray-300">
+        © {{ date('Y') }} ECOnnect. All rights reserved.
+    </div>
+</footer>
 </body>
 </html>

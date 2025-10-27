@@ -25,3 +25,7 @@ Route::get('/', function () {
     return view('home'); // create home.blade.php later
 })->name('home');
 //---------------------------------------------------- AUTH -------------------------------------------------
+
+Route::get('/lifestyle', function () {
+    return view('lifestyle');
+})->name('lifestyle');
