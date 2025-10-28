@@ -30,6 +30,10 @@ Route::get('/lifestyle', function () {
     return view('lifestyle');
 })->name('lifestyle');
 
+Route::get('/quests', function () {
+    return view('quests');
+})->name('quests');
+
 
 //---------------------------------------------------- MOCK API FOR ECO MODAL -------------------------------------------------
 
