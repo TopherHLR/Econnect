@@ -219,7 +219,7 @@
     </div>
 
     <!-- Copyright -->
-    <div class="mt-8 pt-4 border-t border-gray-600 text-center text-xs text-gray-300">
+    <div class="bg-[#C37A49] mt-3 pt-2 text-center text-xs text-gray-300">
         © {{ date('Y') }} ECOnnect. All rights reserved.
     </div>
 </footer>
