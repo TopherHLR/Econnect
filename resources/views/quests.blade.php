@@ -106,7 +106,6 @@
   </div>
 
 </div>
-@include('modals.questviewModal')
 @endsection
 <!-- Include Eco Modal -->
 
