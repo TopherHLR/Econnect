@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-[#E0E9D6] text-gray-800 font-sans">
     <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-100">
         <div class="max-w-7xl mx-auto px-8 py-3 flex items-center justify-between">
             <!-- Left: Logo -->
@@ -35,7 +35,7 @@
 
                 @auth
                     <!-- Only visible when logged in -->
-                    <a href="/progress" class="nav-link text-green-900 hover:text-green-800">PROGRESS</a>
+                    <a href="/myprogress" class="nav-link text-green-900 hover:text-green-800">PROGRESS</a>
                     <a href="/rewards" class="nav-link text-green-900 hover:text-green-800">REWARDS</a>
                 @endauth
             </div>
@@ -111,7 +111,7 @@
             <a href="/lifestyle" class="nav-link">LIFESTYLE</a>
             <a href="/quests" class="nav-link">QUESTS</a>
             <a href="/about" class="nav-link">ABOUT</a>
-            <a href="/progress" class="nav-link">PROGRESS</a>
+            <a href="/myprogress" class="nav-link">PROGRESS</a>
             <a href="/rewards" class="nav-link">REWARDS</a>
         </div>
 
@@ -172,7 +172,7 @@
                 <li><a href="/" class="text-gray-200 hover:text-white transition">Home</a></li>
                 <li><a href="/lifestyle" class="text-gray-200 hover:text-white transition">Lifestyle (Eco Actions & Library)</a></li>
                 <li><a href="/quests" class="text-gray-200 hover:text-white transition">Quests</a></li>
-                <li><a href="/progress" class="text-gray-200 hover:text-white transition">My Progress</a></li>
+                <li><a href="/myprogress" class="text-gray-200 hover:text-white transition">My Progress</a></li>
                 <li><a href="/about" class="text-gray-200 hover:text-white transition">About</a></li>
             </ul>
 

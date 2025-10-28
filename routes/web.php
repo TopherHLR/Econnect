@@ -34,7 +34,13 @@ Route::get('/quests', function () {
     return view('quests');
 })->name('quests');
 
+Route::get('/myprogress', function () {
+    return view('myprogress');
+})->name('myprogress');
 
+Route::get('/rewards', function () {
+    return view('rewards');
+})->name('rewards');
 //---------------------------------------------------- MOCK API FOR ECO MODAL -------------------------------------------------
 
 Route::get('/api/ecoTopic/{id}', function ($id) {
