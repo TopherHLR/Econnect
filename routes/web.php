@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\EcoController;
+use App\Http\Controllers\ActionController;
 
 //---------------------------------------------------- AUTH -------------------------------------------------
 
@@ -72,7 +73,43 @@ Route::get('/myprogress', [AccountController::class, 'myProgress'])->name('mypro
 
 Route::get('/rewards', [AccountController::class, 'rewards'])->name('rewards');
 
-//---------------------------------------------------- HONE -------------------------------------------------
+//---------------------------------------------------- HOME -------------------------------------------------
 Route::get('/widgets/random', [EcoController::class, 'getRandomWidgets'])
     ->name('widgets.random')
     ->middleware('auth');
+
+
+//---------------------------------------------------- ACTION -------------------------------------------------
+// User routes
+Route::middleware('auth')->group(function () {
+    Route::get('/actions', [ActionController::class, 'index'])->name('actions.index');
+    Route::get('/actions/{id}', [ActionController::class, 'show'])->name('actions.show');
+    Route::post('/actions/{id}/complete', [ActionController::class, 'completeAction'])->name('actions.complete');
+    Route::get('/my-actions', [ActionController::class, 'myActions'])->name('actions.my');
+});
+
+
+// Admin routes
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/actions', [ActionController::class, 'adminIndex'])->name('admin.actions.index');
+    Route::post('/admin/actions', [ActionController::class, 'store'])->name('admin.actions.store');
+    Route::put('/admin/actions/{id}', [ActionController::class, 'update'])->name('admin.actions.update');
+    Route::delete('/admin/actions/{id}', [ActionController::class, 'destroy'])->name('admin.actions.destroy');
+});
+
+//---------------------------------------------------- LIBRARY -------------------------------------------------
+// User routes
+Route::middleware('auth')->group(function () {
+    Route::get('/libraries', [LibraryController::class, 'index']);
+    Route::get('/libraries/{id}', [LibraryController::class, 'show']);
+    Route::post('/libraries/{id}/save', [LibraryController::class, 'saveLibrary']);
+    Route::delete('/libraries/{id}/unsave', [LibraryController::class, 'unsaveLibrary']);
+    Route::get('/my-libraries', [LibraryController::class, 'myLibraries']);
+});
+
+// Admin routes
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::post('/admin/libraries', [LibraryController::class, 'store']);
+    Route::put('/admin/libraries/{id}', [LibraryController::class, 'update']);
+    Route::delete('/admin/libraries/{id}', [LibraryController::class, 'destroy']);
+});
