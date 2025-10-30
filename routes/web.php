@@ -37,6 +37,11 @@ Route::get('/quests', function () {
     return view('quests');
 })->name('quests');
 
+
+Route::get('/adminHome', function () {
+    return view('adminHome');
+})->name('adminHome');
+
 Route::get('/rewards', function () {
     return view('rewards');
 })->name('rewards');
