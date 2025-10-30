@@ -66,24 +66,46 @@
 
   <!-- 🌿 Widgets for Logged-in Users -->
   @auth
-    <div class="eco-widgets-container">
+  <div class="eco-widgets-container">
       <!-- 🌱 Saved Eco-Actions Widget -->
       <div class="eco-widget eco-actions"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-        <button class="eco-widget-btn">My Eco-actions</button>
-        <p class="eco-widget-text">“Turn Off Unused Lights”</p>
-        <a href="#" class="eco-widget-link">View saved eco-actions ></a>
+          style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+          <button class="eco-widget-btn">My Eco-actions</button>
+          <p id="eco-action-text" class="eco-widget-text">Loading...</p>
+          <a href="/lifestyle" class="eco-widget-link">View saved eco-actions ></a>
       </div>
 
       <!-- 🌎 Saved Eco-Topics Widget -->
       <div class="eco-widget eco-topics"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-        <button class="eco-widget-btn">Saved Eco-topics</button>
-        <p class="eco-widget-text">“The Impact of Plastic”</p>
-        <a href="#" class="eco-widget-link">Continue reading ></a>
+          style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+          <button class="eco-widget-btn">Saved Eco-topics</button>
+          <p id="eco-topic-text" class="eco-widget-text">Loading...</p>
+          <a href="#" class="eco-widget-link">Continue reading ></a>
       </div>
-    </div>
+  </div>
+
+  {{-- 🔄 Auto-refresh widget texts --}}
+  <script>
+      async function updateWidgets() {
+          try {
+              const response = await fetch("{{ route('widgets.random') }}");
+              const data = await response.json();
+
+              document.getElementById('eco-action-text').textContent = `"${data.eco_action}"`;
+              document.getElementById('eco-topic-text').textContent = `"${data.eco_topic}"`;
+          } catch (error) {
+              console.error('Error updating widgets:', error);
+          }
+
+          // Change every 5–10 seconds randomly
+          const nextUpdate = Math.floor(Math.random() * 5000) + 5000; // between 5–10s
+          setTimeout(updateWidgets, nextUpdate);
+      }
+
+      updateWidgets();
+  </script>
   @endauth
+
 
   <section class="relative -top-75 min-h-[200vh] flex items-center justify-center viewport2BG">
     <div id="plant-container"

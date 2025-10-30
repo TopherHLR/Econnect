@@ -4,7 +4,7 @@
   @vite([
         'resources/css/ecoModal.css',
         'resources/js/ecoModal.js'])
-<div class="max-w-6xl mx-auto px-6 py-8 mt-12">
+<div class="max-w-6xl mx-auto px-6 py-8 mt-15">
 
   <div class="bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden">
     <!-- Header -->

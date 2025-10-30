@@ -1,6 +1,6 @@
-@extends('layouts.mainLayout')
+@extends('layouts.accountLayout')
 
-@section('content')
+@section('account_content')
 <div class="min-h-screen bg-[#f0f5ef] flex justify-center items-center p-8">
   <div class="bg-[#f9f8f4] w-full max-w-5xl rounded-3xl shadow-md p-10 space-y-8">
 

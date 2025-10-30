@@ -1,7 +1,7 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-<main class="pt-24 px-6 flex min-h-screen space-x-6">
+<main class="pt-12 px-6 flex min-h-screen space-x-6">
     
     {{-- 🌿 Sidebar --}}
     <aside class="w-80 bg-[#f6f8f1] rounded-3xl shadow-md p-6 h-fit">
@@ -67,6 +67,11 @@
             <a href="/myprogress"
             class="block w-full text-center bg-green-700 text-white mt-2 py-2 rounded-xl hover:bg-green-800 transition">
                 View Progress
+            </a>
+                        {{-- View Progress Button --}}
+            <a href="/rewards"
+            class="block w-full text-center bg-green-700 text-white mt-2 py-2 rounded-xl hover:bg-green-800 transition">
+                View Rewards
             </a>
         </div>
 

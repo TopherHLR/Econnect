@@ -31,19 +31,13 @@
 
             <!-- Center: Navigation Links (Desktop) -->
             <div class="hidden md:flex flex-1 justify-center space-x-10">
-                <a href="/" class="nav-link font-semibold text-green-900 hover:text-green-800">HOME</a>
-                <a href="/lifestyle" class="nav-link text-green-900 hover:text-green-800">LIFESTYLE</a>
-                <a href="/quests" class="nav-link text-green-900 hover:text-green-800">QUESTS</a>
-                <a href="/about" class="nav-link text-green-900 hover:text-green-800">ABOUT</a>
-
-                @auth
-                    <!-- Only visible when logged in -->
-                    <a href="/myprogress" class="nav-link text-green-900 hover:text-green-800">PROGRESS</a>
-                    <a href="/rewards" class="nav-link text-green-900 hover:text-green-800">REWARDS</a>
-                @endauth
+                <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">HOME</a>
+                <a href="/lifestyle" class="nav-link {{ request()->is('lifestyle') ? 'active' : '' }}">LIFESTYLE</a>
+                <a href="/quests" class="nav-link {{ request()->is('quests') ? 'active' : '' }}">QUESTS</a>
+                <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">ABOUT</a>
             </div>
 
-           <!-- Right: Profile / Auth Buttons -->
+            <!-- Right: Profile / Auth Buttons -->
             <div x-data class="hidden md:flex items-center relative" id="profileDropdown">
                 @guest
                     <!-- When not logged in -->
@@ -65,32 +59,106 @@
                 @endguest
 
                 @auth
-                    <!-- When logged in -->
-                    <button id="dropdownButton" class="flex items-center space-x-3 focus:outline-none cursor-pointer">
-                        <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile" class="h-10 w-11 rounded-full">
-                    </button>
+                    <div x-data="{ open: false }" class="relative">
+                        <!-- Profile Button -->
+                        <button 
+                            @click="open = !open"
+                            class="flex items-center justify-center w-11 h-11 bg-[#E0E9D6] border-2 border-[#6A8A52] rounded-full 
+                                hover:bg-[#C8D5B9] hover:border-[#4F6B3F] transition-all duration-300 shadow-sm focus:outline-none group
+                                z-50 relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 24 24" fill="none" 
+                                stroke="currentColor" stroke-width="2.5" 
+                                class="w-6 h-6 text-[#4F6B3F] group-hover:text-[#3E5632] transition-colors duration-300">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M4 20c0-4 4-7 8-7s8 3 8 7" />
+                            </svg>
+                        </button>
 
-                    <!-- Dropdown Menu -->
-                    <div id="dropdownMenu" class="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg hidden z-50">
-                        <ul class="flex flex-col py-1">
-                            <li>
-                                <a href="{{ route('account.show') }}" 
-                                class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-green-100">
-                                My Account Settings
-                                </a>
-                            </li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-green-100">
-                                        Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
+                        <!-- Dropdown -->
+                        <div 
+                            x-show="open"
+                            @click.away="open = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+                            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
+                            class="absolute -right-42  -mt-13 w-56 bg-[#F9F8F4] border border-[#BFD1B0] rounded-2xl shadow-lg z-40 overflow-hidden
+                                before:content-[''] before:absolute before:top-[-10px] before:right-[18px] before:w-5 before:h-5 
+                                before:bg-[#F9F8F4] before:rotate-45 before:border-l before:border-t before:border-[#BFD1B0]">
+
+                                <ul class="flex flex-col py-3 mt-10 text-sm font-medium text-[#4F6B3F] space-y-1">
+                                    <li>
+                                        <a href="{{ route('account.show') }}" 
+                                            class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+                                            
+                                            <!-- Rectangle icon -->
+                                            <span class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                                                    stroke-width="2" class="w-4 h-4 text-[#4F6B3F]">
+                                                    <circle cx="12" cy="8" r="4" />
+                                                    <path d="M4 20c0-4 4-7 8-7s8 3 8 7" />
+                                                </svg>
+                                            </span>
+                                            My Account
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/myprogress"
+                                            class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+                                            <span class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2" class="w-4 h-4 text-[#4F6B3F]">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M3 17l6-6 4 4 8-8" />
+                                                </svg>
+                                            </span>
+                                            My Progress
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/rewards"
+                                            class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+                                            <span class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                    stroke-width="2" class="w-4 h-4 text-[#4F6B3F]">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 8v8m0 0l-3-3m3 3l3-3m-3-7v7" />
+                                                </svg>
+                                            </span>
+                                            My Rewards
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" 
+                                                class="flex items-center gap-3 w-full text-left px-5 py-2.5 rounded-lg hover:bg-[#F4D4D4] hover:text-[#642B2B] transition-all duration-200">
+                                                <span class="flex items-center justify-center w-7 h-7 bg-[#FCE8E8] border border-[#DFA7A7] rounded-md">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2" class="w-4 h-4 text-[#9B4040]">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M15 12H3m12 0l-4-4m4 4l-4 4m4-4h8" />
+                                                    </svg>
+                                                </span>
+                                                Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+
+                        </div>
                     </div>
+
                 @endauth
             </div>
+
         </div>
     </nav>
 
@@ -125,7 +193,7 @@
     <div id="overlay"></div>
 
     {{-- Main Content --}}
-    <main>
+    <main class="mt-10">
         @include('modal.authModal')
         @yield('content')
     </main>

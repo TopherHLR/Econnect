@@ -11,6 +11,7 @@ Alpine.store('authModal', {
 
 Alpine.start(); 
 
+//======================================================================================= navbar ======================================================================================
 document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.getElementById('navbar');
     const sidebar = document.getElementById('sidebar');
@@ -18,14 +19,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('menu-toggle');
     const closeSidebar = document.getElementById('close-sidebar');
 
-    // Navbar scroll behavior
-    window.addEventListener('scroll', () => {
+    // Detect current page (Laravel renders full path, so we check it cleanly)
+    const isHomePage = window.location.pathname === '/' || window.location.pathname === '/home';
+
+    // Function to apply or remove solid navbar
+    const handleNavbarScroll = () => {
         if (window.scrollY > 50) {
             navbar.classList.add('navbar-solid');
-        } else {
+        } else if (isHomePage) {
             navbar.classList.remove('navbar-solid');
         }
-    });
+    };
+
+    // Apply scroll listener
+    window.addEventListener('scroll', handleNavbarScroll);
+
+    // Immediately set navbar style based on current page
+    if (!isHomePage) {
+        // Force solid navbar on all non-home pages
+        navbar.classList.add('navbar-solid');
+    } else {
+        // Home starts transparent and only changes after scroll
+        handleNavbarScroll();
+    }
 
     // Sidebar open/close
     menuToggle.addEventListener('click', () => {
@@ -41,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
     closeSidebar.addEventListener('click', close);
     overlay.addEventListener('click', close);
 });
+
+
+//======================================================================================= VIEWPORT2 ======================================================================================
 
 window.addEventListener('scroll', () => {
     const plant = document.getElementById('plant-container');
@@ -101,3 +120,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\EcoController;
 
 //---------------------------------------------------- AUTH -------------------------------------------------
 
@@ -67,5 +68,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AccountController::class, 'show'])->name('account.show');
 });
 
-
 Route::get('/myprogress', [AccountController::class, 'myProgress'])->name('myprogress');
+
+Route::get('/rewards', [AccountController::class, 'rewards'])->name('rewards');
+
+//---------------------------------------------------- HONE -------------------------------------------------
+Route::get('/widgets/random', [EcoController::class, 'getRandomWidgets'])
+    ->name('widgets.random')
+    ->middleware('auth');

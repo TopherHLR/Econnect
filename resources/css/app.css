@@ -19,18 +19,29 @@
     max-width: 100%;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    
+    overflow: visible !important; /* ✅ ensures dropdown isn't cut */
     background: linear-gradient(to bottom, rgba(126, 166, 94, 0.4) 0%, rgba(224, 233, 214, 0.2) 90%);
     box-shadow: none;
 }
 
 .navbar.navbar-solid {
+    backdrop-filter: blur(8px);
     width: 98%;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
     background: linear-gradient(to bottom, rgba(92, 134, 68, 0.8) 0%, rgba(216, 227, 201, 0.5) 90%);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     transition: all 0.5s ease;
+    overflow: visible !important; /* ✅ fixes clipping when solid */
+}
+
+/* White base layer behind the gradient */
+.navbar.navbar-solid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.26); /* soft white background */
+    z-index: -1; /* places it behind the gradient */
 }
 
 .nav-link {
@@ -49,6 +60,42 @@
     font-family: 'Instrument Sans', sans-serif;
     letter-spacing: 1px;
 }
+
+/* Base Nav Link */
+.nav-link {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 4px;
+    font-weight: 600;
+    color: #14532d; /* dark green */
+    background: linear-gradient(
+        to right,
+        rgba(195, 122, 73, 0.25) 0%,
+        rgba(127, 138, 79, 0.25) 100%
+    );
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    transition: background-size 0.5s ease, color 0.3s ease;
+}
+
+/* “Liquid” background highlight on hover */
+.nav-link:hover {
+    background-size: 100% 100%;
+    color: #fff; /* text turns white for contrast */
+}
+
+/* Active page = brown underline */
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 100%;
+    background-color: #C37A49;
+}
+
 
 /* =========================================================== SIDEBAR =========================================================== */
 
