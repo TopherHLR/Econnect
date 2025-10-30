@@ -4,39 +4,43 @@
   @vite([
         'resources/css/ecoModal.css',
         'resources/js/ecoModal.js'])
-<div class="max-w-6xl mx-auto px-6 py-8 mt-15">
+<div class="max-w-6xl mx-auto px-12 py-12 mt-15">
 
-  <div class="bg-white rounded-2xl shadow-sm border border-green-100 overflow-hidden">
+  <div class="bg-[#F7F3E7] rounded-4xl shadow-sm border border-green-100 overflow-hidden p-8">
+
     <!-- Header -->
-    <div class="flex items-center justify-between px-6 pt-6 mb-4">
+    <div class="flex items-center justify-between px-2 pt-2 mb-4">
+
       <h1 class="text-2xl font-serif font-semibold text-[#5C7919]">
         {{ $category->title ?? 'Climate & Nature Awareness 🌍' }}
       </h1>
     </div>
 
     <!-- Top Controls -->
-    <div class="flex justify-between items-start gap-6 px-4 mb-8">
+    <div class="flex justify-between items-start gap-2 px-4 mb-8">
+
       <div class="flex flex-col flex-1">
 
         <!-- Toggle + Search -->
         <div class="flex items-center justify-between gap-4 mb-6">
           <!-- iOS-style Toggle -->
-          <div class="relative flex items-center bg-green-50 rounded-full p-3 w-40">
+          <div class="relative flex items-center bg-[#5C7919] rounded-full p-3 w-40">
             <div id="toggle-slider"
-                 class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-white rounded-full shadow-md transition-all duration-300 ease-in-out"></div>
+                 class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-[#FCFFF6] rounded-full shadow-md transition-all duration-300 ease-in-out"></div>
             <button id="topicsBtn"
                     class="relative z-10 flex-1 text-center text-sm font-medium text-[#5C7919]"
                     onclick="switchTab('topics')">Topics</button>
             <button id="actionsBtn"
-                    class="relative z-10 flex-1 text-center text-sm font-medium text-gray-500"
+                    class="relative z-10 flex-1 text-center text-sm font-medium text-[#FCF9EF]"
                     onclick="switchTab('actions')">Actions</button>
+
           </div>
 
           <!-- Search + Category -->
           <div class="flex items-center gap-2 flex-1">
-            <div class="relative w-full max-w-72">
+            <div class="relative w-full max-w-70">
               <input type="text" placeholder="Search"
-                     class="w-full pl-3 pr-10 py-2 border border-green-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-300 text-sm">
+                     class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2 border border-[#7A8C4F] rounded-full focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm">
               <svg class="absolute right-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                    viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -46,7 +50,7 @@
 
             <!-- Category Dropdown -->
             <select id="categoryDropdown"
-                    class="text-sm text-gray-600 bg-green-50 border border-green-200 rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-300">
+                    class="text-sm text-gray-600 bg-[#FCFFF6] border border-[#7A8C4F] rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
               <option value="">Category ▾</option>
               {{-- Later: fetch from DB --}}
               <option>Energy</option>
@@ -57,14 +61,14 @@
         </div>
 
         <!-- Dynamic Eco Content -->
-        <div id="ecoContent" class="space-y-4">
+        <div id="ecoContent" class="space-y-4 w-145">
           {{-- Default: Eco Topics --}}
           @foreach($ecoTopics ?? [
             ['title' => 'The Impact of Plastic', 'image' => 'plastic.jpg'],
             ['title' => 'Understand Carbon Emissions', 'image' => 'carbon.jpg'],
             ['title' => 'Checking the Quality of Air', 'image' => 'air.jpg']
           ] as $topic)
-          <div class="eco-card flex items-center p-4 bg-green-50 rounded-xl border border-green-100 hover:shadow transition cursor-pointer"
+         <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100 transition-transform duration-300 ease-in-out cursor-pointer hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105"
      data-type="ecoTopic"
      data-id="{{ $loop->index }}">
   <img src="{{ Vite::asset('resources/images/eco-topics/' . $topic['image']) }}"
@@ -95,8 +99,9 @@
 
       <!-- Sidebar -->
       <div id="ecoSidebar"
-           class="w-[22rem] flex-shrink-0 bg-green-50 rounded-xl p-6 border border-green-100
-                  max-h-[80vh] overflow-y-auto custom-scroll">
+           class="w-[22rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 border border-green-100
+                  max-h-[80vh] overflow-y-auto custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
+
 
         <h2 class="text-lg font-semibold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
 
@@ -107,7 +112,7 @@
     ['id' => 2, 'type' => 'topic', 'title' => 'Understand Carbon Emissions', 'image' => 'carbon.jpg'],
   ] as $saved)
     <div 
-      class="flex items-center p-2 bg-white rounded-lg border border-green-100 saved-item cursor-pointer hover:bg-green-50 transition"
+      class="flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item cursor-pointer hover:scale-105 transition"
       data-id="{{ $saved['id'] }}"
       data-type="{{ $saved['type'] === 'topic' ? 'ecoTopic' : 'ecoAction' }}"
     >
@@ -150,10 +155,10 @@ function switchTab(tab) {
   const sidebarTitle = document.getElementById('sidebarTitle');
   const savedList = document.getElementById('savedList');
 
-  if (tab === 'topics') {
-    slider.style.transform = 'translateX(0)';
-    topicsBtn.classList.add('text-[#5C7919]');
-    actionsBtn.classList.remove('text-[#5C7919]');
+if (tab === 'topics') {
+  slider.style.transform = 'translateX(0)';
+  topicsBtn.style.color = '#7A8C4F';
+  actionsBtn.style.color = '#FCF9EF';
     sidebarTitle.textContent = 'Saved Eco-topics';
 
     // DB fetch placeholder
@@ -163,7 +168,7 @@ function switchTab(tab) {
         ['title' => 'Understand Carbon Emissions', 'image' => 'carbon.jpg'],
         ['title' => 'Checking the Quality of Air', 'image' => 'air.jpg']
       ] as $topic)
-      <div class="eco-card flex items-center p-4 bg-green-50 rounded-xl border border-green-100 hover:shadow transition cursor-pointer"
+      <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100  hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105 transition cursor-pointer"
      data-type="ecoTopic"
      data-id="{{ $loop->index }}">
   <img src="{{ Vite::asset('resources/images/eco-topics/' . $topic['image']) }}"
@@ -191,7 +196,7 @@ function switchTab(tab) {
         ['title' => 'The Impact of Plastic', 'image' => 'plastic.jpg'],
         ['title' => 'Understand Carbon Emissions', 'image' => 'carbon.jpg']
       ] as $saved)
-      <div class="eco-saved-card flex items-center p-2 bg-white rounded-lg border border-green-100 cursor-pointer"
+      <div class="eco-saved-card flex bg-[#FCFFF6] items-center p-2 rounded-lg border border-green-100 cursor-pointer hover:[#FCFFF6] hover:scale-105"
      data-type="ecoTopic"
      data-id="{{ $loop->index }}">
   <img src="{{ Vite::asset('resources/images/eco-topics/' . $saved['image']) }}"
@@ -210,9 +215,10 @@ function switchTab(tab) {
       @endforeach
     `;
   } else {
-    slider.style.transform = 'translateX(100%)';
-    actionsBtn.classList.add('text-[#5C7919]');
-    topicsBtn.classList.remove('text-[#5C7919]');
+  slider.style.transform = 'translateX(100%)';
+  actionsBtn.style.color = '#7A8C4F';
+  topicsBtn.style.color = '#FCF9EF';
+
     sidebarTitle.textContent = 'Saved Eco-actions';
 
     // DB fetch placeholder
@@ -222,7 +228,7 @@ function switchTab(tab) {
         ['title' => 'Share Environmental Facts Online', 'image' => 'carbon.jpg'],
         ['title' => 'Commute or Walk', 'image' => 'air.jpg']
       ] as $action)
-      <div class="eco-card flex items-center p-4 bg-green-50 rounded-xl border border-green-100 hover:shadow transition cursor-pointer"
+      <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100  hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105 transition cursor-pointer"
      data-type="ecoAction"
      data-id="{{ $loop->index }}">
   <img src="{{ Vite::asset('resources/images/eco-topics/' . $action['image']) }}"
@@ -250,7 +256,7 @@ function switchTab(tab) {
         ['title' => 'Recycle Properly', 'image' => 'plastic.jpg'],
         ['title' => 'Commute or Walk', 'image' => 'air.jpg']
       ] as $saved)
-      <div class="saved-item flex items-center p-2 bg-white rounded-lg border border-green-100 cursor-pointer"
+      <div class="saved-item flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 cursor-pointer hover:[#FCFFF6] hover:scale-105"
      data-type="ecoAction"
      data-id="{{ $loop->index }}">
   <img src="{{ Vite::asset('resources/images/eco-topics/' . $saved['image']) }}"
