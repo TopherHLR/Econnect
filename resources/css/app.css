@@ -27,8 +27,8 @@
 
 .navbar.navbar-solid {
     z-index: 100;
-    backdrop-filter: blur(8px);
-    width: 98%;
+    backdrop-filter: blur(4px);
+    width: 90%;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
     background: linear-gradient(to bottom, rgba(92, 134, 68, 0.8) 0%, rgba(216, 227, 201, 0.5) 90%);
@@ -42,9 +42,9 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(255, 255, 255, 0.26); /* soft white background */
+    background: rgba(247, 243, 231, 0.705); /* soft white background */
     z-index: -1; /* places it behind the gradient */
-        border-bottom-left-radius: 25px;
+    border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
 }
 
