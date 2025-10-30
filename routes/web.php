@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AccountController;
 
 //---------------------------------------------------- AUTH -------------------------------------------------
 
@@ -64,4 +65,10 @@ Route::get('/api/ecoAction/{id}', function ($id) {
         'progress' => "50%",
     ]);
 });
+
+//---------------------------------------------------- ACCOUNT SETTINGS -------------------------------------------------
+Route::middleware(['auth'])->group(function () {
+    Route::get('/account', [AccountController::class, 'show'])->name('account.show');
+});
+
 
