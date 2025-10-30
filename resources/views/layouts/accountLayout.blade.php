@@ -10,18 +10,31 @@
         {{-- Profile Card --}}
         <div class="bg-white rounded-2xl shadow p-5 mb-5">
             <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                        <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.121 17.804z" />
-                        </svg>
+                <a href="{{ route('account.show') }}">
+                    <div class="flex items-center justify-between">
+                        {{-- Left: Profile Info --}}
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.121 17.804z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800">{{ $user->name ?? 'Guest User' }}</h3>
+                                <p class="text-sm text-gray-500">Seed Sprouter</p>
+                            </div>
+                        </div>
+
+                        {{-- Right: Edit Icon --}}
+                        <button class="text-green-700 hover:text-green-900 transition ml-12 cursor-pointer" title="Edit Profile">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M15.232 5.232l3.536 3.536M16.732 3.732a2.5 2.5 0 113.536 3.536L7.5 20.036H4v-3.5l12.732-12.804z" />
+                            </svg>
+                        </button>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-gray-800">{{ $user->name ?? 'Guest User' }}</h3>
-                        <p class="text-sm text-gray-500">Seed Sprouter</p>
-                    </div>
-                </div>
+                </a>
             </div>
 
             {{-- Dynamic Stats --}}
@@ -50,10 +63,15 @@
                     🌱 Earn more points and complete eco challenges to level up!
                 </div>
             @endif
+            {{-- View Progress Button --}}
+            <a href="/myprogress"
+            class="block w-full text-center bg-green-700 text-white mt-2 py-2 rounded-xl hover:bg-green-800 transition">
+                View Progress
+            </a>
         </div>
 
         {{-- Settings & Progress --}}
-        <div class="bg-white rounded-2xl shadow p-5 space-y-3">
+        <div class="bg-white rounded-2xl shadow p-3 space-y-3">
             <a href="#" class="flex items-center justify-between text-green-900 font-medium hover:text-green-700">
                 <span>Settings and Privacy</span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,11 +79,8 @@
                           d="M9 5l7 7-7 7" />
                 </svg>
             </a>
-
-            <button class="w-full bg-green-700 text-white py-2 rounded-xl hover:bg-green-800 transition">
-                View Progress
-            </button>
         </div>
+
     </aside>
 
     {{-- 🌱 Main Account Content --}}

@@ -45,4 +45,32 @@ class AccountController extends Controller
             'completedQuests' => $completedQuests,
         ]);
     }
+    
+    public function myProgress()
+    {
+        $user = Auth::user();
+
+        // Example values (replace with real logic)
+        $totalPoints = \App\Models\UserPointsHistory::where('user_id', $user->user_id)
+            ->sum('points_change');
+
+        $earnedBadges = 3;
+        $completedQuests = 5;
+
+        if ($totalPoints < 200) {
+            $badgeLevel = '🌱 Seed Sprouter';
+        } elseif ($totalPoints < 500) {
+            $badgeLevel = '🌿 Eco Explorer';
+        } else {
+            $badgeLevel = '🌳 Green Guardian';
+        }
+
+        return view('account.myprogress', compact(
+            'user',
+            'totalPoints',
+            'earnedBadges',
+            'completedQuests',
+            'badgeLevel'
+        ));
+    }
 }
