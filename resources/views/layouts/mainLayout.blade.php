@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,14 +10,16 @@
     {{-- Vite CSS & JS --}}
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/auth.css'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        
+
 </head>
+
 <body class="bg-[#E0E9D6] text-gray-800 font-sans">
     <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-100">
         <div class="max-w-7xl mx-auto px-8 py-3 flex items-center justify-between">
             <!-- Left: Logo -->
             <a href="/" class="flex items-center space-x-1">
-                <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo" class="h-10 w-auto">
+                <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo"
+                    class="h-10 w-auto">
             </a>
 
             <!-- Hamburger (Mobile) -->
@@ -40,21 +43,21 @@
                 @endauth
             </div>
 
-            <!-- Right: Profile / Auth Buttons -->
+           <!-- Right: Profile / Auth Buttons -->
             <div x-data class="hidden md:flex items-center relative" id="profileDropdown">
                 @guest
                     <!-- When not logged in -->
                     <div class="flex items-center space-x-4">
                         <button 
                             @click="$store.authModal.open = true; $store.authModal.mode = 'signin'"
-                            class="text-green-900 font-semibold hover:text-green-800 transition"
+                            class="text-green-900 font-semibold hover:text-green-800 transition cursor-pointer"
                         >
                             Log In
                         </button>
                         <span class="text-green-900 font-semibold">|</span>
                         <button 
                             @click="$store.authModal.open = true; $store.authModal.mode = 'signup'"
-                            class="text-green-900 font-semibold hover:text-green-800 transition"
+                            class="text-green-900 font-semibold hover:text-green-800 transition cursor-pointer"
                         >
                             Sign Up
                         </button>
@@ -63,20 +66,17 @@
 
                 @auth
                     <!-- When logged in -->
-                    <button id="dropdownButton" class="flex items-center space-x-3 focus:outline-none">
+                    <button id="dropdownButton" class="flex items-center space-x-3 focus:outline-none cursor-pointer">
                         <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile" class="h-10 w-11 rounded-full">
-                        <svg class="w-4 h-4 ml-1 text-green-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
                     </button>
 
                     <!-- Dropdown Menu -->
                     <div id="dropdownMenu" class="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg hidden z-50">
                         <ul class="flex flex-col py-1">
                             <li>
-                                <a href="/" 
+                                <a href="{{ route('account.show') }}" 
                                 class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-green-100">
-                                    My Account Settings
+                                My Account Settings
                                 </a>
                             </li>
                             <li>
@@ -131,97 +131,79 @@
     </main>
 
     {{-- Footer --}}
-   <footer class="bg-[#7a8c4f] text-white pt-8 pb-6 px-4 md:px-8">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+<footer class="mt-16">
+    <!-- Top Bar -->
+    <div class="bg-[#C37A49] text-center py-2 text-white font-medium text-sm tracking-wide">
+        Developed by the BuggedOut Team • © {{ date('Y') }}
+    </div>
 
-        <!-- ECOnnect -->
-        <div>
-            <h3 class="font-semibold text-lg mb-3">ECOnnect</h3>
-            <p class="text-sm text-gray-200 leading-relaxed">
-                Your companion for everyday sustainable living.<br>
-                Built to guide, inspire, and connect eco-conscious individuals.
-            </p>
-        </div>
+    <!-- Main Footer Section -->
+    <div class="bg-[#7F8A4F] text-white px-8 md:px-20 py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-sm leading-relaxed">
 
-        <!-- Learn More -->
-        <div>
-            <h3 class="font-semibold text-lg mb-3">Learn More</h3>
-            <ul class="space-y-2 text-sm">
-                <li><a href="#" class="text-gray-200 hover:text-white transition">Sustainability Guides</a></li>
-                <li><a href="#" class="text-gray-200 hover:text-white transition">Community Partners</a></li>
-                <li><a href="#" class="text-gray-200 hover:text-white transition">Educational Resources</a></li>
-                <li><a href="#" class="text-gray-200 hover:text-white transition">FAQs</a></li>
-            </ul>
-        </div>
+            <!-- Column 1 -->
+            <div>
+                <h3 class="font-bold text-xl mb-3">ECOconnect</h3>
+                <p class="text-gray-100">
+                    Your companion for everyday sustainable living. Built to guide, inspire, and connect eco-conscious individuals.
+                </p>
 
-        <!-- About ECOnnect -->
-        <div>
-            <h3 class="font-semibold text-lg mb-3">About ECOnnect</h3>
-            <ul class="space-y-2 text-sm">
-                <li><a href="#" class="text-gray-200 hover:text-white transition">About ECOnnect</a></li>
-                <li><a href="#" class="text-gray-200 hover:text-white transition">Team Members</a></li>
-                <li><a href="#" class="text-gray-200 hover:text-white transition">Contact Us</a></li>
-            </ul>
-        </div>
+                <!-- Social Icons -->
+                <div class="flex space-x-5 mt-5 text-lg">
+                    <a href="#" class="hover:text-green-200 transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="hover:text-green-200 transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="hover:text-green-200 transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="hover:text-green-200 transition">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
 
-        <!-- Quick Links + Legal + Social -->
-        <div>
-            <!-- Quick Links -->
-            <h3 class="font-semibold text-lg mb-3">Quick Links</h3>
-            <ul class="space-y-2 text-sm mb-6">
-                <li><a href="/" class="text-gray-200 hover:text-white transition">Home</a></li>
-                <li><a href="/lifestyle" class="text-gray-200 hover:text-white transition">Lifestyle (Eco Actions & Library)</a></li>
-                <li><a href="/quests" class="text-gray-200 hover:text-white transition">Quests</a></li>
-                <li><a href="/myprogress" class="text-gray-200 hover:text-white transition">My Progress</a></li>
-                <li><a href="/about" class="text-gray-200 hover:text-white transition">About</a></li>
-            </ul>
+            <!-- Column 2 -->
+            <div>
+                <h3 class="font-semibold text-lg mb-3 border-l-4 border-[#C37A49] pl-2">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="/" class="hover:text-green-200 transition">Home</a></li>
+                    <li><a href="/lifestyle" class="hover:text-green-200 transition">Lifestyle</a></li>
+                    <li><a href="/quests" class="hover:text-green-200 transition">Quests</a></li>
+                    <li><a href="/progress" class="hover:text-green-200 transition">My Progress</a></li>
+                    <li><a href="/about" class="hover:text-green-200 transition">About</a></li>
+                </ul>
+            </div>
 
-            <!-- Legal -->
-            <h3 class="font-semibold text-lg mb-3">Legal</h3>
-            <ul class="space-y-2 text-sm mb-6">
-                <li><a href="#" class="text-gray-200 hover:text-white transition">Privacy Policy</a></li>
-                <li><a href="#" class="text-gray-200 hover:text-white transition">Terms of Use</a></li>
-            </ul>
+            <!-- Column 3 -->
+            <div>
+                <h3 class="font-semibold text-lg mb-3 border-l-4 border-[#C37A49] pl-2">Learn More</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-green-200 transition">Sustainability Guides</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition">Community Partners</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition">Educational Resources</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition">FAQs</a></li>
+                </ul>
+            </div>
 
-            <!-- Social Icons (as image assets) -->
-            <div class="flex space-x-4">
-                <a href="#" class="block">
-                    <img 
-                        src="{{ Vite::asset('resources/images/icons/social-x.png') }}" 
-                        alt="X (Twitter)"
-                        class="w-5 h-5"
-                    />
-                </a>
-                <a href="#" class="block">
-                    <img 
-                        src="{{ Vite::asset('resources/images/icons/social-instagram.png') }}" 
-                        alt="Instagram"
-                        class="w-5 h-5"
-                    />
-                </a>
-                <a href="#" class="block">
-                    <img 
-                        src="{{ Vite::asset('resources/images/icons/social-youtube.png') }}" 
-                        alt="YouTube"
-                        class="w-5 h-5"
-                    />
-                </a>
-                <a href="#" class="block">
-                    <img 
-                        src="{{ Vite::asset('resources/images/icons/social-linkedin.png') }}" 
-                        alt="LinkedIn"
-                        class="w-5 h-5"
-                    />
-                </a>
+            <!-- Column 4 -->
+            <div>
+                <h3 class="font-semibold text-lg mb-3 border-l-4 border-[#C37A49] pl-2">About & Legal</h3>
+                <ul class="space-y-2 mb-4">
+                    <li><a href="#" class="hover:text-green-200 transition">About ECOconnect</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition">Team Members</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition">Contact Us</a></li>
+                </ul>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-green-200 transition">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition">Terms of Use</a></li>
+                </ul>
             </div>
         </div>
-
     </div>
-
-    <!-- Copyright -->
-    <div class="bg-[#C37A49] mt-3 pt-2 text-center text-xs text-gray-300">
-        © {{ date('Y') }} ECOnnect. All rights reserved.
-    </div>
-</footer>
 </body>
+
 </html>
+
