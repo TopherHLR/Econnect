@@ -10,15 +10,15 @@
 
     <!-- Header -->
     <div class="flex items-center justify-between px-2 pt-2 mb-4">
-
       <h1 class="text-2xl font-serif font-semibold text-[#5C7919]">
         {{ $category->title ?? 'Climate & Nature Awareness 🌍' }}
       </h1>
     </div>
 
-    <!-- Top Controls -->
-    <div class="flex justify-between items-start gap-2 px-4 mb-8">
+    <!-- Top Controls Row: Left Column + Sidebar -->
+    <div class="flex justify-between items-start gap-6 px-4 mb-8">
 
+      <!-- Left Column -->
       <div class="flex flex-col flex-1">
 
         <!-- Toggle + Search -->
@@ -33,7 +33,6 @@
             <button id="actionsBtn"
                     class="relative z-10 flex-1 text-center text-sm font-medium text-[#FCF9EF]"
                     onclick="switchTab('actions')">Actions</button>
-
           </div>
 
           <!-- Search + Category -->
@@ -68,81 +67,77 @@
             ['title' => 'Understand Carbon Emissions', 'image' => 'carbon.jpg'],
             ['title' => 'Checking the Quality of Air', 'image' => 'air.jpg']
           ] as $topic)
-         <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100 transition-transform duration-300 ease-in-out cursor-pointer hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105"
-     data-type="ecoTopic"
-     data-id="{{ $loop->index }}">
-  <img src="{{ Vite::asset('resources/images/eco-topics/' . $topic['image']) }}"
-       alt="{{ $topic['title'] }}"
-       class="w-16 h-16 object-cover rounded-lg mr-4">
-  <div class="flex-1">
-    <h3 class="font-semibold text-lg text-[#5C7919]">{{ $topic['title'] }}</h3>
-    <p class="text-xs text-gray-500 mt-1 truncate">
-      {{ $topic['description'] ?? 'Short description will appear here.' }}
-    </p>
-  </div>
-  <button class="save-btn text-gray-400 hover:text-yellow-500" data-title="{{ $topic['title'] }}">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-    </svg>
-  </button>
-</div>
-
+          <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100 transition-transform duration-300 ease-in-out cursor-pointer hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105"
+               data-type="ecoTopic"
+               data-id="{{ $loop->index }}">
+            <img src="{{ Vite::asset('resources/images/eco-topics/' . $topic['image']) }}"
+                 alt="{{ $topic['title'] }}"
+                 class="w-16 h-16 object-cover rounded-lg mr-4">
+            <div class="flex-1">
+              <h3 class="font-semibold text-lg text-[#5C7919]">{{ $topic['title'] }}</h3>
+              <p class="text-xs text-gray-500 mt-1 truncate">
+                {{ $topic['description'] ?? 'Short description will appear here.' }}
+              </p>
+            </div>
+            <button class="save-btn text-gray-400 hover:text-yellow-500" data-title="{{ $topic['title'] }}">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+              </svg>
+            </button>
+          </div>
           @endforeach
         </div>
 
-        <!-- Motivational Quote -->
-        <div class="mt-8 text-center text-sm text-gray-500 italic">
-          “You don’t have to know everything today — one tip at a time is enough.”
-        </div>
-      </div>
+      </div> <!-- END Left Column -->
 
       <!-- Sidebar -->
-      <div id="ecoSidebar"
-           class="w-[22rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 border border-green-100
-                  max-h-[80vh] overflow-y-auto custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
-
-
+      <div id="ecoSidebar" class="w-[22rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 border border-green-100
+           max-h-[80vh] overflow-y-auto custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
         <h2 class="text-lg font-semibold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
-
         <div class="space-y-3" id="savedList">
-  {{-- Saved items placeholder --}}
-  @foreach($savedItems ?? [
-    ['id' => 1, 'type' => 'topic', 'title' => 'The Impact of Plastic', 'image' => 'plastic.jpg'],
-    ['id' => 2, 'type' => 'topic', 'title' => 'Understand Carbon Emissions', 'image' => 'carbon.jpg'],
-  ] as $saved)
-    <div 
-      class="flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item cursor-pointer hover:scale-105 transition"
-      data-id="{{ $saved['id'] }}"
-      data-type="{{ $saved['type'] === 'topic' ? 'ecoTopic' : 'ecoAction' }}"
-    >
-      <img 
-        src="{{ Vite::asset('resources/images/eco-topics/' . $saved['image']) }}"
-        alt="{{ $saved['title'] }}"
-        class="w-10 h-10 object-cover rounded-md mr-3"
-      >
-      <div class="flex-1">
-        <h4 class="text-sm font-medium text-[#5C7919]">{{ $saved['title'] }}</h4>
-      </div>
+          {{-- Saved items placeholder --}}
+          @foreach($savedItems ?? [
+            ['id' => 1, 'type' => 'topic', 'title' => 'The Impact of Plastic', 'image' => 'plastic.jpg'],
+            ['id' => 2, 'type' => 'topic', 'title' => 'Understand Carbon Emissions', 'image' => 'carbon.jpg'],
+          ] as $saved)
+          <div 
+            class="flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item cursor-pointer hover:scale-105 transition"
+            data-id="{{ $saved['id'] }}"
+            data-type="{{ $saved['type'] === 'topic' ? 'ecoTopic' : 'ecoAction' }}"
+          >
+            <img 
+              src="{{ Vite::asset('resources/images/eco-topics/' . $saved['image']) }}"
+              alt="{{ $saved['title'] }}"
+              class="w-10 h-10 object-cover rounded-md mr-3"
+            >
+            <div class="flex-1">
+              <h4 class="text-sm font-medium text-[#5C7919]">{{ $saved['title'] }}</h4>
+            </div>
 
-      @if($saved['type'] === 'action')
-        <button class="text-green-600 hover:text-green-800 text-xs mr-2">Mark as Done</button>
-      @endif
+            @if($saved['type'] === 'action')
+            <button class="text-green-600 hover:text-green-800 text-xs mr-2">Mark as Done</button>
+            @endif
 
-      <!-- Filled Saved Icon (click to unsave) -->
-      <button class="unsave-btn text-yellow-500 hover:text-red-500" title="Unsave">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-        </svg>
-      </button>
-    </div>
-  @endforeach
-</div>
-
+            <button class="unsave-btn text-yellow-500 hover:text-red-500" title="Unsave">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+              </svg>
+            </button>
+          </div>
+          @endforeach
         </div>
-      </div>
+      </div> <!-- END Sidebar -->
+
+    </div> <!-- END Top Controls Row -->
+
+    <!-- Motivational Quote -->
+    <div class="mt-6 text-center text-sm text-gray-500 italic">
+      “You don’t have to know everything today — one tip at a time is enough.”
     </div>
+
   </div>
+
 </div>
 
 <!-- Script -->

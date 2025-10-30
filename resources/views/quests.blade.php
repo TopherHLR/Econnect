@@ -1,12 +1,12 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-6 py-8 mt-12 text-[#3b3b3b] font-sans">
+<div class="max-w-6xl mx-auto px-6 py-8 mt-15 text-[#3b3b3b] font-sans">
 
   <!-- 🌿 Top Container -->
   <div class="flex flex-col md:flex-row gap-6">
     <!-- ✅ Left Sidebar - Accepted Challenges -->
-    <div class="w-full md:w-1/4 bg-[#f6f7ef] rounded-2xl shadow-md p-4 flex flex-col justify-between">
+    <div class="w-full md:w-1/4 bg-[#F7F3E7] rounded-2xl shadow-md p-4 flex flex-col justify-between">
       <div>
         <h2 class="text-lg font-semibold text-center text-[#4b3f2f] mb-4 bg-[#e8ead9] py-2 rounded-xl">
           Accepted Challenges
@@ -63,7 +63,7 @@
     </div>
 
     <!-- 🌱 Main Content - Active Eco-Challenges -->
-    <div class="w-full md:w-3/4 bg-[#f6f7ef] rounded-2xl shadow-md p-5">
+    <div class="w-full md:w-3/4 bg-[#F7F3E7] rounded-2xl shadow-md p-5">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold text-[#4b3f2f]">Active Eco-Challenges</h2>
         <button class="text-sm bg-[#e8ead9] hover:bg-[#dfe1cc] px-3 py-1 rounded-full shadow">

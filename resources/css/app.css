@@ -6,8 +6,9 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Crimson Text', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 }
 
 /* =========================================================== NAVBAR =========================================================== */
@@ -60,7 +61,7 @@
 }
 
 .nav-logo {
-    font-family: 'Instrument Sans', sans-serif;
+    font-family: 'Nunito', sans-serif;
     letter-spacing: 1px;
 }
 
@@ -142,6 +143,7 @@
     font-weight: 500;
     letter-spacing: 0.3px;
     transition: color 0.3s ease;
+    font-family: 'Nunito', sans-serif;
 }
 
 .sidebar-links a:hover {
@@ -363,11 +365,12 @@
     transition: all 0.3s ease;
     white-space: nowrap;
     width: max-content;
+    font-family: 'Nunito', sans-serif;
 }
 
 .eco-widget-text {
     color: #625237;
-    font-family: serif;
+    font-family: 'Crimson Text', serif;
     font-size: 2rem;
     font-weight: 600;
     margin-bottom: 0.2rem;
@@ -380,6 +383,7 @@
     text-decoration: underline;
     transition: color 0.3s ease;
     margin-bottom: 0.8rem;
+    font-family: 'Crimson Text', serif;
 }
 
 .eco-widget-link:hover {
