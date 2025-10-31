@@ -14,7 +14,7 @@
 <body class="bg-[#E0E9D6] text-[#4F6B3F] font-sans min-h-screen flex flex-col">
 
     <!-- Top Bar -->
-    <header class="flex justify-between items-center bg-[#F7F8EE] py-4 px-3 shadow-md rounded-b-xl w-[97%] mx-auto">
+    <header class="flex justify-between items-center bg-[#FCF9EF] py-4 px-3 shadow-md rounded-b-xl w-[97%] mx-auto">
 
 
         <div class="flex items-center space-x-3">
@@ -25,40 +25,40 @@
         </div>
         <div class="flex items-center space-x-4">
             <a href="#" class="text-[#6A8A52] hover:text-[#4F6B3F]" title="Profile">
-                <i class="fa-solid fa-user-circle text-2xl"></i>
+                <i class="fa-solid fa-user-circle text-4xl"></i>
             </a>
             <form method="POST" action="#">
                 @csrf
                 <button type="button" class="text-[#9B4040] hover:text-[#642B2B]" title="Logout">
-                    <i class="fa-solid fa-right-from-bracket text-2xl"></i>
+                    <i class="fa-solid fa-right-from-bracket text-3xl"></i>
                 </button>
             </form>
         </div>
     </header>
 <div class="flex flex-1 relative">
     <!-- Sidebar -->
-    <aside class="absolute top-8 left-6 h-[78vh] w-20 bg-[#F7F8EE] rounded-3xl shadow-md flex flex-col items-center py-8">
+    <aside class="absolute top-8 left-6 h-[78vh] w-20 bg-[#FCF9EF] rounded-3xl shadow-md flex flex-col items-center py-8">
 
         <nav class="flex flex-col items-center justify-evenly text-[#6A8A52] h-full">
-    <a href="#" class="hover:text-[#4F6B3F] transition" title="Dashboard">
+    <a href="/adminHome" class="hover:text-[#4F6B3F] transition" title="Dashboard">
         <i class="fa-solid fa-house text-4xl"></i>
     </a>
-    <a href="#" class="hover:text-[#4F6B3F] transition" title="Manage Users">
+    <a href="/adminUsers" class="hover:text-[#4F6B3F] transition" title="Manage Users">
         <i class="fa-solid fa-users text-4xl"></i>
     </a>
-    <a href="#" class="hover:text-[#4F6B3F] transition" title="Goals">
+    <a href="/adminQuests" class="hover:text-[#4F6B3F] transition" title="Quests">
         <i class="fa-solid fa-bullseye text-4xl"></i>
     </a>
-    <a href="#" class="hover:text-[#4F6B3F] transition" title="Rewards">
+    <a href="/adminRewards" class="hover:text-[#4F6B3F] transition" title="Rewards">
         <i class="fa-solid fa-gift text-4xl"></i>
     </a>
-    <a href="#" class="hover:text-[#4F6B3F] transition" title="Analytics">
+    <a href="/adminAnalytics" class="hover:text-[#4F6B3F] transition" title="Analytics">
         <i class="fa-solid fa-chart-column text-4xl"></i>
     </a>
-    <a href="#" class="hover:text-[#4F6B3F] transition" title="Notifications">
+    <a href="/adminSystemAlerts" class="hover:text-[#4F6B3F] transition" title="Notifications">
         <i class="fa-solid fa-bell text-4xl"></i>
     </a>
-    <a href="#" class="hover:text-[#4F6B3F] transition" title="Settings">
+    <a href="/adminSettings" class="hover:text-[#4F6B3F] transition" title="Settings">
         <i class="fa-solid fa-gear text-4xl"></i>
     </a>
 </nav>
@@ -67,7 +67,7 @@
 </div>
 
         <!-- Main Container -->
-        <main class="flex-1 ml-32 mt-8 mr-6 mb-8 bg-[#F9F8F4] rounded-3xl shadow-sm p-8 overflow-y-auto">
+        <main class="flex-1 ml-32 mt-8 mr-6 mb-8 bg-[#FCF9EF] rounded-3xl shadow-sm p-8 overflow-y-auto min-h-[78vh]">
             @yield('content')
         </main>
     </div>

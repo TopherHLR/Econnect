@@ -45,6 +45,21 @@ Route::get('/adminHome', function () {
 Route::get('/rewards', function () {
     return view('rewards');
 })->name('rewards');
+
+Route::get('/adminUsers', function () {
+    return view('adminUsers');
+})->name('adminUsers');
+
+Route::get('/adminQuests', function () {
+    return view('adminQuests');
+})->name('adminQuests');
+
+
+// 🧩 Route for Quest Collection Page
+Route::get('/adminQuestCollection', function () {
+    return view('adminQuestCollection');
+})->name('admin.questCollection');
+
 //---------------------------------------------------- MOCK API FOR ECO MODAL -------------------------------------------------
 
 Route::get('/api/ecoTopic/{id}', function ($id) {
