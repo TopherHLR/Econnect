@@ -11,7 +11,7 @@
     <!-- Header -->
     <div class="flex items-center justify-between px-2 pt-2 mb-4">
       <h1 class="text-2xl font-serif font-semibold text-[#5C7919]">
-        {{ $category->title ?? 'Climate & Nature Awareness 🌍' }}
+        Climate & Nature Awareness 🌍
       </h1>
     </div>
 
@@ -47,26 +47,22 @@
               </svg>
             </div>
 
-          <!-- Category Dropdown -->
-          <select id="categoryDropdown"
-                  class="text-sm text-gray-600 bg-[#FCFFF6] border border-[#7A8C4F] rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
-              <option value="">Category ▾</option>
-              
-              {{-- Extract unique categories from ecoTopics and ecoActions --}}
+            <!-- Category Dropdown -->
+            <select id="categoryDropdown"
+                    class="text-sm text-gray-600 bg-[#FCFFF6] border border-[#7A8C4F] rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
+              <option value="">All Categories ▾</option>
               @php
                   $categories = collect($ecoTopics)
-                      ->pluck('category')   // get categories from topics
-                      ->merge(collect($ecoActions)->pluck('category')) // merge categories from actions
-                      ->filter()            // remove null/empty
+                      ->pluck('category')
+                      ->merge(collect($ecoActions)->pluck('category'))
+                      ->filter()
                       ->unique()
                       ->sort();
               @endphp
-
               @foreach($categories as $category)
                   <option value="{{ $category }}">{{ $category }}</option>
               @endforeach
-          </select>
-
+            </select>
           </div>
         </div>
 
@@ -74,14 +70,17 @@
         <div id="ecoContent" class="space-y-4 w-145">
           <!-- Default: Eco Topics -->
           @foreach($ecoTopics as $topic)
-          <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105 transition cursor-pointer"
-              data-type="ecoTopic"
-              data-id="{{ $topic->id }}">
+          <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105 transition"
+               data-type="ecoTopic"
+               data-id="{{ $topic->id }}"
+               data-category="{{ $topic->category }}">
               <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
-                  alt="{{ $topic->title }}"
-                  class="w-16 h-16 object-cover rounded-lg mr-4">
+                   alt="{{ $topic->title }}"
+                   class="w-16 h-16 object-cover rounded-lg mr-4">
               <div class="flex-1">
-                  <h3 class="font-semibold text-lg text-[#5C7919]">{{ $topic->title }}</h3>
+                  <h3 class="font-semibold text-lg text-[#5C7919] cursor-pointer eco-title"
+                      data-type="ecoTopic"
+                      data-id="{{ $topic->id }}">{{ $topic->title }}</h3>
                   <p class="text-xs text-gray-500 mt-1 truncate">
                       {{ $topic->content }}
                   </p>
@@ -104,14 +103,17 @@
         <h2 class="text-lg font-semibold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
         <div class="space-y-3" id="savedList">
           @foreach($savedTopics as $saved)
-          <div class="flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item cursor-pointer hover:scale-105 transition"
-              data-id="{{ $saved->id }}"
-              data-type="ecoTopic">
+          <div class="flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition"
+               data-id="{{ $saved->id }}"
+               data-type="ecoTopic"
+               data-category="{{ $saved->category }}">
               <img src="{{ $saved->image ? Vite::asset('resources/images/eco-library/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
-                  alt="{{ $saved->title }}"
-                  class="w-10 h-10 object-cover rounded-md mr-3">
+                   alt="{{ $saved->title }}"
+                   class="w-10 h-10 object-cover rounded-md mr-3">
               <div class="flex-1">
-                  <h4 class="text-sm font-medium text-[#5C7919]">{{ $saved->title }}</h4>
+                  <h4 class="text-sm font-medium text-[#5C7919] cursor-pointer eco-title"
+                      data-type="ecoTopic"
+                      data-id="{{ $saved->id }}">{{ $saved->title }}</h4>
               </div>
               <button class="unsave-btn text-yellow-500 hover:text-red-500" title="Unsave">
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -136,7 +138,28 @@
 
 <!-- Script -->
 <script>
+let currentTab = 'topics'; // Track current tab
+let currentCategory = ''; // Track current category
+
+function applyCategoryFilter() {
+  const contentItems = document.querySelectorAll('#ecoContent .eco-card');
+  const savedItems = document.querySelectorAll('#savedList .saved-item');
+
+  // Filter main content
+  contentItems.forEach(item => {
+    const category = item.dataset.category || '';
+    item.style.display = currentCategory === '' || category === currentCategory ? 'flex' : 'none';
+  });
+
+  // Filter saved items
+  savedItems.forEach(item => {
+    const category = item.dataset.category || '';
+    item.style.display = currentCategory === '' || category === currentCategory ? 'flex' : 'none';
+  });
+}
+
 function switchTab(tab) {
+  currentTab = tab; // Update current tab
   const slider = document.getElementById('toggle-slider');
   const topicsBtn = document.getElementById('topicsBtn');
   const actionsBtn = document.getElementById('actionsBtn');
@@ -153,14 +176,17 @@ function switchTab(tab) {
     // Render ecoTopics from backend
     content.innerHTML = `
       @foreach($ecoTopics as $topic)
-      <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105 transition cursor-pointer"
+      <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105 transition"
            data-type="ecoTopic"
-           data-id="{{ $topic->id }}">
+           data-id="{{ $topic->id }}"
+           data-category="{{ $topic->category }}">
           <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
                alt="{{ $topic->title }}"
                class="w-16 h-16 object-cover rounded-lg mr-4">
           <div class="flex-1">
-              <h3 class="font-semibold text-lg text-[#5C7919]">{{ $topic->title }}</h3>
+              <h3 class="font-semibold text-lg text-[#5C7919] cursor-pointer eco-title"
+                  data-type="ecoTopic"
+                  data-id="{{ $topic->id }}">{{ $topic->title }}</h3>
               <p class="text-xs text-gray-500 mt-1 truncate">
                   {{ $topic->content }}
               </p>
@@ -177,14 +203,17 @@ function switchTab(tab) {
 
     savedList.innerHTML = `
       @foreach($savedTopics as $saved)
-      <div class="saved-item flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 cursor-pointer hover:scale-105 transition"
+      <div class="saved-item flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 hover:scale-105 transition"
            data-id="{{ $saved->id }}"
-           data-type="ecoTopic">
+           data-type="ecoTopic"
+           data-category="{{ $saved->category }}">
           <img src="{{ $saved->image ? Vite::asset('resources/images/eco-library/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
                alt="{{ $saved->title }}"
                class="w-10 h-10 object-cover rounded-md mr-3">
           <div class="flex-1">
-              <h4 class="text-sm font-medium text-[#5C7919]">{{ $saved->title }}</h4>
+              <h4 class="text-sm font-medium text-[#5C7919] cursor-pointer eco-title"
+                  data-type="ecoTopic"
+                  data-id="{{ $saved->id }}">{{ $saved->title }}</h4>
           </div>
           <button class="unsave-btn text-yellow-500 hover:text-red-500" title="Unsave">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -203,17 +232,18 @@ function switchTab(tab) {
     // Render ecoActions from backend
     content.innerHTML = `
       @foreach($ecoActions as $action)
-      <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105 transition cursor-pointer"
+      <div class="eco-card flex items-center p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-105 transition"
            data-type="ecoAction"
-           data-id="{{ $action->id }}">
+           data-id="{{ $action->id }}"
+           data-category="{{ $action->category }}">
           <img src="{{ $action->image ? Vite::asset('resources/images/eco-actions/' . $action->image) : Vite::asset('resources/images/default.png') }}"
                alt="{{ $action->title }}"
                class="w-16 h-16 object-cover rounded-lg mr-4">
           <div class="flex-1">
-              <h3 class="font-semibold text-lg text-[#5C7919]">{{ $action->title }}</h3>
-              <p class="text-xs text-gray-500 mt-1 truncate
-
-">
+              <h3 class="font-semibold text-lg text-[#5C7919] cursor-pointer eco-title"
+                  data-type="ecoAction"
+                  data-id="{{ $action->id }}">{{ $action->title }}</h3>
+              <p class="text-xs text-gray-500 mt-1 truncate">
                   {{ $action->content }}
               </p>
           </div>
@@ -229,14 +259,17 @@ function switchTab(tab) {
 
     savedList.innerHTML = `
       @foreach($savedActions as $saved)
-      <div class="saved-item flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 cursor-pointer hover:scale-105 transition"
+      <div class="saved-item flex items-center p-2 bg-[#FCFFF6] rounded-lg border border-green-100 hover:scale-105 transition"
            data-id="{{ $saved->id }}"
-           data-type="ecoAction">
+           data-type="ecoAction"
+           data-category="{{ $saved->category }}">
           <img src="{{ $saved->image ? Vite::asset('resources/images/eco-actions/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
                alt="{{ $saved->title }}"
                class="w-10 h-10 object-cover rounded-md mr-3">
           <div class="flex-1">
-              <h4 class="text-sm font-medium text-[#5C7919]">{{ $saved->title }}</h4>
+              <h4 class="text-sm font-medium text-[#5C7919] cursor-pointer eco-title"
+                  data-type="ecoAction"
+                  data-id="{{ $saved->id }}">{{ $saved->title }}</h4>
           </div>
           <button class="text-green-600 hover:text-green-800 text-xs mr-2">Mark as Done</button>
           <button class="unsave-btn text-yellow-500 hover:text-red-500" title="Unsave">
@@ -248,7 +281,16 @@ function switchTab(tab) {
       @endforeach
     `;
   }
+
+  // Apply category filter after rendering
+  applyCategoryFilter();
 }
+
+// Event: Category filter
+document.getElementById('categoryDropdown').addEventListener('change', function() {
+  currentCategory = this.value; // Update current category
+  applyCategoryFilter(); // Apply filter to current content
+});
 
 // Event: Unsave
 document.addEventListener('click', e => {
@@ -266,6 +308,11 @@ document.addEventListener('click', e => {
     </svg>`;
     // Future DB call to save
   }
+});
+
+// Apply initial category filter on page load
+document.addEventListener('DOMContentLoaded', () => {
+  applyCategoryFilter();
 });
 </script>
 @include('modal.ecoDetailModal')

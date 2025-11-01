@@ -223,10 +223,9 @@ class LibraryController extends Controller
             ->where('user_id', Auth::id())
             ->get();
 
-        $savedActions = UserEcoAction::with('ecoActions')
+        $savedActions = UserEcoAction::with('ecoAction') // Corrected relationship name
             ->where('user_id', Auth::id())
             ->get();
-
 
         // Separate saved topics and actions
         $savedTopics = $savedLibraries->filter(fn($lib) => $lib->ecoLibrary->type === 'Topic')->pluck('ecoLibrary');
