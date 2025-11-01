@@ -55,10 +55,24 @@ Route::get('/adminQuests', function () {
     return view('adminQuests'); // or the correct filename: adminquests.blade.php
 })->name('adminQuests');
 
+// ✅ Quests main dashboard
+Route::get('/adminRewards', function () {
+    return view('adminRewards'); // or the correct filename: adminquests.blade.php
+})->name('adminRewards');
+
 // ✅ Quest Collection page
-Route::get('/adminquestCollection', function () {
-    return view('adminquestCollection'); // or the correct filename: adminquestCollection.blade.php
-})->name('adminquestCollection');
+Route::get('/adminAnalytics', function () {
+    return view('adminAnalytics'); // or the correct filename: adminquestCollection.blade.php
+})->name('adminAnalytics');
+
+Route::get('/adminSystemAlerts', function () {
+    return view('adminSystemAlerts'); // or the correct filename: adminquestCollection.blade.php
+})->name('adminSystemAlerts');
+
+Route::get('/adminSettings', function () {
+    return view('adminSettings'); // or the correct filename: adminquestCollection.blade.php
+})->name('adminSettings');
+
 //---------------------------------------------------- MOCK API FOR ECO MODAL -------------------------------------------------
 
 Route::get('/api/ecoTopic/{id}', function ($id) {
