@@ -100,35 +100,53 @@ class LibraryController extends Controller
     // ==============================
     // ADMIN FUNCTIONS
     // ==============================
-
-    /**
-     * Store a new eco library (Admin only).
-     */
     public function store(Request $request)
     {
+        // Validate the input
         $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'category' => 'nullable|string|max:100',
-            'type' => 'nullable|string|max:50',
-            'source_link' => 'nullable|url|max:255', // ✅ Validate URL properly
+            'title'       => 'required|string|max:255',
+            'content'     => 'required|string',
+            'category'    => 'nullable|string|max:100',
+            'type'        => 'nullable|string|max:50',
+            'source_link' => 'nullable|url|max:255',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // ✅ validate image
         ]);
 
-        $library = EcoLibrary::create([
-            'title' => $request->title,
-            'content' => $request->content,
-            'category' => $request->category,
-            'type' => $request->type ?? 'Tip',
-            'source_link' => $request->source_link, // ✅ Save the link
-            'created_by' => Auth::id(),
-            'created_at' => now(),
-        ]);
+        try {
+            // Handle image upload
+            $imageName = null;
+            if ($request->hasFile('image')) {
+                $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+                $request->file('image')->move(resource_path('images/eco-library'), $imageName);
+            }
 
-        return redirect()
-            ->route('adminHome') // 👈 change this to your actual admin dashboard route name
-            ->with('success', 'Eco Topic created successfully!');
+            // Create EcoLibrary entry
+            $library = EcoLibrary::create([
+                'title'       => $request->title,
+                'content'     => $request->content,
+                'category'    => $request->category,
+                'type'        => $request->type ?? 'Tip',
+                'source_link' => $request->source_link,
+                'image'       => $imageName,
+                'created_by'  => Auth::id(),
+                'created_at'  => now(),
+            ]);
+
+            return redirect()
+                ->route('adminLifestyle')
+                ->with('success', 'Eco Topic created successfully!');
+                
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Error creating Eco Topic: ' . $e->getMessage());
+
+            // Redirect back with an error message
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Failed to create Eco Topics.Please try again.');
+        }
     }
-
 
     public function update(Request $request, $id)
     {

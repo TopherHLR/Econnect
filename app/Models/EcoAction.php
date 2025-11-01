@@ -26,13 +26,13 @@ class EcoAction extends Model
     // If your table doesn’t have updated_at
     public const UPDATED_AT = null;
 
-    // Fillable fields
     protected $fillable = [
         'title',
         'description',
         'category',
         'is_active',
         'points_value',
+        'image',        // ✅ new
         'created_by',
         'created_at'
     ];

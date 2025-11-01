@@ -24,13 +24,13 @@ class EcoLibrary extends Model
     // Disable timestamps (only has created_at)
     public $timestamps = false;
 
-    // Fillable fields
     protected $fillable = [
         'title',
         'content',
         'category',
         'type',
         'source_link',
+        'image',        // ✅ new
         'created_by',
         'created_at',
     ];

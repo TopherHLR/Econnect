@@ -48,6 +48,14 @@
                 <a href="/adminQuests" class="hover:text-[#4F6B3F] transition" title="Quests">
                     <i class="fa-solid fa-bullseye text-4xl"></i>
                 </a>
+                <a href="/adminRewards" class="hover:text-[#4F6B3F] transition" title="Rewards">
+                    <i class="fa-solid fa-gift text-4xl"></i>
+                </a>
+
+                <a href="{{ route('admin.eco-library') }}" class="hover:text-[#4F6B3F] transition" title="Library / Lifestyle">
+                    <i class="fa-solid fa-book-open text-4xl"></i>
+                </a>
+
 
                 <a href="/adminAnalytics" class="hover:text-[#4F6B3F] transition" title="Analytics">
                     <i class="fa-solid fa-chart-column text-4xl"></i>

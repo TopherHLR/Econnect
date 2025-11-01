@@ -13,8 +13,7 @@
             </button>
         </div>
 
-        <!-- Modal Body -->
-        <form id="ecoTopicForm" class="p-6 space-y-4" method="POST" action="{{ route('libraries.store') }}">
+        <form id="ecoTopicForm" class="p-6 space-y-4" method="POST" action="{{ route('libraries.store') }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="type" value="Topic">
 
@@ -38,8 +37,8 @@
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Content</label>
                 <textarea name="content" rows="5" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]" 
-                    placeholder="Write the eco topic details here..."></textarea>
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]" 
+                        placeholder="Write the eco topic details here..."></textarea>
             </div>
 
             <!-- Source Link -->
@@ -50,18 +49,26 @@
                     placeholder="https://example.com">
             </div>
 
+            <!-- Image Upload -->
+            <div>
+                <label class="block text-[#4F6B3F] font-medium mb-1">Image (optional)</label>
+                <input type="file" name="image" accept="image/*"
+                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+            </div>
+
             <!-- Buttons -->
             <div class="flex justify-end gap-3 pt-3">
                 <button type="button" onclick="closeEcoTopicModal()"
-                    class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+                        class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
                     Cancel
                 </button>
                 <button type="submit"
-                    class="px-5 py-2 rounded-full bg-[#8B6E4A] text-white font-medium hover:bg-[#7A5F40] transition">
+                        class="px-5 py-2 rounded-full bg-[#8B6E4A] text-white font-medium hover:bg-[#7A5F40] transition">
                     <i class="fa-solid fa-plus mr-1"></i> Add Topic
                 </button>
             </div>
         </form>
+
     </div>
 </div>
 
@@ -80,8 +87,7 @@
             </button>
         </div>
 
-        <!-- Modal Body -->
-        <form id="ecoActionForm" class="p-6 space-y-4" method="POST" action="{{ route('ecoactions.store') }}">
+        <form id="ecoActionForm" class="p-6 space-y-4" method="POST" action="{{ route('ecoactions.store') }}" enctype="multipart/form-data">
             @csrf
 
             <!-- Title -->
@@ -96,8 +102,8 @@
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Description</label>
                 <textarea name="description" rows="4" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]" 
-                    placeholder="Describe the eco action and how users can complete it."></textarea>
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]" 
+                        placeholder="Describe the eco action and how users can complete it."></textarea>
             </div>
 
             <!-- Category -->
@@ -123,14 +129,21 @@
                 <label class="text-[#4F6B3F] font-medium">Set as Active</label>
             </div>
 
+            <!-- Image Upload -->
+            <div>
+                <label class="block text-[#4F6B3F] font-medium mb-1">Image (optional)</label>
+                <input type="file" name="image" accept="image/*" 
+                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+            </div>
+
             <!-- Buttons -->
             <div class="flex justify-end gap-3 pt-3">
                 <button type="button" onclick="closeEcoActionModal()"
-                    class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+                        class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
                     Cancel
                 </button>
                 <button type="submit"
-                    class="px-5 py-2 rounded-full bg-[#8B6E4A] text-white font-medium hover:bg-[#7A5F40] transition">
+                        class="px-5 py-2 rounded-full bg-[#8B6E4A] text-white font-medium hover:bg-[#7A5F40] transition">
                     <i class="fa-solid fa-plus mr-1"></i> Add Action
                 </button>
             </div>
