@@ -21,7 +21,7 @@ class EcoLibrary extends Model
     // Primary key type
     protected $keyType = 'int';
 
-    // Timestamps disabled (only has created_at)
+    // Disable timestamps (only has created_at)
     public $timestamps = false;
 
     // Fillable fields
@@ -30,16 +30,17 @@ class EcoLibrary extends Model
         'content',
         'category',
         'type',
+        'source_link',
         'created_by',
         'created_at',
     ];
 
-    // Casts for automatic type conversion
+    // Type casting
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
-    // Default attribute values
+    // Default attributes
     protected $attributes = [
         'type' => 'Tip',
     ];

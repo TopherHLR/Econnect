@@ -110,6 +110,7 @@ class LibraryController extends Controller
             'content' => 'required|string',
             'category' => 'nullable|string|max:100',
             'type' => 'nullable|string|max:50',
+            'source_link' => 'nullable|url|max:255', // ✅ Validate URL properly
         ]);
 
         $library = EcoLibrary::create([
@@ -117,30 +118,37 @@ class LibraryController extends Controller
             'content' => $request->content,
             'category' => $request->category,
             'type' => $request->type ?? 'Tip',
+            'source_link' => $request->source_link, // ✅ Save the link
             'created_by' => Auth::id(),
             'created_at' => now(),
         ]);
 
-        return response()->json([
-            'message' => 'Library created successfully',
-            'data' => $library
-        ], 201);
+        return redirect()
+            ->route('adminHome') // 👈 change this to your actual admin dashboard route name
+            ->with('success', 'Eco Topic created successfully!');
     }
 
-    /**
-     * Update an existing library (Admin only).
-     */
+
     public function update(Request $request, $id)
     {
         $library = EcoLibrary::findOrFail($id);
 
-        $library->update($request->only(['title', 'content', 'category', 'type']));
-
-        return response()->json([
-            'message' => 'Library updated successfully',
-            'data' => $library
+        $request->validate([
+            'title' => 'sometimes|string|max:255',
+            'content' => 'sometimes|string',
+            'category' => 'nullable|string|max:100',
+            'type' => 'nullable|string|max:50',
+            'source_link' => 'nullable|url|max:255',
         ]);
+
+        $library->update($request->only(['title', 'content', 'category', 'type', 'source_link']));
+
+        // Redirect to admin home with a success message
+        return redirect()
+            ->route('admin.home') // 👈 change this to your actual admin home route name
+            ->with('success', 'Eco Topic updated successfully!');
     }
+
 
     /**
      * Delete a library entry (Admin only).

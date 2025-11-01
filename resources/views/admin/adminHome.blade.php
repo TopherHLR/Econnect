@@ -9,6 +9,23 @@
         <h1 class="text-3xl font-semibold text-[#4F6B3F]">Home</h1>
         <p class="text-[#6A8A52] mt-1">12 new submissions awaiting validation.</p>
     </div>
+    @if(session('success'))
+        <div class="mb-4 px-4 py-2 rounded-lg bg-green-100 text-green-800 border border-green-300">
+            <i class="fa-solid fa-circle-check mr-2"></i> {{ session('success') }}
+        </div>
+    @endif
+    <script>
+      setTimeout(() => {
+        const toast = document.getElementById('feedback-toast');
+        const errorToast = document.getElementById('error-toast');
+        [toast, errorToast].forEach(el => {
+          if (el) {
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 1000);
+          }
+        });
+      }, 3000);
+    </script>
 
     <!-- Top Buttons -->
     <div class="flex flex-wrap gap-4">
@@ -18,9 +35,10 @@
         <button class="btn-sunken bg-[#E0E5D8] hover:bg-[#D0DAC7] text-[#4F6B3F]">
             <i class="fa-solid fa-gear mr-2"></i>System Settings
         </button>
-        <button class="btn-sunken bg-[#6C8E3C] hover:bg-[#5A7C30] text-white flex items-center">
+        <button onclick="openEcoTopicModal()" class="btn-sunken bg-[#6C8E3C] hover:bg-[#5A7C30] text-white flex items-center">
             <i class="fa-solid fa-leaf mr-2"></i>Add Eco Topic
         </button>
+
         <button class="btn-sunken bg-[#89A64F] hover:bg-[#7A9442] text-white flex items-center">
             <i class="fa-solid fa-hand-holding-heart mr-2"></i>Add Eco Action
         </button>

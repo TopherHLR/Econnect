@@ -133,6 +133,13 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        // 🟢 Log that the login method was called
+        Log::info('🚀 Login function initiated.', [
+            'email' => $request->input('email'),
+            'ip' => $request->ip(),
+            'time' => now()->toDateTimeString(),
+        ]);
+
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required'
@@ -142,7 +149,6 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            // 📨 Send Gmail notification
             try {
                 Mail::to($user->email)->send(new LoginNotificationMail($user));
                 Log::info("📧 Login notification email sent to {$user->email}");
@@ -150,13 +156,23 @@ class AuthController extends Controller
                 Log::error("❌ Failed to send login notification email: " . $e->getMessage());
             }
 
+            if ($user->user_type === 'admin') {
+                Log::info("👑 Admin {$user->email} logged in successfully.");
+                return redirect()->route('adminHome')->with('success', 'Welcome back, Admin!');
+            }
+
+            Log::info("🙋 Regular user {$user->email} logged in successfully.");
             return redirect()->route('home')->with('success', 'Welcome back!');
         }
 
-        return back()->withErrors([
-            'email' => 'Invalid email or password.',
-        ])->onlyInput('email');
+        Log::warning("⚠️ Failed login attempt for email: {$request->input('email')}");
+
+        return back()
+            ->withErrors(['email' => 'Invalid email or password.'])
+            ->with('error', 'Invalid email or password.')
+            ->onlyInput('email');
     }
+
     /**
      * Logout the user.
      */

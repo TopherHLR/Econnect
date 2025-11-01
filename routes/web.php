@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\EcoController;
 use App\Http\Controllers\ActionController;
+use App\Http\Controllers\LibraryController;
+use Illuminate\Support\Facades\Auth;
 
 //---------------------------------------------------- AUTH -------------------------------------------------
 
@@ -27,7 +29,7 @@ Route::get('/', function () {
     return view('home'); // create home.blade.php later
 })->name('home');
 
-//---------------------------------------------------- AUTH -------------------------------------------------
+//---------------------------------------------------- EWAN -------------------------------------------------
 
 Route::get('/lifestyle', function () {
     return view('lifestyle');
@@ -37,45 +39,31 @@ Route::get('/quests', function () {
     return view('quests');
 })->name('quests');
 
-
-
-
 Route::get('/rewards', function () {
     return view('rewards');
 })->name('rewards');
 
 //---------------------------------------------------- ADMIN -------------------------------------------------
-Route::get('/adminHome', function () {
-    return view('admin.adminHome');
-})->name('adminHome');
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/adminUsers', function () {
-    return view('admin.adminUsers');
-})->name('adminUsers');
-
-// ✅ Quests main dashboard
-Route::get('/adminQuests', function () {
-    return view('admin.adminQuests'); // or the correct filename: adminquests.blade.php
-})->name('adminQuests');
-
-// ✅ Quests main dashboard
-Route::get('/adminRewards', function () {
-    return view('admin.adminRewards'); // or the correct filename: adminquests.blade.php
-})->name('adminRewards');
-
-// ✅ Quest Collection page
-Route::get('/adminAnalytics', function () {
-    return view('admin.adminAnalytics'); // or the correct filename: adminquestCollection.blade.php
-})->name('adminAnalytics');
-
-Route::get('/adminSystemAlerts', function () {
-    return view('admin.adminSystemAlerts'); // or the correct filename: adminquestCollection.blade.php
-})->name('adminSystemAlerts');
-
-Route::get('/adminSettings', function () {
-    return view('admin.adminSettings'); // or the correct filename: adminquestCollection.blade.php
-})->name('adminSettings');
-
+    // Wrap admin routes in a closure-based group
+    Route::group([
+        'middleware' => function ($request, $next) {
+            if (Auth::check() && Auth::user()->user_type === 'admin') {
+                return $next($request);
+            }
+            abort(403, 'Unauthorized access.');
+        }
+    ], function () {
+        Route::get('/adminHome', fn() => view('admin.adminHome'))->name('adminHome');
+        Route::get('/adminUsers', fn() => view('admin.adminUsers'))->name('adminUsers');
+        Route::get('/adminQuests', fn() => view('admin.adminQuests'))->name('adminQuests');
+        Route::get('/adminRewards', fn() => view('admin.adminRewards'))->name('adminRewards');
+        Route::get('/adminAnalytics', fn() => view('admin.adminAnalytics'))->name('adminAnalytics');
+        Route::get('/adminSystemAlerts', fn() => view('admin.adminSystemAlerts'))->name('adminSystemAlerts');
+        Route::get('/adminSettings', fn() => view('admin.adminSettings'))->name('adminSettings');
+    });
+});
 //---------------------------------------------------- MOCK API FOR ECO MODAL -------------------------------------------------
 
 Route::get('/api/ecoTopic/{id}', function ($id) {
@@ -142,6 +130,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/libraries/{id}/unsave', [LibraryController::class, 'unsaveLibrary']);
     Route::get('/my-libraries', [LibraryController::class, 'myLibraries']);
 });
+
+Route::post('/libraries/store', [LibraryController::class, 'store'])->name('libraries.store');
+
 
 // Admin routes
 Route::middleware(['auth', 'admin'])->group(function () {

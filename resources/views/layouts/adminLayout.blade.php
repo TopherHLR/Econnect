@@ -27,9 +27,9 @@
             <a href="#" class="text-[#6A8A52] hover:text-[#4F6B3F]" title="Profile">
                 <i class="fa-solid fa-user-circle text-4xl"></i>
             </a>
-            <form method="POST" action="#">
+            <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="button" class="text-[#9B4040] hover:text-[#642B2B]" title="Logout">
+                <button type="submit" class="text-[#9B4040] hover:text-[#642B2B] cursor-pointer" title="Logout">
                     <i class="fa-solid fa-right-from-bracket text-3xl"></i>
                 </button>
             </form>
@@ -68,6 +68,7 @@
 
         <!-- Main Container -->
         <main class="flex-1 ml-32 mt-8 mr-6 mb-8 bg-[#FCF9EF] rounded-3xl shadow-sm p-8 overflow-y-auto min-h-[78vh]">
+            @include('modal.ecoTopics_ecoActionModal')
             @yield('content')
         </main>
     </div>
@@ -103,11 +104,11 @@
                 <div>
                     <h3 class="font-semibold text-lg mb-3 border-l-4 border-[#C37A49] pl-2">Quick Links</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-green-200 transition">Home</a></li>
-                        <li><a href="#" class="hover:text-green-200 transition">Lifestyle</a></li>
-                        <li><a href="#" class="hover:text-green-200 transition">Quests</a></li>
-                        <li><a href="#" class="hover:text-green-200 transition">My Progress</a></li>
-                        <li><a href="#" class="hover:text-green-200 transition">About</a></li>
+                        <li><a href="/" class="hover:text-green-200 transition">Home</a></li>
+                        <li><a href="/lifestyle" class="hover:text-green-200 transition">Lifestyle</a></li>
+                        <li><a href="/quests" class="hover:text-green-200 transition">Quests</a></li>
+                        <li><a href="/progress" class="hover:text-green-200 transition">My Progress</a></li>
+                        <li><a href="/about" class="hover:text-green-200 transition">About</a></li>
                     </ul>
                 </div>
 
