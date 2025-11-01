@@ -12,19 +12,20 @@
 
     <!-- Top Buttons -->
     <div class="flex flex-wrap gap-4">
-        <button class="bg-[#A46C47] hover:bg-[#8C5E3D] text-white font-medium px-5 py-2 rounded-full shadow transition">
-            + Create New Quest
-        </button>
-        <button class="bg-[#D4C1A3] hover:bg-[#C4B094] text-[#4F3B2C] font-medium px-5 py-2 rounded-full shadow transition">
-            Verify User (Scan QR)
-        </button>
-        <button class="bg-[#D8B08C] hover:bg-[#C89E7B] text-[#4F3B2C] font-medium px-5 py-2 rounded-full shadow transition">
-            Pending Submissions
-        </button>
-        <button class="bg-[#E0E5D8] hover:bg-[#D0DAC7] text-[#4F6B3F] font-medium px-5 py-2 rounded-full shadow transition">
+        <button class="btn-sunken bg-[#A46C47] hover:bg-[#8C5E3D] text-white">+ Create New Quest</button>
+        <button class="btn-sunken bg-[#D4C1A3] hover:bg-[#C4B094] text-[#4F3B2C]">Verify User (Scan QR)</button>
+        <button class="btn-sunken bg-[#D8B08C] hover:bg-[#C89E7B] text-[#4F3B2C]">Pending Submissions</button>
+        <button class="btn-sunken bg-[#E0E5D8] hover:bg-[#D0DAC7] text-[#4F6B3F]">
             <i class="fa-solid fa-gear mr-2"></i>System Settings
         </button>
+        <button class="btn-sunken bg-[#6C8E3C] hover:bg-[#5A7C30] text-white flex items-center">
+            <i class="fa-solid fa-leaf mr-2"></i>Add Eco Topic
+        </button>
+        <button class="btn-sunken bg-[#89A64F] hover:bg-[#7A9442] text-white flex items-center">
+            <i class="fa-solid fa-hand-holding-heart mr-2"></i>Add Eco Action
+        </button>
     </div>
+
 
     <!-- Dashboard Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-[#4F6B3F]">

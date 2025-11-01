@@ -38,39 +38,42 @@ Route::get('/quests', function () {
 })->name('quests');
 
 
-Route::get('/adminHome', function () {
-    return view('adminHome');
-})->name('adminHome');
+
 
 Route::get('/rewards', function () {
     return view('rewards');
 })->name('rewards');
 
+//---------------------------------------------------- ADMIN -------------------------------------------------
+Route::get('/adminHome', function () {
+    return view('admin.adminHome');
+})->name('adminHome');
+
 Route::get('/adminUsers', function () {
-    return view('adminUsers');
+    return view('admin.adminUsers');
 })->name('adminUsers');
 
 // ✅ Quests main dashboard
 Route::get('/adminQuests', function () {
-    return view('adminQuests'); // or the correct filename: adminquests.blade.php
+    return view('admin.adminQuests'); // or the correct filename: adminquests.blade.php
 })->name('adminQuests');
 
 // ✅ Quests main dashboard
 Route::get('/adminRewards', function () {
-    return view('adminRewards'); // or the correct filename: adminquests.blade.php
+    return view('admin.adminRewards'); // or the correct filename: adminquests.blade.php
 })->name('adminRewards');
 
 // ✅ Quest Collection page
 Route::get('/adminAnalytics', function () {
-    return view('adminAnalytics'); // or the correct filename: adminquestCollection.blade.php
+    return view('admin.adminAnalytics'); // or the correct filename: adminquestCollection.blade.php
 })->name('adminAnalytics');
 
 Route::get('/adminSystemAlerts', function () {
-    return view('adminSystemAlerts'); // or the correct filename: adminquestCollection.blade.php
+    return view('admin.adminSystemAlerts'); // or the correct filename: adminquestCollection.blade.php
 })->name('adminSystemAlerts');
 
 Route::get('/adminSettings', function () {
-    return view('adminSettings'); // or the correct filename: adminquestCollection.blade.php
+    return view('admin.adminSettings'); // or the correct filename: adminquestCollection.blade.php
 })->name('adminSettings');
 
 //---------------------------------------------------- MOCK API FOR ECO MODAL -------------------------------------------------

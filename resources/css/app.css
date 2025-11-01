@@ -306,7 +306,6 @@
 }
 
 /* =========================================================== ECO WIDGETS ================================================================== */
-
 .eco-widgets-container { 
     position: absolute;
     bottom: 1rem;
@@ -401,4 +400,17 @@
 
 .eco-widget-link {
     margin-bottom: 0.5rem;
+}
+
+/* =========================================================== BUTTONS ================================================================== */
+.btn-sunken {
+    @apply font-medium px-5 py-2 rounded-full transition-all duration-200;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.25),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.3);
+    transform: translateY(0);
+}
+
+.btn-sunken:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    transform: translateY(-1px);
 }
