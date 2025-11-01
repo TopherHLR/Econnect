@@ -26,30 +26,18 @@
 
     <!-- 🌿 Feedback Notification -->
     @if (session('success'))
-      <div class="toast fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
+      <div id="feedback-toast"
+        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
         🌱 {{ session('success') }}
       </div>
     @endif
 
     @if (session('error'))
-      <div class="toast fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
+      <div id="error-toast"
+        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
         ❌ {{ session('error') }}
       </div>
     @endif
-
-
-    <script>
-      setTimeout(() => {
-        const toast = document.getElementById('feedback-toast');
-        const errorToast = document.getElementById('error-toast');
-        [toast, errorToast].forEach(el => {
-          if (el) {
-            el.style.opacity = '0';
-            setTimeout(() => el.remove(), 1000);
-          }
-        });
-      }, 3000);
-    </script>
     
     <!-- ☁️ Clouds (top-most layer) -->
     <img src="{{ Vite::asset('resources/images/viewport1/realistic-cloud.png') }}" alt="cloud" class="absolute top-[100px] left-0 w-[1000px] opacity-90 z-[20]

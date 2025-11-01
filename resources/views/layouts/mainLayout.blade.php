@@ -237,7 +237,7 @@
             <div>
                 <h3 class="font-semibold text-lg mb-3 border-l-4 border-[#C37A49] pl-2">Quick Links</h3>
                 <ul class="space-y-2">
-                    <li><a href="/home" class="hover:text-green-200 transition">Home</a></li>
+                    <li><a href="/" class="hover:text-green-200 transition">Home</a></li>
                     <li><a href="/lifestyle" class="hover:text-green-200 transition">Lifestyle</a></li>
                     <li><a href="/quests" class="hover:text-green-200 transition">Quests</a></li>
                     <li><a href="/progress" class="hover:text-green-200 transition">My Progress</a></li>
@@ -271,6 +271,19 @@
             </div>
         </div>
     </div>
+
+<script>
+      setTimeout(() => {
+        const toast = document.getElementById('feedback-toast');
+        const errorToast = document.getElementById('error-toast');
+        [toast, errorToast].forEach(el => {
+          if (el) {
+            el.style.opacity = '0';
+            setTimeout(() => el.remove(), 1000);
+          }
+        });
+      }, 3000);
+</script>
 </body>
 
 </html>

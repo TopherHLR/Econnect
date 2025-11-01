@@ -62,13 +62,14 @@ class ActionController extends Controller
             'points_value' => $request->points_value,
             'is_active'    => $request->is_active ?? true,
             'created_by'   => Auth::id(),
+            'created_at'   => now(), // Add this
         ]);
 
-        return response()->json([
-            'message' => 'Eco Action created successfully.',
-            'data' => $action
-        ], 201);
+        return redirect()
+            ->route('adminHome')
+            ->with('success', 'Eco Action created successfully!');
     }
+
 
     /**
      * Update an existing eco action (admin only).

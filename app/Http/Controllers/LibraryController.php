@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\EcoLibrary;
 use App\Models\UserLibrary;
+use App\Models\EcoAction;
 
 class LibraryController extends Controller
 {
@@ -175,6 +176,18 @@ class LibraryController extends Controller
         $savedLibraries = UserLibrary::with('ecoLibrary')->where('user_id', Auth::id())->get();
         $categories = EcoLibrary::distinct()->pluck('category')->filter()->values();
         return view('lifestyle', compact('ecoLibraries', 'savedLibraries', 'categories'));
+    }
+    public function adminIndex()
+    {
+        // Get topics from EcoLibrary
+        $ecoTopics = EcoLibrary::where('type', 'Topic')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Get actions from EcoAction
+        $ecoActions = EcoAction::orderBy('created_at', 'desc')->get();
+
+        return view('admin.adminLifestyle', compact('ecoTopics', 'ecoActions'));
     }
 
 }

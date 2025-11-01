@@ -9,23 +9,20 @@
         <h1 class="text-3xl font-semibold text-[#4F6B3F]">Home</h1>
         <p class="text-[#6A8A52] mt-1">12 new submissions awaiting validation.</p>
     </div>
-    @if(session('success'))
-        <div class="mb-4 px-4 py-2 rounded-lg bg-green-100 text-green-800 border border-green-300">
-            <i class="fa-solid fa-circle-check mr-2"></i> {{ session('success') }}
+        <!-- 🌿 Feedback Notification -->
+        @if (session('success'))
+        <div id="feedback-toast"
+            class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
+            🌱 {{ session('success') }}
         </div>
-    @endif
-    <script>
-      setTimeout(() => {
-        const toast = document.getElementById('feedback-toast');
-        const errorToast = document.getElementById('error-toast');
-        [toast, errorToast].forEach(el => {
-          if (el) {
-            el.style.opacity = '0';
-            setTimeout(() => el.remove(), 1000);
-          }
-        });
-      }, 3000);
-    </script>
+        @endif
+
+        @if (session('error'))
+        <div id="error-toast"
+            class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
+            ❌ {{ session('error') }}
+        </div>
+        @endif
 
     <!-- Top Buttons -->
     <div class="flex flex-wrap gap-4">
@@ -39,7 +36,7 @@
             <i class="fa-solid fa-leaf mr-2"></i>Add Eco Topic
         </button>
 
-        <button class="btn-sunken bg-[#89A64F] hover:bg-[#7A9442] text-white flex items-center">
+        <button onclick="openEcoActionModal()" class="btn-sunken bg-[#89A64F] hover:bg-[#7A9442] text-white flex items-center">
             <i class="fa-solid fa-hand-holding-heart mr-2"></i>Add Eco Action
         </button>
     </div>

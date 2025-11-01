@@ -35,39 +35,39 @@
             </form>
         </div>
     </header>
-<div class="flex flex-1 relative">
-    <!-- Sidebar -->
-    <aside class="absolute top-8 left-6 h-[78vh] w-20 bg-[#FCF9EF] rounded-3xl shadow-md flex flex-col items-center py-8">
+    <div class="flex flex-1 relative">
+        <!-- Sidebar -->
+        <aside class="absolute top-8 left-6 h-[78vh] w-20 bg-[#FCF9EF] rounded-3xl shadow-md flex flex-col items-center py-8">
+            <nav class="flex flex-col items-center justify-evenly text-[#6A8A52] h-full">
+                <a href="/adminHome" class="hover:text-[#4F6B3F] transition" title="Dashboard">
+                    <i class="fa-solid fa-house text-4xl"></i>
+                </a>
+                <a href="/adminUsers" class="hover:text-[#4F6B3F] transition" title="Manage Users">
+                    <i class="fa-solid fa-users text-4xl"></i>
+                </a>
+                <a href="/adminQuests" class="hover:text-[#4F6B3F] transition" title="Quests">
+                    <i class="fa-solid fa-bullseye text-4xl"></i>
+                </a>
 
-        <nav class="flex flex-col items-center justify-evenly text-[#6A8A52] h-full">
-    <a href="/adminHome" class="hover:text-[#4F6B3F] transition" title="Dashboard">
-        <i class="fa-solid fa-house text-4xl"></i>
-    </a>
-    <a href="/adminUsers" class="hover:text-[#4F6B3F] transition" title="Manage Users">
-        <i class="fa-solid fa-users text-4xl"></i>
-    </a>
-    <a href="/adminQuests" class="hover:text-[#4F6B3F] transition" title="Quests">
-        <i class="fa-solid fa-bullseye text-4xl"></i>
-    </a>
-    <a href="/adminRewards" class="hover:text-[#4F6B3F] transition" title="Rewards">
-        <i class="fa-solid fa-gift text-4xl"></i>
-    </a>
-    <a href="/adminAnalytics" class="hover:text-[#4F6B3F] transition" title="Analytics">
-        <i class="fa-solid fa-chart-column text-4xl"></i>
-    </a>
-    <a href="/adminSystemAlerts" class="hover:text-[#4F6B3F] transition" title="Notifications">
-        <i class="fa-solid fa-bell text-4xl"></i>
-    </a>
-    <a href="/adminSettings" class="hover:text-[#4F6B3F] transition" title="Settings">
-        <i class="fa-solid fa-gear text-4xl"></i>
-    </a>
-</nav>
+                <a href="/adminAnalytics" class="hover:text-[#4F6B3F] transition" title="Analytics">
+                    <i class="fa-solid fa-chart-column text-4xl"></i>
+                </a>
+                <a href="/adminSystemAlerts" class="hover:text-[#4F6B3F] transition" title="Notifications">
+                    <i class="fa-solid fa-bell text-4xl"></i>
+                </a>
+                <a href="/adminSettings" class="hover:text-[#4F6B3F] transition" title="Settings">
+                    <i class="fa-solid fa-gear text-4xl"></i>
+                </a>
+            </nav>
+        </aside>
+    </div>
+
 
     </aside>
 </div>
 
         <!-- Main Container -->
-        <main class="flex-1 ml-32 mt-8 mr-6 mb-8 bg-[#FCF9EF] rounded-3xl shadow-sm p-8 overflow-y-auto min-h-[78vh]">
+        <main class="flex-1 ml-32 mt-8 mr-6 mb-2 bg-[#FCF9EF] rounded-3xl shadow-sm p-8 overflow-y-auto min-h-[78vh]">
             @include('modal.ecoTopics_ecoActionModal')
             @yield('content')
         </main>
@@ -139,6 +139,17 @@
             </div>
         </div>
     </footer>
-
+<script>
+    setTimeout(() => {
+        const toast = document.getElementById('feedback-toast');
+        const errorToast = document.getElementById('error-toast');
+            [toast, errorToast].forEach(el => {
+            if (el) {
+                el.style.opacity = '0';
+                setTimeout(() => el.remove(), 1000);
+            }
+            });
+    }, 3000);
+</script>
 </body>
 </html>

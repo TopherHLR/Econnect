@@ -23,6 +23,8 @@ class EcoAction extends Model
 
     // No timestamps specified in the schema
     public $timestamps = false;
+    // If your table doesn’t have updated_at
+    public const UPDATED_AT = null;
 
     // Fillable fields
     protected $fillable = [
@@ -32,6 +34,7 @@ class EcoAction extends Model
         'is_active',
         'points_value',
         'created_by',
+        'created_at'
     ];
 
     // Casts for automatic type conversion
@@ -45,6 +48,7 @@ class EcoAction extends Model
         'is_active' => 1,
         'points_value' => 1,
     ];
+
 
     /**
      * Relationship: each action is created by a user (admin or seller)

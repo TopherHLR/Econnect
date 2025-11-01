@@ -121,13 +121,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        document.querySelectorAll('.toast').forEach(toast => {
-            toast.style.transition = 'opacity 1s ease, transform 1s ease';
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(-20px)';
-            setTimeout(() => toast.remove(), 1000);
-        });
-    }, 3000);
-});
+//======================================================================================= MESSAGE ======================================================================================
+

@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/adminAnalytics', fn() => view('admin.adminAnalytics'))->name('adminAnalytics');
         Route::get('/adminSystemAlerts', fn() => view('admin.adminSystemAlerts'))->name('adminSystemAlerts');
         Route::get('/adminSettings', fn() => view('admin.adminSettings'))->name('adminSettings');
+        Route::get('/adminLifestyle', fn() => view('admin.adminLifestyle'))->name('adminLifestyle');
     });
 });
 //---------------------------------------------------- MOCK API FOR ECO MODAL -------------------------------------------------
@@ -112,9 +113,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-actions', [ActionController::class, 'myActions'])->name('actions.my');
 });
 
+Route::post('/ecoactions/store', [ActionController::class, 'store'])->name('ecoactions.store');
+
 
 // Admin routes
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/admin/actions', [ActionController::class, 'adminIndex'])->name('admin.actions.index');
     Route::post('/admin/actions', [ActionController::class, 'store'])->name('admin.actions.store');
     Route::put('/admin/actions/{id}', [ActionController::class, 'update'])->name('admin.actions.update');
@@ -135,8 +138,12 @@ Route::post('/libraries/store', [LibraryController::class, 'store'])->name('libr
 
 
 // Admin routes
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::post('/admin/libraries', [LibraryController::class, 'store']);
     Route::put('/admin/libraries/{id}', [LibraryController::class, 'update']);
     Route::delete('/admin/libraries/{id}', [LibraryController::class, 'destroy']);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/adminLifestyle', [LibraryController::class, 'adminIndex'])->name('admin.eco-library');
 });
