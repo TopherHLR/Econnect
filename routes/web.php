@@ -134,6 +134,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-libraries', [LibraryController::class, 'myLibraries']);
 });
 
+Route::middleware('auth')->get('/lifestyle', [LibraryController::class, 'lifestyle'])->name('lifestyle');
+
+
 Route::post('/libraries/store', [LibraryController::class, 'store'])->name('libraries.store');
 
 

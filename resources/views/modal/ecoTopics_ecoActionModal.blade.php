@@ -89,7 +89,7 @@
 
         <form id="ecoActionForm" class="p-6 space-y-4" method="POST" action="{{ route('ecoactions.store') }}" enctype="multipart/form-data">
             @csrf
-
+            <input type="hidden" name="type" value="Action">
             <!-- Title -->
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Action Title</label>

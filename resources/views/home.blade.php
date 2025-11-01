@@ -24,21 +24,7 @@
       class="absolute bottom-0 left-0 w-full h-[200px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
     </div>
 
-    <!-- 🌿 Feedback Notification -->
-    @if (session('success'))
-      <div id="feedback-toast"
-        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
-        🌱 {{ session('success') }}
-      </div>
-    @endif
 
-    @if (session('error'))
-      <div id="error-toast"
-        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
-        ❌ {{ session('error') }}
-      </div>
-    @endif
-    
     <!-- ☁️ Clouds (top-most layer) -->
     <img src="{{ Vite::asset('resources/images/viewport1/realistic-cloud.png') }}" alt="cloud" class="absolute top-[100px] left-0 w-[1000px] opacity-90 z-[20]
                  animate-[cloud1_60s_linear_infinite]

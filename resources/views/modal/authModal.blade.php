@@ -12,8 +12,8 @@
         <div class="container text-sm" id="container":class="{ 'right-panel-active': $store.authModal.mode === 'signup' }">
 
             <!-- 🌱 Sign Up -->
-            <div class="form-container sign-up-container">
-                <form action="{{ route('register') }}" method="POST" class="space-y-2 px-6">
+            <div class="form-container sign-up-container"  x-data="{ loading: false }">
+                <form action="{{ route('register') }}" method="POST" class="space-y-2 px-6" @submit="loading = true">
                     @csrf
                     <h1 class="text-xl mb-1">Create Account</h1>
 
@@ -56,7 +56,13 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="mt-2 text-sm py-2 px-4 rounded-full bg-[#b36b35] hover:bg-[#a55f2d] text-white font-semibold transition">Sign Up</button>
+                    <button type="submit" 
+                        class="mt-2 text-sm py-2 px-4 rounded-full bg-[#b36b35] hover:bg-[#a55f2d] text-white font-semibold transition"
+                        x-bind:disabled="loading"
+                    >
+                        <span x-show="!loading">Sign Up</span>
+                        <span x-show="loading">Please wait, sending OTP in your email...</span>
+                    </button>
 
                     <p class="mt-2 text-xs">
                         Already have an account?
@@ -66,8 +72,13 @@
             </div>
 
             <!-- 🌿 Sign In -->
-            <div class="form-container sign-in-container">
-                <form action="{{ route('login.submit') }}" method="POST" class="space-y-2 px-6">
+            <div class="form-container sign-in-container" x-data="{ loading: false }">
+                <form 
+                    action="{{ route('login.submit') }}" 
+                    method="POST" 
+                    class="space-y-2 px-6"
+                    @submit="loading = true"
+                >
                     @csrf
                     <h1 class="text-xl mb-1">Log in your Account</h1>
 
@@ -86,7 +97,14 @@
                     </div>
 
                     <a href="#" class="forgot text-xs">Forgot your password?</a>
-                    <button type="submit" class="mt-2 text-sm py-2 px-4 rounded-full bg-[#b36b35] hover:bg-[#a55f2d] text-white font-semibold transition">Sign In</button>
+                            <!-- Submit Button -->
+                    <button type="submit" 
+                        class="mt-2 text-sm py-2 px-4 rounded-full bg-[#b36b35] hover:bg-[#a55f2d] text-white font-semibold transition"
+                        x-bind:disabled="loading"
+                    >
+                        <span x-show="!loading">Log In</span>
+                        <span x-show="loading">Please wait, logging in...</span>
+                    </button>
                     <p class="mt-2 text-xs">
                         Don't have an account yet?
                         <a href="#" @click.prevent="$store.authModal.mode = 'signup'" class="text-green-700 hover:underline"> Register now</a>

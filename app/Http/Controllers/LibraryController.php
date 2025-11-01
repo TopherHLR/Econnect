@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\EcoLibrary;
 use App\Models\UserLibrary;
 use App\Models\EcoAction;
+use App\Models\UserEcoAction;
 
 class LibraryController extends Controller
 {
@@ -207,5 +208,32 @@ class LibraryController extends Controller
 
         return view('admin.adminLifestyle', compact('ecoTopics', 'ecoActions'));
     }
+
+    public function lifestyle()
+    {
+        $ecoTopics = EcoLibrary::where('type', 'Topic')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $ecoActions = EcoAction::where('type', 'Action')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $savedLibraries = UserLibrary::with('ecoLibrary')
+            ->where('user_id', Auth::id())
+            ->get();
+
+        $savedActions = UserEcoAction::with('ecoActions')
+            ->where('user_id', Auth::id())
+            ->get();
+
+
+        // Separate saved topics and actions
+        $savedTopics = $savedLibraries->filter(fn($lib) => $lib->ecoLibrary->type === 'Topic')->pluck('ecoLibrary');
+        $savedActions = $savedActions->filter(fn($lib) => $lib->ecoAction->type === 'Action')->pluck('ecoAction');
+
+        return view('lifestyle', compact('ecoTopics', 'ecoActions', 'savedTopics', 'savedActions'));
+    }
+
 
 }

@@ -55,6 +55,7 @@ class ActionController extends Controller
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
                 'category' => 'nullable|string|max:100',
+                'type'         => 'nullable|string|max:100', // ✅ validate type
                 'points_value' => 'required|integer|min:1',
                 'is_active' => 'boolean',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -73,6 +74,7 @@ class ActionController extends Controller
                 'title' => $request->title,
                 'description' => $request->description,
                 'category' => $request->category ?? 'General',
+                'type'         => $request->type ?? 'General', // ✅ Add type
                 'points_value' => $request->points_value,
                 'is_active' => $request->is_active ?? true,
                 'image' => $imageName,
@@ -117,7 +119,7 @@ class ActionController extends Controller
         ]);
 
         $action->update($request->only([
-            'title', 'description', 'category', 'points_value', 'is_active'
+                'title', 'description', 'category', 'type', 'points_value', 'is_active'
         ]));
 
         return response()->json([

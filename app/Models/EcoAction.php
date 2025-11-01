@@ -30,6 +30,7 @@ class EcoAction extends Model
         'title',
         'description',
         'category',
+        'type', // ✅ Add this
         'is_active',
         'points_value',
         'image',        // ✅ new

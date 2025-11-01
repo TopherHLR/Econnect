@@ -32,7 +32,7 @@
             <!-- Center: Navigation Links (Desktop) -->
             <div class="hidden md:flex flex-1 justify-center space-x-10">
                 <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">HOME</a>
-                <a href="/lifestyle" class="nav-link {{ request()->is('lifestyle') ? 'active' : '' }}">LIFESTYLE</a>
+                <a href="{{ route('lifestyle') }}" class="nav-link {{ request()->is('lifestyle') ? 'active' : '' }}">LIFESTYLE</a>
                 <a href="/quests" class="nav-link {{ request()->is('quests') ? 'active' : '' }}">QUESTS</a>
                 <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">ABOUT</a>
             </div>
@@ -191,7 +191,21 @@
 
     <!-- Overlay -->
     <div id="overlay"></div>
+    <!-- 🌿 Feedback Notification -->
+    @if (session('success'))
+      <div id="feedback-toast"
+        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
+        🌱 {{ session('success') }}
+      </div>
+    @endif
 
+    @if (session('error'))
+      <div id="error-toast"
+        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
+        ❌ {{ session('error') }}
+      </div>
+    @endif
+    
     {{-- Main Content --}}
     <main class="mt-10">
         @include('modal.authModal')

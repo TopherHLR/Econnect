@@ -9,20 +9,6 @@
         <h1 class="text-3xl font-semibold text-[#4F6B3F]">Home</h1>
         <p class="text-[#6A8A52] mt-1">12 new submissions awaiting validation.</p>
     </div>
-        <!-- 🌿 Feedback Notification -->
-        @if (session('success'))
-        <div id="feedback-toast"
-            class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
-            🌱 {{ session('success') }}
-        </div>
-        @endif
-
-        @if (session('error'))
-        <div id="error-toast"
-            class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
-            ❌ {{ session('error') }}
-        </div>
-        @endif
 
     <!-- Top Buttons -->
     <div class="flex flex-wrap gap-4">
