@@ -211,6 +211,7 @@ class LibraryController extends Controller
 
     public function lifestyle()
     {
+        // Always fetch all eco topics and actions
         $ecoTopics = EcoLibrary::where('type', 'Topic')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -219,20 +220,32 @@ class LibraryController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $savedLibraries = UserLibrary::with('ecoLibrary')
-            ->where('user_id', Auth::id())
-            ->get();
+        // Prepare empty collections for guests
+        $savedTopics = collect();
+        $savedActions = collect();
 
-        $savedActions = UserEcoAction::with('ecoAction') // Corrected relationship name
-            ->where('user_id', Auth::id())
-            ->get();
+        // If user is logged in, fetch their saved items too
+        if (Auth::check()) {
+            $savedLibraries = UserLibrary::with('ecoLibrary')
+                ->where('user_id', Auth::id())
+                ->get();
 
-        // Separate saved topics and actions
-        $savedTopics = $savedLibraries->filter(fn($lib) => $lib->ecoLibrary->type === 'Topic')->pluck('ecoLibrary');
-        $savedActions = $savedActions->filter(fn($lib) => $lib->ecoAction->type === 'Action')->pluck('ecoAction');
+            $savedEcoActions = UserEcoAction::with('ecoAction')
+                ->where('user_id', Auth::id())
+                ->get();
+
+            $savedTopics = $savedLibraries
+                ->filter(fn($lib) => $lib->ecoLibrary && $lib->ecoLibrary->type === 'Topic')
+                ->pluck('ecoLibrary');
+
+            $savedActions = $savedEcoActions
+                ->filter(fn($lib) => $lib->ecoAction && $lib->ecoAction->type === 'Action')
+                ->pluck('ecoAction');
+        }
 
         return view('lifestyle', compact('ecoTopics', 'ecoActions', 'savedTopics', 'savedActions'));
     }
+
 
 
 }
