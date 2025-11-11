@@ -7,7 +7,8 @@ use App\Http\Controllers\EcoController;
 use App\Http\Controllers\ActionController;
 use App\Http\Controllers\LibraryController;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\QuestController;
+use App\Http\Controllers\AdminController;
 //---------------------------------------------------- AUTH -------------------------------------------------
 
 Route::get('/verify-email', [AuthController::class, 'showVerificationForm'])->name('verify.email.form');
@@ -150,3 +151,25 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/adminLifestyle', [LibraryController::class, 'adminIndex'])->name('admin.eco-library');
 });
+
+// Admin routes
+Route::middleware(['auth'])->group(function () {
+
+    Route::group([
+        'middleware' => function ($request, $next) {
+            if (Auth::check() && Auth::user()->user_type === 'admin') {
+                return $next($request);
+            }
+            abort(403, 'Unauthorized access.');
+        }
+    ], function () {
+        Route::get('/adminHome', fn() => view('admin.adminHome'))->name('adminHome');
+        Route::get('/adminUsers', fn() => view('admin.adminUsers'))->name('adminUsers');
+        Route::get('/adminQuests', fn() => view('admin.adminQuests'))->name('adminQuests');
+
+        // ✅ Add this POST route for storing quests
+        Route::post('/admin/quests', [QuestController::class, 'store'])->name('quests.store');
+    });
+});
+
+Route::get('/adminUsers', [AdminController::class, 'users'])->name('adminUsers');

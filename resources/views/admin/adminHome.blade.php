@@ -12,20 +12,43 @@
 
     <!-- Top Buttons -->
     <div class="flex flex-wrap gap-4">
-        <button class="btn-sunken bg-[#A46C47] hover:bg-[#8C5E3D] text-white">+ Create New Quest</button>
-        <button class="btn-sunken bg-[#D4C1A3] hover:bg-[#C4B094] text-[#4F3B2C]">Verify User (Scan QR)</button>
-        <button class="btn-sunken bg-[#D8B08C] hover:bg-[#C89E7B] text-[#4F3B2C]">Pending Submissions</button>
-        <button class="btn-sunken bg-[#E0E5D8] hover:bg-[#D0DAC7] text-[#4F6B3F]">
-            <i class="fa-solid fa-gear mr-2"></i>System Settings
-        </button>
-        <button onclick="openEcoTopicModal()" class="btn-sunken bg-[#6C8E3C] hover:bg-[#5A7C30] text-white flex items-center">
-            <i class="fa-solid fa-leaf mr-2"></i>Add Eco Topic
-        </button>
+        <!-- Create Quest -->
+<button onclick="openQuestModal()" class="btn-eco btn-sage">
+  <i class="fa-solid fa-circle-plus"></i>
+  <span>Create New Quest</span>
+</button>
 
-        <button onclick="openEcoActionModal()" class="btn-sunken bg-[#89A64F] hover:bg-[#7A9442] text-white flex items-center">
-            <i class="fa-solid fa-hand-holding-heart mr-2"></i>Add Eco Action
-        </button>
-    </div>
+
+<!-- Verify User -->
+<button onclick="openVerifyModal()" class="btn-eco btn-sand">
+  <i class="fa-solid fa-qrcode"></i>
+  <span>Verify User</span>
+</button>
+
+<!-- Pending Submissions -->
+<button class="btn-eco btn-clay">
+  <i class="fa-solid fa-hourglass-half"></i>
+  <span>Pending Submissions</span>
+</button>
+
+<!-- System Settings -->
+<button class="btn-eco btn-mint">
+  <i class="fa-solid fa-gear"></i>
+  <span>System Settings</span>
+</button>
+
+<!-- Add Eco Topic -->
+<button onclick="openEcoTopicModal()" class="btn-eco btn-leaf">
+  <i class="fa-solid fa-leaf"></i>
+  <span>Add Eco Topic</span>
+</button>
+
+<!-- Add Eco Action -->
+<button onclick="openEcoActionModal()" class="btn-eco btn-olive">
+  <i class="fa-solid fa-hand-holding-heart"></i>
+  <span>Add Eco Action</span>
+</button>
+
 
 
     <!-- Dashboard Cards -->
@@ -134,3 +157,6 @@
     </div>
 </div>
 @endsection
+@include('modal.createQuestModal')
+@include('modal.verifyUserModal')
+

@@ -414,3 +414,162 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
     transform: translateY(-1px);
 }
+
+
+@layer components {
+  /* 🌿 UNIVERSAL BUTTON STYLE — Sunken by default */
+  .btn-eco {
+    @apply relative inline-flex items-center justify-center gap-2 font-semibold cursor-pointer 
+           rounded-full select-none border-2 border-transparent transition-all duration-300 ease-out 
+           px-7 py-3 text-[1rem];
+
+    /* Default: softly sunken look */
+    box-shadow:
+      inset 3px 3px 6px rgba(140, 160, 130, 0.45),
+      inset -3px -3px 6px rgba(255, 255, 255, 0.6);
+    transform: translateY(0);
+  }
+
+  /* 🌤 Hover: slightly lifts + lighting unsunks */
+  .btn-eco:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      -3px -3px 6px rgba(255, 255, 255, 0.7),
+      3px 3px 6px rgba(160, 180, 150, 0.35);
+    filter: brightness(1.05);
+  }
+
+  /* 🌾 Active: pressed deeper again */
+  .btn-eco:active {
+    transform: translateY(1px);
+    box-shadow:
+      inset 4px 4px 8px rgba(120, 140, 110, 0.5),
+      inset -2px -2px 5px rgba(255, 255, 255, 0.5);
+    filter: brightness(0.97);
+  }
+
+  /* 🌿 ICON ANIMATION */
+  .btn-eco i {
+    @apply mr-2 transition-transform duration-300 ease-out;
+  }
+  .btn-eco:hover i {
+    transform: scale(1.1);
+  }
+
+  /* ————————————————————————
+     🎨 COLOR VARIANTS
+  ———————————————————————— */
+
+  /* 🪴 1. Light Sage (Main Button – “Create Quest”) */
+  .btn-sage {
+    @apply text-[#4F3B2C];
+    background: linear-gradient(145deg, #E0E5D8, #BFD8B8);
+    border-color: #BFD8B8;
+  }
+  .btn-sage:hover {
+    background: linear-gradient(145deg, #DEE8D2, #B4D2A8);
+    color: #3C4A32;
+  }
+  .btn-sage:active {
+    background: linear-gradient(145deg, #BFD8B8, #A4C686);
+    color: #2F3925;
+  }
+
+  /* 🏜 2. Sand Beige (Verify User) */
+  .btn-sand {
+    @apply text-[#4F3B2C];
+    background: linear-gradient(145deg, #D4C1A3, #C4B094);
+    border-color: #C4B094;
+  }
+  .btn-sand:hover {
+    background: linear-gradient(145deg, #E1D1B7, #CDB799);
+  }
+  .btn-sand:active {
+    background: linear-gradient(145deg, #C4B094, #B69E88);
+  }
+
+  /* 🧡 3. Clay Warm (Pending Submissions) */
+  .btn-clay {
+    @apply text-[#4F3B2C];
+    background: linear-gradient(145deg, #D8B08C, #C89E7B);
+    border-color: #C89E7B;
+  }
+  .btn-clay:hover {
+    background: linear-gradient(145deg, #E0B996, #C89E7B);
+  }
+  .btn-clay:active {
+    background: linear-gradient(145deg, #C89E7B, #B9866A);
+  }
+
+  /* 🫒 4. Mint Sage (System Settings) */
+  .btn-mint {
+    @apply text-[#4F6B3F];
+    background: linear-gradient(145deg, #E0E5D8, #D0DAC7);
+    border-color: #D0DAC7;
+  }
+  .btn-mint:hover {
+    background: linear-gradient(145deg, #D8E2CA, #C6D4B8);
+  }
+  .btn-mint:active {
+    background: linear-gradient(145deg, #C9D6B4, #BFD2A5);
+  }
+
+  /* 🌿 5. Deep Leaf (Add Eco Topic) */
+  .btn-leaf {
+    @apply text-white;
+    background: linear-gradient(145deg, #6C8E3C, #5A7C30);
+    border-color: #b2cf8fc3;
+  }
+  .btn-leaf:hover {
+    background: linear-gradient(145deg, #7A9C4A, #658739);
+  }
+  .btn-leaf:active {
+    background: linear-gradient(145deg, #5A7C30, #4F692A);
+  }
+
+  /* 🍃 6. Olive Green (Add Eco Action) */
+  .btn-olive {
+    @apply text-white;
+    background: linear-gradient(145deg, #89A64F, #7A9442);
+    border-color: #7A9442;
+  }
+  .btn-olive:hover {
+    background: linear-gradient(145deg, #98B65E, #89A64F);
+  }
+  .btn-olive:active {
+    background: linear-gradient(145deg, #7A9442, #6A8536);
+  }
+}
+
+@layer components {
+  .tab-eco {
+    @apply relative flex items-center px-5 py-2 font-semibold cursor-pointer rounded-full select-none border-2 border-transparent transition-all duration-300 ease-out text-sm text-[#4E3A2E] bg-[#F8FAED];
+    
+    /* Softly sunken default */
+    box-shadow:
+      inset 2px 2px 4px rgba(140,160,130,0.25),
+      inset -2px -2px 4px rgba(255,255,255,0.6);
+  }
+
+  /* 🌤 Hover: slightly lifts + lighter */
+  .tab-eco:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      -2px -2px 4px rgba(255,255,255,0.7),
+      2px 2px 4px rgba(160,180,150,0.3);
+    filter: brightness(1.03);
+  }
+
+  /* 🌾 Active/Selected Tab: pressed deeper + gradient background */
+  .tab-eco-active {
+    @apply text-white;
+    background: linear-gradient(145deg, #89A64F, #7A9442);
+    border-color: #7A9442;
+  }
+  .btn-olive:hover {
+    background: linear-gradient(145deg, #98B65E, #89A64F);
+  }
+  .btn-olive:active {
+    background: linear-gradient(145deg, #7A9442, #6A8536);
+  }
+}
