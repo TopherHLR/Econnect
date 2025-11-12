@@ -30,10 +30,27 @@
 
       <hr class="border-[#C6D0B2] mb-6">
 
-      <!-- 🌿 Quest Collection Button -->
-      <button data-quest="collection" class="btn-eco w-full text-center">
-        Quest Collection
-      </button>
+     <!-- 🌿 Quest Collection Button -->
+<button data-quest="collection" class="btn-eco w-full text-center mb-2">
+  Quest Collection
+</button>
+
+<!-- 🗂 Archive Dropdown -->
+<div class="relative">
+<button id="archiveDropdownBtn" class="btn-eco w-full flex justify-center items-center relative">
+  <span>Archive</span>
+  <svg id="archiveArrow" class="w-4 h-4 ml-2 absolute right-4 top-1/2 -translate-y-1/2 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+  </svg>
+</button>
+
+  <!-- Dropdown Menu -->
+  <ul id="archiveDropdownMenu" class="absolute left-0 right-0 bg-[#FCF9EF] border border-[#C6D0B2] rounded-lg mt-2 shadow-lg hidden z-10">
+    <li data-quest="archive-submissions" class="px-4 py-2 hover:bg-[#E9F0E1] cursor-pointer text-[#4E3A2E]">Submissions</li>
+    <li data-quest="archive-quests" class="px-4 py-2 hover:bg-[#E9F0E1] cursor-pointer text-[#4E3A2E]">Quests</li>
+  </ul>
+</div>
+
     </aside>
 
     <!-- 📋 Main Content -->
@@ -219,30 +236,122 @@
 </div>
 
       <!-- 🗂 Quest Collection -->
-      <div id="collectionTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7]">
-        <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Quest Collection</h2>
-        <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
-          <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-            <tr>
-              <th class="px-4 py-2">Quest Name</th>
-              <th class="px-4 py-2 w-48">Category</th>
-              <th class="px-4 py-2 w-32">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-              <td class="px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline">Recycle Initiative</td>
-              <td class="px-4 py-2">Environmental</td>
-              <td class="px-4 py-2 text-[#6A8A52]">Active</td>
-            </tr>
-            <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-              <td class="px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline">Water Conservation</td>
-              <td class="px-4 py-2">Awareness</td>
-              <td class="px-4 py-2 text-[#C37A49]">Draft</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<!-- 🗂 Quest Collection -->
+<div id="collectionTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7]">
+  <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Quest Collection</h2>
+  <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
+    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
+      <tr>
+        <th class="px-4 py-2 w-16">#</th>
+        <th class="px-4 py-2">Quest Title</th>
+        <th class="px-4 py-2 w-64">Description</th>
+        <th class="px-4 py-2 w-48">Category</th>
+        <th class="px-4 py-2 w-32">Points</th>
+        <th class="px-4 py-2 w-32">Start Date</th>
+        <th class="px-4 py-2 w-32">End Date</th>
+        <th class="px-4 py-2 w-32">Status</th>
+        <th class="px-4 py-2 w-32">Created By</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
+        <td class="px-4 py-2">1</td>
+        <td class="px-4 py-2 text-[#4E3A2E]">Reduce Plastic Use</td>
+        <td class="px-4 py-2">Encourage communities to reduce single-use plastics through awareness and alternatives.</td>
+        <td class="px-4 py-2">Waste Management</td>
+        <td class="px-4 py-2">100</td>
+        <td class="px-4 py-2">2025-09-01</td>
+        <td class="px-4 py-2">2025-09-30</td>
+        <td class="px-4 py-2 text-[#6A8A52]">Active</td>
+        <td class="px-4 py-2">Admin</td>
+      </tr>
+      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
+        <td class="px-4 py-2">2</td>
+        <td class="px-4 py-2 text-[#4E3A2E]">Plant a Tree</td>
+        <td class="px-4 py-2">Join a local tree planting initiative and contribute to reforestation efforts.</td>
+        <td class="px-4 py-2">Biodiversity</td>
+        <td class="px-4 py-2">120</td>
+        <td class="px-4 py-2">2025-10-01</td>
+        <td class="px-4 py-2">2025-10-31</td>
+        <td class="px-4 py-2 text-[#6A8A52]">Active</td>
+        <td class="px-4 py-2">Admin</td>
+      </tr>
+      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
+        <td class="px-4 py-2">3</td>
+        <td class="px-4 py-2 text-[#4E3A2E]">Water Conservation</td>
+        <td class="px-4 py-2">Spread awareness on responsible water usage and organize educational drives.</td>
+        <td class="px-4 py-2">Water Saving</td>
+        <td class="px-4 py-2">90</td>
+        <td class="px-4 py-2">2025-11-01</td>
+        <td class="px-4 py-2">2025-11-30</td>
+        <td class="px-4 py-2 text-[#C37A49]">Ending Soon</td>
+        <td class="px-4 py-2">Admin</td>
+      </tr>
+      <tr class="hover:bg-[#FAFBF8]">
+        <td class="px-4 py-2">4</td>
+        <td class="px-4 py-2 text-[#4E3A2E]">Sustainable Fashion</td>
+        <td class="px-4 py-2">Encourage the use of thrifted or eco-friendly clothing to reduce textile waste.</td>
+        <td class="px-4 py-2">Sustainable Fashion</td>
+        <td class="px-4 py-2">150</td>
+        <td class="px-4 py-2">2025-08-01</td>
+        <td class="px-4 py-2">2025-08-31</td>
+        <td class="px-4 py-2 text-[#A36B47]">Closed</td>
+        <td class="px-4 py-2">Eco Admin</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 🗂 Archive - Submissions -->
+<div id="archive-submissionsTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] hidden">
+  <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Archived Submissions</h2>
+  <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
+    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
+      <tr>
+        <th class="px-4 py-2 w-16">#</th>
+        <th class="px-4 py-2">Participant</th>
+        <th class="px-4 py-2 w-48">Quest</th>
+        <th class="px-4 py-2 w-32">Status</th>
+        <th class="px-4 py-2 w-48">Date Completed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
+        <td class="px-4 py-2">1</td>
+        <td class="px-4 py-2">Maria Santos</td>
+        <td class="px-4 py-2">Reduce Plastic Use</td>
+        <td class="px-4 py-2 text-[#6A8A52]">Completed</td>
+        <td class="px-4 py-2">2025-09-28</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 🗂 Archive - Quests -->
+<div id="archive-questsTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] hidden">
+  <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Archived Quests</h2>
+  <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
+    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
+      <tr>
+        <th class="px-4 py-2 w-16">#</th>
+        <th class="px-4 py-2">Quest Title</th>
+        <th class="px-4 py-2 w-64">Description</th>
+        <th class="px-4 py-2 w-32">Points</th>
+        <th class="px-4 py-2 w-32">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="hover:bg-[#FAFBF8]">
+        <td class="px-4 py-2">1</td>
+        <td class="px-4 py-2">Sustainable Fashion</td>
+        <td class="px-4 py-2">Encourage eco-friendly clothing usage.</td>
+        <td class="px-4 py-2">150</td>
+        <td class="px-4 py-2 text-[#A36B47]">Closed</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
     </div>
   </div>
 </main>
@@ -314,22 +423,80 @@ document.addEventListener("DOMContentLoaded", () => {
     activateQuest(tabs[0].getAttribute('data-quest'), tabs[0]);
   }
 
-  // -------------------------------
-  // Modal logic (unchanged)
-  // -------------------------------
-  const modal = document.getElementById('questModal');
-  const closeModal = document.getElementById('closeModal');
+ // -------------------------------
+// Participant Submission Modal logic
+// -------------------------------
+const submissionModal = document.getElementById('submissionModal');
+const closeSubmissionModal = document.querySelector('#submissionModal #closeModal');
+const modalName = document.getElementById('modalParticipantName');
+const modalStatus = document.getElementById('modalStatus');
+const modalDateSubmitted = document.getElementById('modalDateSubmitted');
+const modalDateCompleted = document.getElementById('modalDateCompleted');
+const modalProofLink = document.getElementById('modalProofLink');
 
-  document.querySelectorAll('tbody td.text-[#7A8C4F]').forEach(cell => {
-    cell.addEventListener('click', () => {
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    });
+// Attach event listener to all participant name cells
+document.querySelectorAll('.participant-name').forEach(cell => {
+  cell.addEventListener('click', () => {
+    modalName.textContent = cell.dataset.name;
+    modalStatus.textContent = cell.dataset.status;
+    modalDateSubmitted.textContent = cell.dataset.submitted;
+    modalDateCompleted.textContent = cell.dataset.completed;
+    modalProofLink.href = cell.dataset.proof;
+
+    submissionModal.classList.remove('hidden');
+    submissionModal.classList.add('flex');
+  });
+});
+
+// Close button
+closeSubmissionModal.addEventListener('click', () => {
+  submissionModal.classList.add('hidden');
+});
+
+// Close modal when clicking outside content
+submissionModal.addEventListener('click', e => {
+  if (e.target === submissionModal) {
+    submissionModal.classList.add('hidden');
+  }
+});
+});
+
+// -------------------------------
+// 🗂 Archive Dropdown Logic
+// -------------------------------
+const archiveDropdownBtn = document.getElementById('archiveDropdownBtn');
+const archiveDropdownMenu = document.getElementById('archiveDropdownMenu');
+const archiveArrow = document.getElementById('archiveArrow');
+const archiveOptions = archiveDropdownMenu.querySelectorAll('li');
+
+if (archiveDropdownBtn) {
+  // Toggle dropdown visibility
+  archiveDropdownBtn.addEventListener('click', () => {
+    archiveDropdownMenu.classList.toggle('hidden');
+    archiveArrow.classList.toggle('rotate-180');
   });
 
-  closeModal.addEventListener('click', () => modal.classList.add('hidden'));
-  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.add('hidden'); });
+  // Handle Archive tab clicks
+  archiveOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      const questKey = option.getAttribute('data-quest');
+      activateQuest(questKey, option);
+
+      // Close dropdown after selection
+      archiveDropdownMenu.classList.add('hidden');
+      archiveArrow.classList.remove('rotate-180');
+    });
+  });
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  if (!archiveDropdownBtn.contains(e.target) && !archiveDropdownMenu.contains(e.target)) {
+    archiveDropdownMenu.classList.add('hidden');
+    archiveArrow.classList.remove('rotate-180');
+  }
 });
+
 </script>
 
 
