@@ -573,3 +573,61 @@
     background: linear-gradient(145deg, #7A9442, #6A8536);
   }
 }
+
+
+
+/* 🌿 Eco Card — same vibe as btn-eco */
+.eco-card {
+  @apply relative flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 cursor-pointer transition-all duration-300 ease-out;
+
+  /* Softly sunken default */
+  box-shadow:
+    inset 3px 3px 6px rgba(140, 160, 130, 0.25),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.6);
+  transform: translateY(0);
+}
+
+/* 🌤 Hover: slightly lifts + light effect */
+.eco-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    -3px -3px 6px rgba(255, 255, 255, 0.7),
+    3px 3px 6px rgba(160, 180, 150, 0.2);
+  filter: brightness(1.02);
+}
+
+/* 🌾 Active/Click: pressed deeper */
+.eco-card:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 4px 4px 8px rgba(120, 140, 110, 0.4),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.5);
+  filter: brightness(0.97);
+}
+
+/* Optional: smooth text truncation */
+.eco-card .eco-title {
+  @apply truncate;
+}
+
+.eco-card p {
+  @apply text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis;
+}
+
+/* 🌿 Custom scrollbar for eco-challenges grid */
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: #EDF5E1; /* soft light green track */
+  border-radius: 8px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #A6C17F; /* soft green thumb */
+  border-radius: 8px;
+  border: 2px solid #EDF5E1; /* space around thumb */
+}
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #A6C17F #EDF5E1; /* Firefox */
+}
