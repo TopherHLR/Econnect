@@ -13,8 +13,8 @@
 
 </head>
 
-<body class="bg-[#E0E9D6] text-gray-800 font-sans">
-    <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-100">
+<nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-100">
+    <div class="navbar-container">
         <div class="max-w-7xl mx-auto px-8 py-3 flex items-center justify-between">
             <!-- Left: Logo -->
             <a href="/" class="flex items-center space-x-1">
@@ -30,13 +30,14 @@
             </button>
 
             <!-- Center: Navigation Links (Desktop) -->
-            <div class="hidden md:flex flex-1 justify-center space-x-10">
-                <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">HOME</a>
-                <a href="{{ route('lifestyle') }}" class="nav-link {{ request()->is('lifestyle') ? 'active' : '' }}">LIFESTYLE</a>
-                <a href="/quests" class="nav-link {{ request()->is('quests') ? 'active' : '' }}">QUESTS</a>
-                <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">ABOUT</a>
-            </div>
-
+<!-- Center: Navigation Links with Highlight (Desktop) -->
+<div class="hidden md:flex flex-1 justify-center space-x-10 nav-links">
+    <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">HOME</a>
+    <a href="{{ route('lifestyle') }}" class="nav-link {{ request()->is('lifestyle') ? 'active' : '' }}">LIFESTYLE</a>
+    <a href="/quests" class="nav-link {{ request()->is('quests') ? 'active' : '' }}">QUESTS</a>
+    <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">ABOUT</a>
+    <!-- nav-highlight will be inserted here by JavaScript -->
+</div>
             <!-- Right: Profile / Auth Buttons -->
             <div x-data class="hidden md:flex items-center relative" id="profileDropdown">
                 @guest
@@ -297,6 +298,115 @@
           }
         });
       }, 3000);
+
+  // Navbar scroll effect - should run on ALL pages
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
+
+    function updateNavbar() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-solid');
+        } else {
+            navbar.classList.remove('navbar-solid');
+        }
+    }
+
+    // Initial check
+    updateNavbar();
+
+    // Throttled scroll event
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        if (!scrollTimeout) {
+            scrollTimeout = setTimeout(function() {
+                scrollTimeout = null;
+                updateNavbar();
+            }, 10);
+        }
+    });
+
+    // Also check on resize
+    window.addEventListener('resize', updateNavbar);
+});
+
+// Nav highlight - should run on ALL pages
+// Navbar scroll effect - should be on every page
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
+
+    function updateNavbar() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-solid');
+        } else {
+            navbar.classList.remove('navbar-solid');
+        }
+    }
+
+    // Initial check
+    updateNavbar();
+
+    // Scroll event
+    window.addEventListener('scroll', function() {
+        updateNavbar();
+    });
+});
+
+// Your existing NavHighlight code...
+class NavHighlight {
+    constructor() {
+        this.highlight = document.createElement('div');
+        this.highlight.className = 'nav-highlight';
+        this.navLinks = document.querySelector('.nav-links');
+        this.links = document.querySelectorAll('.nav-link');
+        
+        this.init();
+    }
+    
+    init() {
+        if (!this.navLinks) return;
+        
+        this.navLinks.appendChild(this.highlight);
+        this.updateHighlight();
+        
+        this.links.forEach(link => {
+            link.addEventListener('mouseenter', () => this.moveHighlight(link));
+        });
+        
+        this.navLinks.addEventListener('mouseleave', () => {
+            this.updateHighlight();
+        });
+        
+        window.addEventListener('resize', () => this.updateHighlight());
+    }
+    
+    moveHighlight(link) {
+        const linkRect = link.getBoundingClientRect();
+        const navRect = this.navLinks.getBoundingClientRect();
+        
+        const width = linkRect.width + 30;
+        const left = linkRect.left - navRect.left - 10;
+        
+        this.highlight.style.width = `${width}px`;
+        this.highlight.style.left = `${left}px`;
+        this.highlight.style.opacity = '1';
+    }
+    
+    updateHighlight() {
+        const activeLink = document.querySelector('.nav-link.active');
+        if (activeLink) {
+            this.moveHighlight(activeLink);
+        } else {
+            this.highlight.style.opacity = '0';
+        }
+    }
+}
+
+// Initialize both on DOM loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new NavHighlight();
+});
 </script>
 </body>
 

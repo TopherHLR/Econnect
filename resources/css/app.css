@@ -12,95 +12,99 @@
 }
 
 /* =========================================================== NAVBAR =========================================================== */
-
+/* =========================================================== NAVBAR =========================================================== */
 .navbar {
-    @apply fixed top-0 left-1/2 z-50 transition-all duration-500 backdrop-blur-md;
-    transform: translateX(-50%);
+    @apply fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-md;
     width: 100%;
-    max-width: 100%;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    overflow: visible !important; /* ✅ ensures dropdown isn't cut */
     background: linear-gradient(to bottom, rgba(126, 166, 94, 0.4) 0%, rgba(224, 233, 214, 0.2) 90%);
     box-shadow: none;
+    /* Full width by default */
+    left: 0;
+    right: 0;
 }
 
 .navbar.navbar-solid {
     z-index: 100;
     backdrop-filter: blur(4px);
     width: 90%;
+    /* Center it smoothly without left shake */
+    left: 5%;
+    right: 5%;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
     background: linear-gradient(to bottom, rgba(92, 134, 68, 0.8) 0%, rgba(216, 227, 201, 0.5) 90%);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     transition: all 0.5s ease;
-    overflow: visible !important; /* ✅ fixes clipping when solid */
+    overflow: visible !important;
 }
 
-/* White base layer behind the gradient */
-.navbar.navbar-solid::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(247, 243, 231, 0.705); /* soft white background */
-    z-index: -1; /* places it behind the gradient */
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
+/* Navigation Links Container with Highlight */
+.nav-links {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
 }
 
-.nav-link {
-    @apply tracking-wide text-green-900 font-medium transition-colors duration-300;
-}
-
-.nav-link:hover {
-    color: #335C2F;
-}
-
-.nav-link.active {
-    @apply font-semibold text-green-800;
-}
-
-.nav-logo {
-    font-family: 'Nunito', sans-serif;
-    letter-spacing: 1px;
-}
-
-/* Base Nav Link */
 .nav-link {
     position: relative;
     display: inline-block;
-    padding-bottom: 4px;
+    padding: 0.5rem 0;
     font-weight: 600;
-    color: #14532d; /* dark green */
-    background: linear-gradient(
-        to right,
-        rgba(195, 122, 73, 0.25) 0%,
-        rgba(127, 138, 79, 0.25) 100%
-    );
-    background-size: 0% 100%;
-    background-repeat: no-repeat;
-    background-position: left bottom;
-    transition: background-size 0.5s ease, color 0.3s ease;
+    color: #14532d;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 2;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
-/* “Liquid” background highlight on hover */
 .nav-link:hover {
-    background-size: 100% 100%;
-    color: #fff; /* text turns white for contrast */
+    color: #dfffec;
 }
 
-/* Active page = brown underline */
-.nav-link.active::after {
-    content: "";
+.nav-link.active {
+    color: #e3ffee;
+    font-weight: 700;
+}
+
+/* Moving Highlight Element */
+.nav-highlight {
     position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 4px;
-    width: 100%;
-    background-color: #C37A49;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(203, 255, 154, 0.089) 0%, 
+        rgba(84, 113, 60, 0.553) 50%, 
+        rgba(54, 88, 26, 0.811) 100%);
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1;
+    box-shadow: 
+        0 4px 12px rgba(92, 134, 68, 0.15),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
 }
 
-
+/* Glowing Curve Under Highlight */
+.nav-highlight::before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 5%;
+    right: 5%;
+    height: 4px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(195, 122, 73, 0.4) 15%,
+        rgba(127, 138, 79, 0.6) 50%, 
+        rgba(195, 122, 73, 0.4) 85%,
+        transparent 100%);
+    border-radius: 50%;
+    filter: blur(2px);
+    z-index: 0;
+}
 /* =========================================================== SIDEBAR =========================================================== */
 
 .sidebar {
