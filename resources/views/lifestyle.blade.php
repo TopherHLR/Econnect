@@ -1,379 +1,508 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-  @vite([
-        'resources/css/ecoModal.css',
-        'resources/js/ecoModal.js'])
-<div class="max-w-6xl mx-auto px-12 py-12 mt-15">
-
-  <div class="bg-[#F7F3E7] rounded-4xl shadow-sm border border-green-100 overflow-hidden p-8">
-
-    <!-- Header -->
-    <div class="flex items-center justify-between px-2 pt-2 mb-4">
-      <h1 class="text-2xl font-serif font-semibold text-[#5C7919]">
-        Climate & Nature Awareness 🌍
-      </h1>
-    </div>
-
-    <!-- Top Controls Row -->
-    <div class="flex justify-between items-start gap-6 px-4 mb-8">
-
-      <!-- Left Column -->
-      <div class="flex flex-col flex-1">
-
-        <!-- Toggle + Search -->
-        <div class="flex items-center justify-between gap-4 mb-6">
-          <!-- iOS-style Toggle -->
-          <div class="relative flex items-center bg-[#5C7919] rounded-full p-3 w-40">
-            <div id="toggle-slider"
-                 class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-[#FCFFF6] rounded-full shadow-md transition-all duration-300 ease-in-out"></div>
-            <button id="topicsBtn"
-                    class="relative z-10 flex-1 text-center text-sm font-medium text-[#5C7919]"
-                    onclick="switchTab('topics')">Topics</button>
-            <button id="actionsBtn"
-                    class="relative z-10 flex-1 text-center text-sm font-medium text-[#FCF9EF]"
-                    onclick="switchTab('actions')">Actions</button>
-          </div>
-
-          <!-- Search + Category -->
-          <div class="flex items-center gap-2 flex-1">
-            <div class="relative w-full max-w-70">
-              <input type="text" placeholder="Search"
-                     class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2 border border-[#7A8C4F] rounded-full focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm">
-              <svg class="absolute right-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
-                   viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-              </svg>
+    @vite(['resources/css/ecoModal.css'])
+    <div class="w-[90%] mx-auto px-12 py-12 mt-15">
+        <div class="bg-[#F7F3E7] rounded-4xl shadow-sm border border-green-100 overflow-hidden p-8">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-2 pt-2 mb-4">
+                <h1 class="text-2xl font-serif font-semibold text-[#5C7919]">
+                    Climate & Nature Awareness 🌍
+                </h1>
             </div>
 
-            <!-- Category Dropdown -->
-            <select id="categoryDropdown"
-                    class="text-sm text-gray-600 bg-[#FCFFF6] border border-[#7A8C4F] rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
-              <option value="">All Categories ▾</option>
-              @php
-                  $categories = collect($ecoTopics)
-                      ->pluck('category')
-                      ->merge(collect($ecoActions)->pluck('category'))
-                      ->filter()
-                      ->unique()
-                      ->sort();
-              @endphp
-              @foreach($categories as $category)
-                  <option value="{{ $category }}">{{ $category }}</option>
-              @endforeach
-            </select>
-          </div>
+            <!-- Top Controls Row -->
+            <div class="flex justify-between items-start gap-6 px-4 mb-8">
+                <!-- Left Column -->
+                <div class="flex flex-col flex-1">
+                    <!-- Toggle + Search -->
+                    <div class="flex items-center justify-between gap-4 mb-6">
+                        <!-- iOS-style Toggle -->
+                        <div class="relative flex items-center bg-[#5C7919] rounded-full p-3 w-40">
+                            <div id="toggle-slider"
+                                 class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-[#FCFFF6] rounded-full shadow-md transition-all duration-300 ease-in-out">
+                            </div>
+                            <button id="topicsBtn"
+                                    class="relative z-10 flex-1 text-center text-sm font-medium text-[#5C7919]"
+                                    onclick="switchTab('topics')">Topics</button>
+                            <button id="actionsBtn"
+                                    class="relative z-10 flex-1 text-center text-sm font-medium text-[#FCF9EF]"
+                                    onclick="switchTab('actions')">Actions</button>
+                        </div>
+
+                        <!-- Search + Category -->
+                        <div class="flex items-center gap-2 flex-1">
+                            <div class="relative w-full max-w-70">
+                                <input type="text" placeholder="Search"
+                                       class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2 border border-[#7A8C4F] rounded-full focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm">
+                                <svg class="absolute right-3 top-2.5 w-4 h-4 text-gray-400" fill="none"
+                                     stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+
+                            <!-- Category Dropdown -->
+                            <select id="categoryDropdown"
+                                    class="text-sm text-gray-600 bg-[#FCFFF6] border border-[#7A8C4F] rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
+                                <option value="">All Categories ▾</option>
+                                @php
+                                    $categories = collect($ecoTopics)
+                                        ->pluck('category')
+                                        ->merge(collect($ecoActions)->pluck('category'))
+                                        ->filter()
+                                        ->unique()
+                                        ->sort();
+                                @endphp
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category }}">{{ $category }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Eco Content -->
+                    <div id="ecoContent" class="space-y-4 w-full overflow-y-auto pr-2 custom-scroll max-h-[65vh]">
+                        @foreach ($ecoTopics as $topic)
+                            <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transition-all"
+                                 data-type="ecoTopic" data-id="{{ $topic->library_id }}"
+                                 data-category="{{ $topic->category }}">
+                                <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
+                                     alt="{{ $topic->title }}" class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-semibold text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
+                                        onclick="openEcoModal('ecoTopic', {{ $topic->library_id }})">{{ $topic->title }}</h3>
+                                    <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
+                                        {{ $topic->content }}
+                                    </p>
+                                </div>
+                                <form action="{{ route('libraries.save', ['id' => $topic->library_id]) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="type" value="ecoTopic">
+                                    <button type="submit" class="save-btn text-gray-400 hover:text-yellow-500 flex-shrink-0">
+                                        <svg class="w-5 h-5 {{ Auth::user() && Auth::user()->savedLibraries()->where('library_id', $topic->library_id)->exists() ? 'text-yellow-500 fill-current' : 'text-gray-400' }}"
+                                             viewBox="0 0 24 24"
+                                             {{ Auth::user() && Auth::user()->savedLibraries()->where('library_id', $topic->library_id)->exists() ? 'fill="currentColor"' : 'fill="none" stroke="currentColor"' }}>
+                                            <path {{ Auth::user() && Auth::user()->savedLibraries()->where('library_id', $topic->library_id)->exists() ? '' : 'stroke-linecap="round" stroke-linejoin="round" stroke-width="2"' }}
+                                                  d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <!-- END Left Column -->
+
+                <!-- Sidebar -->
+                <div id="ecoSidebar" class="w-[32rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 border border-green-100 max-h-[80vh] overflow-y-auto overflow-x-hidden custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
+                    <h2 class="text-lg font-semibold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
+                    <div class="space-y-3" id="savedList">
+                        @foreach ($savedTopics as $saved)
+                            <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
+                                 data-type="{{ $saved->type ?? 'ecoTopic' }}"
+                                 data-id="{{ $saved->id }}"
+                                 data-category="{{ $saved->category }}">
+                                <div class="flex items-center">
+                                    <img src="{{ $saved->image ? Vite::asset('resources/images/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
+                                         alt="{{ $saved->title }}"
+                                         class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-medium text-[#5C7919] truncate">{{ $saved->title }}</h4>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    @if (($saved->type ?? '') === 'ecoAction')
+                                        <form action="{{ route('libraries.mark-done', ['id' => $saved->id]) }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="mark-done-btn text-xs {{ $saved->done ? 'bg-gray-400 cursor-default' : 'bg-[#7A8C4F] hover:bg-[#90A955]' }} text-white px-2 py-1 rounded-full transition" {{ $saved->done ? 'disabled' : '' }}>
+                                                {{ $saved->done ? 'Completed' : 'Mark as Done' }}
+                                            </button>
+                                        </form>
+                                    @endif
+                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <!-- END Sidebar -->
+            </div> <!-- END Top Controls Row -->
+
+            <!-- Motivational Quote -->
+            <div class="mt-6 text-center text-sm text-gray-500 italic">
+                “You don’t have to know everything today — one tip at a time is enough.”
+            </div>
+
+            <!-- Modal -->
+            <div id="ecoDetailModal"
+                 class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm justify-center items-center z-50">
+                <div class="bg-white rounded-3xl shadow-lg border border-green-100 max-w-4xl w-full mx-4 p-8 relative animate-fadeIn">
+                    <!-- Close Button -->
+                    <button onclick="closeEcoModal()"
+                            class="absolute top-6 right-6 text-gray-400 hover:text-[#5C7919] transition">
+                        ✕
+                    </button>
+
+                    <!-- Title -->
+                    <h1 id="ecoModalTitle"
+                        class="text-3xl font-serif font-semibold text-center text-[#5C7919] mb-6">
+                        <!-- Dynamic title -->
+                    </h1>
+
+                    <!-- Image -->
+                    <img id="ecoModalImage"
+                         src=""
+                         alt=""
+                         class="rounded-xl w-full max-h-[300px] object-cover mb-6">
+
+                    <!-- Content -->
+                    <div id="ecoModalContent"
+                         class="text-sm leading-relaxed text-gray-700 space-y-3">
+                        <!-- Filled dynamically -->
+                    </div>
+
+                    <!-- Action Button (for Eco Actions only) -->
+                    <div class="mt-8 text-center">
+                        <button id="ecoModalActionBtn"
+                                class="hidden bg-[#5C7919]/10 text-[#5C7919] text-sm px-4 py-2 rounded-full hover:bg-[#5C7919]/20 transition"
+                                onclick="markActionDone()">
+                            Mark as Done
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-<!-- Scrollable Eco Content -->
-<div id="ecoContent" class="space-y-4 w-145 overflow-y-auto pr-2 custom-scroll max-h-[65vh]">
-  <!-- Default: Eco Topics -->
-  @foreach($ecoTopics as $topic)
-  <div class="eco-card" 
-       data-type="ecoTopic"
-       data-id="{{ $topic->id }}"
-       data-category="{{ $topic->category }}">
-      <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
-           alt="{{ $topic->title }}"
-           class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
-      <div class="flex-1 min-w-0">
-          <h3 class="font-semibold text-lg text-[#5C7919] mb-1 eco-title truncate"
-              data-type="ecoTopic"
-              data-id="{{ $topic->id }}">{{ $topic->title }}</h3>
-          <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
-              {{ $topic->content }}
-          </p>
-      </div>
-      <button class="save-btn text-gray-400 hover:text-yellow-500 flex-shrink-0" data-title="{{ $topic->title }}">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-          </svg>
-      </button>
-  </div>
-  @endforeach
-</div>
-
-
-      </div> <!-- END Left Column -->
-
-      <!-- Sidebar -->
-      <div id="ecoSidebar" class="w-[22rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 border border-green-100
-           max-h-[80vh] overflow-y-auto custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
-        <h2 class="text-lg font-semibold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
-        <div class="space-y-3" id="savedList">
-          @foreach($savedTopics as $saved)
-  <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition"
-       data-id="{{ $saved->id }}"
-       data-type="{{ $saved->type ?? 'ecoTopic' }}"
-       data-category="{{ $saved->category }}">
-      
-      <div class="flex items-center">
-        <img src="{{ $saved->image ? Vite::asset('resources/images/eco-library/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
-             alt="{{ $saved->title }}"
-             class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
-        <div class="flex-1 min-w-0">
-            <h4 class="text-sm font-medium text-[#5C7919] truncate eco-title"
-                data-type="{{ $saved->type ?? 'ecoTopic' }}"
-                data-id="{{ $saved->id }}">{{ $saved->title }}</h4>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2">
-        @if(($saved->type ?? '') === 'ecoAction')
-          <button class="mark-done-btn text-xs bg-[#7A8C4F] hover:bg-[#90A955] text-white px-2 py-1 rounded-full transition">
-            Mark as Done
-          </button>
-        @endif
-
-        <button class="unsave-btn text-yellow-500 hover:text-red-500" title="Unsave">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-            </svg>
-        </button>
-      </div>
-  </div>
-@endforeach
-
-        </div>
-      </div> <!-- END Sidebar -->
-
-    </div> <!-- END Top Controls Row -->
-
-    <!-- Motivational Quote -->
-    <div class="mt-6 text-center text-sm text-gray-500 italic">
-      “You don’t have to know everything today — one tip at a time is enough.”
     </div>
 
-  </div>
+    <!-- Script -->
+    <script>
+          window.assetPaths = {
+            ecoLibrary: '{{ Vite::asset('resources/images/eco-library') }}',
+            ecoActions: '{{ Vite::asset('resources/images/eco-actions') }}',
+            default: '{{ Vite::asset('resources/images/default.png') }}'
+        };
+        let currentTab = 'topics';
+        let currentCategory = '';
+        let currentItemId = null;
+        let currentItemType = null;
 
-</div>
+        // 🌱 Apply category filter
+        function applyCategoryFilter() {
+            const contentItems = document.querySelectorAll('#ecoContent .eco-card');
+            const savedItems = document.querySelectorAll('#savedList .saved-item');
 
-<!-- Script -->
-<script>
-let currentTab = 'topics';
-let currentCategory = '';
-const savedItemsKey = 'ecoSavedItems';
+            contentItems.forEach(item => {
+                const category = item.dataset.category || '';
+                item.style.display = currentCategory === '' || category === currentCategory ? 'flex' : 'none';
+            });
 
-// 🌱 Load saved items from localStorage
-function loadSavedItems() {
-  const savedList = document.getElementById('savedList');
-  savedList.innerHTML = '';
-  const savedItems = JSON.parse(localStorage.getItem(savedItemsKey) || '[]');
-  savedItems.forEach(item => {
-    if ((currentTab === 'topics' && item.type === 'ecoTopic') ||
-        (currentTab === 'actions' && item.type === 'ecoAction')) {
-      appendSavedItem(item);
-    }
-  });
-}
+            savedItems.forEach(item => {
+                const category = item.dataset.category || '';
+                item.style.display = currentCategory === '' || category === currentCategory ? 'flex' : 'none';
+            });
+        }
 
-// 🌱 Append a saved item to sidebar
-function appendSavedItem({ id, type, title, img, category, done }) {
-  const savedList = document.getElementById('savedList');
+        // 🌱 Switch tab
+        function switchTab(tab) {
+            currentTab = tab;
+            const slider = document.getElementById('toggle-slider');
+            const topicsBtn = document.getElementById('topicsBtn');
+            const actionsBtn = document.getElementById('actionsBtn');
+            const content = document.getElementById('ecoContent');
+            const sidebarTitle = document.getElementById('sidebarTitle');
+            const savedList = document.getElementById('savedList');
 
-  const newItem = document.createElement('div');
-  newItem.className = 'flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition';
-  newItem.dataset.id = id;
-  newItem.dataset.type = type;
-  newItem.dataset.category = category;
+            if (tab === 'topics') {
+                slider.style.transform = 'translateX(0)';
+                topicsBtn.style.color = '#7A8C4F';
+                actionsBtn.style.color = '#FCF9EF';
+                sidebarTitle.textContent = 'Saved Eco-topics';
+                content.innerHTML = `@foreach ($ecoTopics as $topic)
+                    <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transition-all"
+                         data-type="ecoTopic"
+                         data-id="{{ $topic->library_id }}"
+                         data-category="{{ $topic->category }}">
+                        <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
+                             alt="{{ $topic->title }}"
+                             class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
+                                onclick="openEcoModal('ecoTopic', {{ $topic->library_id }})">{{ $topic->title }}</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
+                                {{ $topic->content }}
+                            </p>
+                        </div>
+                        <form action="{{ route('libraries.save', ['id' => $topic->library_id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="type" value="ecoTopic">
+                            <button type="submit" class="save-btn text-gray-400 hover:text-yellow-500 flex-shrink-0">
+                                <svg class="w-5 h-5 {{ Auth::user() && Auth::user()->savedLibraries()->where('library_id', $topic->library_id)->exists() ? 'text-yellow-500 fill-current' : 'text-gray-400' }}"
+                                     viewBox="0 0 24 24"
+                                     {{ Auth::user() && Auth::user()->savedLibraries()->where('library_id', $topic->library_id)->exists() ? 'fill="currentColor"' : 'fill="none" stroke="currentColor"' }}>
+                                    <path {{ Auth::user() && Auth::user()->savedLibraries()->where('library_id', $topic->library_id)->exists() ? '' : 'stroke-linecap="round" stroke-linejoin="round" stroke-width="2"' }}
+                                          d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                @endforeach`;
+                savedList.innerHTML = `@foreach ($savedTopics as $saved)
+                    @if ($saved->type === 'ecoTopic')
+                    <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
+                         data-type="{{ $saved->type }}"
+                         data-id="{{ $saved->id }}"
+                         data-category="{{ $saved->category }}">
+                        <div class="flex items-center">
+                            <img src="{{ $saved->image ? Vite::asset('resources/images/eco-library/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
+                                 alt="{{ $saved->title }}"
+                                 class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-medium text-[#5C7919] truncate">{{ $saved->title }}</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    @endif
+                @endforeach`;
+            } else {
+                slider.style.transform = 'translateX(100%)';
+                actionsBtn.style.color = '#7A8C4F';
+                topicsBtn.style.color = '#FCF9EF';
+                sidebarTitle.textContent = 'Saved Eco-actions';
+                content.innerHTML = `@foreach ($ecoActions as $action)
+                    <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transition-all"
+                         data-type="ecoAction"
+                         data-id="{{ $action->action_id }}"
+                         data-category="{{ $action->category }}">
+                        <img src="{{ $action->image ? Vite::asset('resources/images/eco-actions/' . $action->image) : Vite::asset('resources/images/default.png') }}"
+                             alt="{{ $action->title }}"
+                             class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
+                                onclick="openEcoModal('ecoAction', {{ $action->action_id }})">{{ $action->title }}</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
+                                {{ $action->description }}
+                            </p>
+                        </div>
+                        <form action="{{ route('libraries.save', ['id' => $action->action_id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="type" value="ecoAction">
+                            <button type="submit" class="save-btn text-gray-400 hover:text-yellow-500 flex-shrink-0">
+                                <svg class="w-5 h-5 {{ Auth::user() && Auth::user()->savedEcoActions()->where('action_id', $action->action_id)->exists() ? 'text-yellow-500 fill-current' : 'text-gray-400' }}"
+                                     viewBox="0 0 24 24"
+                                     {{ Auth::user() && Auth::user()->savedEcoActions()->where('action_id', $action->action_id)->exists() ? 'fill="currentColor"' : 'fill="none" stroke="currentColor"' }}>
+                                    <path {{ Auth::user() && Auth::user()->savedEcoActions()->where('action_id', $action->action_id)->exists() ? '' : 'stroke-linecap="round" stroke-linejoin="round" stroke-width="2"' }}
+                                          d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                @endforeach`;
+                savedList.innerHTML = `@foreach ($savedTopics as $saved)
+                    @if ($saved->type === 'ecoAction')
+                    <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
+                         data-type="{{ $saved->type }}"
+                         data-id="{{ $saved->id }}"
+                         data-category="{{ $saved->category }}">
+                        <div class="flex items-center">
+                            <img src="{{ $saved->image ? Vite::asset('resources/images/eco-actions/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
+                                 alt="{{ $saved->title }}"
+                                 class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-medium text-[#5C7919] truncate">{{ $saved->title }}</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <form action="{{ route('libraries.mark-done', ['id' => $saved->id]) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="mark-done-btn text-xs {{ $saved->done ? 'bg-gray-400 cursor-default' : 'bg-[#7A8C4F] hover:bg-[#90A955]' }} text-white px-2 py-1 rounded-full transition" {{ $saved->done ? 'disabled' : '' }}>
+                                    {{ $saved->done ? 'Completed' : 'Mark as Done' }}
+                                </button>
+                            </form>
+                            <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    @endif
+                @endforeach`;
+            }
 
-  const actionButton = (type === 'ecoAction')
-    ? `<button class="mark-done-btn text-xs ${done ? 'bg-gray-400 cursor-default' : 'bg-[#7A8C4F] hover:bg-[#90A955]'} text-white px-2 py-1 rounded-full transition" ${done ? 'disabled' : ''}>${done ? 'Completed' : 'Mark as Done'}</button>`
-    : '';
+            applyCategoryFilter();
+        }
 
-  newItem.innerHTML = `
-    <div class="flex items-center">
-      <img src="${img}" class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
-      <div class="flex-1 min-w-0">
-        <h4 class="text-sm font-medium text-[#5C7919] truncate eco-title">${title}</h4>
-      </div>
-    </div>
-    <div class="flex items-center gap-2">
-      ${actionButton}
-      <button class="unsave-btn text-yellow-500 hover:text-red-500" title="Unsave">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-        </svg>
-      </button>
-    </div>
-  `;
+        // 🌱 Open modal with dynamic content
+        function openEcoModal(type, id) {
+            currentItemType = type;
+            currentItemId = id;
+            const modal = document.getElementById('ecoDetailModal');
+            const title = document.getElementById('ecoModalTitle');
+            const image = document.getElementById('ecoModalImage');
+            const content = document.getElementById('ecoModalContent');
+            const actionBtn = document.getElementById('ecoModalActionBtn');
 
-  savedList.appendChild(newItem);
-}
+            // Determine API endpoint based on type
+            const url = type === 'ecoTopic' ? `/libraries/${id}` : `/actions/${id}`;
 
-// 🌱 Save current sidebar items to localStorage
-function saveSidebarToLocalStorage() {
-  const savedList = document.getElementById('savedList');
-  const allItems = [...savedList.querySelectorAll('.saved-item')].map(item => ({
-    id: item.dataset.id,
-    type: item.dataset.type,
-    title: item.querySelector('.eco-title').textContent,
-    img: item.querySelector('img').src,
-    category: item.dataset.category,
-    done: item.querySelector('.mark-done-btn')?.disabled || false
-  }));
+            fetch(url, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Populate modal
+                title.textContent = data.title;
+                image.src = data.image ? `${type === 'ecoTopic' ? window.assetPaths.ecoLibrary : window.assetPaths.ecoActions}/${data.image}` : window.assetPaths.default;
+                image.alt = data.title;
 
-  // Merge with previously saved items of other tab types
-  const prevItems = JSON.parse(localStorage.getItem(savedItemsKey) || '[]');
-  const filteredPrev = prevItems.filter(i => i.type !== currentTabType());
-  localStorage.setItem(savedItemsKey, JSON.stringify([...filteredPrev, ...allItems]));
-}
+                // Clear previous content
+                content.innerHTML = '';
 
-// Helper to get current tab type
-function currentTabType() {
-  return currentTab === 'topics' ? 'ecoTopic' : 'ecoAction';
-}
+                // Add main content/description
+                const mainContent = document.createElement('p');
+                mainContent.textContent = type === 'ecoTopic' ? data.content : data.description;
+                content.appendChild(mainContent);
 
-// 🌱 Apply category filter
-function applyCategoryFilter() {
-  const contentItems = document.querySelectorAll('#ecoContent .eco-card');
-  const savedItems = document.querySelectorAll('#savedList .saved-item');
+                // Add category if present
+                if (data.category) {
+                    const category = document.createElement('p');
+                    category.innerHTML = `<strong>Category:</strong> ${data.category}`;
+                    content.appendChild(category);
+                }
 
-  contentItems.forEach(item => {
-    const category = item.dataset.category || '';
-    item.style.display = currentCategory === '' || category === currentCategory ? 'flex' : 'none';
-  });
+                // Add source link for topics if present
+                if (type === 'ecoTopic' && data.source_link) {
+                    const source = document.createElement('p');
+                    source.innerHTML = `<strong>Source:</strong> <a href="${data.source_link}" target="_blank" class="text-[#5C7919] hover:underline">Learn more</a>`;
+                    content.appendChild(source);
+                }
 
-  savedItems.forEach(item => {
-    const category = item.dataset.category || '';
-    item.style.display = currentCategory === '' || category === currentCategory ? 'flex' : 'none';
-  });
-}
+                // Add points value for actions if present
+                if (type === 'ecoAction' && data.points_value) {
+                    const points = document.createElement('p');
+                    points.innerHTML = `<strong>Points:</strong> ${data.points_value}`;
+                    content.appendChild(points);
+                }
 
-// 🌱 Switch tab
-function switchTab(tab) {
-  currentTab = tab;
-  const slider = document.getElementById('toggle-slider');
-  const topicsBtn = document.getElementById('topicsBtn');
-  const actionsBtn = document.getElementById('actionsBtn');
-  const content = document.getElementById('ecoContent');
-  const sidebarTitle = document.getElementById('sidebarTitle');
+                // Show/hide Mark as Done button
+                if (type === 'ecoAction') {
+                    // Check if action is already completed
+                    fetch(`/libraries/${id}/check-done`, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(status => {
+                        actionBtn.classList.remove('hidden');
+                        if (status.completed) {
+                            actionBtn.textContent = 'Completed';
+                            actionBtn.disabled = true;
+                            actionBtn.classList.add('bg-gray-400', 'cursor-default');
+                            actionBtn.classList.remove('hover:bg-[#5C7919]/20');
+                        } else {
+                            actionBtn.textContent = 'Mark as Done';
+                            actionBtn.disabled = false;
+                            actionBtn.classList.remove('bg-gray-400', 'cursor-default');
+                            actionBtn.classList.add('hover:bg-[#5C7919]/20');
+                        }
+                    });
+                } else {
+                    actionBtn.classList.add('hidden');
+                }
 
-  if (tab === 'topics') {
-    slider.style.transform = 'translateX(0)';
-    topicsBtn.style.color = '#7A8C4F';
-    actionsBtn.style.color = '#FCF9EF';
-    sidebarTitle.textContent = 'Saved Eco-topics';
-    content.innerHTML = `@foreach($ecoTopics as $topic)
-      <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transition-all cursor-pointer"
-           data-type="ecoTopic"
-           data-id="{{ $topic->id }}"
-           data-category="{{ $topic->category }}">
-          <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
-               alt="{{ $topic->title }}"
-               class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
-          <div class="flex-1 min-w-0">
-              <h3 class="font-semibold text-lg text-[#5C7919] mb-1 eco-title truncate"
-                  data-type="ecoTopic"
-                  data-id="{{ $topic->id }}">{{ $topic->title }}</h3>
-              <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
-                  {{ $topic->content }}
-              </p>
-          </div>
-          <button class="save-btn text-gray-400 hover:text-yellow-500 flex-shrink-0" data-title="{{ $topic->title }}">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-              </svg>
-          </button>
-      </div>
-      @endforeach`;
-  } else {
-    slider.style.transform = 'translateX(100%)';
-    actionsBtn.style.color = '#7A8C4F';
-    topicsBtn.style.color = '#FCF9EF';
-    sidebarTitle.textContent = 'Saved Eco-actions';
-    content.innerHTML = `@foreach($ecoActions as $action)
-      <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transition-all cursor-pointer"
-           data-type="ecoAction"
-           data-id="{{ $action->id }}"
-           data-category="{{ $action->category }}">
-          <img src="{{ $action->image ? Vite::asset('resources/images/eco-actions/' . $action->image) : Vite::asset('resources/images/default.png') }}"
-               alt="{{ $action->title }}"
-               class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
-          <div class="flex-1 min-w-0">
-              <h3 class="font-semibold text-lg text-[#5C7919] mb-1 eco-title truncate"
-                  data-type="ecoAction"
-                  data-id="{{ $action->id }}">{{ $action->title }}</h3>
-              <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
-                  {{ $action->content }}
-              </p>
-          </div>
-          <button class="save-btn text-gray-400 hover:text-yellow-500 flex-shrink-0" data-title="{{ $action->title }}">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-              </svg>
-          </button>
-      </div>
-      @endforeach`;
-  }
+                // Show modal
+                modal.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                alert('Failed to load content. Please try again.');
+            });
+        }
 
-  loadSavedItems(); // reload saved items for current tab
-  applyCategoryFilter();
-}
+        // 🌱 Close modal
+        function closeEcoModal() {
+            const modal = document.getElementById('ecoDetailModal');
+            modal.classList.add('hidden');
+            currentItemId = null;
+            currentItemType = null;
+        }
 
-document.getElementById('categoryDropdown').addEventListener('change', function() {
-  currentCategory = this.value;
-  applyCategoryFilter();
-});
+        // 🌱 Mark action as done
+        function markActionDone() {
+            if (currentItemType !== 'ecoAction' || !currentItemId) return;
 
-// 🌱 Save / Unsave / Mark Done Logic
-document.addEventListener('click', e => {
-  const saveBtn = e.target.closest('.save-btn');
-  const unsaveBtn = e.target.closest('.unsave-btn');
-  const markDoneBtn = e.target.closest('.mark-done-btn');
+            fetch(`/libraries/${currentItemId}/mark-done`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const actionBtn = document.getElementById('ecoModalActionBtn');
+                    actionBtn.textContent = 'Completed';
+                    actionBtn.disabled = true;
+                    actionBtn.classList.add('bg-gray-400', 'cursor-default');
+                    actionBtn.classList.remove('hover:bg-[#5C7919]/20');
+                    alert('Action marked as done!');
+                    // Optionally refresh sidebar
+                    switchTab(currentTab);
+                } else {
+                    alert(data.error || 'Failed to mark action as done.');
+                }
+            })
+            .catch(error => {
+                console.error('Error marking action as done:', error);
+                alert('Failed to mark action as done. Please try again.');
+            });
+        }
 
-  // 🌿 Save
-  if (saveBtn) {
-    const card = saveBtn.closest('.eco-card');
-    const itemData = {
-      id: card.dataset.id,
-      type: card.dataset.type,
-      title: card.querySelector('.eco-title').textContent,
-      img: card.querySelector('img').src,
-      category: card.dataset.category || '',
-      done: false
-    };
-
-    appendSavedItem(itemData);
-
-    // Change icon
-    saveBtn.innerHTML = `<svg class='w-5 h-5 text-yellow-500' fill='currentColor' viewBox='0 0 24 24'>
-      <path d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z'/>
-    </svg>`;
-
-    saveSidebarToLocalStorage();
-  }
-
-  // 🍂 Unsave
-  if (unsaveBtn) {
-    const item = unsaveBtn.closest('.saved-item');
-    item.remove();
-    saveSidebarToLocalStorage();
-  }
-
-  // 🌿 Mark as Done (ecoActions only)
-  if (markDoneBtn) {
-    const btn = markDoneBtn;
-    btn.textContent = 'Completed';
-    btn.classList.remove('bg-[#7A8C4F]');
-    btn.classList.add('bg-gray-400', 'cursor-default');
-    btn.disabled = true;
-
-    saveSidebarToLocalStorage();
-  }
-});
-
-// 🌱 Load saved items on page load
-document.addEventListener('DOMContentLoaded', () => {
-  loadSavedItems();
-});
-</script>
-
-
-
-@include('modal.ecoDetailModal')
+        // 🌱 Category dropdown change
+        document.getElementById('categoryDropdown').addEventListener('change', function() {
+            currentCategory = this.value;
+            applyCategoryFilter();
+        });
+    </script>
 @endsection

@@ -68,4 +68,20 @@ class User extends Authenticatable implements MustVerifyEmail
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * Relationship: A user has many saved libraries.
+     */
+    public function savedLibraries()
+    {
+        return $this->hasMany(UserLibrary::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Relationship: A user has many saved eco actions.
+     */
+    public function savedEcoActions()
+    {
+        return $this->hasMany(UserEcoAction::class, 'user_id', 'user_id');
+    }
 }

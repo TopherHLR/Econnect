@@ -5,20 +5,86 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\EcoLibrary;
-use App\Models\UserLibrary;
 use App\Models\EcoAction;
+use App\Models\UserLibrary;
 use App\Models\UserEcoAction;
 
 class LibraryController extends Controller
 {
     /**
-     * Display a listing of all libraries (for users).
+     * Display the lifestyle page with topics and actions.
+     */
+    public function lifestyle(Request $request)
+    {
+        // In LibraryController::lifestyle
+        \Log::info('User relationships', [
+            'savedLibraries' => method_exists(Auth::user(), 'savedLibraries'),
+            'savedEcoActions' => method_exists(Auth::user(), 'savedEcoActions')
+        ]);
+        // Fetch topics (EcoLibrary with type = Topic)
+        $ecoTopics = EcoLibrary::where('type', 'Topic')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Fetch actions
+        $ecoActions = EcoAction::orderBy('created_at', 'desc')
+            ->get();
+
+        // Format saved items for sidebar
+        $savedTopics = collect();
+
+        if (Auth::check()) {
+            // Saved Topics (UserLibrary)
+            $savedLibraries = UserLibrary::with('ecoLibrary')
+                ->where('user_id', Auth::id())
+                ->get();
+
+            foreach ($savedLibraries as $item) {
+                if ($item->ecoLibrary) {
+                    $savedTopics->push((object)[
+                        'id' => $item->ecoLibrary->library_id,
+                        'title' => $item->ecoLibrary->title,
+                        'image' => $item->ecoLibrary->image,
+                        'category' => $item->ecoLibrary->category,
+                        'type' => 'ecoTopic',
+                        'done' => false, // Topics cannot be completed
+                    ]);
+                }
+            }
+
+            // Saved Actions (UserEcoAction)
+            $savedEcoActions = UserEcoAction::with('ecoAction')
+                ->where('user_id', Auth::id())
+                ->get();
+
+            foreach ($savedEcoActions as $item) {
+                if ($item->ecoAction) {
+                    $savedTopics->push((object)[
+                        'id' => $item->ecoAction->action_id,
+                        'title' => $item->ecoAction->title,
+                        'image' => $item->ecoAction->image,
+                        'category' => $item->ecoAction->category,
+                        'type' => 'ecoAction',
+                        'done' => true, // Presence in UserEcoAction implies completion
+                    ]);
+                }
+            }
+        }
+
+        return view('lifestyle', [
+            'ecoTopics' => $ecoTopics,
+            'ecoActions' => $ecoActions,
+            'savedTopics' => $savedTopics,
+        ]);
+    }
+
+    /**
+     * API: Display a listing of all libraries.
      */
     public function index(Request $request)
     {
         $query = EcoLibrary::query();
 
-        // Optional filters: category or type
         if ($request->has('category')) {
             $query->where('category', $request->category);
         }
@@ -32,7 +98,7 @@ class LibraryController extends Controller
     }
 
     /**
-     * Display a single library by ID.
+     * API: Display a single library by ID.
      */
     public function show($id)
     {
@@ -41,50 +107,108 @@ class LibraryController extends Controller
     }
 
     /**
-     * Save a library to user's collection.
+     * Save a library or action to user's collection.
      */
-    public function saveLibrary($id)
+    public function saveLibrary(Request $request, $id)
     {
         $user = Auth::user();
+        $type = $request->input('type'); // ecoTopic or ecoAction
 
-        // Prevent duplicates
-        $exists = UserLibrary::where('user_id', $user->user_id)
-            ->where('library_id', $id)
-            ->exists();
+        if ($type === 'ecoTopic') {
+            // Save EcoLibrary (Topic)
+            $item = EcoLibrary::where('type', 'Topic')->findOrFail($id);
+            $exists = UserLibrary::where('user_id', $user->user_id)
+                ->where('library_id', $id)
+                ->exists();
 
-        if ($exists) {
-            return response()->json(['message' => 'Already saved'], 409);
+            if ($exists) {
+                return redirect()->back()->with('error', 'Already saved');
+            }
+
+            UserLibrary::create([
+                'user_id' => $user->user_id,
+                'library_id' => $id,
+                'saved_at' => now(),
+            ]);
+        } elseif ($type === 'ecoAction') {
+            // Save EcoAction
+            $item = EcoAction::findOrFail($id);
+            $exists = UserEcoAction::where('user_id', $user->user_id)
+                ->where('action_id', $id)
+                ->exists();
+
+            if ($exists) {
+                return redirect()->back()->with('error', 'Already saved');
+            }
+
+            UserEcoAction::create([
+                'user_id' => $user->user_id,
+                'action_id' => $id,
+                'log_date' => now(),
+                'points_earned' => $item->points_value ?? 1,
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'Invalid item type');
         }
 
-        UserLibrary::create([
-            'user_id' => $user->user_id,
-            'library_id' => $id,
-            'saved_at' => now(),
-        ]);
-
-        return response()->json(['message' => 'Library saved successfully']);
+        return redirect()->back()->with('success', 'Library saved successfully');
     }
 
     /**
-     * Unsave a library (remove from user's saved list).
+     * Unsave a library or action.
      */
     public function unsaveLibrary($id)
     {
         $user = Auth::user();
 
+        // Try unsaving from UserLibrary (Topics)
         $deleted = UserLibrary::where('user_id', $user->user_id)
             ->where('library_id', $id)
             ->delete();
 
-        if ($deleted) {
-            return response()->json(['message' => 'Library removed']);
+        // Try unsaving from UserEcoAction (Actions)
+        if (!$deleted) {
+            $deleted = UserEcoAction::where('user_id', $user->user_id)
+                ->where('action_id', $id)
+                ->delete();
         }
 
-        return response()->json(['message' => 'Not found'], 404);
+        if ($deleted) {
+            return redirect()->back()->with('success', 'Library removed');
+        }
+
+        return redirect()->back()->with('error', 'Not found');
     }
 
     /**
-     * Get all saved libraries of the logged-in user.
+     * Mark an eco action as done (log it in UserEcoAction).
+     */
+    public function markDone($id)
+    {
+        $user = Auth::user();
+        $item = EcoAction::findOrFail($id);
+
+        // Check if already logged
+        $exists = UserEcoAction::where('user_id', $user->user_id)
+            ->where('action_id', $id)
+            ->exists();
+
+        if ($exists) {
+            return redirect()->back()->with('error', 'Action already completed');
+        }
+
+        UserEcoAction::create([
+            'user_id' => $user->user_id,
+            'action_id' => $id,
+            'log_date' => now(),
+            'points_earned' => $item->points_value ?? 1,
+        ]);
+
+        return redirect()->back()->with('success', 'Action marked as done');
+    }
+
+    /**
+     * API: Get all saved libraries of the logged-in user.
      */
     public function myLibraries()
     {
@@ -103,49 +227,42 @@ class LibraryController extends Controller
     // ==============================
     public function store(Request $request)
     {
-        // Validate the input
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'content'     => 'required|string',
-            'category'    => 'nullable|string|max:100',
-            'type'        => 'nullable|string|max:50',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'category' => 'nullable|string|max:100',
+            'type' => 'nullable|string|max:50',
             'source_link' => 'nullable|url|max:255',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // ✅ validate image
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         try {
-            // Handle image upload
             $imageName = null;
             if ($request->hasFile('image')) {
                 $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
                 $request->file('image')->move(resource_path('images/eco-library'), $imageName);
             }
 
-            // Create EcoLibrary entry
             $library = EcoLibrary::create([
-                'title'       => $request->title,
-                'content'     => $request->content,
-                'category'    => $request->category,
-                'type'        => $request->type ?? 'Tip',
+                'title' => $request->title,
+                'content' => $request->content,
+                'category' => $request->category,
+                'type' => $request->type ?? 'Tip',
                 'source_link' => $request->source_link,
-                'image'       => $imageName,
-                'created_by'  => Auth::id(),
-                'created_at'  => now(),
+                'image' => $imageName,
+                'created_by' => Auth::id(),
+                'created_at' => now(),
             ]);
 
             return redirect()
                 ->route('adminLifestyle')
                 ->with('success', 'Eco Topic created successfully!');
-                
         } catch (\Exception $e) {
-            // Log the error for debugging
             \Log::error('Error creating Eco Topic: ' . $e->getMessage());
-
-            // Redirect back with an error message
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Failed to create Eco Topics.Please try again.');
+                ->with('error', 'Failed to create Eco Topic. Please try again.');
         }
     }
 
@@ -163,16 +280,11 @@ class LibraryController extends Controller
 
         $library->update($request->only(['title', 'content', 'category', 'type', 'source_link']));
 
-        // Redirect to admin home with a success message
         return redirect()
-            ->route('admin.home') // 👈 change this to your actual admin home route name
+            ->route('admin.home')
             ->with('success', 'Eco Topic updated successfully!');
     }
 
-
-    /**
-     * Delete a library entry (Admin only).
-     */
     public function destroy($id)
     {
         $library = EcoLibrary::findOrFail($id);
@@ -196,56 +308,20 @@ class LibraryController extends Controller
         $categories = EcoLibrary::distinct()->pluck('category')->filter()->values();
         return view('lifestyle', compact('ecoLibraries', 'savedLibraries', 'categories'));
     }
+    public function showAction($id)
+    {
+        $action = EcoAction::findOrFail($id);
+        return response()->json($action);
+    }
     public function adminIndex()
     {
-        // Get topics from EcoLibrary
         $ecoTopics = EcoLibrary::where('type', 'Topic')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Get actions from EcoAction
-        $ecoActions = EcoAction::orderBy('created_at', 'desc')->get();
+        $ecoActions = EcoAction::orderBy('created_at', 'desc')
+            ->get();
 
         return view('admin.adminLifestyle', compact('ecoTopics', 'ecoActions'));
     }
-
-    public function lifestyle()
-    {
-        // Always fetch all eco topics and actions
-        $ecoTopics = EcoLibrary::where('type', 'Topic')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $ecoActions = EcoAction::where('type', 'Action')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        // Prepare empty collections for guests
-        $savedTopics = collect();
-        $savedActions = collect();
-
-        // If user is logged in, fetch their saved items too
-        if (Auth::check()) {
-            $savedLibraries = UserLibrary::with('ecoLibrary')
-                ->where('user_id', Auth::id())
-                ->get();
-
-            $savedEcoActions = UserEcoAction::with('ecoAction')
-                ->where('user_id', Auth::id())
-                ->get();
-
-            $savedTopics = $savedLibraries
-                ->filter(fn($lib) => $lib->ecoLibrary && $lib->ecoLibrary->type === 'Topic')
-                ->pluck('ecoLibrary');
-
-            $savedActions = $savedEcoActions
-                ->filter(fn($lib) => $lib->ecoAction && $lib->ecoAction->type === 'Action')
-                ->pluck('ecoAction');
-        }
-
-        return view('lifestyle', compact('ecoTopics', 'ecoActions', 'savedTopics', 'savedActions'));
-    }
-
-
-
 }

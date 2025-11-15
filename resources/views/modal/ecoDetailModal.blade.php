@@ -1,10 +1,9 @@
 <div id="ecoDetailModal"
-     class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm justify-center items-center z-50">
+     class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
   <div class="bg-white rounded-3xl shadow-lg border border-green-100 max-w-4xl w-full mx-4 p-8 relative animate-fadeIn">
-    
     <!-- Close Button -->
     <button onclick="closeEcoModal()"
-            class="absolute top-6 right-6 text-gray-400 hover:text-[#5C7919] transition">
+            class="absolute top-6 right-6 text-gray-400 hover:text-[#5C7919] transition cursor-pointer">
       ✕
     </button>
 
@@ -33,6 +32,5 @@
         Mark as Done
       </button>
     </div>
-
   </div>
 </div>

@@ -1,23 +1,78 @@
-/* --- ecoModal.css --- */
+/* Ensure modal is centered and responsive */
 #ecoDetailModal {
-  animation: fadeIn 0.25s ease-in-out;
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#ecoDetailModal.hidden {
+    display: none;
+}
+
+#ecoDetailModal:not(.hidden) {
+    display: flex;
+}
+
+/* Inner modal content */
+#ecoDetailModal > div {
+    max-width: 1024px; /* Matches max-w-4xl */
+    width: 100%;
+    margin: 1rem; /* Matches mx-4 */
+    padding: 2rem; /* Matches p-8 */
+    background-color: white;
+    border-radius: 1.5rem; /* Matches rounded-3xl */
+    border: 1px solid #d1fae5; /* Matches border-green-100 */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Matches shadow-lg */
+    position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    #ecoDetailModal > div {
+        margin: 0.5rem;
+        padding: 1.5rem;
+    }
+}
+
+/* Existing animation and scrollbar styles */
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
-#ecoModalContent p {
-  margin-bottom: 0.5rem;
+.custom-scroll::-webkit-scrollbar {
+    width: 8px;
 }
 
-#ecoModalActionBtn {
-  transition: all 0.3s ease;
+.custom-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: #7A8C4F;
+    border-radius: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: #90A955;
 }
