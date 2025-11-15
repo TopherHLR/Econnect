@@ -16,25 +16,36 @@ class LibraryController extends Controller
      */
     public function lifestyle(Request $request)
     {
-        // In LibraryController::lifestyle
-        \Log::info('User relationships', [
-            'savedLibraries' => method_exists(Auth::user(), 'savedLibraries'),
-            'savedEcoActions' => method_exists(Auth::user(), 'savedEcoActions')
-        ]);
-        // Fetch topics (EcoLibrary with type = Topic)
+        $search = $request->input('search'); // get search term
+        $category = $request->input('category'); // optional category filter
+
+        // Topics
         $ecoTopics = EcoLibrary::where('type', 'Topic')
+            ->when($search, function ($query, $search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%");
+            })
+            ->when($category, function ($query, $category) {
+                $query->where('category', $category);
+            })
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Fetch actions
-        $ecoActions = EcoAction::orderBy('created_at', 'desc')
+        // Actions
+        $ecoActions = EcoAction::when($search, function ($query, $search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%");
+            })
+            ->when($category, function ($query, $category) {
+                $query->where('category', $category);
+            })
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        // Format saved items for sidebar
+        // Saved items logic (same as before)
         $savedTopics = collect();
 
         if (Auth::check()) {
-            // Saved Topics (UserLibrary)
             $savedLibraries = UserLibrary::with('ecoLibrary')
                 ->where('user_id', Auth::id())
                 ->get();
@@ -47,12 +58,11 @@ class LibraryController extends Controller
                         'image' => $item->ecoLibrary->image,
                         'category' => $item->ecoLibrary->category,
                         'type' => 'ecoTopic',
-                        'done' => false, // Topics cannot be completed
+                        'done' => false,
                     ]);
                 }
             }
 
-            // Saved Actions (UserEcoAction)
             $savedEcoActions = UserEcoAction::with('ecoAction')
                 ->where('user_id', Auth::id())
                 ->get();
@@ -65,7 +75,7 @@ class LibraryController extends Controller
                         'image' => $item->ecoAction->image,
                         'category' => $item->ecoAction->category,
                         'type' => 'ecoAction',
-                        'done' => true, // Presence in UserEcoAction implies completion
+                        'done' => true,
                     ]);
                 }
             }
@@ -77,7 +87,6 @@ class LibraryController extends Controller
             'savedTopics' => $savedTopics,
         ]);
     }
-
     /**
      * API: Display a listing of all libraries.
      */
