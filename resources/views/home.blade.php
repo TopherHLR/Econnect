@@ -37,7 +37,7 @@
                  max-sm:top-[50px] max-sm:w-[500px]" />
 
     <!-- 🌏 Centered Text (top-most) -->
-    <div class="absolute top-[20%] left-1/2 -translate-x-1/2 text-center px-4 z-[60]">
+    <div class="absolute top-[20%] left-1/2 -translate-x-1/2 text-center px-4 z-20">
       <h1
         class="italic text-3xl md:text-4xl font-serif font-semibold text-[#5C7919] leading-snug drop-shadow-[0_2px_3px_rgba(255,255,255,0.8)]">
         You’re here because you care<br class="hidden md:block">
@@ -46,7 +46,7 @@
     </div>
 
   </section>
-
+@include('modal.ecoDetailModal')
   <!-- 🌿 Widgets for Logged-in Users -->
   @auth
   <div class="eco-widgets-container">
@@ -55,37 +55,62 @@
           style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
           <button class="eco-widget-btn">My Eco-actions</button>
           <p id="eco-action-text" class="eco-widget-text">Loading...</p>
-          <a href="/lifestyle" class="eco-widget-link">View saved eco-actions ></a>
-      </div>
+          <a href="/lifestyle?tab=actions" class="eco-widget-link">
+              View saved eco-actions &gt;
+          </a>
 
+      </div>
       <!-- 🌎 Saved Eco-Topics Widget -->
       <div class="eco-widget eco-topics"
           style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
           <button class="eco-widget-btn">Saved Eco-topics</button>
           <p id="eco-topic-text" class="eco-widget-text">Loading...</p>
-          <a href="#" class="eco-widget-link">Continue reading ></a>
+          <a href="javascript:void(0);" 
+            id="ecoTopicLink"
+            class="eco-widget-link">
+            Continue reading &gt;
+          </a>
+
       </div>
+
   </div>
 
   {{-- 🔄 Auto-refresh widget texts --}}
   <script>
-      async function updateWidgets() {
-          try {
-              const response = await fetch("{{ route('widgets.random') }}");
-              const data = await response.json();
+async function updateWidgets() {
+    try {
+        const response = await fetch("{{ route('widgets.random') }}");
+        const data = await response.json();
 
-              document.getElementById('eco-action-text').textContent = `"${data.eco_action}"`;
-              document.getElementById('eco-topic-text').textContent = `"${data.eco_topic}"`;
-          } catch (error) {
-              console.error('Error updating widgets:', error);
-          }
+        // Update action text
+        document.getElementById('eco-action-text').textContent = 
+            data.eco_action?.title ?? '"No saved actions yet"';
 
-          // Change every 5–10 seconds randomly
-          const nextUpdate = Math.floor(Math.random() * 5000) + 5000; // between 5–10s
-          setTimeout(updateWidgets, nextUpdate);
-      }
+        // Update topic text and link
+        const topicText = document.getElementById('eco-topic-text');
+        const topicLink = document.getElementById('ecoTopicLink');
 
-      updateWidgets();
+        if (data.eco_topic) {
+            topicText.textContent = `"${data.eco_topic.title}"`;
+            topicLink.onclick = () => openEcoModal('ecoTopic', data.eco_topic.id);
+        } else {
+            topicText.textContent = '"No saved topics yet"';
+            topicLink.onclick = null;
+        }
+
+
+    } catch (error) {
+        console.error('Error updating widgets:', error);
+    }
+
+    // Change every 5–10 seconds
+    const nextUpdate = Math.floor(Math.random() * 5000) + 5000;
+    setTimeout(updateWidgets, nextUpdate);
+}
+
+updateWidgets();
+
+
   </script>
   @endauth
 

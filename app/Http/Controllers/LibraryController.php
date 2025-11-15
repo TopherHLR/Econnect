@@ -324,4 +324,5 @@ class LibraryController extends Controller
 
         return view('admin.adminLifestyle', compact('ecoTopics', 'ecoActions'));
     }
+    
 }

@@ -1,7 +1,6 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-    @vite(['resources/css/ecoModal.css'])
     <div class="w-[90%] mx-auto px-12 py-12 mt-15">
         <div class="bg-[#F7F3E7] rounded-4xl shadow-sm border border-green-100 overflow-hidden p-8">
             <!-- Header -->
@@ -108,28 +107,22 @@
                                          alt="{{ $saved->title }}"
                                          class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
                                     <div class="flex-1 min-w-0">
-                                        <h4 class="text-sm font-medium text-[#5C7919] truncate">{{ $saved->title }}</h4>
+                                      <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                          onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
+                                          {{ $saved->title }}
+                                      </h4>
+
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    @if (($saved->type ?? '') === 'ecoAction')
-                                        <form action="{{ route('libraries.mark-done', ['id' => $saved->id]) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="mark-done-btn text-xs {{ $saved->done ? 'bg-gray-400 cursor-default' : 'bg-[#7A8C4F] hover:bg-[#90A955]' }} text-white px-2 py-1 rounded-full transition" {{ $saved->done ? 'disabled' : '' }}>
-                                                {{ $saved->done ? 'Completed' : 'Mark as Done' }}
-                                            </button>
-                                        </form>
-                                    @endif
-                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
+                                <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                        </svg>
+                                    </button>
+                                </form>
                             </div>
                         @endforeach
                     </div>
@@ -142,54 +135,12 @@
                 “You don’t have to know everything today — one tip at a time is enough.”
             </div>
 
-            <!-- Modal -->
-            <div id="ecoDetailModal"
-                 class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm justify-center items-center z-50">
-                <div class="bg-white rounded-3xl shadow-lg border border-green-100 max-w-4xl w-full mx-4 p-8 relative animate-fadeIn">
-                    <!-- Close Button -->
-                    <button onclick="closeEcoModal()"
-                            class="absolute top-6 right-6 text-gray-400 hover:text-[#5C7919] transition">
-                        ✕
-                    </button>
-
-                    <!-- Title -->
-                    <h1 id="ecoModalTitle"
-                        class="text-3xl font-serif font-semibold text-center text-[#5C7919] mb-6">
-                        <!-- Dynamic title -->
-                    </h1>
-
-                    <!-- Image -->
-                    <img id="ecoModalImage"
-                         src=""
-                         alt=""
-                         class="rounded-xl w-full max-h-[300px] object-cover mb-6">
-
-                    <!-- Content -->
-                    <div id="ecoModalContent"
-                         class="text-sm leading-relaxed text-gray-700 space-y-3">
-                        <!-- Filled dynamically -->
-                    </div>
-
-                    <!-- Action Button (for Eco Actions only) -->
-                    <div class="mt-8 text-center">
-                        <button id="ecoModalActionBtn"
-                                class="hidden bg-[#5C7919]/10 text-[#5C7919] text-sm px-4 py-2 rounded-full hover:bg-[#5C7919]/20 transition"
-                                onclick="markActionDone()">
-                            Mark as Done
-                        </button>
-                    </div>
-                </div>
-            </div>
+@include('modal.ecoDetailModal')
         </div>
     </div>
 
     <!-- Script -->
     <script>
-          window.assetPaths = {
-            ecoLibrary: '{{ Vite::asset('resources/images/eco-library') }}',
-            ecoActions: '{{ Vite::asset('resources/images/eco-actions') }}',
-            default: '{{ Vite::asset('resources/images/default.png') }}'
-        };
         let currentTab = 'topics';
         let currentCategory = '';
         let currentItemId = null;
@@ -258,28 +209,29 @@
                 savedList.innerHTML = `@foreach ($savedTopics as $saved)
                     @if ($saved->type === 'ecoTopic')
                     <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
-                         data-type="{{ $saved->type }}"
-                         data-id="{{ $saved->id }}"
-                         data-category="{{ $saved->category }}">
+                        data-type="{{ $saved->type }}"
+                        data-id="{{ $saved->id }}"
+                        data-category="{{ $saved->category }}">
                         <div class="flex items-center">
                             <img src="{{ $saved->image ? Vite::asset('resources/images/eco-library/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
-                                 alt="{{ $saved->title }}"
-                                 class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
+                                alt="{{ $saved->title }}"
+                                class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
                             <div class="flex-1 min-w-0">
-                                <h4 class="text-sm font-medium text-[#5C7919] truncate">{{ $saved->title }}</h4>
+                                <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                    onclick="openEcoModal('{{ $saved->type }}', {{ $saved->id }})">
+                                    {{ $saved->title }}
+                                </h4>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
+                        <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                     @endif
                 @endforeach`;
@@ -320,185 +272,48 @@
                 savedList.innerHTML = `@foreach ($savedTopics as $saved)
                     @if ($saved->type === 'ecoAction')
                     <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
-                         data-type="{{ $saved->type }}"
-                         data-id="{{ $saved->id }}"
-                         data-category="{{ $saved->category }}">
+                        data-type="{{ $saved->type }}"
+                        data-id="{{ $saved->id }}"
+                        data-category="{{ $saved->category }}">
                         <div class="flex items-center">
                             <img src="{{ $saved->image ? Vite::asset('resources/images/eco-actions/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
-                                 alt="{{ $saved->title }}"
-                                 class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
+                                alt="{{ $saved->title }}"
+                                class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
                             <div class="flex-1 min-w-0">
-                                <h4 class="text-sm font-medium text-[#5C7919] truncate">{{ $saved->title }}</h4>
+                                <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                    onclick="openEcoModal('{{ $saved->type }}', {{ $saved->id }})">
+                                    {{ $saved->title }}
+                                </h4>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <form action="{{ route('libraries.mark-done', ['id' => $saved->id]) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="mark-done-btn text-xs {{ $saved->done ? 'bg-gray-400 cursor-default' : 'bg-[#7A8C4F] hover:bg-[#90A955]' }} text-white px-2 py-1 rounded-full transition" {{ $saved->done ? 'disabled' : '' }}>
-                                    {{ $saved->done ? 'Completed' : 'Mark as Done' }}
-                                </button>
-                            </form>
-                            <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
+                        <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                     @endif
                 @endforeach`;
+
             }
 
             applyCategoryFilter();
         }
+        // ✅ Activate tab based on URL query
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const tab = params.get('tab');
 
-        // 🌱 Open modal with dynamic content
-        function openEcoModal(type, id) {
-            currentItemType = type;
-            currentItemId = id;
-            const modal = document.getElementById('ecoDetailModal');
-            const title = document.getElementById('ecoModalTitle');
-            const image = document.getElementById('ecoModalImage');
-            const content = document.getElementById('ecoModalContent');
-            const actionBtn = document.getElementById('ecoModalActionBtn');
-
-            // Determine API endpoint based on type
-            const url = type === 'ecoTopic' ? `/libraries/${id}` : `/actions/${id}`;
-
-            fetch(url, {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Populate modal
-                title.textContent = data.title;
-                image.src = data.image ? `${type === 'ecoTopic' ? window.assetPaths.ecoLibrary : window.assetPaths.ecoActions}/${data.image}` : window.assetPaths.default;
-                image.alt = data.title;
-
-                // Clear previous content
-                content.innerHTML = '';
-
-                // Add main content/description
-                const mainContent = document.createElement('p');
-                mainContent.textContent = type === 'ecoTopic' ? data.content : data.description;
-                content.appendChild(mainContent);
-
-                // Add category if present
-                if (data.category) {
-                    const category = document.createElement('p');
-                    category.innerHTML = `<strong>Category:</strong> ${data.category}`;
-                    content.appendChild(category);
-                }
-
-                // Add source link for topics if present
-                if (type === 'ecoTopic' && data.source_link) {
-                    const source = document.createElement('p');
-                    source.innerHTML = `<strong>Source:</strong> <a href="${data.source_link}" target="_blank" class="text-[#5C7919] hover:underline">Learn more</a>`;
-                    content.appendChild(source);
-                }
-
-                // Add points value for actions if present
-                if (type === 'ecoAction' && data.points_value) {
-                    const points = document.createElement('p');
-                    points.innerHTML = `<strong>Points:</strong> ${data.points_value}`;
-                    content.appendChild(points);
-                }
-
-                // Show/hide Mark as Done button
-                if (type === 'ecoAction') {
-                    // Check if action is already completed
-                    fetch(`/libraries/${id}/check-done`, {
-                        headers: {
-                            'Accept': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(status => {
-                        actionBtn.classList.remove('hidden');
-                        if (status.completed) {
-                            actionBtn.textContent = 'Completed';
-                            actionBtn.disabled = true;
-                            actionBtn.classList.add('bg-gray-400', 'cursor-default');
-                            actionBtn.classList.remove('hover:bg-[#5C7919]/20');
-                        } else {
-                            actionBtn.textContent = 'Mark as Done';
-                            actionBtn.disabled = false;
-                            actionBtn.classList.remove('bg-gray-400', 'cursor-default');
-                            actionBtn.classList.add('hover:bg-[#5C7919]/20');
-                        }
-                    });
-                } else {
-                    actionBtn.classList.add('hidden');
-                }
-
-                // Show modal
-                modal.classList.remove('hidden');
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                alert('Failed to load content. Please try again.');
-            });
-        }
-
-        // 🌱 Close modal
-        function closeEcoModal() {
-            const modal = document.getElementById('ecoDetailModal');
-            modal.classList.add('hidden');
-            currentItemId = null;
-            currentItemType = null;
-        }
-
-        // 🌱 Mark action as done
-        function markActionDone() {
-            if (currentItemType !== 'ecoAction' || !currentItemId) return;
-
-            fetch(`/libraries/${currentItemId}/mark-done`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    const actionBtn = document.getElementById('ecoModalActionBtn');
-                    actionBtn.textContent = 'Completed';
-                    actionBtn.disabled = true;
-                    actionBtn.classList.add('bg-gray-400', 'cursor-default');
-                    actionBtn.classList.remove('hover:bg-[#5C7919]/20');
-                    alert('Action marked as done!');
-                    // Optionally refresh sidebar
-                    switchTab(currentTab);
-                } else {
-                    alert(data.error || 'Failed to mark action as done.');
-                }
-            })
-            .catch(error => {
-                console.error('Error marking action as done:', error);
-                alert('Failed to mark action as done. Please try again.');
-            });
-        }
-
+            if (tab === 'actions' || tab === 'topics') {
+                switchTab(tab); // call your existing function
+            } else {
+                switchTab('topics'); // default
+            }
+        });
         // 🌱 Category dropdown change
         document.getElementById('categoryDropdown').addEventListener('change', function() {
             currentCategory = this.value;

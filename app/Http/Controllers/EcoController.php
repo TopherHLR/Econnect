@@ -28,15 +28,22 @@ class EcoController extends Controller
                 ->first();
 
             return response()->json([
-                'eco_action' => $ecoAction?->ecoAction?->title ?? 'No saved actions yet',
-                'eco_topic'  => $ecoTopic?->ecoLibrary?->title ?? 'No saved topics yet',
+                'eco_action' => $ecoAction && $ecoAction->ecoAction ? [
+                    'id' => $ecoAction->ecoAction->action_id,
+                    'title' => $ecoAction->ecoAction->title,
+                ] : null,
+                'eco_topic' => $ecoTopic && $ecoTopic->ecoLibrary ? [
+                    'id' => $ecoTopic->ecoLibrary->library_id,
+                    'title' => $ecoTopic->ecoLibrary->title,
+                ] : null,
             ]);
         } catch (\Exception $e) {
-            // Catch the actual problem
             return response()->json([
                 'error' => $e->getMessage(),
             ], 500);
         }
     }
+
+
 
 }

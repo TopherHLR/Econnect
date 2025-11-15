@@ -68,27 +68,7 @@ Route::middleware(['auth'])->group(function () {
 });
 //---------------------------------------------------- MOCK API FOR ECO MODAL -------------------------------------------------
 
-Route::get('/api/ecoTopic/{id}', function ($id) {
-    return response()->json([
-        'id' => $id,
-        'title' => 'Understanding Carbon Emissions',
-        'description' => 'Carbon emissions trap heat and contribute to global warming.',
-        'related_facts' => 'CO₂ emissions from cars and factories are major contributors.',
-        'references' => 'NASA Climate Facts, IPCC Reports'
-    ]);
-});
 
-Route::get('/api/ecoAction/{id}', function ($id) {
-    return response()->json([
-        'id' => $id,
-        'title' => "Eco Action #$id",
-        'image' => "eco-action$id.jpg",
-        'step1' => "Step 1 for action #$id: Start small habits.",
-        'step2' => "Step 2: Practice daily mindfulness about resources.",
-        'step3' => "Step 3: Encourage friends to do the same.",
-        'progress' => "50%",
-    ]);
-});
 
 //---------------------------------------------------- ACCOUNT SETTINGS -------------------------------------------------
 Route::middleware(['auth'])->group(function () {
