@@ -68,67 +68,57 @@
       <!-- Main Content -->
       <main class="flex-1 space-y-6">
           <div class="max-w-8xl mx-auto space-y-6 mt-7 ml-5 mr-5">
-              <!-- Search bars -->
-              <div class="flex flex-wrap items-center justify-between gap-4">
-                  <div id="searchSubmissions" class="relative w-80">
-                      <input type="text" placeholder="Search submissions..."
-                          class="bg-[#E9F0E1] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#4E3A2E]">
-                  </div>
-                  <div id="searchQuests" class="relative w-80 hidden">
-                      <input type="text" placeholder="Search quests..."
-                          class="bg-[#E9F0E1] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#4E3A2E]">
-                  </div>
-              </div>
 
               <!-- Quest Tables -->
               <div id="questTables" class="space-y-8">
                   @foreach($quests as $quest)
-                      <div id="questTable-{{ $quest->quest_id }}" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] {{ $loop->first ? '' : 'hidden' }}">
-                          <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">{{ $quest->title }} Participants</h2>
-                          
-                          <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
-                              <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-                                  <tr>
-                                      <th class="px-4 py-2 w-16">#</th>
-                                      <th class="px-4 py-2">Participant</th>
-                                      <th class="px-4 py-2 w-32">Status</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  @foreach($quest->submissions as $index => $submission)
-                                      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-                                          <td class="px-4 py-2">{{ $index + 1 }}</td>
-                                          <td class="px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline"
-                                              data-name="{{ $submission->user->first_name }} {{ $submission->user->last_name }}"
-                                              data-status="{{ $submission->status }}"
-                                              data-proof="{{ $submission->proof_link }}"
-                                              data-submitted="{{ $submission->date_submitted }}"
-                                              data-completed="{{ $submission->date_completed }}">
-                                              {{ $submission->user->first_name }} {{ $submission->user->last_name }}
-                                          </td>
-                                          <td class="px-4 py-2 text-[#6A8A52]">{{ ucfirst($submission->status) }}</td>
-                                      </tr>
-                                  @endforeach
-                              </tbody>
-                          </table>
+                  <div id="questTable-{{ $quest->quest_id }}" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] {{ $loop->first ? '' : 'hidden' }}">
+                      <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">{{ $quest->title }} Participants</h2>
 
-                          <!-- Submissions Table -->
-                          <h3 class="text-md font-semibold text-[#4E3A2E] mt-6 mb-2">Submissions</h3>
-                          <ul class="list-disc pl-6 text-[#7A8C4F]">
-                              @foreach($quest->submissions as $submission)
-                                  <li>
-                                      {{ $submission->user->first_name }} {{ $submission->user->last_name }} -
-                                      Status: {{ $submission->status }} -
-                                      Submitted: {{ $submission->date_submitted }}
-                                  </li>
-                              @endforeach
-                          </ul>
+                      <!-- Search bar for this table -->
+                      <div class="mb-4">
+                          <input type="text" 
+                                class="bg-[#E9F0E1] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#4E3A2E] table-search" 
+                                placeholder="Search participants..." 
+                                data-table-id="questTable-{{ $quest->quest_id }}">
                       </div>
+
+                      <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
+                          <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
+                              <tr>
+                                  <th class="px-4 py-2 w-16">#</th>
+                                  <th class="px-4 py-2">Participant</th>
+                                  <th class="px-4 py-2 w-32">Status</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              @foreach($quest->submissions as $index => $submission)
+                              <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
+                                  <td class="px-4 py-2">{{ $index + 1 }}</td>
+                                  <td class="px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline">
+                                      {{ $submission->user->first_name }} {{ $submission->user->last_name }}
+                                  </td>
+                                  <td class="px-4 py-2 text-[#6A8A52]">{{ ucfirst($submission->status) }}</td>
+                              </tr>
+                              @endforeach
+                          </tbody>
+                      </table>
+                  </div>
                   @endforeach
+
 
                   <!-- Quest Collection Table -->
                   <div id="collectionTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] hidden">
                       <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Quest Collection</h2>
+
+                      <!-- Search bar for quest collection -->
+                      <div class="mb-4">
+                          <input type="text" 
+                                class="bg-[#E9F0E1] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#4E3A2E] collection-search" 
+                                placeholder="Search quests..." 
+                                data-table-id="collectionTable">
+                      </div>
+
                       <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
                           <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
                               <tr>
@@ -145,45 +135,31 @@
                           </thead>
                           <tbody>
                               @foreach($quests->where('status', '!=', 'archived') as $index => $quest)
-                                  <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-                                      <td class="px-4 py-2">{{ $loop->iteration }}</td>
-                                      <td class="px-4 py-2 text-[#4E3A2E]">{{ $quest->title }}</td>
-                                      <td class="px-4 py-2">{{ $quest->description }}</td>
-                                      <td class="px-4 py-2">{{ $quest->category }}</td>
-                                      <td class="px-4 py-2">{{ $quest->points_reward }}</td>
-                                      <td class="px-4 py-2">{{ $quest->start_date }}</td>
-                                      <td class="px-4 py-2">{{ $quest->end_date }}</td>
-                                      <!-- Status Dropdown -->
-                                      <td class="px-4 py-2">
-                                          <select name="status" class="border border-[#7A8C4F] rounded px-2 py-1 text-sm text-[#4E3A2E] status-dropdown" data-quest-id="{{ $quest->quest_id }}">
-                                              <option value="active" {{ $quest->status === 'active' ? 'selected' : '' }}>Active</option>
-                                              <option value="ending_soon" {{ $quest->status === 'ending_soon' ? 'selected' : '' }}>Ending Soon</option>
-                                              <option value="closed" {{ $quest->status === 'closed' ? 'selected' : '' }}>Closed</option>
-                                          </select>
-                                      </td>
-
-                                      <td class="px-4 py-2">
-                                          <div class="flex gap-1.5">
-                                              <button class="btn-action btn-edit" title="Edit Quest">
-                                                  <i class="fas fa-edit"></i>
-                                              </button>
-
-                                              <!-- Archive Button via AJAX -->
-                                              <button 
-                                                  class="btn-action btn-archive" 
-                                                  data-quest-id="{{ $quest->quest_id }}" 
-                                                  title="Archive Quest">
-                                                  <i class="fas fa-archive"></i>
-                                              </button>
-                                          </div>
-                                      </td>
-
-                                  </tr>
+                              <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
+                                  <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                                  <td class="px-4 py-2 text-[#4E3A2E]">{{ $quest->title }}</td>
+                                  <td class="px-4 py-2">{{ $quest->description }}</td>
+                                  <td class="px-4 py-2">{{ $quest->category }}</td>
+                                  <td class="px-4 py-2">{{ $quest->points_reward }}</td>
+                                  <td class="px-4 py-2">{{ $quest->start_date }}</td>
+                                  <td class="px-4 py-2">{{ $quest->end_date }}</td>
+                                  <td class="px-4 py-2">{{ ucfirst($quest->status) }}</td>
+                                  <td class="px-4 py-2">
+                                      <div class="flex gap-1.5">
+                                          <button class="btn-action btn-edit" title="Edit Quest">
+                                              <i class="fas fa-edit"></i>
+                                          </button>
+                                          <button class="btn-action btn-archive" data-quest-id="{{ $quest->quest_id }}" title="Archive Quest">
+                                              <i class="fas fa-archive"></i>
+                                          </button>
+                                      </div>
+                                  </td>
+                              </tr>
                               @endforeach
-
                           </tbody>
                       </table>
                   </div>
+
 
               </div>
           </div>
@@ -332,6 +308,96 @@ document.addEventListener('DOMContentLoaded', () => {
                 location.reload(); // Or implement JS to add it back dynamically
             }
         });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInputs = document.querySelectorAll('.table-search');
+
+    searchInputs.forEach(input => {
+        const tableId = input.dataset.tableId;
+        const tableBody = document.querySelector(`#${tableId} tbody`);
+
+        // Create a "No participants found" row
+        let emptyRow = document.createElement('tr');
+        emptyRow.classList.add('no-results');
+        emptyRow.innerHTML = `<td colspan="3" class="px-4 py-2 text-center text-[#7A8C4F]">No participants found</td>`;
+        tableBody.appendChild(emptyRow);
+
+        const updateVisibility = () => {
+            const filter = input.value.toLowerCase();
+            const rows = Array.from(tableBody.querySelectorAll('tr:not(.no-results)'));
+            let anyVisible = false;
+
+            if (rows.length === 0) {
+                // If no rows exist in the table, show the empty row
+                emptyRow.style.display = '';
+                return;
+            }
+
+            rows.forEach(row => {
+                const participantCell = row.cells[1];
+                const participantText = participantCell ? participantCell.textContent.toLowerCase() : '';
+
+                if (participantText.includes(filter)) {
+                    row.style.display = '';
+                    anyVisible = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            emptyRow.style.display = anyVisible ? 'none' : '';
+        };
+
+        // Run on keyup
+        input.addEventListener('keyup', updateVisibility);
+
+        // Run on page load to handle empty tables
+        updateVisibility();
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Collection search
+    const collectionInput = document.querySelector('.collection-search');
+    if (collectionInput) {
+        const tableId = collectionInput.dataset.tableId;
+        const tableBody = document.querySelector(`#${tableId} tbody`);
+
+        // Create "No quests found" row
+        let emptyRow = document.createElement('tr');
+        emptyRow.classList.add('no-results');
+        emptyRow.innerHTML = `<td colspan="9" class="px-4 py-2 text-center text-[#7A8C4F]">No quests found</td>`;
+        tableBody.appendChild(emptyRow);
+
+        const updateVisibility = () => {
+            const filter = collectionInput.value.toLowerCase();
+            const rows = Array.from(tableBody.querySelectorAll('tr:not(.no-results)'));
+            let anyVisible = false;
+
+            if (rows.length === 0) {
+                emptyRow.style.display = '';
+                return;
+            }
+
+            rows.forEach(row => {
+                const rowText = Array.from(row.cells)
+                                     .map(cell => cell.textContent.toLowerCase())
+                                     .join(' ');
+                if (rowText.includes(filter)) {
+                    row.style.display = '';
+                    anyVisible = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            emptyRow.style.display = anyVisible ? 'none' : '';
+        };
+
+        collectionInput.addEventListener('keyup', updateVisibility);
+        updateVisibility(); // Run on load
     }
 });
 </script>
