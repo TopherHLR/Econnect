@@ -31,7 +31,7 @@
       <hr class="border-[#C6D0B2] mb-6">
 
      <!-- 🌿 Quest Collection Button -->
-<button data-quest="collection" class="btn-eco w-full text-center mb-2">
+<button data-quest="collection" class="tab-eco w-full text-center mb-2">
   Quest Collection
 </button>
 

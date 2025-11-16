@@ -27,7 +27,7 @@
       transition: all 0.3s ease;
     }
 
-    /* 🌱 Sidebar */
+/* 🌱 Sidebar */
 aside {
   background: #FCF9EF;
   border-radius: 1.8rem;
@@ -36,37 +36,49 @@ aside {
   font-family: 'Nunito Sans', sans-serif;
 }
 
-/* 🌿 Sidebar nav icons: soft sunken effect */
+/* 🌿 Sidebar nav icons: soft sunken effect (gentle neumorphism) */
 aside nav a {
-  color: #6A8A52;
-  transition: all 0.3s ease-out;
-  padding: 0.6rem;
-  border-radius: 1.5rem;
-  transform: translateY(0);
-  box-shadow: inset 2px 2px 4px rgba(140, 160, 130, 0.4),
-              inset -2px -2px 4px rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
+
+  color: #6A8A52;
+  padding: 0.6rem;
+  border-radius: 1.5rem;
+  transform: translateY(0);
+
+  /* soft sunken default */
+  box-shadow:
+    inset 2px 2px 4px rgba(140, 160, 130, 0.25),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.6);
+
+  transition: all 0.3s ease-out;
 }
 
-/* Hover effect: gentle lift */
+/* 🌤 Hover: gentle lift (soft minimalism + tactile) */
 aside nav a:hover {
   transform: translateY(-1px);
-  box-shadow: -2px -2px 4px rgba(255, 255, 255, 0.6),
-              2px 2px 4px rgba(160, 180, 150, 0.3);
-  filter: brightness(1.05);
+
+  box-shadow:
+    -2px -2px 4px rgba(255, 255, 255, 0.7),
+    2px 2px 4px rgba(160, 180, 150, 0.25);
+
+  filter: brightness(1.03);
   color: #4F6B3F;
 }
 
-/* Active/clicked effect: subtle deeper sunken */
+/* 🌾 Active: subtle press */
 aside nav a:active {
   transform: translateY(1px);
-  box-shadow: inset 3px 3px 5px rgba(120, 140, 110, 0.45),
-              inset -2px -2px 4px rgba(255, 255, 255, 0.45);
+
+  box-shadow:
+    inset 3px 3px 5px rgba(120, 140, 110, 0.3),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.5);
+
   filter: brightness(0.97);
 }
+
 
 
     /* 🌾 Toasts */

@@ -36,7 +36,7 @@
                 <p class="text-sm text-[#6A8A52] mt-2 text-center">
                     Let users scan this QR code if they don't have one.
                 </p>
-                <button class="mt-2 px-3 py-1 bg-[#8B6E4A] text-white rounded-full hover:bg-[#7A5F40] transition text-sm">
+                <button class="mt-2 btn-eco btn-mint text-sm">
                     Copy QR
                 </button>
             </div>
@@ -45,8 +45,7 @@
 
         <!-- Modal Footer -->
         <div class="flex justify-end gap-3 px-6 py-4 border-t border-[#8B6E4A]/20">
-            <button type="button" onclick="closeVerifyModal()"
-                    class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+            <button type="button" onclick="closeVerifyModal()" class="btn-eco btn-sand">
                 Close
             </button>
         </div>

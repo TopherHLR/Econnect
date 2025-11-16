@@ -10,26 +10,23 @@
     <p class="text-[#6A8C4F] text-sm">Manage eco-topics and eco-actions in one place.</p>
   </div>
 
-  <!-- 🔄 Toggle + Search + Add Button -->
-  <div class="flex flex-wrap items-center gap-4 mb-4">
-    <!-- Toggle -->
-    <div class="flex items-center bg-[#E0E9D6] border border-[#7A8C4F] rounded-full overflow-hidden">
-      <button 
-        id="toggleTopics"
-        class="px-4 py-2 text-sm font-medium text-[#4F6B3F] bg-[#CFE1BC] rounded-l-full transition-all"
-      >
-        Eco Topics
-      </button>
-      <button 
-        id="toggleActions"
-        class="px-4 py-2 text-sm font-medium text-[#3B3B3B] hover:bg-[#DDE7CC] transition-all"
-      >
-        Eco Actions
-      </button>
+  <!-- 🔄 Toggle + Search + Add Button - ALL IN ONE ROW -->
+  <div class="flex flex-row items-center gap-4">
+    <!-- iOS-style Toggle -->
+    <div class="relative flex items-center bg-[#5C7919] rounded-full p-1 w-40">
+      <div id="toggle-slider"
+          class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-[#FCFFF6] rounded-full shadow-md transition-all duration-300 ease-in-out">
+      </div>
+      <button id="topicsBtn"
+          class="relative z-10 flex-1 text-center text-sm font-medium text-[#5C7919] py-3"
+          onclick="switchTab('topics')">Topics</button>
+      <button id="actionsBtn"
+          class="relative z-10 flex-1 text-center text-sm font-medium text-[#FCF9EF] py-3"
+          onclick="switchTab('actions')">Actions</button>
     </div>
 
     <!-- Search -->
-    <div class="relative w-60">
+    <div class="relative w-80">
       <input 
         type="text" 
         placeholder="Search..."
@@ -58,6 +55,17 @@
     </button>
   </div>
 
+  <!-- Rest of your content (grids) goes here -->
+  <!-- 🪴 ECO TOPICS GRID -->
+  <div id="ecoTopicsSection" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <!-- ... your topics grid content ... -->
+  </div>
+
+  <!-- 🌱 ECO ACTIONS GRID -->
+  <div id="ecoActionsSection" class="hidden grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <!-- ... your actions grid content ... -->
+  </div>
+</div>
   <!-- 🪴 ECO TOPICS GRID -->
   <div id="ecoTopicsSection" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
     @forelse($ecoTopics as $topic)
@@ -75,21 +83,23 @@
       </div>
 
       <div class="flex justify-end gap-2 mt-4">
-        <a href="{{ url('/libraries/' . $topic->id) }}" 
-           class="px-3 py-1.5 rounded-md text-xs font-medium text-[#4F3B2C] bg-gradient-to-br from-[#E0E5D8] to-[#BFD8B8] hover:from-[#D8E2CA] hover:to-[#B4D2A8] transition-all">
-           <i class="fa-solid fa-eye"></i> View
+        <!-- View Topic -->
+        <a href="{{ url('/libraries/' . $topic->id) }}" class="btn-action btn-view">
+          <i class="fa-solid fa-eye"></i> View
         </a>
-        <a href="{{ url('/admin/libraries/' . $topic->id) }}" 
-           class="px-3 py-1.5 rounded-md text-xs font-medium text-[#4F6B3F] bg-gradient-to-br from-[#E0E5D8] to-[#D0DAC7] hover:from-[#D8E2CA] hover:to-[#C6D4B8] transition-all">
-           <i class="fa-solid fa-pen"></i> Edit
+
+        <!-- Edit Topic -->
+        <a href="{{ url('/admin/libraries/' . $topic->id) }}" class="btn-action btn-edit">
+          <i class="fa-solid fa-pen"></i> Edit
         </a>
+
+        <!-- Delete Topic -->
         <form method="POST" action="{{ url('/admin/libraries/' . $topic->id) }}">
           @csrf
           @method('DELETE')
-          <button 
-            type="submit"
-            onclick="return confirm('Are you sure you want to delete this topic?')"
-            class="px-3 py-1.5 rounded-md text-xs font-medium text-[#4F3B2C] bg-gradient-to-br from-[#D8B08C] to-[#C89E7B] hover:from-[#E0B996] hover:to-[#C89E7B] transition-all">
+          <button type="submit"
+                  onclick="return confirm('Are you sure you want to delete this topic?')"
+                  class="btn-action btn-delete">
             <i class="fa-solid fa-trash"></i> Delete
           </button>
         </form>
@@ -117,21 +127,23 @@
       </div>
 
       <div class="flex justify-end gap-2 mt-4">
-        <a href="{{ url('/actions/' . $action->id) }}" 
-           class="px-3 py-1.5 rounded-md text-xs font-medium text-[#4F3B2C] bg-gradient-to-br from-[#E0E5D8] to-[#BFD8B8] hover:from-[#D8E2CA] hover:to-[#B4D2A8] transition-all">
-           <i class="fa-solid fa-eye"></i> View
+        <!-- View Button -->
+        <a href="{{ url('/actions/' . $action->id) }}" class="btn-action btn-view">
+          <i class="fa-solid fa-eye"></i> View
         </a>
-        <a href="{{ url('/admin/actions/' . $action->id) }}" 
-           class="px-3 py-1.5 rounded-md text-xs font-medium text-[#4F6B3F] bg-gradient-to-br from-[#E0E5D8] to-[#D0DAC7] hover:from-[#D8E2CA] hover:to-[#C6D4B8] transition-all">
-           <i class="fa-solid fa-pen"></i> Edit
+
+        <!-- Edit Button -->
+        <a href="{{ url('/admin/actions/' . $action->id) }}" class="btn-action btn-edit">
+          <i class="fa-solid fa-pen"></i> Edit
         </a>
+
+        <!-- Delete Button -->
         <form method="POST" action="{{ url('/admin/actions/' . $action->id) }}">
           @csrf
           @method('DELETE')
-          <button 
-            type="submit"
-            onclick="return confirm('Are you sure you want to delete this action?')"
-            class="px-3 py-1.5 rounded-md text-xs font-medium text-[#4F3B2C] bg-gradient-to-br from-[#D8B08C] to-[#C89E7B] hover:from-[#E0B996] hover:to-[#C89E7B] transition-all">
+          <button type="submit"
+                  onclick="return confirm('Are you sure you want to delete this action?')"
+                  class="btn-action btn-delete">
             <i class="fa-solid fa-trash"></i> Delete
           </button>
         </form>
@@ -145,28 +157,42 @@
 
 <!-- 🌿 Toggle Script -->
 <script>
-  const toggleTopics = document.getElementById('toggleTopics');
-  const toggleActions = document.getElementById('toggleActions');
-  const topicsSection = document.getElementById('ecoTopicsSection');
-  const actionsSection = document.getElementById('ecoActionsSection');
-  const addBtn = document.getElementById('addEcoItemBtn');
+const topicsSection = document.getElementById('ecoTopicsSection');
+const actionsSection = document.getElementById('ecoActionsSection');
+const addBtn = document.getElementById('addEcoItemBtn');
+const slider = document.getElementById('toggle-slider');
+const topicsBtn = document.getElementById('topicsBtn');
+const actionsBtn = document.getElementById('actionsBtn');
 
-  toggleTopics.addEventListener('click', () => {
-    topicsSection.classList.remove('hidden');
-    actionsSection.classList.add('hidden');
-    toggleTopics.classList.add('bg-[#CFE1BC]', 'text-[#4F6B3F]');
-    toggleActions.classList.remove('bg-[#CFE1BC]', 'text-[#4F6B3F]');
-    addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> <span>Add Eco Topic</span>';
-    addBtn.setAttribute('onclick', 'openEcoTopicModal()');
-  });
+const switchTab = tab => {
+  const isTopics = tab === 'topics';
+  
+  // Sections
+  topicsSection.classList.toggle('hidden', !isTopics);
+  actionsSection.classList.toggle('hidden', isTopics);
+  
+  // Slider animation
+  slider.style.transform = isTopics ? 'translateX(0)' : 'translateX(100%)';
+  
+  // Button colors
+  topicsBtn.style.color = isTopics ? '#7A8C4F' : '#FCF9EF';
+  actionsBtn.style.color = isTopics ? '#FCF9EF' : '#7A8C4F';
+  
+  // Add button
+  addBtn.innerHTML = isTopics
+    ? '<i class="fa-solid fa-plus"></i> <span>Add Eco Topic</span>'
+    : '<i class="fa-solid fa-plus"></i> <span>Add Eco Action</span>';
+  addBtn.setAttribute('onclick', isTopics ? 'openEcoTopicModal()' : 'openEcoActionModal()');
+};
 
-  toggleActions.addEventListener('click', () => {
-    topicsSection.classList.add('hidden');
-    actionsSection.classList.remove('hidden');
-    toggleActions.classList.add('bg-[#CFE1BC]', 'text-[#4F6B3F]');
-    toggleTopics.classList.remove('bg-[#CFE1BC]', 'text-[#4F6B3F]');
-    addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> <span>Add Eco Action</span>';
-    addBtn.setAttribute('onclick', 'openEcoActionModal()');
-  });
+// Event listeners
+topicsBtn.addEventListener('click', () => switchTab('topics'));
+actionsBtn.addEventListener('click', () => switchTab('actions'));
+
+// Activate tab from URL
+document.addEventListener('DOMContentLoaded', () => {
+  const tab = new URLSearchParams(window.location.search).get('tab');
+  switchTab(tab === 'actions' ? 'actions' : 'topics');
+});
 </script>
 @endsection

@@ -80,9 +80,14 @@
                     </div>
 
                     <!-- Scrollable Eco Content -->
-                    <div id="ecoContent" class="space-y-4 w-full overflow-y-auto pr-2 custom-scroll max-h-[65vh]">
+                  <div id="ecoContent" class="space-y-4 w-full overflow-y-auto overflow-x-visible pr-2 custom-scroll max-h-[65vh]">
+
+
                         @foreach ($ecoTopics as $topic)
-                            <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transition-all"
+                       <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
+
+
+
                                 data-type="ecoTopic" data-id="{{ $topic->library_id }}"
                                 data-category="{{ $topic->category }}">
                                 <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
@@ -201,8 +206,9 @@
                 actionsBtn.style.color = '#FCF9EF';
                 sidebarTitle.textContent = 'Saved Eco-topics';
                 content.innerHTML = `@foreach ($ecoTopics as $topic)
-                    <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transition-all"
-                         data-type="ecoTopic"
+                  <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
+
+
                          data-id="{{ $topic->library_id }}"
                          data-category="{{ $topic->category }}">
                         <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
@@ -264,7 +270,9 @@
                 topicsBtn.style.color = '#FCF9EF';
                 sidebarTitle.textContent = 'Saved Eco-actions';
                 content.innerHTML = `@foreach ($ecoActions as $action)
-                    <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transition-all"
+                <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
+
+
                          data-type="ecoAction"
                          data-id="{{ $action->action_id }}"
                          data-category="{{ $action->category }}">
