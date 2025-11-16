@@ -10,44 +10,42 @@
         <p class="text-[#6A8A52] mt-1">12 new submissions awaiting validation.</p>
     </div>
 
-    <!-- Top Buttons -->
+
+  <!-- Top Buttons - Grouped by Function -->
     <div class="flex flex-wrap gap-4">
-        <!-- Create Quest -->
-<button onclick="openQuestModal()" class="btn-eco btn-sage">
-  <i class="fa-solid fa-circle-plus"></i>
-  <span>Create New Quest</span>
-</button>
+        <!-- 🟢 PRIMARY ACTIONS (Green Family) -->
+        <button onclick="openQuestModal()" class="btn-eco btn-mint">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span>Create New Quest</span>
+        </button>
 
+        <button onclick="openEcoTopicModal()" class="btn-eco btn-leaf">
+            <i class="fa-solid fa-leaf"></i>
+            <span>Add Eco Topic</span>
+        </button>
 
-<!-- Verify User -->
-<button onclick="openVerifyModal()" class="btn-eco btn-sand">
-  <i class="fa-solid fa-qrcode"></i>
-  <span>Verify User</span>
-</button>
+        <button onclick="openEcoActionModal()" class="btn-eco btn-olive">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <span>Add Eco Action</span>
+        </button>
 
-<!-- Pending Submissions -->
-<button class="btn-eco btn-clay">
-  <i class="fa-solid fa-hourglass-half"></i>
-  <span>Pending Submissions</span>
-</button>
+        <!-- 🟠 SECONDARY ACTIONS (Neutral Colors) -->
+        <button onclick="openVerifyModal()" class="btn-eco btn-sand">
+            <i class="fa-solid fa-qrcode"></i>
+            <span>Verify User</span>
+        </button>
 
-<!-- System Settings -->
-<button class="btn-eco btn-mint">
-  <i class="fa-solid fa-gear"></i>
-  <span>System Settings</span>
-</button>
+        <button class="btn-eco btn-sage">
+            <i class="fa-solid fa-gear"></i>
+            <span>System Settings</span>
+        </button>
 
-<!-- Add Eco Topic -->
-<button onclick="openEcoTopicModal()" class="btn-eco btn-leaf">
-  <i class="fa-solid fa-leaf"></i>
-  <span>Add Eco Topic</span>
-</button>
+        <!-- 🟡 ALERT/ATTENTION ACTIONS (Clay/Warm Colors) -->
+        <button class="btn-eco btn-clay">
+            <i class="fa-solid fa-hourglass-half"></i>
+            <span>Pending Submissions</span>
+        </button>
 
-<!-- Add Eco Action -->
-<button onclick="openEcoActionModal()" class="btn-eco btn-olive">
-  <i class="fa-solid fa-hand-holding-heart"></i>
-  <span>Add Eco Action</span>
-</button>
 
 
 

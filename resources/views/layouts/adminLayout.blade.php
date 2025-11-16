@@ -38,7 +38,6 @@
             font-family: 'Nunito Sans', sans-serif;
         }
 
-<<<<<<< HEAD
     /* 🌿 Sidebar nav items */
     .nav-item {
       position: relative;
@@ -54,7 +53,6 @@
       cursor: pointer;
       z-index: 40;
     }
-=======
         /* 🌿 Sidebar nav items */
         .nav-item {
             position: relative;
@@ -69,7 +67,6 @@
             transition: all 0.3s ease-out;
             cursor: pointer;
         }
->>>>>>> 8cc26391e3ba73508db95cbc1a816bb27fe4a320
 
         /* Default state - soft sunken */
         .nav-item {
@@ -153,7 +150,6 @@
             font-style: italic;
         }
 
-<<<<<<< HEAD
     /* 🌿 Main Container */
     main {
       background: #FCF9EF;
@@ -164,7 +160,7 @@
       font-family: 'Nunito Sans', sans-serif;
       z-index: 1;
     }
-=======
+
         /* 🌿 Main Container */
         main {
             background: #FCF9EF;
@@ -174,7 +170,7 @@
             transition: all 0.3s ease-in-out;
             font-family: 'Nunito Sans', sans-serif;
         }
->>>>>>> 8cc26391e3ba73508db95cbc1a816bb27fe4a320
+
 
         /* 🍂 Footer */
         footer {
