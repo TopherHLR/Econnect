@@ -157,6 +157,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::post('/quests/{quest}/status', [QuestController::class, 'updateStatus'])->name('quests.updateStatus');
 Route::post('/quests/{quest}/recover', [QuestController::class, 'recover'])->name('quests.recover');
+Route::post('/quests/{quest}/recover2', [QuestController::class, 'recover2'])->name('quests.recover2');
 Route::post('/quests/{quest}/archive', [QuestController::class, 'archive'])->name('quests.archive');
 
 

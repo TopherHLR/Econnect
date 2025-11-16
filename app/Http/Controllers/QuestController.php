@@ -21,15 +21,15 @@ class QuestController extends Controller
 
         return view('admin.adminQuests', compact('quests', 'categories'));
     }
-
-    public function archive($id)
+    public function recover2($id)
     {
         $quest = Quest::findOrFail($id);
-        $quest->status = 'archived';
+        $quest->status = 'active';
         $quest->save();
 
-        return redirect()->back()->with('success', 'Quest archived successfully.');
+        return response()->json(['success' => true]);
     }
+
     public function recover($id)
     {
         $quest = Quest::findOrFail($id);
@@ -38,6 +38,15 @@ class QuestController extends Controller
 
         return redirect()->back()->with('success', 'Quest recovered successfully.');
     }
+    public function archive($id)
+    {
+        $quest = Quest::findOrFail($id);
+        $quest->status = 'archived';
+        $quest->save();
+
+        return response()->json(['success' => 'Quest archived successfully.']);
+    }
+
     public function updateStatus(Request $request, $id)
     {
         $quest = Quest::findOrFail($id);
@@ -47,7 +56,7 @@ class QuestController extends Controller
         $quest->status = $request->status;
         $quest->save();
 
-        return redirect()->back()->with('success', 'Quest status updated successfully.');
+        return response()->json(['success' => 'Quest status updated successfully.']);
     }
 
 

@@ -155,28 +155,29 @@
                                       <td class="px-4 py-2">{{ $quest->end_date }}</td>
                                       <!-- Status Dropdown -->
                                       <td class="px-4 py-2">
-                                          <form action="{{ route('quests.updateStatus', $quest->quest_id) }}" method="POST">
-                                              @csrf
-                                              <select name="status" onchange="this.form.submit()" class="border border-[#7A8C4F] rounded px-2 py-1 text-sm text-[#4E3A2E]">
-                                                  <option value="active" {{ $quest->status === 'active' ? 'selected' : '' }}>Active</option>
-                                                  <option value="ending_soon" {{ $quest->status === 'ending_soon' ? 'selected' : '' }}>Ending Soon</option>
-                                                  <option value="closed" {{ $quest->status === 'closed' ? 'selected' : '' }}>Closed</option>
-                                              </select>
-                                          </form>
+                                          <select name="status" class="border border-[#7A8C4F] rounded px-2 py-1 text-sm text-[#4E3A2E] status-dropdown" data-quest-id="{{ $quest->quest_id }}">
+                                              <option value="active" {{ $quest->status === 'active' ? 'selected' : '' }}>Active</option>
+                                              <option value="ending_soon" {{ $quest->status === 'ending_soon' ? 'selected' : '' }}>Ending Soon</option>
+                                              <option value="closed" {{ $quest->status === 'closed' ? 'selected' : '' }}>Closed</option>
+                                          </select>
                                       </td>
+
                                       <td class="px-4 py-2">
                                           <div class="flex gap-1.5">
                                               <button class="btn-action btn-edit" title="Edit Quest">
                                                   <i class="fas fa-edit"></i>
                                               </button>
-                                              <form action="{{ route('quests.archive', $quest->quest_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to archive this quest?')">
-                                                  @csrf
-                                                  <button type="submit" class="btn-action btn-archive" title="Archive Quest">
-                                                      <i class="fas fa-archive"></i>
-                                                  </button>
-                                              </form>
+
+                                              <!-- Archive Button via AJAX -->
+                                              <button 
+                                                  class="btn-action btn-archive" 
+                                                  data-quest-id="{{ $quest->quest_id }}" 
+                                                  title="Archive Quest">
+                                                  <i class="fas fa-archive"></i>
+                                              </button>
                                           </div>
                                       </td>
+
                                   </tr>
                               @endforeach
 
@@ -239,6 +240,99 @@ document.addEventListener('DOMContentLoaded', () => {
             archiveArrow.classList.remove('rotate-180');
         }
     });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Status update via AJAX
+    document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+        dropdown.addEventListener('change', (e) => {
+            const questId = e.target.dataset.questId;
+            const status = e.target.value;
+
+            fetch(`/quests/${questId}/status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success){
+                    alert(data.success); // optional feedback
+                }
+            })
+            .catch(err => console.error(err));
+        });
+    });
+
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const archiveMenu = document.getElementById('archiveDropdownMenu');
+
+    document.querySelectorAll('.btn-archive').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const questId = button.dataset.questId;
+            const questTitle = button.closest('tr').querySelector('td:nth-child(2)').innerText;
+
+            if(!confirm('Are you sure you want to archive this quest?')) return;
+
+            fetch(`/quests/${questId}/archive`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success){
+                    // Remove the row from the table
+                    const row = button.closest('tr');
+                    if(row) row.remove();
+
+                    // Add the quest to the archive dropdown
+                    const li = document.createElement('li');
+                    li.className = "flex justify-between items-center px-4 py-2 hover:bg-[#E9F0E1] text-[#4E3A2E]";
+
+                    li.innerHTML = `
+                        <span class="cursor-pointer" data-quest="questTable-${questId}">${questTitle}</span>
+                        <form onsubmit="return confirm('Recover this quest?')" class="ml-2" data-quest-id="${questId}">
+                            <button type="button" class="text-green-600 hover:text-green-800 font-semibold text-sm btn-recover">Recover</button>
+                        </form>
+                    `;
+                    archiveMenu.appendChild(li);
+
+                    // Add recover button functionality
+                    li.querySelector('.btn-recover').addEventListener('click', () => recoverQuest(questId, li));
+                }
+            })
+            .catch(err => console.error(err));
+        });
+    });
+        // Recover function
+    function recoverQuest(questId, liElement){
+        if(!confirm('Recover this quest?')) return;
+
+        fetch(`/quests/${questId}/recover2`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                liElement.remove(); // Remove from archive dropdown
+
+                // Optional: refresh table or re-add to active quests table
+                location.reload(); // Or implement JS to add it back dynamically
+            }
+        });
+    }
 });
 </script>
 @include('modal.createQuestModal')

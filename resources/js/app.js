@@ -122,3 +122,144 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 //======================================================================================= MESSAGE ======================================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const questListItems = document.querySelectorAll('#questList li');
+    const questTables = document.querySelectorAll('[id^="questTable-"]');
+    const collectionTable = document.getElementById('collectionTable');
+
+    questListItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const selectedId = item.dataset.quest;
+
+            // Hide all quest tables
+            questTables.forEach(table => table.classList.add('hidden'));
+            collectionTable.classList.add('hidden');
+
+            if (selectedId === 'collection') {
+                collectionTable.classList.remove('hidden');
+            } else {
+                // Show selected quest table
+                const selectedTable = document.getElementById('questTable-' + selectedId);
+                if (selectedTable) {
+                    selectedTable.classList.remove('hidden');
+                }
+            }
+
+            // Highlight active tab
+            questListItems.forEach(li => li.classList.remove('bg-[#E9F0E1]', 'font-semibold'));
+            item.classList.add('bg-[#E9F0E1]', 'font-semibold');
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const archiveBtn = document.getElementById('archiveDropdownBtn');
+    const archiveMenu = document.getElementById('archiveDropdownMenu');
+    const archiveArrow = document.getElementById('archiveArrow');
+
+    archiveBtn.addEventListener('click', () => {
+        archiveMenu.classList.toggle('hidden'); // show/hide menu
+        archiveArrow.classList.toggle('rotate-180'); // rotate arrow
+    });
+
+    // Optional: close the dropdown if user clicks outside
+    document.addEventListener('click', (e) => {
+        if (!archiveBtn.contains(e.target) && !archiveMenu.contains(e.target)) {
+            archiveMenu.classList.add('hidden');
+            archiveArrow.classList.remove('rotate-180');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Status update via AJAX
+    document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+        dropdown.addEventListener('change', (e) => {
+            const questId = e.target.dataset.questId;
+            const status = e.target.value;
+
+            fetch(`/quests/${questId}/status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success){
+                    alert(data.success); // optional feedback
+                }
+            })
+            .catch(err => console.error(err));
+        });
+    });
+
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const archiveMenu = document.getElementById('archiveDropdownMenu');
+
+    document.querySelectorAll('.btn-archive').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const questId = button.dataset.questId;
+            const questTitle = button.closest('tr').querySelector('td:nth-child(2)').innerText;
+
+            if(!confirm('Are you sure you want to archive this quest?')) return;
+
+            fetch(`/quests/${questId}/archive`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success){
+                    // Remove the row from the table
+                    const row = button.closest('tr');
+                    if(row) row.remove();
+
+                    // Add the quest to the archive dropdown
+                    const li = document.createElement('li');
+                    li.className = "flex justify-between items-center px-4 py-2 hover:bg-[#E9F0E1] text-[#4E3A2E]";
+
+                    li.innerHTML = `
+                        <span class="cursor-pointer" data-quest="questTable-${questId}">${questTitle}</span>
+                        <form onsubmit="return confirm('Recover this quest?')" class="ml-2" data-quest-id="${questId}">
+                            <button type="button" class="text-green-600 hover:text-green-800 font-semibold text-sm btn-recover">Recover</button>
+                        </form>
+                    `;
+                    archiveMenu.appendChild(li);
+
+                    // Add recover button functionality
+                    li.querySelector('.btn-recover').addEventListener('click', () => recoverQuest(questId, li));
+                }
+            })
+            .catch(err => console.error(err));
+        });
+    });
+        // Recover function
+    function recoverQuest(questId, liElement){
+        if(!confirm('Recover this quest?')) return;
+
+        fetch(`/quests/${questId}/recover2`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                liElement.remove(); // Remove from archive dropdown
+
+                // Optional: refresh table or re-add to active quests table
+                location.reload(); // Or implement JS to add it back dynamically
+            }
+        });
+    }
+});
