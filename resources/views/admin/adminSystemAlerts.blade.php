@@ -48,11 +48,7 @@
             </select>
         </div>
 
-        <!-- Mute Non-Critical Alerts -->
-        <button class="flex items-center gap-2 bg-[#A46C47] hover:bg-[#8C5E3D] text-white font-medium px-5 py-2 rounded-full shadow transition">
-            <i class="fa-solid fa-bell-slash"></i>
-            Mute Non-Critical Alerts
-        </button>
+
     </div>
 
     <!-- 🧩 Alerts List -->
@@ -67,7 +63,10 @@
             </div>
             <div class="flex flex-col items-end gap-2">
                 <span class="text-xs bg-red-100 text-red-700 font-medium px-3 py-1 rounded-full">High</span>
-                <button class="bg-[#7A8C4F] hover:bg-[#6B7B43] text-white px-4 py-1 rounded-full text-xs font-medium transition">Verify Users</button>
+                <button class="btn-action btn-view">
+                    <i class="fa-solid fa-user-check"></i>
+                    <span>Verify Users</span>
+                </button>
             </div>
         </div>
 
@@ -80,7 +79,10 @@
             </div>
             <div class="flex flex-col items-end gap-2">
                 <span class="text-xs bg-yellow-100 text-yellow-700 font-medium px-3 py-1 rounded-full">Medium</span>
-                <button class="bg-[#7A8C4F] hover:bg-[#6B7B43] text-white px-4 py-1 rounded-full text-xs font-medium transition">Review Quests</button>
+                <button class="btn-action btn-edit">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Review Quests</span>
+                </button>
             </div>
         </div>
 
@@ -93,7 +95,10 @@
             </div>
             <div class="flex flex-col items-end gap-2">
                 <span class="text-xs bg-yellow-100 text-yellow-700 font-medium px-3 py-1 rounded-full">Medium</span>
-                <button class="bg-[#7A8C4F] hover:bg-[#6B7B43] text-white px-4 py-1 rounded-full text-xs font-medium transition">Check Vouchers</button>
+                <button class="btn-action btn-edit">
+                    <i class="fa-solid fa-ticket"></i>
+                    <span>Check Vouchers</span>
+                </button>
             </div>
         </div>
 
@@ -106,7 +111,10 @@
             </div>
             <div class="flex flex-col items-end gap-2">
                 <span class="text-xs bg-red-100 text-red-700 font-medium px-3 py-1 rounded-full">High</span>
-                <button class="bg-[#7A8C4F] hover:bg-[#6B7B43] text-white px-4 py-1 rounded-full text-xs font-medium transition">Review Submissions</button>
+                <button class="btn-action btn-view">
+                    <i class="fa-solid fa-file-circle-exclamation"></i>
+                    <span>Review Submissions</span>
+                </button>
             </div>
         </div>
 
@@ -119,7 +127,10 @@
             </div>
             <div class="flex flex-col items-end gap-2">
                 <span class="text-xs bg-red-100 text-red-700 font-medium px-3 py-1 rounded-full">High</span>
-                <button class="bg-[#7A8C4F] hover:bg-[#6B7B43] text-white px-4 py-1 rounded-full text-xs font-medium transition">Investigate</button>
+                <button class="btn-action btn-delete">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Investigate</span>
+                </button>
             </div>
         </div>
     </div>

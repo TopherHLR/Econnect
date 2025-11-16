@@ -234,8 +234,6 @@
     </div>
   </div>
 </div>
-
-      <!-- 🗂 Quest Collection -->
 <!-- 🗂 Quest Collection -->
 <div id="collectionTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7]">
   <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Quest Collection</h2>
@@ -250,7 +248,7 @@
         <th class="px-4 py-2 w-32">Start Date</th>
         <th class="px-4 py-2 w-32">End Date</th>
         <th class="px-4 py-2 w-32">Status</th>
-        <th class="px-4 py-2 w-32">Created By</th>
+        <th class="px-4 py-2 w-32">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -263,7 +261,16 @@
         <td class="px-4 py-2">2025-09-01</td>
         <td class="px-4 py-2">2025-09-30</td>
         <td class="px-4 py-2 text-[#6A8A52]">Active</td>
-        <td class="px-4 py-2">Admin</td>
+        <td class="px-4 py-2">
+          <div class="flex gap-1.5">
+            <button class="btn-action btn-edit" title="Edit Quest">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-action btn-delete" title="Archive Quest">
+              <i class="fas fa-archive"></i>
+            </button>
+          </div>
+        </td>
       </tr>
       <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
         <td class="px-4 py-2">2</td>
@@ -274,7 +281,16 @@
         <td class="px-4 py-2">2025-10-01</td>
         <td class="px-4 py-2">2025-10-31</td>
         <td class="px-4 py-2 text-[#6A8A52]">Active</td>
-        <td class="px-4 py-2">Admin</td>
+        <td class="px-4 py-2">
+          <div class="flex gap-1.5">
+            <button class="btn-action btn-edit" title="Edit Quest">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-action btn-delete" title="Archive Quest">
+              <i class="fas fa-archive"></i>
+            </button>
+          </div>
+        </td>
       </tr>
       <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
         <td class="px-4 py-2">3</td>
@@ -285,7 +301,16 @@
         <td class="px-4 py-2">2025-11-01</td>
         <td class="px-4 py-2">2025-11-30</td>
         <td class="px-4 py-2 text-[#C37A49]">Ending Soon</td>
-        <td class="px-4 py-2">Admin</td>
+        <td class="px-4 py-2">
+          <div class="flex gap-1.5">
+            <button class="btn-action btn-edit" title="Edit Quest">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-action btn-delete" title="Archive Quest">
+              <i class="fas fa-archive"></i>
+            </button>
+          </div>
+        </td>
       </tr>
       <tr class="hover:bg-[#FAFBF8]">
         <td class="px-4 py-2">4</td>
@@ -296,12 +321,20 @@
         <td class="px-4 py-2">2025-08-01</td>
         <td class="px-4 py-2">2025-08-31</td>
         <td class="px-4 py-2 text-[#A36B47]">Closed</td>
-        <td class="px-4 py-2">Eco Admin</td>
+        <td class="px-4 py-2">
+          <div class="flex gap-1.5">
+            <button class="btn-action btn-edit" title="Edit Quest">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-action btn-delete" title="Archive Quest">
+              <i class="fas fa-archive"></i>
+            </button>
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
 </div>
-
 <!-- 🗂 Archive - Submissions -->
 <div id="archive-submissionsTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] hidden">
   <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Archived Submissions</h2>

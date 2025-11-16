@@ -13,7 +13,7 @@
   <!-- 🔄 Toggle + Search + Add Button - ALL IN ONE ROW -->
   <div class="flex flex-row items-center gap-4">
     <!-- iOS-style Toggle -->
-    <div class="relative flex items-center bg-[#5C7919] rounded-full p-1 w-40">
+    <div class="relative flex items-center bg-[#5C7919] rounded-full p-.5 w-40">
       <div id="toggle-slider"
           class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-[#FCFFF6] rounded-full shadow-md transition-all duration-300 ease-in-out">
       </div>
@@ -55,17 +55,6 @@
     </button>
   </div>
 
-  <!-- Rest of your content (grids) goes here -->
-  <!-- 🪴 ECO TOPICS GRID -->
-  <div id="ecoTopicsSection" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-    <!-- ... your topics grid content ... -->
-  </div>
-
-  <!-- 🌱 ECO ACTIONS GRID -->
-  <div id="ecoActionsSection" class="hidden grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-    <!-- ... your actions grid content ... -->
-  </div>
-</div>
   <!-- 🪴 ECO TOPICS GRID -->
   <div id="ecoTopicsSection" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
     @forelse($ecoTopics as $topic)
@@ -175,8 +164,8 @@ const switchTab = tab => {
   slider.style.transform = isTopics ? 'translateX(0)' : 'translateX(100%)';
   
   // Button colors
-  topicsBtn.style.color = isTopics ? '#7A8C4F' : '#FCF9EF';
-  actionsBtn.style.color = isTopics ? '#FCF9EF' : '#7A8C4F';
+  topicsBtn.style.color = isTopics ? '#5C7919' : '#FCF9EF';
+  actionsBtn.style.color = isTopics ? '#FCF9EF' : '#5C7919';
   
   // Add button
   addBtn.innerHTML = isTopics

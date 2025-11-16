@@ -56,9 +56,6 @@
     </div>
 </div>
 
-
-    
-
     <!-- Users Table -->
 <div class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7]">
     <table class="min-w-full text-sm text-[#4F3B2C]">
@@ -87,35 +84,35 @@
       <td class="px-4 py-2 flex flex-wrap gap-1.5">
         <!-- View -->
         <button
-          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-[#4F3B2C] shadow-sm transition-all duration-300 bg-gradient-to-br from-[#E0E5D8] to-[#BFD8B8] hover:from-[#DEE8D2] hover:to-[#B4D2A8]"
+          class="btn-action btn-view"
           title="View User"
           onclick="alert('View user {{ $user->first_name }}')">
-          <i class="fas fa-eye text-[0.8rem]"></i> View
+          <i class="fas fa-eye"></i> View
         </button>
 
         <!-- Edit -->
         <button
-          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-[#4F6B3F] shadow-sm transition-all duration-300 bg-gradient-to-br from-[#E0E5D8] to-[#D0DAC7] hover:from-[#D8E2CA] hover:to-[#C6D4B8]"
+          class="btn-action btn-edit"
           title="Edit User"
           onclick="alert('Edit user {{ $user->first_name }}')">
-          <i class="fas fa-edit text-[0.8rem]"></i> Edit
+          <i class="fas fa-edit"></i> Edit
         </button>
 
         <!-- Delete -->
         <button
-          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-[#4F3B2C] shadow-sm transition-all duration-300 bg-gradient-to-br from-[#D8B08C] to-[#C89E7B] hover:from-[#E0B996] hover:to-[#C89E7B]"
+          class="btn-action btn-delete"
           title="Delete User"
           onclick="if(confirm('Are you sure you want to delete {{ $user->first_name }}?')){ alert('Deleted {{ $user->first_name }}'); }">
-          <i class="fas fa-trash text-[0.8rem]"></i> Delete
+          <i class="fas fa-archive"></i> Archive
         </button>
 
         <!-- Verify -->
         @if(!$user->is_verified)
         <button
-          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-[#4F3B2C] shadow-sm transition-all duration-300 bg-gradient-to-br from-[#D4C1A3] to-[#C4B094] hover:from-[#E1D1B7] hover:to-[#CDB799]"
+          class="btn-action btn-view"
           title="Verify User"
           onclick="alert('Verified {{ $user->first_name }}')">
-          <i class="fas fa-check-circle text-[0.8rem]"></i> Verify
+          <i class="fas fa-check-circle"></i> Verify
         </button>
         @endif
       </td>
@@ -123,8 +120,6 @@
     @endforeach
   </tbody>
 </table>
-
-
     </div>
 </div>
 @endsection

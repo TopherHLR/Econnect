@@ -78,7 +78,7 @@
 
    <!-- 🏅 Reward Catalog -->
 <div id="catalogTable" class="bg-white rounded-xl shadow p-5 border border-[#E6EAD7]">
-  <h2 class="text-lg font-semibold text-[#4F6B3F] mb-3">Reward Catalog</h2>
+  <h2 class="text-lg font-semibold text-[#4F6B3F] mb-3">Reward Collection</h2>
   <div class="overflow-x-auto">
     <table class="min-w-full text-sm text-[#4F3B2C]">
       <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
@@ -88,6 +88,7 @@
           <th class="px-4 py-2 text-left font-semibold">Discount</th>
           <th class="px-4 py-2 text-left font-semibold">Expiry</th>
           <th class="px-4 py-2 text-left font-semibold">Status</th>
+          <th class="px-4 py-2 text-left font-semibold">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -99,6 +100,16 @@
           <td class="px-4 py-2">
             <span class="bg-[#6A8A52] text-white rounded-full px-3 py-1 text-xs">Active</span>
           </td>
+          <td class="px-4 py-2">
+            <div class="flex flex-wrap gap-1.5">
+              <button class="btn-action btn-edit" title="Edit Reward">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="btn-action btn-delete" title="Archive Reward">
+                <i class="fas fa-archive"></i> Archive
+              </button>
+            </div>
+          </td>
         </tr>
         <tr class="hover:bg-[#F9FBF4] transition">
           <td class="px-4 py-2 font-medium">Tree Planting Voucher</td>
@@ -107,6 +118,16 @@
           <td class="px-4 py-2">Jan 10, 2026</td>
           <td class="px-4 py-2">
             <span class="bg-[#BDBDBD] text-white rounded-full px-3 py-1 text-xs">Inactive</span>
+          </td>
+          <td class="px-4 py-2">
+            <div class="flex flex-wrap gap-1.5">
+              <button class="btn-action btn-edit" title="Edit Reward">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="btn-action btn-delete" title="Archive Reward">
+                <i class="fas fa-archive"></i> Archive
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -127,6 +148,7 @@
                   <th class="px-4 py-2 text-left font-semibold">Redeem Date</th>
                   <th class="px-4 py-2 text-left font-semibold">Points Used</th>
                   <th class="px-4 py-2 text-left font-semibold">Status</th>
+                  <th class="px-4 py-2 text-left font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,6 +158,16 @@
                   <td class="px-4 py-2">27/10/2025</td>
                   <td class="px-4 py-2">150</td>
                   <td class="px-4 py-2 text-[#A68A4F]">Pending</td>
+                  <td class="px-4 py-2">
+                    <div class="flex flex-wrap gap-1.5">
+                      <button class="btn-action btn-edit" title="Edit Voucher">
+                        <i class="fas fa-edit"></i> Edit
+                      </button>
+                      <button class="btn-action btn-delete" title="Archive Voucher">
+                        <i class="fas fa-archive"></i> Archive
+                      </button>
+                    </div>
+                  </td>
                 </tr>
                 <tr class="hover:bg-[#F9FBF4] transition">
                   <td class="px-4 py-2">Shynne</td>
@@ -143,6 +175,16 @@
                   <td class="px-4 py-2">27/10/2025</td>
                   <td class="px-4 py-2">150</td>
                   <td class="px-4 py-2 text-[#6A8A52]">Used</td>
+                  <td class="px-4 py-2">
+                    <div class="flex flex-wrap gap-1.5">
+                      <button class="btn-action btn-edit" title="Edit Voucher">
+                        <i class="fas fa-edit"></i> Edit
+                      </button>
+                      <button class="btn-action btn-delete" title="Archive Voucher">
+                        <i class="fas fa-archive"></i> Archive
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -229,5 +271,3 @@ document.addEventListener("DOMContentLoaded", () => {
 @endsection
   
 @include('modal.addVoucherModal')
-
-    

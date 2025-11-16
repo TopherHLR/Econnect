@@ -11,21 +11,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* 🌿 MAIN ECO THEME */
-    body {
-      background-color: #E0E5D8;
-      color: #4F6B3F;
-      font-family: 'Nunito Sans', sans-serif;
-      transition: background-color 0.3s ease;
-    }
+   /* 🌿 MAIN ECO THEME */
+body {
+  background-color: #E0E5D8;
+  color: #4F6B3F;
+  font-family: 'Nunito Sans', sans-serif;
+  transition: background-color 0.3s ease;
+}
 
-    header {
-      background: #FCF9EF;
-      box-shadow: 0 2px 8px rgba(79, 107, 63, 0.08);
-      border-bottom: 1px solid rgba(79, 107, 63, 0.08);
-      border-radius: 0 0 1.5rem 1.5rem;
-      transition: all 0.3s ease;
-    }
+header {
+  background: #FCF9EF;
+  box-shadow: 0 2px 8px rgba(79, 107, 63, 0.08);
+  border-bottom: 1px solid rgba(79, 107, 63, 0.08);
+  border-radius: 0 0 1.5rem 1.5rem;
+  transition: all 0.3s ease;
+}
 
 /* 🌱 Sidebar */
 aside {
@@ -34,102 +34,157 @@ aside {
   box-shadow: 0 4px 10px rgba(79, 107, 63, 0.05);
   transition: all 0.3s ease;
   font-family: 'Nunito Sans', sans-serif;
+  isolation: isolate;
+  position: relative;
+  z-index: 1000;
 }
 
-/* 🌿 Sidebar nav icons: soft sunken effect (gentle neumorphism) */
-aside nav a {
+/* 🍃 Sidebar Wrapper */
+.flex-1.relative {
+  position: relative;
+  z-index: 100;
+}
+
+/* 🌿 Sidebar nav items */
+.nav-item {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-
   color: #6A8A52;
   padding: 0.6rem;
   border-radius: 1.5rem;
   transform: translateY(0);
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+  z-index: 1001;
+}
 
-  /* soft sunken default */
+/* Default state - soft sunken */
+.nav-item {
   box-shadow:
     inset 2px 2px 4px rgba(140, 160, 130, 0.25),
     inset -2px -2px 4px rgba(255, 255, 255, 0.6);
-
-  transition: all 0.3s ease-out;
 }
 
-/* 🌤 Hover: gentle lift (soft minimalism + tactile) */
-aside nav a:hover {
+/* 🌤 Hover: gentle lift + show tooltip */
+.nav-item:hover {
   transform: translateY(-1px);
-
   box-shadow:
     -2px -2px 4px rgba(255, 255, 255, 0.7),
     2px 2px 4px rgba(160, 180, 150, 0.25);
-
   filter: brightness(1.03);
   color: #4F6B3F;
 }
 
-/* 🌾 Active: subtle press */
-aside nav a:active {
-  transform: translateY(1px);
+/* Tooltip for hover state */
+.nav-item:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(79, 107, 63, 0.95);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  margin-left: 0.75rem;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
 
+/* 🌾 Active state - no tooltip, distinct visual */
+.nav-item.active {
+  background: rgba(122, 140, 79, 0.95);
+  color: white;
+  box-shadow:
+    inset 2px 2px 4px rgba(70, 85, 45, 0.35),
+    inset -2px -2px 4px rgba(200, 220, 170, 0.4),
+    0 2px 6px rgba(122, 140, 79, 0.25);
+  transform: translateY(0);
+}
+
+/* Active state hover - maintain active style */
+.nav-item.active:hover {
+  background: rgba(122, 140, 79, 0.95);
+  color: white;
+  transform: translateY(0);
+  box-shadow:
+    inset 2px 2px 4px rgba(70, 85, 45, 0.35),
+    inset -2px -2px 4px rgba(200, 220, 170, 0.4),
+    0 2px 6px rgba(122, 140, 79, 0.25);
+}
+
+/* Active state - no tooltip */
+.nav-item.active:hover::after {
+  display: none;
+}
+
+/* 🌾 Active: subtle press */
+.nav-item:active {
+  transform: translateY(1px);
   box-shadow:
     inset 3px 3px 5px rgba(120, 140, 110, 0.3),
     inset -2px -2px 4px rgba(255, 255, 255, 0.5);
-
   filter: brightness(0.97);
 }
 
+/* 🌾 Toasts */
+#feedback-toast,
+#error-toast {
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 2rem;
+  transition: opacity 0.8s ease;
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+}
 
+/* 🌿 Main Container */
+main {
+  background: #FCF9EF;
+  border-radius: 2rem;
+  box-shadow: 0 4px 8px rgba(79, 107, 63, 0.1);
+  border: 1px solid rgba(79, 107, 63, 0.06);
+  transition: all 0.3s ease-in-out;
+  font-family: 'Nunito Sans', sans-serif;
+  position: relative;
+  z-index: 1; /* Low z-index to stay behind tooltips */
+  margin-left: 3rem; /* This should match your original spacing */
+}
 
-    /* 🌾 Toasts */
-    #feedback-toast,
-    #error-toast {
-      backdrop-filter: blur(6px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      border-radius: 2rem;
-      transition: opacity 0.8s ease;
-      font-family: 'Crimson Text', serif;
-      font-style: italic;
-    }
+/* 🍂 Footer */
+footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  font-family: 'Nunito Sans', sans-serif;
+}
 
-    /* 🌿 Main Container */
-    main {
-      background: #FCF9EF;
-      border-radius: 2rem;
-      box-shadow: 0 4px 8px rgba(79, 107, 63, 0.1);
-      border: 1px solid rgba(79, 107, 63, 0.06);
-      transition: all 0.3s ease-in-out;
-      font-family: 'Nunito Sans', sans-serif;
-    }
+footer .bg-#C37A49 {
+  background-color: #C37A49 !important;
+}
 
-    /* 🍂 Footer */
-    footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.3s ease;
-      font-family: 'Nunito Sans', sans-serif;
-    }
+footer .bg-#7F8A4F {
+  background-color: #7F8A4F !important;
+}
 
-    footer .bg-#C37A49 {
-      background-color: #C37A49 !important;
-    }
+footer a {
+  transition: all 0.25s ease-in-out;
+}
 
-    footer .bg-#7F8A4F {
-      background-color: #7F8A4F !important;
-    }
+footer a:hover {
+  color: #E0E5D8 !important;
+  transform: translateY(-2px);
+}
 
-    footer a {
-      transition: all 0.25s ease-in-out;
-    }
-
-    footer a:hover {
-      color: #E0E5D8 !important;
-      transform: translateY(-2px);
-    }
-
-    footer i:hover {
-      transform: scale(1.15);
-      transition: transform 0.25s ease;
-    }
+footer i:hover {
+  transform: scale(1.15);
+  transition: transform 0.25s ease;
+}
   </style>
 </head>
 
@@ -174,14 +229,14 @@ aside nav a:active {
   <div class="flex flex-1 relative">
     <aside class="absolute top-8 left-6 h-[78vh] w-20 flex flex-col items-center py-8">
       <nav class="flex flex-col items-center justify-evenly h-full">
-        <a href="/adminHome" title="Dashboard"><i class="fa-solid fa-house"></i></a>
-        <a href="/adminUsers" title="Manage Users"><i class="fa-solid fa-users"></i></a>
-        <a href="/adminQuests" title="Quests"><i class="fa-solid fa-bullseye"></i></a>
-        <a href="/adminRewards" title="Rewards"><i class="fa-solid fa-gift"></i></a>
-        <a href="{{ route('admin.eco-library') }}" title="Library / Lifestyle"><i class="fa-solid fa-book-open"></i></a>
-        <a href="/adminAnalytics" title="Analytics"><i class="fa-solid fa-chart-column"></i></a>
-        <a href="/adminSystemAlerts" title="Notifications"><i class="fa-solid fa-bell"></i></a>
-        <a href="/adminSettings" title="Settings"><i class="fa-solid fa-gear"></i></a>
+        <a href="/adminHome" class="nav-item" data-tooltip="Dashboard"><i class="fa-solid fa-house"></i></a>
+        <a href="/adminUsers" class="nav-item" data-tooltip="Manage Users"><i class="fa-solid fa-users"></i></a>
+        <a href="/adminQuests" class="nav-item" data-tooltip="Quests"><i class="fa-solid fa-bullseye"></i></a>
+        <a href="/adminRewards" class="nav-item" data-tooltip="Rewards"><i class="fa-solid fa-gift"></i></a>
+        <a href="{{ route('admin.eco-library') }}" class="nav-item" data-tooltip="Library / Lifestyle"><i class="fa-solid fa-book-open"></i></a>
+        <a href="/adminAnalytics" class="nav-item" data-tooltip="Analytics"><i class="fa-solid fa-chart-column"></i></a>
+        <a href="/adminSystemAlerts" class="nav-item" data-tooltip="Notifications"><i class="fa-solid fa-bell"></i></a>
+        <a href="/adminSettings" class="nav-item" data-tooltip="Settings"><i class="fa-solid fa-gear"></i></a>
       </nav>
     </aside>
 
@@ -248,7 +303,7 @@ aside nav a:active {
     </div>
   </footer>
 
-  <script>
+<script>
     setTimeout(() => {
       const toast = document.getElementById('feedback-toast');
       const errorToast = document.getElementById('error-toast');
@@ -259,6 +314,21 @@ aside nav a:active {
         }
       });
     }, 3000);
+
+ document.addEventListener('DOMContentLoaded', function() {
+  const navItems = document.querySelectorAll('.nav-item');
+  const currentPath = window.location.pathname.replace(/\/$/, ''); // remove trailing slash
+
+  navItems.forEach(item => {
+    const href = new URL(item.href).pathname.replace(/\/$/, ''); // get only path
+    item.classList.remove('active');
+
+    if (href === currentPath || currentPath.includes('eco-library')) {
+      item.classList.add('active');
+    }
+  });
+});
+
   </script>
 </body>
 

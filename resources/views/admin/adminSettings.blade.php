@@ -5,7 +5,6 @@
 @section('content')
 <div class="pl-4 pr-4 pt-2 pb-4 text-[#3B3B3B] font-sans overflow-y-auto">
 
-
     <!-- ⚙️ Header -->
     <div class="mb-6">
         <h1 class="text-3xl font-semibold text-[#4F6B3F]">System Settings</h1>
@@ -55,8 +54,9 @@
             </div>
 
             <div class="flex justify-end">
-                <button class="bg-[#7A8C4F] hover:bg-[#6B7B43] text-white text-sm font-medium px-4 py-2 rounded-full transition">
-                    Save Platform Settings
+                <button class="btn-eco btn-mint">
+                    <i class="fa-solid fa-save"></i>
+                    <span>Save Platform Settings</span>
                 </button>
             </div>
         </div>
@@ -81,8 +81,9 @@
             </div>
 
             <div class="flex justify-end mt-4">
-                <button class="bg-[#7A8C4F] hover:bg-[#6B7B43] text-white text-sm font-medium px-4 py-2 rounded-full transition">
-                    Update Notifications
+                <button class="btn-eco btn-mint">
+                    <i class="fa-solid fa-bell"></i>
+                    <span>Update Notifications</span>
                 </button>
             </div>
         </div>
@@ -93,16 +94,16 @@
             <p class="text-sm text-gray-600 mb-4">Manage data retention and privacy compliance (GDPR).</p>
 
             <div class="flex flex-wrap gap-3">
-                <button class="flex items-center gap-2 bg-[#8CA062] hover:bg-[#7E9157] text-white px-5 py-2 rounded-full text-sm font-medium transition">
+                <button class="btn-eco btn-olive">
                     <i class="fa-solid fa-download"></i>
-                    Download All Data
+                    <span>Download All Data</span>
                 </button>
 
                 <button 
                     onclick="confirm('Are you sure you want to clear all audit logs? This action cannot be undone.')"
-                    class="flex items-center gap-2 bg-[#A46C47] hover:bg-[#8C5E3D] text-white px-5 py-2 rounded-full text-sm font-medium transition">
+                    class="btn-eco btn-clay">
                     <i class="fa-solid fa-trash-can"></i>
-                    Clear Audit Logs
+                    <span>Clear Audit Logs</span>
                 </button>
             </div>
 
@@ -114,8 +115,9 @@
                     placeholder="Enter admin password..."
                     class="w-full bg-[#F4F6EB] border border-[#E0E9D6] rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-[#7A8C4F] focus:outline-none mb-3"
                 >
-                <button class="bg-[#7A8C4F] hover:bg-[#6B7B43] text-white text-sm font-medium px-4 py-2 rounded-full transition">
-                    Re-Authenticate
+                <button class="btn-eco btn-mint">
+                    <i class="fa-solid fa-shield-alt"></i>
+                    <span>Re-Authenticate</span>
                 </button>
             </div>
         </div>
