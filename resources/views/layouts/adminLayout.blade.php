@@ -38,6 +38,21 @@
             font-family: 'Nunito Sans', sans-serif;
         }
 
+    /* 🌿 Sidebar nav items */
+    .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #6A8A52;
+      padding: 0.6rem;
+      border-radius: 1.5rem;
+      transform: translateY(0);
+      transition: all 0.3s ease-out;
+      cursor: pointer;
+      z-index: 40;
+    }
         /* 🌿 Sidebar nav items */
         .nav-item {
             position: relative;
@@ -135,6 +150,17 @@
             font-style: italic;
         }
 
+    /* 🌿 Main Container */
+    main {
+      background: #FCF9EF;
+      border-radius: 2rem;
+      box-shadow: 0 4px 8px rgba(79, 107, 63, 0.1);
+      border: 1px solid rgba(79, 107, 63, 0.06);
+      transition: all 0.3s ease-in-out;
+      font-family: 'Nunito Sans', sans-serif;
+      z-index: 1;
+    }
+
         /* 🌿 Main Container */
         main {
             background: #FCF9EF;
@@ -144,6 +170,7 @@
             transition: all 0.3s ease-in-out;
             font-family: 'Nunito Sans', sans-serif;
         }
+
 
         /* 🍂 Footer */
         footer {

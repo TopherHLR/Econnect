@@ -37,8 +37,8 @@
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Content</label>
                 <textarea name="content" rows="5" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]" 
-                    placeholder="Write the eco topic details here..."></textarea>
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]" 
+                        placeholder="Write the eco topic details here..."></textarea>
             </div>
 
             <!-- Source Link -->
@@ -59,12 +59,11 @@
             <!-- Buttons -->
             <div class="flex justify-end gap-3 pt-3">
                 <button type="button" onclick="closeEcoTopicModal()"
-                        class="btn-eco btn-sand">
+                        class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
                     Cancel
                 </button>
-
                 <button type="submit"
-                        class="btn-eco btn-mint">
+                        class="px-5 py-2 rounded-full bg-[#8B6E4A] text-white font-medium hover:bg-[#7A5F40] transition">
                     <i class="fa-solid fa-plus mr-1"></i> Add Topic
                 </button>
             </div>
@@ -91,7 +90,6 @@
         <form id="ecoActionForm" class="p-6 space-y-4" method="POST" action="{{ route('ecoactions.store') }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="type" value="Action">
-
             <!-- Title -->
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Action Title</label>
@@ -104,8 +102,8 @@
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Description</label>
                 <textarea name="description" rows="4" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]" 
-                    placeholder="Describe the eco action and how users can complete it."></textarea>
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]" 
+                        placeholder="Describe the eco action and how users can complete it."></textarea>
             </div>
 
             <!-- Category -->
@@ -141,16 +139,14 @@
             <!-- Buttons -->
             <div class="flex justify-end gap-3 pt-3">
                 <button type="button" onclick="closeEcoActionModal()"
-                        class="btn-eco btn-sand">
+                        class="px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
                     Cancel
                 </button>
-
                 <button type="submit"
-                        class="btn-eco btn-mint">
+                        class="px-5 py-2 rounded-full bg-[#8B6E4A] text-white font-medium hover:bg-[#7A5F40] transition">
                     <i class="fa-solid fa-plus mr-1"></i> Add Action
                 </button>
             </div>
-
         </form>
     </div>
 </div>
@@ -166,10 +162,11 @@
         modal.classList.add('hidden');
     }
 
+    // Optional: close when clicking backdrop
     modal?.addEventListener('click', e => {
         if (e.target === modal) closeEcoTopicModal();
     });
-
+    
     const actionModal = document.getElementById('addEcoActionModal');
 
     function openEcoActionModal() {
@@ -180,6 +177,7 @@
         actionModal.classList.add('hidden');
     }
 
+    // Optional: close when clicking backdrop
     actionModal?.addEventListener('click', e => {
         if (e.target === actionModal) closeEcoActionModal();
     });
