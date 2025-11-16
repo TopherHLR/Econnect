@@ -49,6 +49,7 @@
       transform: translateY(0);
       transition: all 0.3s ease-out;
       cursor: pointer;
+      z-index: 40;
     }
 
     /* Default state - soft sunken */
@@ -141,6 +142,7 @@
       border: 1px solid rgba(79, 107, 63, 0.06);
       transition: all 0.3s ease-in-out;
       font-family: 'Nunito Sans', sans-serif;
+      z-index: 1;
     }
 
     /* 🍂 Footer */

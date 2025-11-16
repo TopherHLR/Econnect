@@ -1,5 +1,5 @@
 <!-- Verify User Modal -->
-<div id="verifyUserModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+<div id="verifyUserModal" class="hidden fixed inset-0 z-3000 bg-black/50 flex items-center justify-center p-4">
     <div class="bg-[#FCFFF6] w-full max-w-2xl rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
 
         <!-- Modal Header -->
