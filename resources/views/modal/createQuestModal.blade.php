@@ -32,21 +32,45 @@
                         placeholder="Describe the quest"></textarea>
             </div>
 
-            <!-- Category -->
-            <div>
+            <div x-data="{ custom: false }">
                 <label class="block text-[#4F6B3F] font-medium mb-1">Category</label>
-                <select name="category" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+
+                <!-- Dropdown -->
+                <select 
+                    x-show="!custom"
+                    name="category"
+                    x-on:change="custom = ($event.target.value === '__custom')"
+                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                >
                     <option value="">Select Category</option>
-                    <option value="Waste Management">Waste Management</option>
-                    <option value="Energy Conservation">Energy Conservation</option>
-                    <option value="Water Saving">Water Saving</option>
-                    <option value="Food Waste Reduction">Food Waste Reduction</option>
-                    <option value="Community Advocacy">Community Advocacy</option>
-                    <option value="Biodiversity">Biodiversity</option>
-                    <option value="Sustainable Fashion">Sustainable Fashion</option>
-                    <option value="General Sustainability">General Sustainability</option>
+
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat }}">{{ $cat }}</option>
+                    @endforeach
+
+                    <option value="__custom">➕ Add new category...</option>
                 </select>
+
+                <!-- Custom Input -->
+                <div x-show="custom" x-transition>
+                    <input 
+                        type="text"
+                        name="custom_category"
+                        class="mt-2 w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                        placeholder="Type new category..."
+                        x-ref="customInput"
+                        x-on:shown="setTimeout(() => $refs.customInput.focus(), 10)"
+                    >
+
+                    <!-- Back to dropdown button -->
+                    <button 
+                        type="button"
+                        x-on:click="custom = false"
+                        class="mt-2 text-sm text-[#4F6B3F] underline hover:text-[#6A8A52]"
+                    >
+                        ← Back to select dropdown
+                    </button>
+                </div>
             </div>
 
             <!-- Points Reward -->

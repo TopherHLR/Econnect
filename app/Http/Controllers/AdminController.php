@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Quest;
 
 class AdminController extends Controller
 {
     // Admin Home
     public function home()
     {
-        return view('admin.adminHome');
+                // Get distinct categories from already stored quests
+        $categories = Quest::distinct()
+            ->pluck('category')
+            ->filter()
+            ->values();
+
+        return view('admin.adminHome', compact('categories'));
     }
 
     // Admin Users

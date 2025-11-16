@@ -146,9 +146,9 @@ Route::middleware(['auth'])->group(function () {
             abort(403, 'Unauthorized access.');
         }
     ], function () {
-        Route::get('/adminHome', fn() => view('admin.adminHome'))->name('adminHome');
+        Route::get('/adminHome',  [AdminController::class, 'home'])->name('adminHome');
         Route::get('/adminUsers', fn() => view('admin.adminUsers'))->name('adminUsers');
-        Route::get('/adminQuests', fn() => view('admin.adminQuests'))->name('adminQuests');
+        Route::get('/adminQuests', [QuestController::class, 'index'])->name('adminQuests');
 
         // ✅ Add this POST route for storing quests
         Route::post('/admin/quests', [QuestController::class, 'store'])->name('quests.store');
