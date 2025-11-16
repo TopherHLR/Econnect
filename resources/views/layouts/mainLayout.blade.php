@@ -353,61 +353,50 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Your existing NavHighlight code...
-class NavHighlight {
-    constructor() {
-        this.highlight = document.createElement('div');
-        this.highlight.className = 'nav-highlight';
-        this.navLinks = document.querySelector('.nav-links');
-        this.links = document.querySelectorAll('.nav-link');
+// Navbar with permanent green shadow for non-home pages (full width)
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
+
+    function updateNavbar() {
+        const isHomePage = window.location.pathname === '/';
         
-        this.init();
-    }
-    
-    init() {
-        if (!this.navLinks) return;
-        
-        this.navLinks.appendChild(this.highlight);
-        this.updateHighlight();
-        
-        this.links.forEach(link => {
-            link.addEventListener('mouseenter', () => this.moveHighlight(link));
-        });
-        
-        this.navLinks.addEventListener('mouseleave', () => {
-            this.updateHighlight();
-        });
-        
-        window.addEventListener('resize', () => this.updateHighlight());
-    }
-    
-    moveHighlight(link) {
-        const linkRect = link.getBoundingClientRect();
-        const navRect = this.navLinks.getBoundingClientRect();
-        
-        const width = linkRect.width + 30;
-        const left = linkRect.left - navRect.left - 10;
-        
-        this.highlight.style.width = `${width}px`;
-        this.highlight.style.left = `${left}px`;
-        this.highlight.style.opacity = '1';
-    }
-    
-    updateHighlight() {
-        const activeLink = document.querySelector('.nav-link.active');
-        if (activeLink) {
-            this.moveHighlight(activeLink);
+        // Always add green shadow for non-home pages, but keep full width
+        if (!isHomePage) {
+            navbar.classList.add('navbar-green-shadow');
+            // Remove navbar-solid to keep full width
+            navbar.classList.remove('navbar-solid');
         } else {
-            this.highlight.style.opacity = '0';
+            navbar.classList.remove('navbar-green-shadow');
+            // Home page behavior - solid only when scrolled
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-solid');
+            } else {
+                navbar.classList.remove('navbar-solid');
+            }
         }
     }
-}
 
-// Initialize both on DOM loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new NavHighlight();
+    // Initial check
+    updateNavbar();
+
+    // Only listen to scroll for home page
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        const isHomePage = window.location.pathname === '/';
+        if (isHomePage && !scrollTimeout) {
+            scrollTimeout = setTimeout(function() {
+                scrollTimeout = null;
+                updateNavbar();
+            }, 10);
+        }
+    });
+
+    window.addEventListener('resize', updateNavbar);
 });
 </script>
+
+
 </body>
 
 </html>
