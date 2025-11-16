@@ -155,4 +155,9 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+Route::post('/quests/{quest}/status', [QuestController::class, 'updateStatus'])->name('quests.updateStatus');
+Route::post('/quests/{quest}/recover', [QuestController::class, 'recover'])->name('quests.recover');
+Route::post('/quests/{quest}/archive', [QuestController::class, 'archive'])->name('quests.archive');
+
+
 Route::get('/adminUsers', [AdminController::class, 'users'])->name('adminUsers');
