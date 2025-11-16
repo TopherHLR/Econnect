@@ -156,7 +156,7 @@
 
     </div>
 </div>
+    @include('modal.createQuestModal')
+    @include('modal.verifyUserModal')
 @endsection
-@include('modal.createQuestModal')
-@include('modal.verifyUserModal')
 
