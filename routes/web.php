@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\QuestSubmissionController;
 use App\Http\Controllers\AdminController;
-//---------------------------------------------------- AUTH -------------------------------------------------
 
+//---------------------------------------------------- AUTHENTICATION (LOGIN / REGISTER / VERIFY) -------------------------------------------------
+
+// Email verification
 Route::get('/verify-email', [AuthController::class, 'showVerificationForm'])->name('verify.email.form');
 Route::post('/verify-email', [AuthController::class, 'verifyAndCreate'])->name('verify.email.submit');
 
@@ -31,7 +33,7 @@ Route::get('/', function () {
     return view('home'); // create home.blade.php later
 })->name('home');
 
-//---------------------------------------------------- EWAN -------------------------------------------------
+//---------------------------------------------------- PUBLIC PAGES -------------------------------------------------
 
 Route::get('/lifestyle', function () {
     return view('lifestyle');
@@ -43,7 +45,8 @@ Route::get('/rewards', function () {
     return view('rewards');
 })->name('rewards');
 
-//---------------------------------------------------- ADMIN -------------------------------------------------
+//---------------------------------------------------- ADMIN PAGES (VIEW-ONLY NAVIGATION) -------------------------------------------------
+
 Route::middleware(['auth'])->group(function () {
 
     // Wrap admin routes in a closure-based group
@@ -55,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
             abort(403, 'Unauthorized access.');
         }
     ], function () {
+        // Admin dashboard + panel pages
         Route::get('/adminHome', fn() => view('admin.adminHome'))->name('adminHome');
         Route::get('/adminUsers', fn() => view('admin.adminUsers'))->name('adminUsers');
         Route::get('/adminQuests', fn() => view('admin.adminQuests'))->name('adminQuests');
@@ -65,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/adminLifestyle', fn() => view('admin.adminLifestyle'))->name('adminLifestyle');
     });
 });
+
 //---------------------------------------------------- MOCK API FOR ECO MODAL -------------------------------------------------
 
 
@@ -78,14 +83,16 @@ Route::get('/myprogress', [AccountController::class, 'myProgress'])->name('mypro
 
 Route::get('/rewards', [AccountController::class, 'rewards'])->name('rewards');
 
-//---------------------------------------------------- HOME -------------------------------------------------
+//---------------------------------------------------- HOME WIDGETS (ECO RANDOM WIDGETS) -------------------------------------------------
+
 Route::get('/widgets/random', [EcoController::class, 'getRandomWidgets'])
     ->name('widgets.random')
     ->middleware('auth');
 
 
-//---------------------------------------------------- ACTION -------------------------------------------------
-// User routes
+//---------------------------------------------------- ACTION SYSTEM (USER + ADMIN ACTIONS) -------------------------------------------------
+
+// User action routes
 Route::middleware('auth')->group(function () {
     Route::get('/actions', [ActionController::class, 'index'])->name('actions.index');
     Route::get('/actions/{id}', [ActionController::class, 'show'])->name('actions.show');
@@ -93,6 +100,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-actions', [ActionController::class, 'myActions'])->name('actions.my');
 });
 
+// Store eco actions
 Route::post('/ecoactions/store', [ActionController::class, 'store'])->name('ecoactions.store');
 
 
@@ -104,7 +112,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/actions/{id}', [ActionController::class, 'destroy'])->name('admin.actions.destroy');
 });
 
-//---------------------------------------------------- LIBRARY -------------------------------------------------
+//---------------------------------------------------- LIBRARY (USER SIDE) -------------------------------------------------
+
+// User library routes
 Route::middleware('auth')->group(function () {
     Route::get('/libraries', [LibraryController::class, 'index'])->name('libraries.index');
     Route::get('/libraries/{id}', [LibraryController::class, 'show'])->name('libraries.show');
@@ -117,26 +127,32 @@ Route::middleware('auth')->group(function () {
 // New route for fetching a single EcoAction
 Route::get('/actions/{id}', [LibraryController::class, 'showAction']);
 
+// Lifestyle library view
 Route::get('/lifestyle', [LibraryController::class, 'lifestyle'])->name('lifestyle');
 
-
+// Store new library item
 Route::post('/libraries/store', [LibraryController::class, 'store'])->name('libraries.store');
 
+//---------------------------------------------------- LIBRARY (ADMIN SIDE) -------------------------------------------------
 
-// Admin routes
+// Admin library routes
 Route::middleware(['auth'])->group(function () {
     Route::post('/admin/libraries', [LibraryController::class, 'store']);
     Route::put('/admin/libraries/{id}', [LibraryController::class, 'update']);
     Route::delete('/admin/libraries/{id}', [LibraryController::class, 'destroy']);
 });
 
+// Admin eco library page
 Route::middleware(['auth'])->group(function () {
     Route::get('/adminLifestyle', [LibraryController::class, 'adminIndex'])->name('admin.eco-library');
 });
 
+//---------------------------------------------------- ADMIN CONTROLLERS (ADMIN HOME + QUEST MANAGEMENT) -------------------------------------------------
+
 // Admin routes
 Route::middleware(['auth'])->group(function () {
 
+    // Admin-only filter
     Route::group([
         'middleware' => function ($request, $next) {
             if (Auth::check() && Auth::user()->user_type === 'admin') {
@@ -145,8 +161,14 @@ Route::middleware(['auth'])->group(function () {
             abort(403, 'Unauthorized access.');
         }
     ], function () {
+
+         // Admin homepage controller
         Route::get('/adminHome',  [AdminController::class, 'home'])->name('adminHome');
+
+         // Admin user list
         Route::get('/adminUsers', fn() => view('admin.adminUsers'))->name('adminUsers');
+
+         // Admin quest listing
         Route::get('/adminQuests', [QuestController::class, 'index'])->name('adminQuests');
 
         // ✅ Add this POST route for storing quests
@@ -154,17 +176,23 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-//---------------------------------------------------- QUEST ADMIN -------------------------------------------------
+//---------------------------------------------------- QUEST ADMIN (APPROVE / RECOVER / ARCHIVE / PROCESS) -------------------------------------------------
+// Quest management: updating status, recovering, archiving, and processing submissions
+
 Route::post('/quests/{quest}/status', [QuestController::class, 'updateStatus'])->name('quests.updateStatus');
 Route::post('/quests/{quest}/recover', [QuestController::class, 'recover'])->name('quests.recover');
 Route::post('/quests/{quest}/recover2', [QuestController::class, 'recover2'])->name('quests.recover2');
 Route::post('/quests/{quest}/archive', [QuestController::class, 'archive'])->name('quests.archive');
 Route::post('/quests/process', [QuestController::class, 'process'])->name('submissions.process');
 
-//---------------------------------------------------- QUEST USER -------------------------------------------------
+//---------------------------------------------------- QUEST USER (ACCEPT / SUBMIT QUEST)-------------------------------------------------
+// User interactions with quests: accepting and submitting quest entries
+
 Route::post('/quests/accept', [QuestSubmissionController::class, 'store'])->name('quests.accept');
 Route::post('/quests/submit', [QuestSubmissionController::class, 'submit'])->name('quests.submit');
 
 
+//---------------------------------------------------- ADMIN USERS (EXTRA ROUTE) -------------------------------------------------
+// Admin page for viewing users list
 
 Route::get('/adminUsers', [AdminController::class, 'users'])->name('adminUsers');
