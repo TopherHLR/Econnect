@@ -56,13 +56,13 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 60px;
-    height: 60px;
+    width: 90px;
+    height: 20px;
     background: radial-gradient(
         circle,
-        rgba(207, 241, 179, 0.8) 0%,
-        rgba(175, 212, 130, 0.6) 30%,
-        rgba(137, 113, 50, 0.4) 60%,
+        rgba(207, 241, 179, 0.9) 0%,
+        rgba(175, 212, 130, 0.8) 30%,
+        rgba(137, 113, 50, 0.5) 60%,
         transparent 80%
     );
     border-radius: 50%;
