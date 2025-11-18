@@ -64,4 +64,5 @@ class Quest extends Model
     {
         return $this->hasMany(QuestSubmission::class, 'quest_id', 'quest_id');
     }
+
 }

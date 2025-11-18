@@ -3,537 +3,463 @@
 @section('title', 'Quests')
 
 @section('content')
-<div class="space-y-8">
-  <!-- 🌿 Header -->
-  <div>
-    <h1 class="text-3xl font-semibold text-[#4E3A2E]">Quests</h1>
-    <p class="text-[#7A8C4F] mt-1">Create, manage, and validate sustainability challenges.</p>
-  </div>
+    <div class="space-y-8">
+        <!-- Header -->
+        <div>
+            <h1 class="text-3xl font-semibold text-[#4E3A2E]">Quests</h1>
+            <p class="text-[#7A8C4F] mt-1">Create, manage, and validate sustainability challenges.</p>
+        </div>
 
-  <!-- 📦 Layout Wrapper -->
-  <div class="flex flex-col md:flex-row gap-8">
-    <!-- ✅ Sidebar -->
-    <aside class="w-full md:w-1/4 max-w-xs bg-[#FCF9EF] rounded-2xl p-6 shadow-[0_8px_20px_rgba(74,85,48,0.2)] border border-[#C6D0B2]">
-      <!-- 🌿 Active Quests Header -->
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold text-[#4E3A2E]">Active Quests</h2>
-        <button onclick="openQuestModal()" class="btn-eco btn-sage">
-          + New
-        </button>
-      </div>
-      
-   <ul id="questList" class="space-y-2 mb-6">
-  <li data-quest="plastic" class="tab-eco">Reduce Plastic Use</li>
-  <li data-quest="tree" class="tab-eco">Plant a Tree</li>
-  <li data-quest="cleanup" class="tab-eco">Join Clean-Up Drive</li>
-</ul>
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Sidebar -->
+            <aside class="w-full md:w-1/4 max-w-xs bg-[#FCF9EF] rounded-2xl p-6 shadow border border-[#C6D0B2]">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-[#4E3A2E]">Active Quests</h2>
+                    <button onclick="openQuestModal()" class="btn-eco btn-sage">+ New</button>
+                </div>
 
-      <hr class="border-[#C6D0B2] mb-6">
+                <ul id="questList" class="space-y-2 mb-6">
+                    <!-- Active Quests -->
+                    @foreach ($quests->where('status', '!=', 'archived') as $quest)
+                        <li data-quest="{{ $quest->quest_id }}" class="tab-eco cursor-pointer">
+                            {{ $quest->title }}
+                        </li>
+                    @endforeach
 
-     <!-- 🌿 Quest Collection Button -->
-<button data-quest="collection" class="tab-eco w-full text-center mb-2">
-  Quest Collection
-</button>
+                    <hr class="border-[#C6D0B2] mb-4 mt-4">
 
-<!-- 🗂 Archive Dropdown -->
-<div class="relative">
-<button id="archiveDropdownBtn" class="btn-eco w-full flex justify-center items-center relative">
-  <span>Archive</span>
-  <svg id="archiveArrow" class="w-4 h-4 ml-2 absolute right-4 top-1/2 -translate-y-1/2 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-  </svg>
-</button>
+                    <!-- Quest Collection -->
+                    <li data-quest="collection" class="tab-eco cursor-pointer">Quest Collection</li>
+                </ul>
 
-  <!-- Dropdown Menu -->
-  <ul id="archiveDropdownMenu" class="absolute left-0 right-0 bg-[#FCF9EF] border border-[#C6D0B2] rounded-lg mt-2 shadow-lg hidden z-10">
-    <li data-quest="archive-submissions" class="px-4 py-2 hover:bg-[#E9F0E1] cursor-pointer text-[#4E3A2E]">Submissions</li>
-    <li data-quest="archive-quests" class="px-4 py-2 hover:bg-[#E9F0E1] cursor-pointer text-[#4E3A2E]">Quests</li>
-  </ul>
-</div>
+                <!-- Archive Dropdown -->
+                <div class="relative">
+                    <button id="archiveDropdownBtn" class="btn-eco w-full flex justify-center items-center relative">
+                        <span>Archive</span>
+                        <svg id="archiveArrow"
+                            class="w-4 h-4 ml-2 absolute right-4 top-1/2 -translate-y-1/2 transition-transform duration-200"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
 
-    </aside>
+                    <ul id="archiveDropdownMenu"
+                        class="absolute left-0 right-0 bg-[#FCF9EF] border border-[#C6D0B2] rounded-lg mt-2 shadow-lg hidden z-10">
+                        <!-- Archived Quests -->
+                        @foreach ($quests->where('status', 'archived') as $quest)
+                            <li class="flex justify-between items-center px-4 py-2 hover:bg-[#E9F0E1] text-[#4E3A2E]">
+                                <span class="cursor-pointer" data-quest="questTable-{{ $quest->quest_id }}">
+                                    {{ $quest->title }}
+                                </span>
 
-    <!-- 📋 Main Content -->
- <!-- 📋 Main Content -->
-<main class="flex-1 space-y-6">
-  <div class="max-w-8xl mx-auto space-y-6 mt-7 ml-5 mr-5">
-    <!-- 🔍 Search Bars -->
-<div class="flex flex-wrap items-center justify-between gap-4">
-  <!-- Search for Submissions -->
-  <div id="searchSubmissions" class="relative w-80">
-    <input type="text" placeholder="Search submissions..."
-      class="bg-[#E9F0E1] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#4E3A2E]">
-    <svg class="absolute right-3 top-3 w-4 h-4 text-[#7A8C4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-  </div>
+                                <!-- Recover form -->
+                                <form action="{{ route('quests.recover', $quest->quest_id) }}" method="POST"
+                                    onsubmit="return confirm('Recover this quest?')">
+                                    @csrf
+                                    <button type="submit"
+                                        class="text-green-600 hover:text-green-800 font-semibold text-sm">
+                                        Recover
+                                    </button>
+                                </form>
+                            </li>
+                        @endforeach
+                    </ul>
 
-  <!-- Search for Quests -->
-  <div id="searchQuests" class="relative w-80 hidden">
-    <input type="text" placeholder="Search quests..."
-      class="bg-[#E9F0E1] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#4E3A2E]">
-    <svg class="absolute right-3 top-3 w-4 h-4 text-[#7A8C4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-  </div>
-</div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 space-y-6">
+                <div class="max-w-8xl mx-auto space-y-6 mt-7 ml-5 mr-5">
+
+                    <!-- Quest Tables -->
+                    <div id="questTables" class="space-y-8">
+                        @foreach ($quests as $quest)
+                            <div id="questTable-{{ $quest->quest_id }}"
+                                class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] {{ $loop->first ? '' : 'hidden' }}">
+                                <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">{{ $quest->title }} Participants</h2>
+
+                                <div class="flex gap-6">
+                                    <!-- Participants Table -->
+                                    <div class="flex-1">
+                                        <div class="mb-4">
+                                            <input type="text"
+                                                class="bg-[#E9F0E1] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#4E3A2E] table-search"
+                                                placeholder="Search participants..."
+                                                data-table-id="questTable-{{ $quest->quest_id }}">
+                                        </div>
+
+                                        <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
+                                            <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
+                                                <tr>
+                                                    <th class="px-4 py-2 w-1/50">#</th>
+                                                    <th class="px-4 py-2 w-1/4">Participant</th>
+                                                    <th class="px-4 py-2 w-1/4">Status</th>
+                                                    <th class="px-4 py-2 w-1/4">Checked By</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($quest->submissions as $index => $submission)
+                                                    <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8] participant-row cursor-pointer"
+                                                        data-submission-id="{{ $submission->submission_id }}"
+                                                        data-user="{{ $submission->user->first_name }} {{ $submission->user->last_name }}"
+                                                        data-status="{{ $submission->status }}"
+                                                        data-proof-link="{{ $submission->proof_link }}"
+                                                        data-proof-image="{{ $submission->proof_image }}"
+                                                        data-verified-by-email="{{ $submission->verifier ? $submission->verifier->email : '' }}">
+
+                                                        <td class="px-4 py-2">{{ $index + 1 }}</td>
+                                                        <td class="px-4 py-2 text-[#7A8C4F] hover:underline">
+                                                            {{ $submission->user->first_name }}
+                                                            {{ $submission->user->last_name }}
+                                                        </td>
+                                                        <td class="px-4 py-2 text-[#6A8A52]">
+                                                            @if ($submission->status === 'pending' && ($submission->proof_link || $submission->proof_image))
+                                                                Submitted
+                                                            @else
+                                                                {{ ucfirst($submission->status) }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="px-4 py-2 text-[#4F6B3F]">
+                                                            @if ($submission->status === 'completed' && $submission->verifier)
+                                                                Verified
+                                                                by {{ $submission->verifier->first_name . ' ' . $submission->verifier->last_name }}
+                                                            @elseif ($submission->status === 'rejected' && $submission->verifier)
+                                                                Rejected by
+                                                                {{ $submission->verifier->first_name . ' ' . $submission->verifier->last_name }}
+                                                            @else
+                                                                Not verified yet
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
 
 
-    <!-- 🧭 Quest Tables -->
-    <div id="questTables" class="space-y-8">
-     <!-- 🧩 Reduce Plastic Use -->
-<div id="plasticTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7]">
-  <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Reduce Plastic Use Participants</h2>
-  <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
-    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-      <tr>
-        <th class="px-4 py-2 w-16">#</th>
-        <th class="px-4 py-2">Participant</th>
-        <th class="px-4 py-2 w-32">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">1</td>
-        <td class="participant-name px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline"
-            data-name="Maria Santos"
-            data-status="Completed"
-            data-proof="https://proof-link.example.com"
-            data-submitted="2025-10-21"
-            data-completed="2025-10-25">
-          Maria Santos
-        </td>
-        <td class="px-4 py-2 text-[#6A8A52]">Completed</td>
-      </tr>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">2</td>
-        <td class="participant-name px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline"
-            data-name="John Dela Cruz"
-            data-status="Pending"
-            data-proof="https://example.com/proof2"
-            data-submitted="2025-10-22"
-            data-completed="-">
-          John Dela Cruz
-        </td>
-        <td class="px-4 py-2 text-[#C37A49]">Pending</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+                                </div>
+                            </div>
+                        @endforeach
 
 
-<!-- 🌳 Plant a Tree -->
-<div id="treeTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] hidden">
-  <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Plant a Tree Participants</h2>
-  <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
-    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-      <tr>
-        <th class="px-4 py-2 w-16">#</th>
-        <th class="px-4 py-2">Participant</th>
-        <th class="px-4 py-2 w-32">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">1</td>
-        <td class="participant-name px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline"
-            data-name="Liza Ramos"
-            data-status="Completed"
-            data-proof="https://proof-link-liza.example.com"
-            data-submitted="2025-10-14"
-            data-completed="2025-10-17">
-          Liza Ramos
-        </td>
-        <td class="px-4 py-2 text-[#6A8A52]">Completed</td>
-      </tr>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">2</td>
-        <td class="participant-name px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline"
-            data-name="Paolo Cruz"
-            data-status="Ongoing"
-            data-proof="https://proof-link-paolo.example.com"
-            data-submitted="2025-10-18"
-            data-completed="-">
-          Paolo Cruz
-        </td>
-        <td class="px-4 py-2 text-[#C37A49]">Ongoing</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+                        <!-- Quest Collection Table -->
+                        <div id="collectionTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] hidden">
+                            <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Quest Collection</h2>
 
-<!-- 🧹 Clean-Up Drive -->
-<div id="cleanupTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] hidden">
-  <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Join Clean-Up Drive Participants</h2>
-  <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
-    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-      <tr>
-        <th class="px-4 py-2 w-16">#</th>
-        <th class="px-4 py-2">Participant</th>
-        <th class="px-4 py-2 w-32">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">1</td>
-        <td class="participant-name px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline"
-            data-name="Maria Santos"
-            data-status="Completed"
-            data-proof="https://proof-link-maria.example.com"
-            data-submitted="2025-10-20"
-            data-completed="2025-10-25">
-          Maria Santos
-        </td>
-        <td class="px-4 py-2 text-[#6A8A52]">Completed</td>
-      </tr>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">2</td>
-        <td class="participant-name px-4 py-2 text-[#7A8C4F] cursor-pointer hover:underline"
-            data-name="Carlos Reyes"
-            data-status="Pending"
-            data-proof="https://proof-link-carlos.example.com"
-            data-submitted="2025-10-22"
-            data-completed="-">
-          Carlos Reyes
-        </td>
-        <td class="px-4 py-2 text-[#C37A49]">Pending</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+                            <!-- Search bar for quest collection -->
+                            <div class="mb-4">
+                                <input type="text"
+                                    class="bg-[#E9F0E1] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#4E3A2E] collection-search"
+                                    placeholder="Search quests..." data-table-id="collectionTable">
+                            </div>
 
-<!-- 📋 Submission Modal -->
-<div id="submissionModal"
-  class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden">
-  <div class="bg-white w-full max-w-md rounded-lg shadow-lg p-6 border border-[#E6EAD7]">
-    <h3 class="text-lg font-semibold text-[#4E3A2E] mb-3" id="modalParticipantName"></h3>
-    <div class="space-y-2 text-sm text-[#4E3A2E]">
-      <p><strong>Status:</strong> <span id="modalStatus"></span></p>
-      <p><strong>Date Submitted:</strong> <span id="modalDateSubmitted"></span></p>
-      <p><strong>Date Completed:</strong> <span id="modalDateCompleted"></span></p>
-      <p><strong>Proof:</strong> 
-        <a id="modalProofLink" href="#" target="_blank" class="text-blue-600 underline">View Submission</a>
-      </p>
+                            <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
+                                <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
+                                    <tr>
+                                        <th class="px-4 py-2 w-16">#</th>
+                                        <th class="px-4 py-2">Quest Title</th>
+                                        <th class="px-4 py-2 w-64">Description</th>
+                                        <th class="px-4 py-2 w-48">Category</th>
+                                        <th class="px-4 py-2 w-32">Points</th>
+                                        <th class="px-4 py-2 w-32">Start Date</th>
+                                        <th class="px-4 py-2 w-32">End Date</th>
+                                        <th class="px-4 py-2 w-32">Status</th>
+                                        <th class="px-4 py-2 w-32">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($quests->where('status', '!=', 'archived') as $index => $quest)
+                                        <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
+                                            <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                                            <td class="px-4 py-2 text-[#4E3A2E]">{{ $quest->title }}</td>
+                                            <td class="px-4 py-2">{{ $quest->description }}</td>
+                                            <td class="px-4 py-2">{{ $quest->category }}</td>
+                                            <td class="px-4 py-2">{{ $quest->points_reward }}</td>
+                                            <td class="px-4 py-2">{{ $quest->start_date }}</td>
+                                            <td class="px-4 py-2">{{ $quest->end_date }}</td>
+                                            <!-- Status Dropdown -->
+                                            <td class="px-4 py-2"> <select name="status"
+                                                    class="border border-[#7A8C4F] rounded px-2 py-1 text-sm text-[#4E3A2E] status-dropdown"
+                                                    data-quest-id="{{ $quest->quest_id }}">
+                                                    <option value="active"
+                                                        {{ $quest->status === 'active' ? 'selected' : '' }}>Active</option>
+                                                    <option value="ending_soon"
+                                                        {{ $quest->status === 'ending_soon' ? 'selected' : '' }}>Ending
+                                                        Soon</option>
+                                                    <option value="closed"
+                                                        {{ $quest->status === 'closed' ? 'selected' : '' }}>Closed</option>
+                                                </select> </td>
+                                            <td class="px-4 py-2">
+                                                <div class="flex gap-1.5">
+                                                    <button class="btn-action btn-edit" title="Edit Quest">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn-action btn-archive"
+                                                        data-quest-id="{{ $quest->quest_id }}" title="Archive Quest">
+                                                        <i class="fas fa-archive"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+            </main>
+
+        </div>
     </div>
+    <!-- JS for dynamic quest table switching -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questListItems = document.querySelectorAll('#questList li');
+            const questTables = document.querySelectorAll('[id^="questTable-"]');
+            const collectionTable = document.getElementById('collectionTable');
 
-    <!-- 📝 Optional Admin Note -->
-    <div class="mt-4">
-      <label for="adminNote" class="block text-sm font-medium text-[#4E3A2E] mb-1">Admin Note (optional)</label>
-      <textarea id="adminNote"
-        class="w-full border border-[#E6EAD7] rounded-lg p-2 text-sm focus:ring-[#6A8A52] focus:border-[#6A8A52]"
-        placeholder="Write a note for this participant..."></textarea>
-    </div>
+            questListItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const selectedId = item.dataset.quest;
 
-    <!-- ✅❌ Action Buttons -->
-    <div class="flex justify-end gap-3 mt-5">
-      <button id="rejectBtn" class="px-3 py-1.5 bg-red-100 text-red-700 rounded hover:bg-red-200">❌ Reject</button>
-      <button id="approveBtn" class="px-3 py-1.5 bg-green-100 text-green-700 rounded hover:bg-green-200">✅ Approve</button>
-      <button id="closeModal" class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">Close</button>
-    </div>
-  </div>
-</div>
-<!-- 🗂 Quest Collection -->
-<div id="collectionTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7]">
-  <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Quest Collection</h2>
-  <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
-    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-      <tr>
-        <th class="px-4 py-2 w-16">#</th>
-        <th class="px-4 py-2">Quest Title</th>
-        <th class="px-4 py-2 w-64">Description</th>
-        <th class="px-4 py-2 w-48">Category</th>
-        <th class="px-4 py-2 w-32">Points</th>
-        <th class="px-4 py-2 w-32">Start Date</th>
-        <th class="px-4 py-2 w-32">End Date</th>
-        <th class="px-4 py-2 w-32">Status</th>
-        <th class="px-4 py-2 w-32">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">1</td>
-        <td class="px-4 py-2 text-[#4E3A2E]">Reduce Plastic Use</td>
-        <td class="px-4 py-2">Encourage communities to reduce single-use plastics through awareness and alternatives.</td>
-        <td class="px-4 py-2">Waste Management</td>
-        <td class="px-4 py-2">100</td>
-        <td class="px-4 py-2">2025-09-01</td>
-        <td class="px-4 py-2">2025-09-30</td>
-        <td class="px-4 py-2 text-[#6A8A52]">Active</td>
-        <td class="px-4 py-2">
-          <div class="flex gap-1.5">
-            <button class="btn-action btn-edit" title="Edit Quest">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn-action btn-delete" title="Archive Quest">
-              <i class="fas fa-archive"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">2</td>
-        <td class="px-4 py-2 text-[#4E3A2E]">Plant a Tree</td>
-        <td class="px-4 py-2">Join a local tree planting initiative and contribute to reforestation efforts.</td>
-        <td class="px-4 py-2">Biodiversity</td>
-        <td class="px-4 py-2">120</td>
-        <td class="px-4 py-2">2025-10-01</td>
-        <td class="px-4 py-2">2025-10-31</td>
-        <td class="px-4 py-2 text-[#6A8A52]">Active</td>
-        <td class="px-4 py-2">
-          <div class="flex gap-1.5">
-            <button class="btn-action btn-edit" title="Edit Quest">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn-action btn-delete" title="Archive Quest">
-              <i class="fas fa-archive"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">3</td>
-        <td class="px-4 py-2 text-[#4E3A2E]">Water Conservation</td>
-        <td class="px-4 py-2">Spread awareness on responsible water usage and organize educational drives.</td>
-        <td class="px-4 py-2">Water Saving</td>
-        <td class="px-4 py-2">90</td>
-        <td class="px-4 py-2">2025-11-01</td>
-        <td class="px-4 py-2">2025-11-30</td>
-        <td class="px-4 py-2 text-[#C37A49]">Ending Soon</td>
-        <td class="px-4 py-2">
-          <div class="flex gap-1.5">
-            <button class="btn-action btn-edit" title="Edit Quest">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn-action btn-delete" title="Archive Quest">
-              <i class="fas fa-archive"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-      <tr class="hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">4</td>
-        <td class="px-4 py-2 text-[#4E3A2E]">Sustainable Fashion</td>
-        <td class="px-4 py-2">Encourage the use of thrifted or eco-friendly clothing to reduce textile waste.</td>
-        <td class="px-4 py-2">Sustainable Fashion</td>
-        <td class="px-4 py-2">150</td>
-        <td class="px-4 py-2">2025-08-01</td>
-        <td class="px-4 py-2">2025-08-31</td>
-        <td class="px-4 py-2 text-[#A36B47]">Closed</td>
-        <td class="px-4 py-2">
-          <div class="flex gap-1.5">
-            <button class="btn-action btn-edit" title="Edit Quest">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn-action btn-delete" title="Archive Quest">
-              <i class="fas fa-archive"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<!-- 🗂 Archive - Submissions -->
-<div id="archive-submissionsTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] hidden">
-  <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Archived Submissions</h2>
-  <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
-    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-      <tr>
-        <th class="px-4 py-2 w-16">#</th>
-        <th class="px-4 py-2">Participant</th>
-        <th class="px-4 py-2 w-48">Quest</th>
-        <th class="px-4 py-2 w-32">Status</th>
-        <th class="px-4 py-2 w-48">Date Completed</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">1</td>
-        <td class="px-4 py-2">Maria Santos</td>
-        <td class="px-4 py-2">Reduce Plastic Use</td>
-        <td class="px-4 py-2 text-[#6A8A52]">Completed</td>
-        <td class="px-4 py-2">2025-09-28</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+                    // Hide all quest tables
+                    questTables.forEach(table => table.classList.add('hidden'));
+                    collectionTable.classList.add('hidden');
 
-<!-- 🗂 Archive - Quests -->
-<div id="archive-questsTable" class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] hidden">
-  <h2 class="text-lg font-semibold text-[#4E3A2E] mb-4">Archived Quests</h2>
-  <table class="min-w-full text-sm text-[#4E3A2E] text-left border-collapse">
-    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-      <tr>
-        <th class="px-4 py-2 w-16">#</th>
-        <th class="px-4 py-2">Quest Title</th>
-        <th class="px-4 py-2 w-64">Description</th>
-        <th class="px-4 py-2 w-32">Points</th>
-        <th class="px-4 py-2 w-32">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="hover:bg-[#FAFBF8]">
-        <td class="px-4 py-2">1</td>
-        <td class="px-4 py-2">Sustainable Fashion</td>
-        <td class="px-4 py-2">Encourage eco-friendly clothing usage.</td>
-        <td class="px-4 py-2">150</td>
-        <td class="px-4 py-2 text-[#A36B47]">Closed</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+                    if (selectedId === 'collection') {
+                        collectionTable.classList.remove('hidden');
+                    } else {
+                        // Show selected quest table
+                        const selectedTable = document.getElementById('questTable-' + selectedId);
+                        if (selectedTable) {
+                            selectedTable.classList.remove('hidden');
+                        }
+                    }
 
-    </div>
-  </div>
-</main>
+                    // Highlight active tab
+                    questListItems.forEach(li => li.classList.remove('bg-[#E9F0E1]',
+                        'font-semibold'));
+                    item.classList.add('bg-[#E9F0E1]', 'font-semibold');
+                });
+            });
+        });
 
-  </div>
-</div>
+        document.addEventListener('DOMContentLoaded', () => {
+            const archiveBtn = document.getElementById('archiveDropdownBtn');
+            const archiveMenu = document.getElementById('archiveDropdownMenu');
+            const archiveArrow = document.getElementById('archiveArrow');
 
-<!-- 🌿 Modal -->
-<div id="questModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-  <div class="bg-[#FCF9EF] rounded-2xl shadow-xl max-w-lg w-full p-6 text-[#3E5730] relative">
-    <button id="closeModal" class="absolute top-3 right-4 text-[#7A8C4F] hover:text-[#4E3A2E] text-2xl">&times;</button>
-    <h2 id="modalTitle" class="text-2xl font-semibold text-[#4E3A2E] mb-2"></h2>
-    <p id="modalCategory" class="text-sm text-[#7A8C4F] mb-4"></p>
-    <p id="modalDescription" class="text-[#4E3A2E] leading-relaxed"></p>
-    <div id="modalStatus" class="mt-4 inline-block px-3 py-1 rounded-full text-sm font-medium"></div>
-  </div>
-</div>
+            archiveBtn.addEventListener('click', () => {
+                archiveMenu.classList.toggle('hidden'); // show/hide menu
+                archiveArrow.classList.toggle('rotate-180'); // rotate arrow
+            });
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const tabs = document.querySelectorAll('#questList .tab-eco');
-  const collectionBtn = document.querySelector('[data-quest="collection"]');
-  const questTables = document.querySelectorAll('#questTables > div');
-  const searchSubmissions = document.getElementById('searchSubmissions');
-  const searchQuests = document.getElementById('searchQuests');
+            // Optional: close the dropdown if user clicks outside
+            document.addEventListener('click', (e) => {
+                if (!archiveBtn.contains(e.target) && !archiveMenu.contains(e.target)) {
+                    archiveMenu.classList.add('hidden');
+                    archiveArrow.classList.remove('rotate-180');
+                }
+            });
+        });
 
-  function activateQuest(questKey, clickedElement) {
-    // Remove active class from all tabs and collection button
-    tabs.forEach(t => t.classList.remove('tab-eco-active'));
-    if (collectionBtn) collectionBtn.classList.remove('tab-eco-active');
+        document.addEventListener('DOMContentLoaded', () => {
 
-    // Add active class to clicked tab/button
-    clickedElement.classList.add('tab-eco-active');
+            // Status update via AJAX
+            document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+                dropdown.addEventListener('change', (e) => {
+                    const questId = e.target.dataset.questId;
+                    const status = e.target.value;
 
-    // Hide all tables
-    questTables.forEach(table => table.classList.add('hidden'));
+                    fetch(`/quests/${questId}/status`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                status
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.success); // optional feedback
+                            }
+                        })
+                        .catch(err => console.error(err));
+                });
+            });
 
-    // Show the selected table
-    const targetTable = document.getElementById(questKey + 'Table');
-    if (targetTable) targetTable.classList.remove('hidden');
+        });
 
-    // Toggle search bars
-    if (questKey === 'collection') {
-      searchSubmissions.classList.add('hidden');
-      searchQuests.classList.remove('hidden');
-    } else {
-      searchSubmissions.classList.remove('hidden');
-      searchQuests.classList.add('hidden');
-    }
-  }
+        document.addEventListener('DOMContentLoaded', () => {
+            const archiveMenu = document.getElementById('archiveDropdownMenu');
 
-  // Tabs click
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const quest = tab.getAttribute('data-quest');
-      activateQuest(quest, tab);
-    });
-  });
+            document.querySelectorAll('.btn-archive').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const questId = button.dataset.questId;
+                    const questTitle = button.closest('tr').querySelector('td:nth-child(2)')
+                        .innerText;
 
-  // Collection button click
-  if (collectionBtn) {
-    collectionBtn.addEventListener('click', () => {
-      activateQuest('collection', collectionBtn);
-    });
-  }
+                    if (!confirm('Are you sure you want to archive this quest?')) return;
 
-  // Optional: set default active tab on page load
-  if (tabs.length) {
-    activateQuest(tabs[0].getAttribute('data-quest'), tabs[0]);
-  }
+                    fetch(`/quests/${questId}/archive`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Remove the row from the table
+                                const row = button.closest('tr');
+                                if (row) row.remove();
 
- // -------------------------------
-// Participant Submission Modal logic
-// -------------------------------
-const submissionModal = document.getElementById('submissionModal');
-const closeSubmissionModal = document.querySelector('#submissionModal #closeModal');
-const modalName = document.getElementById('modalParticipantName');
-const modalStatus = document.getElementById('modalStatus');
-const modalDateSubmitted = document.getElementById('modalDateSubmitted');
-const modalDateCompleted = document.getElementById('modalDateCompleted');
-const modalProofLink = document.getElementById('modalProofLink');
+                                // Add the quest to the archive dropdown
+                                const li = document.createElement('li');
+                                li.className =
+                                    "flex justify-between items-center px-4 py-2 hover:bg-[#E9F0E1] text-[#4E3A2E]";
 
-// Attach event listener to all participant name cells
-document.querySelectorAll('.participant-name').forEach(cell => {
-  cell.addEventListener('click', () => {
-    modalName.textContent = cell.dataset.name;
-    modalStatus.textContent = cell.dataset.status;
-    modalDateSubmitted.textContent = cell.dataset.submitted;
-    modalDateCompleted.textContent = cell.dataset.completed;
-    modalProofLink.href = cell.dataset.proof;
+                                li.innerHTML = `
+                        <span class="cursor-pointer" data-quest="questTable-${questId}">${questTitle}</span>
+                        <form onsubmit="return confirm('Recover this quest?')" class="ml-2" data-quest-id="${questId}">
+                            <button type="button" class="text-green-600 hover:text-green-800 font-semibold text-sm btn-recover">Recover</button>
+                        </form>
+                    `;
+                                archiveMenu.appendChild(li);
 
-    submissionModal.classList.remove('hidden');
-    submissionModal.classList.add('flex');
-  });
-});
+                                // Add recover button functionality
+                                li.querySelector('.btn-recover').addEventListener('click', () =>
+                                    recoverQuest(questId, li));
+                            }
+                        })
+                        .catch(err => console.error(err));
+                });
+            });
+            // Recover function
+            function recoverQuest(questId, liElement) {
+                if (!confirm('Recover this quest?')) return;
 
-// Close button
-closeSubmissionModal.addEventListener('click', () => {
-  submissionModal.classList.add('hidden');
-});
+                fetch(`/quests/${questId}/recover2`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            liElement.remove(); // Remove from archive dropdown
 
-// Close modal when clicking outside content
-submissionModal.addEventListener('click', e => {
-  if (e.target === submissionModal) {
-    submissionModal.classList.add('hidden');
-  }
-});
-});
+                            // Optional: refresh table or re-add to active quests table
+                            location.reload(); // Or implement JS to add it back dynamically
+                        }
+                    });
+            }
+        });
 
-// -------------------------------
-// 🗂 Archive Dropdown Logic
-// -------------------------------
-const archiveDropdownBtn = document.getElementById('archiveDropdownBtn');
-const archiveDropdownMenu = document.getElementById('archiveDropdownMenu');
-const archiveArrow = document.getElementById('archiveArrow');
-const archiveOptions = archiveDropdownMenu.querySelectorAll('li');
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInputs = document.querySelectorAll('.table-search');
 
-if (archiveDropdownBtn) {
-  // Toggle dropdown visibility
-  archiveDropdownBtn.addEventListener('click', () => {
-    archiveDropdownMenu.classList.toggle('hidden');
-    archiveArrow.classList.toggle('rotate-180');
-  });
+            searchInputs.forEach(input => {
+                const tableId = input.dataset.tableId;
+                const tableBody = document.querySelector(`#${tableId} tbody`);
 
-  // Handle Archive tab clicks
-  archiveOptions.forEach(option => {
-    option.addEventListener('click', () => {
-      const questKey = option.getAttribute('data-quest');
-      activateQuest(questKey, option);
+                // Create a "No participants found" row
+                let emptyRow = document.createElement('tr');
+                emptyRow.classList.add('no-results');
+                emptyRow.innerHTML =
+                    `<td colspan="3" class="px-4 py-2 text-center text-[#7A8C4F]">No participants found</td>`;
+                tableBody.appendChild(emptyRow);
 
-      // Close dropdown after selection
-      archiveDropdownMenu.classList.add('hidden');
-      archiveArrow.classList.remove('rotate-180');
-    });
-  });
-}
+                const updateVisibility = () => {
+                    const filter = input.value.toLowerCase();
+                    const rows = Array.from(tableBody.querySelectorAll('tr:not(.no-results)'));
+                    let anyVisible = false;
 
-// Close dropdown when clicking outside
-document.addEventListener('click', e => {
-  if (!archiveDropdownBtn.contains(e.target) && !archiveDropdownMenu.contains(e.target)) {
-    archiveDropdownMenu.classList.add('hidden');
-    archiveArrow.classList.remove('rotate-180');
-  }
-});
+                    if (rows.length === 0) {
+                        // If no rows exist in the table, show the empty row
+                        emptyRow.style.display = '';
+                        return;
+                    }
 
-</script>
+                    rows.forEach(row => {
+                        const participantCell = row.cells[1];
+                        const participantText = participantCell ? participantCell.textContent
+                            .toLowerCase() : '';
 
+                        if (participantText.includes(filter)) {
+                            row.style.display = '';
+                            anyVisible = true;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
 
+                    emptyRow.style.display = anyVisible ? 'none' : '';
+                };
 
+                // Run on keyup
+                input.addEventListener('keyup', updateVisibility);
+
+                // Run on page load to handle empty tables
+                updateVisibility();
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Collection search
+            const collectionInput = document.querySelector('.collection-search');
+            if (collectionInput) {
+                const tableId = collectionInput.dataset.tableId;
+                const tableBody = document.querySelector(`#${tableId} tbody`);
+
+                // Create "No quests found" row
+                let emptyRow = document.createElement('tr');
+                emptyRow.classList.add('no-results');
+                emptyRow.innerHTML =
+                    `<td colspan="9" class="px-4 py-2 text-center text-[#7A8C4F]">No quests found</td>`;
+                tableBody.appendChild(emptyRow);
+
+                const updateVisibility = () => {
+                    const filter = collectionInput.value.toLowerCase();
+                    const rows = Array.from(tableBody.querySelectorAll('tr:not(.no-results)'));
+                    let anyVisible = false;
+
+                    if (rows.length === 0) {
+                        emptyRow.style.display = '';
+                        return;
+                    }
+
+                    rows.forEach(row => {
+                        const rowText = Array.from(row.cells)
+                            .map(cell => cell.textContent.toLowerCase())
+                            .join(' ');
+                        if (rowText.includes(filter)) {
+                            row.style.display = '';
+                            anyVisible = true;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+
+                    emptyRow.style.display = anyVisible ? 'none' : '';
+                };
+
+                collectionInput.addEventListener('keyup', updateVisibility);
+                updateVisibility(); // Run on load
+            }
+        });
+    </script>
+    @include('modal.createQuestModal')
+    @include('modal.verifyUserModal')
 @endsection
-@include('modal.createQuestModal')
-@include('modal.verifyUserModal')

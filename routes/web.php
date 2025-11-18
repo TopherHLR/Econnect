@@ -8,6 +8,7 @@ use App\Http\Controllers\ActionController;
 use App\Http\Controllers\LibraryController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\QuestController;
+use App\Http\Controllers\QuestSubmissionController;
 use App\Http\Controllers\AdminController;
 //---------------------------------------------------- AUTH -------------------------------------------------
 
@@ -36,10 +37,8 @@ Route::get('/lifestyle', function () {
     return view('lifestyle');
 })->name('lifestyle');
 
-Route::get('/quests', function () {
-    return view('quests');
-})->name('quests');
 
+Route::get('/quests', [QuestController::class, 'userQuests'])->name('quests');
 Route::get('/rewards', function () {
     return view('rewards');
 })->name('rewards');
@@ -154,5 +153,18 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/quests', [QuestController::class, 'store'])->name('quests.store');
     });
 });
+
+//---------------------------------------------------- QUEST ADMIN -------------------------------------------------
+Route::post('/quests/{quest}/status', [QuestController::class, 'updateStatus'])->name('quests.updateStatus');
+Route::post('/quests/{quest}/recover', [QuestController::class, 'recover'])->name('quests.recover');
+Route::post('/quests/{quest}/recover2', [QuestController::class, 'recover2'])->name('quests.recover2');
+Route::post('/quests/{quest}/archive', [QuestController::class, 'archive'])->name('quests.archive');
+Route::post('/quests/process', [QuestController::class, 'process'])->name('submissions.process');
+
+//---------------------------------------------------- QUEST USER -------------------------------------------------
+Route::post('/quests/accept', [QuestSubmissionController::class, 'store'])->name('quests.accept');
+Route::post('/quests/submit', [QuestSubmissionController::class, 'submit'])->name('quests.submit');
+
+
 
 Route::get('/adminUsers', [AdminController::class, 'users'])->name('adminUsers');

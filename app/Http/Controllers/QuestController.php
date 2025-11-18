@@ -3,20 +3,117 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quest;
+use App\Models\QuestSubmission;
 use Illuminate\Http\Request;
 
 class QuestController extends Controller
 {
     public function index()
     {
-        // Get distinct categories from already stored quests
-        $categories = Quest::distinct()
-            ->pluck('category')
-            ->filter()
-            ->values();
+        $quests = Quest::with('submissions.user') // load users for submissions
+                    ->orderBy('start_date', 'desc')
+                    ->get();
 
-        return view('admin.adminQuests', compact('categories'));
+        $categories = Quest::distinct()
+                        ->pluck('category')
+                        ->filter()
+                        ->values();
+
+                // Get all submissions grouped by quest
+        $questSubmissions = [];
+
+        foreach ($quests as $quest) {
+            foreach ($quest->submissions as $submission) {
+                $questSubmissions[$quest->quest_id][] = [
+                    'id' => $submission->submission_id,
+                    'user' => $submission->user->first_name . ' ' . $submission->user->last_name,
+                    'status' => $submission->status,
+                    'proof_link' => $submission->proof_link,
+                    'proof_image' => $submission->proof_image,
+                ];
+            }
+        }
+
+
+        return view('admin.adminQuests', compact('quests', 'categories', 'questSubmissions'));
     }
+
+    public function process(Request $request)
+    {
+        $request->validate([
+            'submission_id' => 'required|exists:quest_submissions,submission_id',
+            'action' => 'required|in:verify,reject',
+            'verified_by' => 'required_if:action,verify|string|max:255', // only required when verifying
+        ]);
+
+        $submission = QuestSubmission::findOrFail($request->submission_id);
+
+        if ($request->action === 'verify') {
+            $submission->status = 'completed';
+            $submission->verified_by = $request->verified_by; // store the verifier's name
+            // Optional: trigger points notification here later
+        } elseif ($request->action === 'reject') {
+            $submission->status = 'rejected';
+            $submission->verified_by = $request->verified_by; // store the verifier's name
+        }
+
+        $submission->save();
+
+        return redirect()->back()->with('success', "Submission has been {$request->action}d.");
+    }
+
+
+    public function userQuests()
+    {
+        $quests = Quest::with('submissions.user') // load users for submissions
+                    ->orderBy('start_date', 'desc')
+                    ->get();
+
+        $categories = Quest::distinct()
+                        ->pluck('category')
+                        ->filter()
+                        ->values();
+
+        return view('quests', compact('quests', 'categories'));
+    }
+    public function recover2($id)
+    {
+        $quest = Quest::findOrFail($id);
+        $quest->status = 'active';
+        $quest->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function recover($id)
+    {
+        $quest = Quest::findOrFail($id);
+        $quest->status = 'active'; // make it active again
+        $quest->save();
+
+        return redirect()->back()->with('success', 'Quest recovered successfully.');
+    }
+    public function archive($id)
+    {
+        $quest = Quest::findOrFail($id);
+        $quest->status = 'archived';
+        $quest->save();
+
+        return response()->json(['success' => 'Quest archived successfully.']);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $quest = Quest::findOrFail($id);
+        $request->validate([
+            'status' => 'required|in:active,ending_soon,closed',
+        ]);
+        $quest->status = $request->status;
+        $quest->save();
+
+        return response()->json(['success' => 'Quest status updated successfully.']);
+    }
+
 
     public function store(Request $request)
     {
