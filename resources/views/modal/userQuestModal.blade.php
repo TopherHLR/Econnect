@@ -55,6 +55,7 @@
                 <p><strong>Title:</strong> <span id="modalAcceptedQuestTitle"></span></p>
                 <p><strong>Description:</strong> <span id="modalAcceptedQuestDescription"></span></p>
 
+
                 <!-- Submission Form -->
                 <form id="acceptedQuestForm" method="POST" action="{{ route('quests.submit') }}"
                     enctype="multipart/form-data" class="space-y-4">
@@ -115,19 +116,38 @@
         const activeModal = document.getElementById('activeQuestModal');
 
         function openActiveQuestModal(quest) {
+            // Set basic fields
             document.getElementById('modalQuestTitle').textContent = quest.title;
-            document.getElementById('modalQuestDescription').textContent = quest.description;
             document.getElementById('modalQuestCategory').textContent = quest.category;
             document.getElementById('modalQuestPoints').textContent = quest.points_reward;
             document.getElementById('modalQuestStatus').textContent = quest.status;
             document.getElementById('modalQuestStart').textContent = new Date(quest.start_date).toLocaleDateString();
             document.getElementById('modalQuestEnd').textContent = new Date(quest.end_date).toLocaleDateString();
 
-            // Set the hidden input value for form submission
+            // Parse description and format labels
+            let formattedDesc = '';
+
+            if (quest.description) {
+                const labels = ['Medium/Channel:', 'Step:', 'Strict Guidelines:', 'Points:', 'Deadline:',
+                    'Verification Proof Required:'
+                ];
+                const escapedLabels = labels.map(label => label.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+                const regex = new RegExp(`(${escapedLabels.join('|')})`, 'gi');
+
+                // Replace labels with <br><strong>LABEL</strong>
+                formattedDesc = quest.description.replace(regex, '<br><strong>$1</strong>');
+            }
+
+            // Inject formatted description
+            document.getElementById('modalQuestDescription').innerHTML = formattedDesc;
+
+            // Set hidden input value for form submission
             document.getElementById('modalQuestId').value = quest.id;
 
+            // Show modal
             activeModal.classList.remove('hidden');
         }
+
 
 
         function closeActiveQuestModal() {
@@ -155,12 +175,43 @@
         const acceptedModal = document.getElementById('acceptedQuestModal');
 
         function openAcceptedQuestModal(submission) {
+            // Set title
             document.getElementById('modalAcceptedQuestTitle').textContent = submission.questTitle;
-            document.getElementById('modalAcceptedQuestDescription').textContent = submission.questDescription;
+
+            let formattedDesc = '';
+
+            if (submission.questDescription) {
+                // List of labels to bold and separate
+                const labels = ['Medium/Channel:', 'Step:', 'Strict Guidelines:', 'Points:', 'Deadline:',
+                    'Verification Proof Required:'
+                ];
+
+                // Escape special regex characters in labels
+                const escapedLabels = labels.map(label => label.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+
+                // Build regex to match all labels
+                const regex = new RegExp(`(${escapedLabels.join('|')})`, 'gi');
+
+                // Replace labels with <br><strong>LABEL</strong>
+                formattedDesc = submission.questDescription.replace(regex, '<br><strong>$1</strong>');
+            }
+
+            // Inject into modal
+            document.getElementById('modalAcceptedQuestDescription').innerHTML = formattedDesc;
+
+            // Set hidden submission ID for form
             document.getElementById('modalSubmissionId').value = submission.submissionId;
 
+            // Show modal
             acceptedModal.classList.remove('hidden');
         }
+
+
+        function closeAcceptedQuestModal() {
+            acceptedModal.classList.add('hidden');
+        }
+
+
 
         function closeAcceptedQuestModal() {
             acceptedModal.classList.add('hidden');
@@ -211,20 +262,20 @@
             viewQuestModal.classList.add('hidden');
         }
 
-        // Attach click events to completed/rejected quests
         document.querySelectorAll('.completed-quest, .rejected-quest').forEach(item => {
             item.addEventListener('click', function() {
                 const submission = {
                     submissionId: this.dataset.submissionId,
-                    questTitle: this.querySelector('span').textContent,
+                    questTitle: this.dataset.title,
                     questDescription: this.dataset.description || 'No description provided',
                     status: this.classList.contains('completed-quest') ? 'Completed' : 'Rejected',
-                    pointsReward: this.querySelector('small')?.textContent?.replace(' pts', '') || '0',
-                    date: this.querySelector('small')?.textContent || 'N/A'
+                    pointsReward: this.dataset.points || '0',
+                    date: this.dataset.date || 'N/A'
                 };
                 openViewQuestModal(submission);
             });
         });
+
 
         // Close modal when clicking backdrop
         viewQuestModal?.addEventListener('click', e => {

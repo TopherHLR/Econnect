@@ -30,14 +30,16 @@
             </button>
 
             <!-- Center: Navigation Links (Desktop) -->
-<!-- Center: Navigation Links with Highlight (Desktop) -->
-<div class="hidden md:flex flex-1 justify-center space-x-10 nav-links">
-    <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">HOME</a>
-    <a href="{{ route('lifestyle') }}" class="nav-link {{ request()->is('lifestyle') ? 'active' : '' }}">LIFESTYLE</a>
-    <a href="/quests" class="nav-link {{ request()->is('quests') ? 'active' : '' }}">QUESTS</a>
-    <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">ABOUT</a>
-    <!-- nav-highlight will be inserted here by JavaScript -->
-</div>
+            <!-- Center: Navigation Links with Highlight (Desktop) -->
+            <div class="hidden md:flex flex-1 justify-center space-x-10 nav-links">
+                <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">HOME</a>
+                <a href="{{ route('lifestyle') }}" class="nav-link {{ request()->is('lifestyle') ? 'active' : '' }}">LIFESTYLE</a>
+                @auth
+                    <a href="/quests" class="nav-link {{ request()->is('quests') ? 'active' : '' }}">QUESTS</a>
+                @endauth
+                <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">ABOUT</a>
+                <!-- nav-highlight will be inserted here by JavaScript -->
+            </div>
             <!-- Right: Profile / Auth Buttons -->
             <div x-data class="hidden md:flex items-center relative" id="profileDropdown">
                 @guest

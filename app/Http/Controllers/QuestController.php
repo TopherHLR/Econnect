@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Quest;
 use App\Models\QuestSubmission;
 use Illuminate\Http\Request;
+use App\Models\UserPointsHistory;
 
 class QuestController extends Controller
 {
@@ -43,25 +44,35 @@ class QuestController extends Controller
         $request->validate([
             'submission_id' => 'required|exists:quest_submissions,submission_id',
             'action' => 'required|in:verify,reject',
-            'verified_by' => 'required_if:action,verify|string|max:255', // only required when verifying
+            'verified_by' => 'required_if:action,verify|string|max:255',
         ]);
 
         $submission = QuestSubmission::findOrFail($request->submission_id);
 
         if ($request->action === 'verify') {
             $submission->status = 'completed';
-            $submission->verified_by = $request->verified_by; // store the verifier's name
-            // Optional: trigger points notification here later
-        } elseif ($request->action === 'reject') {
-            $submission->status = 'rejected';
-            $submission->verified_by = $request->verified_by; // store the verifier's name
+            $submission->verified_by = $request->verified_by;
+            $submission->save();
+
+            // Add points history record
+            UserPointsHistory::create([
+                'user_id' => $submission->user_id,
+                'activity_type' => 'Quest',
+                'source_id' => $submission->submission_id,
+                'points_change' => $submission->quest->points_reward,
+                'created_at' => now(),
+            ]);
         }
 
-        $submission->save();
+        elseif ($request->action === 'reject') 
+            {
+            $submission->status = 'rejected';
+            $submission->verified_by = $request->verified_by;
+            $submission->save();
+        }
 
         return redirect()->back()->with('success', "Submission has been {$request->action}d.");
     }
-
 
     public function userQuests()
     {
