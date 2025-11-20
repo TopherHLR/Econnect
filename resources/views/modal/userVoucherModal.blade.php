@@ -84,17 +84,15 @@
         <div class="bg-white p-4 rounded-xl border-2 border-dashed border-[#e8e6dc] mb-4 flex justify-center">
             <div class="bg-gray-100 p-4 rounded-lg">
                 <!-- Placeholder for QR code -->
-                <div class="w-48 h-48 bg-gray-200 flex items-center justify-center text-[#6b665e] text-sm">
-                    QR Code Display<br>
-                    (Static View)
-                </div>
+                <div id="qrCodeContainer" class="w-48 h-48 flex items-center justify-center"></div>
+
             </div>
         </div>
 
         <!-- Voucher Code -->
         <div class="bg-[#f9f8f4] rounded-lg p-4 text-center mb-4">
             <p class="text-sm text-[#6b665e] mb-1">Voucher Code</p>
-            <p id="voucherCode" class="text-lg font-mono font-bold text-[#4b3f2f]">ECOCAFE123</p>
+            <p id="voucherCode" class="text-lg font-mono font-bold text-[#4b3f2f]">sample</p>
         </div>
 
         <!-- Voucher Info -->
@@ -195,7 +193,6 @@
         document.getElementById('voucherModal').classList.remove('hidden');
     }
 
-
     function closeVoucherModal() {
         document.getElementById('voucherModal').classList.add('hidden');
     }
@@ -206,21 +203,50 @@
 
         document.getElementById('usageVoucherTitle').textContent = uv.voucher.title;
         document.getElementById('voucherCode').textContent = uv.voucher_code;
-        document.getElementById('usageExpiryDate').textContent = uv.voucher.expiry_date;
-        document.getElementById('usageStatus').textContent = uv.status === 'active' ? 'Ready to use' : 'Used';
-        document.getElementById('redeemedDate').textContent = uv.redeemed_date;
 
-        const statusEl = document.getElementById('usageStatus');
-        if (uv.status === 'used') {
-            statusEl.classList.remove('text-green-600');
-            statusEl.classList.add('text-gray-600');
+        // Format expiry date
+        const expiryDate = new Date(uv.voucher.expiry_date);
+        document.getElementById('usageExpiryDate').textContent = expiryDate.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+
+        // Format redeemed date
+        if (uv.redeemed_date) {
+            const redeemedDate = new Date(uv.redeemed_date);
+            document.getElementById('redeemedDate').textContent = redeemedDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
         } else {
-            statusEl.classList.remove('text-gray-600');
-            statusEl.classList.add('text-green-600');
+            document.getElementById('redeemedDate').textContent = '-';
         }
 
+        // Status styling
+        const statusEl = document.getElementById('usageStatus');
+        statusEl.textContent = uv.status === 'active' ? 'Ready to use' : 'Used';
+        statusEl.classList.toggle('text-green-600', uv.status === 'active');
+        statusEl.classList.toggle('text-gray-600', uv.status !== 'active');
+
+        // Generate QR code
+        const qrContainer = document.getElementById('qrCodeContainer');
+        qrContainer.innerHTML = ''; // clear previous QR code
+        new QRCode(qrContainer, {
+            text: uv.qr_code || uv.voucher_code, // fallback to voucher code
+            width: 180,
+            height: 180,
+            colorDark: "#4b3f2f",
+            colorLight: "#f9f8f4",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // Show modal
         document.getElementById('voucherUsageModal').classList.remove('hidden');
     }
+
+
 
     function closeVoucherUsageModal() {
         document.getElementById('voucherUsageModal').classList.add('hidden');
