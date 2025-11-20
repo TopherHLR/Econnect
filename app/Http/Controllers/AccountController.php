@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserPointsHistory;
+
+use App\Models\UserVoucher;
+use App\Models\Voucher;
+
 use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
@@ -13,9 +17,20 @@ class AccountController extends Controller
     {
         $user = Auth::user();
 
+        // Total earned points (sum of all positive points)
         $totalPoints = UserPointsHistory::where('user_id', $user->user_id)
+            ->where('points_change', '>', 0)
             ->sum('points_change');
 
+        // Points spent on vouchers (absolute value of negative points)
+        $pointsSpent = abs(UserPointsHistory::where('user_id', $user->user_id)
+            ->where('points_change', '<', 0)
+            ->sum('points_change'));
+
+        // Current points available for redemption
+        $currentPoints = $totalPoints - $pointsSpent;
+
+        // Badges based on total earned points
         $earnedBadges = 0;
         $badgeLevel = null;
 
@@ -35,8 +50,9 @@ class AccountController extends Controller
         // Dummy data for now
         $completedQuests = 0;
 
-        return compact('user', 'totalPoints', 'earnedBadges', 'badgeLevel', 'completedQuests');
+        return compact('user', 'totalPoints', 'currentPoints', 'earnedBadges', 'badgeLevel', 'completedQuests');
     }
+
 
     // --- Profile Page ---
     public function show()

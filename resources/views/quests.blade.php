@@ -18,28 +18,54 @@
                         </h2>
 
                         <div class="space-y-3 flex-1">
-                            {{-- Pending Submissions --}}
                             @foreach ($quests as $quest)
                                 @foreach ($quest->submissions as $submission)
                                     @if ($submission->status === 'pending')
-                                        <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border-l-4 border-[#da7a5f] hover:shadow-md transition cursor-pointer accepted-quest"
-                                            data-submission-id="{{ $submission->submission_id }}"
-                                            data-description="{{ $quest->description }}">
-                                            @php
-                                                $daysLeft = $quest->end_date->isFuture()
-                                                    ? (int) now()->diffInDays($quest->end_date)
-                                                    : 0;
-                                            @endphp
+                                        @php
+                                            $daysLeft = $quest->end_date->isFuture()
+                                                ? (int) now()->diffInDays($quest->end_date)
+                                                : 0;
 
-                                            <span class="text-sm font-medium text-[#4F6B3F]">{{ $quest->title }}</span>
-                                            <small class="text-gray-500 text-xs">
-                                                {{ $daysLeft }} {{ $daysLeft === 1 ? 'day' : 'days' }} left
-                                            </small>
+                                            // Disable if days left is 0 or proof already exists
+                                            $hasProof =
+                                                !empty($submission->proof_link) || !empty($submission->proof_image);
+                                            $isDisabled = $daysLeft === 0 || $hasProof;
+
+                                            // Determine hint message
+                                            $hintMessage =
+                                                $daysLeft === 0
+                                                    ? 'Quest expired'
+                                                    : ($hasProof
+                                                        ? 'Already submitted'
+                                                        : '');
+                                        @endphp
+
+                                        <div class="flex flex-col">
+                                            <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border-l-4 border-[#da7a5f] hover:shadow-md transition cursor-pointer accepted-quest {{ $isDisabled ? 'pointer-events-none opacity-50 cursor-not-allowed' : '' }}"
+                                                data-submission-id="{{ $submission->submission_id }}"
+                                                data-description="{{ $quest->description }}">
+                                                <span class="text-sm font-medium text-[#4F6B3F]">{{ $quest->title }}</span>
+                                                <small class="text-gray-500 text-xs">
+                                                    {{ $daysLeft }} {{ $daysLeft === 1 ? 'day' : 'days' }} left
+                                                </small>
+                                                @if (!empty($hintMessage))
+                                                    <div class="mt-1.5 flex items-center space-x-1.5 text-amber-600">
+                                                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor"
+                                                            viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 1.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zM9 13a1 1 0 102 0V9a1 1 0 10-2 0v4zm1-7a1 1 0 100-2 1 1 0 000 2z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                        <span class="text-xs font-medium">{{ $hintMessage }}</span>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
                                     @endif
                                 @endforeach
                             @endforeach
                         </div>
+
 
                         <!-- Completed Section -->
                         <div class="mt-6 border-t border-[#e0e0d6] pt-4 space-y-2">
@@ -101,74 +127,80 @@
                         <!-- Grid of Challenges -->
                         <div class="max-w-full max-h-[500px] overflow-y-auto pr-2 flex-1 custom-scroll">
                             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
-                              @foreach ($quests as $quest)
-                                  @php
-                                      // Get the current user's submission for this quest
-                                      $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                @foreach ($quests as $quest)
+                                    @php
+                                        // Get the current user's submission for this quest
+$submission = $quest->submissions->firstWhere('user_id', auth()->id());
 
-                                      // Category image
-                                      $imagePath = match ($quest->category) {
-                                          'Waste Management',
-                                          'Upcycling / Creative Reuse',
-                                          'Sustainable Mobility / Climate Action',
-                                          'Community Cleanliness / Waste Reduction',
-                                          'E-Waste / Digital Sustainability',
-                                          'Biodiversity / Urban Greening',
-                                          'Local Partnership / Eco Business Support',
-                                          'Campus Greening / Waste Management'
-                                              => 'cat_images/sample.jpg',
-                                          'Sustainable Lifestyle' => 'cat_images/sustainable.png',
-                                          default => 'cat_images/sample.jpg',
-                                      };
+// Category image
+$imagePath = match ($quest->category) {
+    'Waste Management',
+    'Upcycling / Creative Reuse',
+    'Sustainable Mobility / Climate Action',
+    'Community Cleanliness / Waste Reduction',
+    'E-Waste / Digital Sustainability',
+    'Biodiversity / Urban Greening',
+    'Local Partnership / Eco Business Support',
+    'Campus Greening / Waste Management'
+        => 'cat_images/sample.jpg',
+    'Sustainable Lifestyle' => 'cat_images/sustainable.png',
+    default => 'cat_images/sample.jpg',
+};
 
-                                      // Determine quest state for current user
-                                      $isCompleted = $submission?->status === 'completed';
-                                      $isRejected  = $submission?->status === 'rejected';
-                                      $isPending   = $submission?->status === 'pending';
-                                      $isExpired   = $quest->end_date->isPast() && !$isCompleted;
-                                      $isInactive  = $isCompleted || $isExpired || $isRejected || $isPending;
-                                  @endphp
+// Determine quest state for current user
+$isCompleted = $submission?->status === 'completed';
+$isRejected = $submission?->status === 'rejected';
+$isPending = $submission?->status === 'pending';
+                                        $isExpired = $quest->end_date->isPast() && !$isCompleted;
+                                        $isInactive = $isCompleted || $isExpired || $isRejected || $isPending;
+                                    @endphp
 
-                                  @if ($quest->status === 'active')
-                                      <div class="bg-white rounded-2xl overflow-hidden shadow-sm transition relative
+                                    @if ($quest->status === 'active')
+                                        <div class="bg-white rounded-2xl overflow-hidden shadow-sm transition relative
                                           {{ $isInactive ? 'opacity-50 pointer-events-none' : 'hover:shadow-md transform hover:-translate-y-1 cursor-pointer' }}
                                           eco-card"
-                                          data-id="{{ $quest->quest_id }}" data-type="ecoQuest" data-description="{{ $quest->description }}">
+                                            data-id="{{ $quest->quest_id }}" data-type="ecoQuest"
+                                            data-description="{{ $quest->description }}">
 
-                                          {{-- Overlay Hint --}}
-                                          @if ($isInactive)
-                                              <div class="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-                                                  <span class="text-white font-semibold text-sm">
-                                                      @if($isCompleted)
-                                                          Completed
-                                                      @elseif($isExpired)
-                                                          Expired
-                                                      @elseif($isRejected)
-                                                          Rejected
-                                                      @elseif($isPending)
-                                                          Pending
-                                                      @endif
-                                                  </span>
-                                              </div>
-                                          @endif
+                                            {{-- Overlay Hint --}}
+                                            @if ($isInactive)
+                                                <div
+                                                    class="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
+                                                    <span class="text-white font-semibold text-sm">
+                                                        @if ($isCompleted)
+                                                            Completed
+                                                        @elseif($isExpired)
+                                                            Expired
+                                                        @elseif($isRejected)
+                                                            Rejected
+                                                        @elseif($isPending)
+                                                            Pending
+                                                        @endif
+                                                    </span>
+                                                </div>
+                                            @endif
 
-                                          {{-- Category Image --}}
-                                          <img src="{{ asset('storage/' . $imagePath) }}" alt="{{ $quest->title }}"
-                                              class="h-20 w-full object-cover rounded-t-2xl">
+                                            {{-- Category Image --}}
+                                            <img src="{{ asset('storage/' . $imagePath) }}" alt="{{ $quest->title }}"
+                                                class="h-20 w-full object-cover rounded-t-2xl">
 
-                                          <div class="bg-gradient-to-t from-[#4a7144] to-[#6ea057] text-white p-3 flex flex-col justify-between rounded-b-2xl">
-                                              <div>
-                                                  <h3 class="text-sm font-semibold truncate">{{ $quest->title }}</h3>
-                                                  @php
-                                                      $daysLeft = $quest->end_date->isFuture() ? (int) now()->diffInDays($quest->end_date) : 0;
-                                                  @endphp
-                                                  <p class="text-xs mt-1 opacity-100">Ends in {{ $daysLeft }} days</p>
-                                              </div>
-                                              <p class="text-sm mt-2 font-bold">{{ $quest->points_reward }} pts 🌱</p>
-                                          </div>
-                                      </div>
-                                  @endif
-                              @endforeach
+                                            <div
+                                                class="bg-gradient-to-t from-[#4a7144] to-[#6ea057] text-white p-3 flex flex-col justify-between rounded-b-2xl">
+                                                <div>
+                                                    <h3 class="text-sm font-semibold truncate">{{ $quest->title }}</h3>
+                                                    @php
+                                                        $daysLeft = $quest->end_date->isFuture()
+                                                            ? (int) now()->diffInDays($quest->end_date)
+                                                            : 0;
+                                                    @endphp
+                                                    <p class="text-xs mt-1 opacity-100">Ends in {{ $daysLeft }} days
+                                                    </p>
+                                                </div>
+                                                <p class="text-sm mt-2 font-bold">{{ $quest->points_reward }} pts 🌱</p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
 

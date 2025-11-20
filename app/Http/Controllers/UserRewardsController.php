@@ -21,17 +21,15 @@ class UserRewardsController extends Controller
         // Fetch user's vouchers
         $myVouchers = UserVoucher::with('voucher')->where('user_id', $user->user_id)->get();
 
-        // Calculate total points (for progress)
         $totalPoints = UserPointsHistory::where('user_id', $user->user_id)
-            ->where('points_change', '>', 0) // only positive points
-            ->sum('points_change');
+            ->where('points_change', '>', 0)
+            ->sum('points_change'); // 30
 
-        // Calculate points spent on vouchers
-        $pointsSpent = UserVoucher::where('user_id', $user->user_id)
-            ->sum('redeem_points_cost');
+        $pointsSpent = abs(UserPointsHistory::where('user_id', $user->user_id)
+            ->where('points_change', '<', 0)
+            ->sum('points_change')); // 10
 
-        // Current points (available for redemption)
-        $currentPoints = $totalPoints - $pointsSpent;
+        $currentPoints = $totalPoints - $pointsSpent; // 20
 
         return view('account.rewards', compact(
             'availableVouchers',
