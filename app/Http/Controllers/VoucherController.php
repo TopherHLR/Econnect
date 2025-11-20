@@ -104,5 +104,22 @@ class VoucherController extends Controller
 
         return back()->with('success', 'Voucher status updated.');
     }
+    public function redeemByQrCode(Request $request, $qr_code)
+    {
+        $voucher = UserVoucher::where('qr_code', $qr_code)->first();
+
+        if (!$voucher) {
+            return response()->json(['error' => 'Voucher not found'], 404);
+        }
+
+        if ($voucher->status === 'used') {
+            return response()->json(['error' => 'Voucher already used'], 400);
+        }
+
+        $voucher->status = 'used';
+        $voucher->save();
+
+        return response()->json(['success' => 'Voucher redeemed successfully']);
+    }
 
 }

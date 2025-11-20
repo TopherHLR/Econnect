@@ -189,3 +189,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/rewards', [UserRewardsController::class, 'index'])->name('rewards.index');
     Route::post('/rewards/redeem/{voucherId}', [UserRewardsController::class, 'redeemVoucher'])->name('rewards.redeem');
 });
+
+Route::post('/admin/voucher/redeem/{qr_code}', [VoucherController::class, 'redeemByQrCode'])
+    ->name('admin.voucher.redeem');

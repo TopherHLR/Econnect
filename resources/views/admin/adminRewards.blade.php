@@ -61,7 +61,7 @@
                         </button>
 
 
-                        <button id="scanVoucherBtn" class="btn-eco btn-sand">
+                        <button onclick="openQrScanner()" class="btn-eco btn-sand">
                             <i class="fa-solid fa-qrcode"></i>
                             <span>Scan Voucher </span>
                         </button>
@@ -155,7 +155,7 @@
                                             <td class="px-4 py-2">{{ $r->redeem_points_cost }}</td>
 
                                             <td class="px-4 py-2">
-                                                @if ($r->status === 'Pending')
+                                                @if ($r->status === 'active')
                                                     <span class="text-[#A68A4F]">Pending</span>
                                                 @else
                                                     <span class="text-[#6A8A52]">Used</span>
@@ -167,17 +167,22 @@
                                                     method="POST">
                                                     @csrf @method('PUT')
                                                     <select name="status" class="border rounded p-1 text-sm">
-                                                        <option value="Pending"
-                                                            {{ $r->status === 'Pending' ? 'selected' : '' }}>Pending
+                                                        <option value="active"
+                                                            {{ $r->status === 'active' ? 'selected' : '' }}>
+                                                            Pending
                                                         </option>
-                                                        <option value="Used"
-                                                            {{ $r->status === 'Used' ? 'selected' : '' }}>Used</option>
+                                                        <option value="used"
+                                                            {{ $r->status === 'used' ? 'selected' : '' }}>
+                                                            Used
+                                                        </option>
                                                     </select>
                                                     <button class="btn-action btn-edit mt-1">
                                                         <i class="fas fa-save"></i> Save
                                                     </button>
                                                 </form>
+
                                             </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -219,9 +224,7 @@
                 });
             });
         });
-    </script>
 
-    <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Get all sidebar tabs/buttons
             const tabs = document.querySelectorAll('aside .tab-eco');

@@ -398,6 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
 
 
 </body>
