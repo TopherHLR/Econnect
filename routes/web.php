@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RewardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\QuestSubmissionController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\UserRewardsController;
 //---------------------------------------------------- AUTH -------------------------------------------------
 
 Route::get('/verify-email', [AuthController::class, 'showVerificationForm'])->name('verify.email.form');
@@ -58,7 +61,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/adminHome', fn() => view('admin.adminHome'))->name('adminHome');
         Route::get('/adminUsers', fn() => view('admin.adminUsers'))->name('adminUsers');
         Route::get('/adminQuests', fn() => view('admin.adminQuests'))->name('adminQuests');
-        Route::get('/adminRewards', fn() => view('admin.adminRewards'))->name('adminRewards');
         Route::get('/adminAnalytics', fn() => view('admin.adminAnalytics'))->name('adminAnalytics');
         Route::get('/adminSystemAlerts', fn() => view('admin.adminSystemAlerts'))->name('adminSystemAlerts');
         Route::get('/adminSettings', fn() => view('admin.adminSettings'))->name('adminSettings');
@@ -168,3 +170,22 @@ Route::post('/quests/submit', [QuestSubmissionController::class, 'submit'])->nam
 
 
 Route::get('/adminUsers', [AdminController::class, 'users'])->name('adminUsers');
+
+//---------------------------------------------------- VOUCHER -------------------------------------------------
+Route::post('/vouchers/store', [App\Http\Controllers\VoucherController::class, 'store'])
+     ->name('vouchers.store');
+
+
+Route::get('/adminRewards', [VoucherController::class, 'index'])->name('adminRewards');
+
+Route::put('/rewards/update/{id}', [VoucherController::class, 'update'])->name('rewards.update');
+
+Route::delete('/rewards/delete/{id}', [VoucherController::class, 'destroy'])->name('rewards.delete');
+
+Route::put('/user-voucher/status/{id}', [VoucherController::class, 'updateUserVoucherStatus'])
+    ->name('userVoucher.updateStatus');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/rewards', [UserRewardsController::class, 'index'])->name('rewards.index');
+    Route::post('/rewards/redeem/{voucherId}', [UserRewardsController::class, 'redeemVoucher'])->name('rewards.redeem');
+});
