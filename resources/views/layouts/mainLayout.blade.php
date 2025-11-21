@@ -134,7 +134,7 @@
                         before:content-[''] before:absolute before:top-[-10px] before:right-[18px] before:w-5 before:h-5 
                         before:bg-[#F9F8F4] before:rotate-45 before:border-l before:border-t before:border-[#BFD1B0]">
                                 <!-- Dropdown content (My Account, Progress, Rewards, Logout) remains the same -->
-                                @include('partials.profile-dropdown')
+                                @include('modal.notificationModal')
                             </div>
                         </div>
                     </div>
