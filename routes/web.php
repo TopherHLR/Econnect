@@ -221,3 +221,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::post('/admin/voucher/redeem/{qr_code}', [VoucherController::class, 'redeemByQrCode'])
     ->name('admin.voucher.redeem');
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
