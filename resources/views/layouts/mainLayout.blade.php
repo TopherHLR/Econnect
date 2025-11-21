@@ -40,7 +40,7 @@
                 <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">ABOUT</a>
                 <!-- nav-highlight will be inserted here by JavaScript -->
             </div>
-            <!-- Right: Profile / Auth Buttons + Notifications -->
+            <!-- Right: Profile / Auth Buttons -->
             <div x-data class="hidden md:flex items-center relative" id="profileDropdown">
                 @guest
                     <!-- When not logged in -->
@@ -106,14 +106,12 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Profile Dropdown -->
                         <div x-data="{ open: false }" class="relative">
                             <!-- Profile Button -->
                             <button @click="open = !open"
                                 class="flex items-center justify-center w-11 h-11 bg-[#E0E9D6] border-2 border-[#6A8A52] rounded-full 
-                        hover:bg-[#C8D5B9] hover:border-[#4F6B3F] transition-all duration-300 shadow-sm focus:outline-none group
-                        z-50 relative">
+                                    hover:bg-[#C8D5B9] hover:border-[#4F6B3F] transition-all duration-300 shadow-sm focus:outline-none group
+                                    z-50 relative">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2.5"
                                     class="w-6 h-6 text-[#4F6B3F] group-hover:text-[#3E5632] transition-colors duration-300">
@@ -131,16 +129,84 @@
                                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                                 x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
                                 class="absolute -right-42  -mt-13 w-56 bg-[#F9F8F4] border border-[#BFD1B0] rounded-2xl shadow-lg z-40 overflow-hidden
-                        before:content-[''] before:absolute before:top-[-10px] before:right-[18px] before:w-5 before:h-5 
-                        before:bg-[#F9F8F4] before:rotate-45 before:border-l before:border-t before:border-[#BFD1B0]">
-                                <!-- Dropdown content (My Account, Progress, Rewards, Logout) remains the same -->
-                                @include('modal.notificationModal')
+                                    before:content-[''] before:absolute before:top-[-10px] before:right-[18px] before:w-5 before:h-5 
+                                    before:bg-[#F9F8F4] before:rotate-45 before:border-l before:border-t before:border-[#BFD1B0]">
+
+                                <ul class="flex flex-col py-3 mt-10 text-sm font-medium text-[#4F6B3F] space-y-1">
+                                    <li>
+                                        <a href="{{ route('account.show') }}"
+                                            class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+
+                                            <!-- Rectangle icon -->
+                                            <span
+                                                class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#4F6B3F]">
+                                                    <circle cx="12" cy="8" r="4" />
+                                                    <path d="M4 20c0-4 4-7 8-7s8 3 8 7" />
+                                                </svg>
+                                            </span>
+                                            My Account
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/myprogress"
+                                            class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+                                            <span
+                                                class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                                    class="w-4 h-4 text-[#4F6B3F]">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M3 17l6-6 4 4 8-8" />
+                                                </svg>
+                                            </span>
+                                            My Progress
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/rewards"
+                                            class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+                                            <span
+                                                class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                                    class="w-4 h-4 text-[#4F6B3F]">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 8v8m0 0l-3-3m3 3l3-3m-3-7v7" />
+                                                </svg>
+                                            </span>
+                                            My Rewards
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit"
+                                                class="flex items-center gap-3 w-full text-left px-5 py-2.5 rounded-lg hover:bg-[#F4D4D4] hover:text-[#642B2B] transition-all duration-200">
+                                                <span
+                                                    class="flex items-center justify-center w-7 h-7 bg-[#FCE8E8] border border-[#DFA7A7] rounded-md">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                                        class="w-4 h-4 text-[#9B4040]">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M15 12H3m12 0l-4-4m4 4l-4 4m4-4h8" />
+                                                    </svg>
+                                                </span>
+                                                Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+
                             </div>
                         </div>
                     </div>
                 @endauth
             </div>
-
 
         </div>
 </nav>
