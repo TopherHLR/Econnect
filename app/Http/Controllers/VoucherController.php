@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Voucher;
 use App\Models\UserVoucher;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class VoucherController extends Controller
@@ -24,9 +25,6 @@ class VoucherController extends Controller
         return view('admin.adminRewards', compact('vouchers', 'redeemed'));
     }
 
-    /**
-     * Store a newly created voucher.
-     */
     public function store(Request $request)
     {
         try {
@@ -39,7 +37,8 @@ class VoucherController extends Controller
                 'is_active'       => 'required|boolean',
             ]);
 
-            Voucher::create([
+            // Create voucher
+            $voucher = Voucher::create([
                 'title'           => $request->title,
                 'description'     => $request->description,
                 'required_points' => $request->required_points,
@@ -49,9 +48,24 @@ class VoucherController extends Controller
                 'created_by'      => Auth::id(),
             ]);
 
-            return redirect()->back()->with('success', 'Voucher added successfully!');
+            // ---- Notify all users about the new voucher ----
+            $users = User::all();
+            foreach ($users as $user) {
+                Notification::create([
+                    'user_id' => $user->user_id,
+                    'from_user_id' => Auth::id(),
+                    'type' => 'new_voucher',
+                    'reference_id' => $voucher->voucher_id,
+                    'title' => 'New Voucher Available!',
+                    'message' => 'A new voucher "' . $voucher->title . '" has been added. Check it out!',
+                    'created_at' => now(),
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Voucher added successfully and notifications sent!');
+
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to submit quest progress. Error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to add voucher. Error: ' . $e->getMessage());
         }
     }
 
@@ -101,12 +115,9 @@ class VoucherController extends Controller
         return back()->with('success', 'Voucher status updated.');
     }
 
-    /**
-     * Redeem a voucher via QR code → notify admin
-     */
     public function redeemByQrCode(Request $request, $qr_code)
     {
-        $voucher = UserVoucher::where('qr_code', $qr_code)->first();
+        $voucher = UserVoucher::with('user')->where('qr_code', $qr_code)->first();
 
         if (!$voucher) {
             return response()->json(['error' => 'Voucher not found'], 404);
@@ -116,20 +127,22 @@ class VoucherController extends Controller
             return response()->json(['error' => 'Voucher already used'], 400);
         }
 
+        // Mark voucher as used
         $voucher->status = 'used';
         $voucher->save();
 
-        // ✅ Notify admin that user redeemed voucher
+        // ---- Notify the user ----
         Notification::create([
-            'user_id' => 1,                       // admin receives (adjust if multiple admins)
-            'from_user_id' => $voucher->user_id,  // user triggered
-            'type' => 'voucher_redeem',
+            'user_id' => $voucher->user_id,      // user receives notification
+            'from_user_id' => null,              // system-triggered
+            'type' => 'voucher_redeemed',
             'source_table' => 'user_vouchers',
             'source_id' => $voucher->redemption_id,
-            'title' => 'Voucher Redeemed',
-            'message' => 'User ' . $voucher->user->name . ' redeemed a voucher.',
+            'title' => 'Voucher Redeemed Successfully',
+            'message' => 'Your voucher "' . $voucher->voucher->title . '" has been successfully redeemed.',
+            'created_at' => now(),
         ]);
 
-        return response()->json(['success' => 'Voucher redeemed successfully']);
+        return response()->json(['success' => 'Voucher redeemed successfully and user notified']);
     }
 }

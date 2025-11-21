@@ -90,7 +90,8 @@
                                                 <p class="font-medium text-gray-800">{{ $notif->title }}</p>
                                                 <p class="text-gray-500 text-sm">{{ $notif->message }}</p>
                                                 <p class="text-gray-400 text-xs mt-1">
-                                                    {{ $notif->created_at->diffForHumans() }}</p>
+                                                  {{ $notif->created_at->diffForHumans() }}</p>
+
                                             </div>
                                             @if (!$notif->read_at)
                                                 <span class="w-2 h-2 bg-red-500 rounded-full mt-1"></span>

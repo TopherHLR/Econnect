@@ -6,6 +6,8 @@ use App\Models\Quest;
 use App\Models\QuestSubmission;
 use Illuminate\Http\Request;
 use App\Models\UserPointsHistory;
+use App\Models\User;
+use App\Models\Notification; // make sure to import at the top
 
 class QuestController extends Controller
 {
@@ -62,13 +64,34 @@ class QuestController extends Controller
                 'points_change' => $submission->quest->points_reward,
                 'created_at' => now(),
             ]);
+
+            // ---- Notification for user ----
+            Notification::create([
+                'user_id' => $submission->user_id, // receiver
+                'from_user_id' => auth()->id(),    // admin who verified
+                'type' => 'quest_verified',
+                'reference_id' => $submission->submission_id,
+                'title' => 'Quest Submission Verified',
+                'message' => "Your submission for '{$submission->quest->title}' has been verified by {$request->verified_by}. You earned {$submission->quest->points_reward} points!",
+                'created_at' => now(),
+            ]);
         }
 
-        elseif ($request->action === 'reject') 
-            {
+        elseif ($request->action === 'reject') {
             $submission->status = 'rejected';
             $submission->verified_by = $request->verified_by;
             $submission->save();
+
+            // ---- Notification for user ----
+            Notification::create([
+                'user_id' => $submission->user_id,
+                'from_user_id' => auth()->id(),
+                'type' => 'quest_rejected',
+                'reference_id' => $submission->submission_id,
+                'title' => 'Quest Submission Rejected',
+                'message' => "Your submission for '{$submission->quest->title}' has been rejected by {$request->verified_by}.",
+                'created_at' => now(),
+            ]);
         }
 
         return redirect()->back()->with('success', "Submission has been {$request->action}d.");
@@ -143,7 +166,7 @@ class QuestController extends Controller
         $data['category'] = $data['custom_category'] ?? $data['category'];
 
         // Save new quest
-        Quest::create([
+        $quest = Quest::create([
             'title' => $data['title'],
             'description' => $data['description'],
             'category' => $data['category'],
@@ -151,9 +174,23 @@ class QuestController extends Controller
             'start_date' => $data['start_date'],
             'end_date' => $data['end_date'],
             'status' => $data['status'],
-            'created_by' => auth()->id(), // match model relationship
+            'created_by' => auth()->id(),
         ]);
 
-        return back()->with('success', 'Quest created successfully!');
+        // ---- Notify all users ----
+        $users = User::where('user_type', 'guest')->get();
+        foreach ($users as $user) {
+            Notification::create([
+                'user_id' => $user->user_id,
+                'from_user_id' => auth()->id(),
+                'type' => 'new_quest',
+                'reference_id' => $quest->quest_id,
+                'title' => 'New Quest Available!',
+                'message' => "A new quest \"{$quest->title}\" has been added. Check it out!",
+                'created_at' => now(),
+            ]);
+        }
+
+        return back()->with('success', 'Quest created successfully and notifications sent to users!');
     }
 }
