@@ -208,31 +208,76 @@
 <body class="flex flex-col min-h-screen">
 
     <!-- 🌿 Top Bar -->
-    <header class="flex justify-between items-center py-4 px-3 w-[97%] mx-auto mt-3">
+    <header class="flex justify-between items-center py-4 px-3 w-[97%] mx-auto mt-3 relative">
+        <!-- Success/Error Toasts -->
         @if (session('success'))
             <div id="feedback-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 text-[#5C7919] text-lg px-6 py-3 z-[9999] opacity-100">
+                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 text-[#5C7919] text-lg px-6 py-3 z-[9999] opacity-100 rounded-lg shadow-md">
                 🌱 {{ session('success') }}
             </div>
         @endif
 
         @if (session('error'))
             <div id="error-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 text-[#d9534f] text-lg px-6 py-3 z-[9999] opacity-100">
+                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 text-[#d9534f] text-lg px-6 py-3 z-[9999] opacity-100 rounded-lg shadow-md">
                 ❌ {{ session('error') }}
             </div>
         @endif
 
+        <!-- Logo and Greeting -->
         <div class="flex items-center space-x-3">
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="Econnect Logo" class="h-10 w-auto">
             <h1 class="text-2xl font-semibold">
                 Welcome back, <span class="font-bold">Admin Name</span>! 🌱
             </h1>
         </div>
-        <div class="flex items-center space-x-4">
+
+        <!-- Profile, Notifications, Logout -->
+        <div class="flex items-center space-x-4 relative">
+            <!-- Notification Bell -->
+            <div class="relative">
+                <button id="notification-btn" class="text-[#6A8A52] hover:text-[#4F6B3F] relative">
+                    <i class="fa-solid fa-bell text-3xl"></i>
+                    <!-- Red dot for unread -->
+                    <span id="notification-dot"
+                        class="absolute top-0 right-0 inline-block w-3 h-3 bg-red-500 rounded-full"></span>
+                </button>
+
+                <!-- Notification Modal / Dropdown -->
+                <div id="notification-modal"
+                    class="hidden absolute right-0 mt-2 w-80 bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden z-50">
+                    <div class="p-4 border-b border-gray-100 font-semibold bg-[#f5f8ef]">
+                        Notifications
+                    </div>
+                    <ul id="notification-list" class="max-h-64 overflow-y-auto">
+                        <!-- Notification items will be injected here -->
+                        @foreach (App\Models\Notification::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get() as $notif)
+                            <li
+                                class="px-4 py-2 border-b border-gray-100 hover:bg-gray-50 flex justify-between items-start">
+                                <div>
+                                    <p class="font-medium text-gray-800">{{ $notif->title }}</p>
+                                    <p class="text-gray-500 text-sm">{{ $notif->message }}</p>
+                                    <p class="text-gray-400 text-xs mt-1">{{ $notif->created_at->diffForHumans() }}</p>
+                                </div>
+                                @if (!$notif->read_at)
+                                    <span class="w-2 h-2 bg-red-500 rounded-full mt-1"></span>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                    <div class="p-2 text-center bg-gray-50">
+                        <button id="mark-all-read" class="text-sm text-[#6A8A52] hover:text-[#4F6B3F]">Mark all as
+                            read</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Icon -->
             <a href="#" class="text-[#6A8A52] hover:text-[#4F6B3F]" title="Profile">
                 <i class="fa-solid fa-user-circle text-4xl"></i>
             </a>
+
+            <!-- Logout -->
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="text-[#9B4040] hover:text-[#642B2B]" title="Logout">
@@ -326,6 +371,8 @@
         </div>
     </footer>
 
+    <!-- Tailwind + Alpine.js for interactivity -->
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script>
         setTimeout(() => {
             const toast = document.getElementById('feedback-toast');
@@ -351,8 +398,41 @@
                 }
             });
         });
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('notification-btn');
+            const modal = document.getElementById('notification-modal');
 
+            btn.addEventListener('click', () => {
+                modal.classList.toggle('hidden');
+            });
 
+            // Optional: Close modal when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!btn.contains(event.target) && !modal.contains(event.target)) {
+                    modal.classList.add('hidden');
+                }
+            });
+
+            // Mark all notifications as read (AJAX example)
+            const markAllBtn = document.getElementById('mark-all-read');
+            markAllBtn.addEventListener('click', async () => {
+                try {
+                    const response = await fetch('/notifications/mark-all-read', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    if (response.ok) {
+                        modal.querySelectorAll('li span').forEach(el => el.remove());
+                        document.getElementById('notification-dot').style.display = 'none';
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            });
+        });
     </script>
 
 

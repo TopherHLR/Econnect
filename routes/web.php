@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\QuestSubmissionController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\NotificationController;
 
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\UserRewardsController;
@@ -221,3 +222,10 @@ Route::middleware(['auth'])->group(function () {
 
 Route::post('/admin/voucher/redeem/{qr_code}', [VoucherController::class, 'redeemByQrCode'])
     ->name('admin.voucher.redeem');
+
+//---------------------------------------------------- NOTIFICATION -------------------------------------------------
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications/mark-read/{id}', [NotificationController::class, 'markAsRead']);
+    Route::post('/notifications', [NotificationController::class, 'create']); // optional if creating via API
+});

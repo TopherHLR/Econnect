@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Voucher;
 use App\Models\UserVoucher;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 
 class VoucherController extends Controller
 {
-        /**
+    /**
      * Show Rewards Page
      */
     public function index()
@@ -23,15 +24,12 @@ class VoucherController extends Controller
         return view('admin.adminRewards', compact('vouchers', 'redeemed'));
     }
 
-
     /**
      * Store a newly created voucher.
      */
     public function store(Request $request)
     {
-        try
-        {
-            // Validate form inputs with custom messages
+        try {
             $request->validate([
                 'title'           => 'required|string|max:150',
                 'description'     => 'nullable|string',
@@ -39,16 +37,8 @@ class VoucherController extends Controller
                 'discount_value'  => 'nullable|string|max:50',
                 'expiry_date'     => 'required|date|after:today',
                 'is_active'       => 'required|boolean',
-            ], [
-                'title.required'           => 'The voucher title is required.',
-                'title.max'                => 'The title must not exceed 150 characters.',
-                'required_points.required' => 'Points required is needed.',
-                'required_points.min'      => 'Points required must be at least 1.',
-                'expiry_date.after'        => 'The expiry date must be a future date.',
-                'is_active.required'       => 'Please select the voucher status.',
             ]);
 
-            // Create voucher
             Voucher::create([
                 'title'           => $request->title,
                 'description'     => $request->description,
@@ -60,20 +50,17 @@ class VoucherController extends Controller
             ]);
 
             return redirect()->back()->with('success', 'Voucher added successfully!');
-
-        } 
-        catch (\Exception $e) {
-            // Catch unexpected errors and show detailed error message
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to submit quest progress. Error: ' . $e->getMessage());
         }
     }
-        /**
+
+    /**
      * Update Voucher
      */
     public function update(Request $request, $id)
     {
         $voucher = Voucher::findOrFail($id);
-
         $voucher->update($request->all());
 
         return back()->with('success', 'Voucher updated!');
@@ -91,10 +78,8 @@ class VoucherController extends Controller
         return back()->with('success', 'Voucher archived!');
     }
 
-
-
     /**
-     * Update User Voucher Status (Used / Pending)
+     * Update User Voucher Status (Used / Pending) → notify user
      */
     public function updateUserVoucherStatus(Request $request, $id)
     {
@@ -102,8 +87,23 @@ class VoucherController extends Controller
         $voucher->status = $request->status;
         $voucher->save();
 
+        // ✅ Notify the user that admin updated their voucher
+        Notification::create([
+            'user_id' => $voucher->user_id,      // user receives
+            'from_user_id' => Auth::id(),        // admin triggered
+            'type' => 'voucher_update',
+            'source_table' => 'user_vouchers',
+            'source_id' => $voucher->redemption_id,
+            'title' => 'Voucher Status Updated',
+            'message' => 'Admin has updated the status of your voucher to ' . $voucher->status,
+        ]);
+
         return back()->with('success', 'Voucher status updated.');
     }
+
+    /**
+     * Redeem a voucher via QR code → notify admin
+     */
     public function redeemByQrCode(Request $request, $qr_code)
     {
         $voucher = UserVoucher::where('qr_code', $qr_code)->first();
@@ -119,7 +119,17 @@ class VoucherController extends Controller
         $voucher->status = 'used';
         $voucher->save();
 
+        // ✅ Notify admin that user redeemed voucher
+        Notification::create([
+            'user_id' => 1,                       // admin receives (adjust if multiple admins)
+            'from_user_id' => $voucher->user_id,  // user triggered
+            'type' => 'voucher_redeem',
+            'source_table' => 'user_vouchers',
+            'source_id' => $voucher->redemption_id,
+            'title' => 'Voucher Redeemed',
+            'message' => 'User ' . $voucher->user->name . ' redeemed a voucher.',
+        ]);
+
         return response()->json(['success' => 'Voucher redeemed successfully']);
     }
-
 }
