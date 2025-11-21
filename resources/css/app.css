@@ -701,3 +701,195 @@
   }
 
 }
+
+
+
+/**=========================================================== You're here because you care animation ================================================================== */
+/* Main title word emphasis with spacing */
+.word-emphasis {
+    display: inline-block;
+    position: relative;
+    transition: all 0.5s ease;
+    margin-right: 0.3em; /* More space for larger main title words */
+}
+
+.word-emphasis:last-child {
+    margin-right: 0;
+}
+
+.word-emphasis.youre {
+    animation: emphasizeWord 1s ease 1s forwards;
+}
+
+.word-emphasis.here {
+    animation: emphasizeWord 1s ease 1.3s forwards;
+}
+
+@keyframes emphasizeWord {
+    0% {
+        transform: scale(1);
+        color: #5C7919;
+    }
+    50% {
+        transform: scale(1.1);
+        color: #3a5a0c;
+        text-shadow: 0 0 15px rgba(92, 121, 25, 0.6);
+    }
+    100% {
+        transform: scale(1);
+        color: #3a5a0c;
+        text-shadow: 0 0 5px rgba(92, 121, 25, 0.3);
+    }
+}
+
+/* Subtext word-by-word glow animation with smooth woosh */
+.glow-word {
+    display: inline-block;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    margin-right: 0.15em;
+}
+
+.glow-word:last-child {
+    margin-right: 0;
+}
+
+/* Slower staggered glow animations for all words */
+.glow-word.word-1 { animation: wordGlow 0.7s ease-out 2.0s forwards; }
+.glow-word.word-2 { animation: wordGlow 0.7s ease-out 2.1s forwards; }
+.glow-word.word-3 { animation: wordGlowDarker 1.2s ease-out 2.2s forwards; }
+.glow-word.word-4 { animation: wordGlow 0.7s ease-out 2.3s forwards; }
+.glow-word.word-5 { animation: wordGlow 0.7s ease-out 2.4s forwards; }
+.glow-word.word-6 { animation: wordGlowDarker 1.4s ease-out 2.5s forwards; }
+.glow-word.word-7 { animation: wordGlow 0.7s ease-out 2.6s forwards; }
+.glow-word.word-8 { animation: wordGlow 0.7s ease-out 2.7s forwards; }
+.glow-word.word-9 { animation: wordGlowDarker 1.6s ease-out 2.8s forwards; }
+
+@keyframes wordGlow {
+    0% {
+        opacity: 0.7;
+        color: #758848;
+        text-shadow: 0 0 0px #dcf0ad;
+    }
+    30% {
+        opacity: 1;
+        color: #3c5814;
+        text-shadow: 0 0 20px #dcf0ad, 0 0 30px #c2dc83;
+    }
+    70% {
+        opacity: 1;
+        color: #334716;
+        text-shadow: 0 0 15px #dcf0ad, 0 0 25px #b0c976;
+    }
+    100% {
+        opacity: 0.9;
+        color: #4c5c35;
+    }
+}
+
+/* Special darker colors with progressively slower scaling for emphasis words */
+.glow-word.word-3, /* care */
+.glow-word.word-6, /* planet */
+.glow-word.word-9 { /* home */
+    animation: wordGlowDarker ease-out forwards;
+}
+
+.glow-word.word-3 { 
+    animation-duration: 1.2s; 
+    animation-delay: 2.2s; 
+} /* care */
+
+.glow-word.word-6 { 
+    animation-duration: 1.4s; 
+    animation-delay: 2.5s; 
+} /* planet */
+
+.glow-word.word-9 { 
+    animation-duration: 1.6s; 
+    animation-delay: 2.8s; 
+} /* home */
+
+@keyframes wordGlowDarker {
+    0% {
+        opacity: 0.7;
+        color: #758848;
+        text-shadow: 0 0 0px #dcf0ad;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        color: #2a3a0f;
+        text-shadow: 0 0 15px #dcf0ad, 0 0 25px #b0c976;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 0.9;
+        color: #2a3a0f; /* Much darker green for emphasis */
+        text-shadow: 0 0 3px #a8c470;
+        transform: scale(1);
+    }
+}
+
+/* Final zoom for entire text container */
+.absolute.top-\\[20\\%\\] {
+    animation: finalZoom 4s ease 4s forwards; /* Slow zoom after all word animations */
+}
+
+@keyframes finalZoom {
+    0% {
+        transform: translateX(-50%) scale(1); /* Keep centered positioning */
+    }
+    100% {
+        transform: translateX(-50%) scale(1.15); /* Zoom entire container */
+    }
+}
+
+/* Pull subtext closer to the main title */
+.subtext-container {
+    margin-top: -0.8rem; /* Negative margin pulls it upward */
+}
+
+/* Reduce space between title and subtext */
+.absolute.top-\\[20\\%\\] h1 {
+    margin-bottom: 0.10rem !important; /* Much tighter spacing */
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .glow-word {
+        margin-right: 0.1em;
+    }
+    
+    .subtext-container {
+        margin-top: -0.3rem; /* Less negative margin on mobile */
+    }
+    
+    .absolute.top-\\[20\\%\\] h1 {
+        margin-bottom: 0.25rem !important; /* Even tighter on mobile */
+    }
+    
+    /* Progressively slower scaling on mobile */
+    .glow-word.word-1 { animation: wordGlow 0.5s ease-out 2.3s forwards; }
+    .glow-word.word-2 { animation: wordGlow 0.5s ease-out 2.4s forwards; }
+    .glow-word.word-3 { animation: wordGlowDarker 1.0s ease-out 2.5s forwards; }
+    .glow-word.word-4 { animation: wordGlow 0.5s ease-out 2.6s forwards; }
+    .glow-word.word-5 { animation: wordGlow 0.5s ease-out 2.7s forwards; }
+    .glow-word.word-6 { animation: wordGlowDarker 1.2s ease-out 2.8s forwards; }
+    .glow-word.word-7 { animation: wordGlow 0.5s ease-out 2.9s forwards; }
+    .glow-word.word-8 { animation: wordGlow 0.5s ease-out 3.0s forwards; }
+    .glow-word.word-9 { animation: wordGlowDarker 1.4s ease-out 3.1s forwards; }
+    
+    /* Smaller zoom on mobile */
+    .absolute.top-\\[20\\%\\] {
+        animation: finalZoomMobile 4s ease 4s forwards;
+    }
+    
+    @keyframes finalZoomMobile {
+        0% {
+            transform: translateX(-50%) scale(1);
+        }
+        100% {
+            transform: translateX(-50%) scale(1.08); /* Smaller zoom on mobile */
+        }
+    }
+}
