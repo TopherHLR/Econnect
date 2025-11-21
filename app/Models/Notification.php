@@ -21,33 +21,46 @@ class Notification extends Model
     // Primary key type
     protected $keyType = 'int';
 
-    // No timestamps (only has created_at)
+    // Laravel: timestamps = false (since no updated_at)
     public $timestamps = false;
 
     // Fillable columns
     protected $fillable = [
         'user_id',
+        'from_user_id',
+        'type',
+        'source_table',
+        'source_id',
+        'title',
         'message',
-        'is_read',
+        'read_at',
         'created_at',
     ];
 
     // Casts
     protected $casts = [
-        'is_read' => 'boolean',
+        'read_at' => 'datetime',
         'created_at' => 'datetime',
     ];
 
     // Default values
     protected $attributes = [
-        'is_read' => 0,
+        'read_at' => null,
     ];
 
     /**
-     * Relationship: A notification belongs to a user.
+     * Relationship: Notification belongs to the user it is sent *to*
      */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Relationship: Notification also belongs to the user who sent it
+     */
+    public function fromUser()
+    {
+        return $this->belongsTo(User::class, 'from_user_id', 'user_id');
     }
 }
