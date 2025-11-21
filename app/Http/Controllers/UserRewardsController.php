@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Voucher;
 use App\Models\UserVoucher;
 use App\Models\UserPointsHistory;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +46,6 @@ class UserRewardsController extends Controller
             'progressPoints' => $progressPoints
         ]);
 
-
         $pointsSpent = abs(
             UserPointsHistory::where('user_id', $user->user_id)
                 ->where('points_change', '<', 0)
@@ -69,6 +69,7 @@ class UserRewardsController extends Controller
             'currentPoints'
         ));
     }
+
     public function redeemVoucher(Request $request, $voucherId)
     {
         $user = Auth::user();
@@ -90,7 +91,7 @@ class UserRewardsController extends Controller
         }
 
         // Deduct points by logging a negative record
-        UserPointsHistory::create([
+        $history = UserPointsHistory::create([
             'user_id' => $user->user_id,
             'activity_type' => 'Voucher Redemption',
             'source_id' => $voucher->voucher_id,
@@ -107,6 +108,17 @@ class UserRewardsController extends Controller
             'redeemed_date' => now(),
             'status' => 'active',
             'redeem_points_cost' => $voucher->required_points
+        ]);
+
+        // ---- Notification for Admin ----
+        Notification::create([
+            'user_id' => 1, // Admin user_id (can be dynamic)
+            'from_user_id' => $user->user_id,
+            'type' => 'voucher_redeem',
+            'reference_id' => $userVoucher->redemption_id,
+            'title' => 'Voucher Redeemed',
+            'message' => $user->name . ' has redeemed a voucher: ' . $voucher->title,
+            'created_at' => now()
         ]);
 
         return response()->json([
