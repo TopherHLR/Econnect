@@ -66,29 +66,46 @@ window.addEventListener('scroll', () => {
     const textDiv = document.getElementById('plant-text');
     const textEl = textDiv.querySelector('h1');
     const progressBar = document.getElementById('growth-bar');
+
+    const plantBase = document.getElementById('plant-base');
+    const plantTop = document.getElementById('plant-top');
+
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
 
     if (scrollY > windowHeight * 0.3) {
-        // 🌿 Move & scale plant
-        plant.style.transform = 'translateY(400px) scale(1.2)';
+        // Move & scale plant
+        plant.style.transform = 'translateY(400px) scale(2)';
 
-        // 🌱 Move text below plant
+        // Move text below plant
         textDiv.style.top = '550px';
         textEl.textContent = 'We all yearn to make a difference...';
         textEl.style.fontSize = window.innerWidth > 768 ? '4rem' : '2.5rem';
         textEl.style.opacity = '0.9';
 
-        // 🌾 Reveal progress bar
+        // Show progress bar
         progressBar.style.opacity = '1';
+
+        // 🌿 Update plant images based on user stage
+        plantBase.src = `/storage/tree/${stage}.svg`;
+        plantBase.style.clipPath = `inset(${100 - growthPercent}% 0 0 0)`;
+
+        plantTop.src = `/storage/tree/${stage}.svg`;
+        plantTop.style.clipPath = `inset(0 0 ${100 - growthPercent}% 0)`;
     } else {
-        // Reset position and scale
-        plant.style.transform = 'translateY(0px) scale(1)';
+        // Reset plant to initial 5.svg
+        plant.style.transform = 'translateY(0px) scale(1.5)';
         textDiv.style.top = '0px';
         textEl.textContent = 'Even in small ways';
         textEl.style.fontSize = window.innerWidth > 768 ? '3rem' : '1.8rem';
         textEl.style.opacity = '1';
         progressBar.style.opacity = '0';
+
+        plantBase.src = '/storage/tree/5.svg';
+        plantBase.style.clipPath = 'inset(81% 0 0 0)';
+
+        plantTop.src = '/storage/tree/5.svg';
+        plantTop.style.clipPath = 'inset(0 0 19% 0)';
     }
 });
 

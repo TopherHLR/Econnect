@@ -30,9 +30,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Example home route (redirect destination)
-Route::get('/', function () {
-    return view('home'); // create home.blade.php later
-})->name('home');
+Route::get('/', [EcoController::class, 'index'])->name('home');
 
 //---------------------------------------------------- EWAN -------------------------------------------------
 

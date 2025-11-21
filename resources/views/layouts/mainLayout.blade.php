@@ -29,7 +29,6 @@
                 </svg>
             </button>
 
-            <!-- Center: Navigation Links (Desktop) -->
             <!-- Center: Navigation Links with Highlight (Desktop) -->
             <div class="hidden md:flex flex-1 justify-center space-x-10 nav-links">
                 <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">HOME</a>
