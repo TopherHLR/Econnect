@@ -8,37 +8,67 @@ use App\Models\UserVoucher;
 use App\Models\UserPointsHistory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class UserRewardsController extends Controller
 {
     public function index()
     {
+        Log::info('RewardsController@index called');
+
         $user = Auth::user();
+        Log::info('Authenticated user loaded', [
+            'user_id' => $user->user_id,
+            'name' => $user->name ?? null
+        ]);
 
         // Fetch available vouchers
         $availableVouchers = Voucher::where('is_active', true)->get();
+        Log::info('Available vouchers fetched', [
+            'count' => $availableVouchers->count()
+        ]);
 
         // Fetch user's vouchers
-        $myVouchers = UserVoucher::with('voucher')->where('user_id', $user->user_id)->get();
+        $myVouchers = UserVoucher::with('voucher')
+            ->where('user_id', $user->user_id)
+            ->get();
+        Log::info('User vouchers fetched', [
+            'user_id' => $user->user_id,
+            'count' => $myVouchers->count()
+        ]);
 
-        $totalPoints = UserPointsHistory::where('user_id', $user->user_id)
+        // Compute points
+        $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
             ->where('points_change', '>', 0)
-            ->sum('points_change'); // 30
+            ->sum('points_change'); 
+        Log::info('Total earned points calculated', [
+            'progressPoints' => $progressPoints
+        ]);
 
-        $pointsSpent = abs(UserPointsHistory::where('user_id', $user->user_id)
-            ->where('points_change', '<', 0)
-            ->sum('points_change')); // 10
 
-        $currentPoints = $totalPoints - $pointsSpent; // 20
+        $pointsSpent = abs(
+            UserPointsHistory::where('user_id', $user->user_id)
+                ->where('points_change', '<', 0)
+                ->sum('points_change')
+        );
+        Log::info('Total spent points calculated', [
+            'pointsSpent' => $pointsSpent
+        ]);
+
+        $currentPoints = $progressPoints - $pointsSpent;
+        Log::info('Current points calculated', [
+            'currentPoints' => $currentPoints
+        ]);
+
+        Log::info('Returning rewards view');
 
         return view('account.rewards', compact(
             'availableVouchers',
             'myVouchers',
-            'totalPoints',
+            'progressPoints',
             'currentPoints'
         ));
     }
-
     public function redeemVoucher(Request $request, $voucherId)
     {
         $user = Auth::user();

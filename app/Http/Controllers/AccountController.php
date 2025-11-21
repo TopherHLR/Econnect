@@ -18,7 +18,7 @@ class AccountController extends Controller
         $user = Auth::user();
 
         // Total earned points (sum of all positive points)
-        $totalPoints = UserPointsHistory::where('user_id', $user->user_id)
+        $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
             ->where('points_change', '>', 0)
             ->sum('points_change');
 
@@ -28,19 +28,19 @@ class AccountController extends Controller
             ->sum('points_change'));
 
         // Current points available for redemption
-        $currentPoints = $totalPoints - $pointsSpent;
+        $currentPoints = $progressPoints - $pointsSpent;
 
         // Badges based on total earned points
         $earnedBadges = 0;
         $badgeLevel = null;
 
-        if ($totalPoints >= 1000) {
+        if ($progressPoints >= 1000) {
             $earnedBadges = 3;
             $badgeLevel = '🌿 Eco Legend (1000+ pts)';
-        } elseif ($totalPoints >= 500) {
+        } elseif ($progressPoints >= 500) {
             $earnedBadges = 2;
             $badgeLevel = '🌱 Green Guardian (500+ pts)';
-        } elseif ($totalPoints >= 200) {
+        } elseif ($progressPoints >= 200) {
             $earnedBadges = 1;
             $badgeLevel = '🌸 Eco Starter (200+ pts)';
         } else {
@@ -50,7 +50,7 @@ class AccountController extends Controller
         // Dummy data for now
         $completedQuests = 0;
 
-        return compact('user', 'totalPoints', 'currentPoints', 'earnedBadges', 'badgeLevel', 'completedQuests');
+        return compact('user', 'progressPoints', 'currentPoints', 'earnedBadges', 'badgeLevel', 'completedQuests');
     }
 
 

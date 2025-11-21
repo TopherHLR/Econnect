@@ -5,7 +5,7 @@
     <script>
         const availableVouchers = @json($availableVouchers);
         const myVouchers = @json($myVouchers);
-        const totalPoints = {{ $totalPoints }};
+        const progressPoints = {{ $progressPoints }};
         const currentPoints = {{ $currentPoints }};
     </script>
 
@@ -32,11 +32,11 @@
         <div class="flex justify-between items-center mb-3">
             <span class="text-[#4b3f2f] font-medium">Your Rewards Progress</span>
             <span class="text-[#6b665e] text-sm">
-                {{ $totalPoints }}/60 points to next reward
+                {{ $progressPoints }}/60 points to next reward
             </span>
         </div>
         @php
-            $progress = min(100, ($totalPoints / 60) * 100);
+            $progress = min(100, ($progressPoints / 60) * 100);
         @endphp
         <div class="w-full bg-[#e8e6dc] rounded-full h-3">
             <div class="bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] h-3 rounded-full" style="width: {{ $progress }}%">

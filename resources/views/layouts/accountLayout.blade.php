@@ -44,7 +44,7 @@
                 <div class="text-sm text-gray-700 space-y-1 mt-3">
                     <p>
                         <span class="font-semibold text-[#4F6B3F]">Total Eco-points:</span>
-                        {{ $totalPoints ?? 0 }} pts
+                        {{ $progressPoints ?? 0 }} pts
                     </p>
                     <p>
                         <span class="font-semibold text-[#4F6B3F]">Current Points (for redemption):</span>

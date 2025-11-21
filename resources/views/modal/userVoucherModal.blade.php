@@ -129,29 +129,7 @@
 </div>
 
 <Script>
-    // Show user points
-    const afterRedemptionEl = document.getElementById('afterRedemptionPoints');
-    const userPointsEl = document.getElementById('userCurrentPoints');
 
-    // Use currentPoints from Blade
-    const userPoints = currentPoints;
-
-    // Update modal display
-    userPointsEl.textContent = `${userPoints} points`;
-    afterRedemptionEl.textContent = userPoints - voucher.required_points;
-
-    // Enable/disable redeem button
-    const redeemButton = document.getElementById('redeemButton');
-    if (userPoints >= voucher.required_points && voucher.is_active) {
-        redeemButton.disabled = false;
-        redeemButton.textContent = 'Redeem Now';
-        redeemButton.onclick = () => redeemVoucher(voucher.voucher_id);
-    } else {
-        redeemButton.disabled = true;
-        redeemButton.textContent = !voucher.is_active ?
-            'Not Available' :
-            `Need ${voucher.required_points - userPoints} more pts`;
-    }
 
     function openVoucherModal(voucherId) {
         const voucher = availableVouchers.find(v => v.voucher_id === voucherId);
