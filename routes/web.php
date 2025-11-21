@@ -229,3 +229,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/notifications/mark-read/{id}', [NotificationController::class, 'markAsRead']);
     Route::post('/notifications', [NotificationController::class, 'create']); // optional if creating via API
 });
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
