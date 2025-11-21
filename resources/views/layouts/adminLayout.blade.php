@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Admin Dashboard') - {{ config('app.name', 'Econnect') }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/admin.css'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -38,21 +39,22 @@
             font-family: 'Nunito Sans', sans-serif;
         }
 
-    /* 🌿 Sidebar nav items */
-    .nav-item {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      color: #6A8A52;
-      padding: 0.6rem;
-      border-radius: 1.5rem;
-      transform: translateY(0);
-      transition: all 0.3s ease-out;
-      cursor: pointer;
-      z-index: 40;
-    }
+        /* 🌿 Sidebar nav items */
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #6A8A52;
+            padding: 0.6rem;
+            border-radius: 1.5rem;
+            transform: translateY(0);
+            transition: all 0.3s ease-out;
+            cursor: pointer;
+            z-index: 40;
+        }
+
         /* 🌿 Sidebar nav items */
         .nav-item {
             position: relative;
@@ -150,16 +152,16 @@
             font-style: italic;
         }
 
-    /* 🌿 Main Container */
-    main {
-      background: #FCF9EF;
-      border-radius: 2rem;
-      box-shadow: 0 4px 8px rgba(79, 107, 63, 0.1);
-      border: 1px solid rgba(79, 107, 63, 0.06);
-      transition: all 0.3s ease-in-out;
-      font-family: 'Nunito Sans', sans-serif;
-      z-index: 1;
-    }
+        /* 🌿 Main Container */
+        main {
+            background: #FCF9EF;
+            border-radius: 2rem;
+            box-shadow: 0 4px 8px rgba(79, 107, 63, 0.1);
+            border: 1px solid rgba(79, 107, 63, 0.06);
+            transition: all 0.3s ease-in-out;
+            font-family: 'Nunito Sans', sans-serif;
+            z-index: 1;
+        }
 
         /* 🌿 Main Container */
         main {
@@ -247,7 +249,9 @@
                 <a href="/adminHome" class="nav-item" data-tooltip="Dashboard"><i class="fa-solid fa-house"></i></a>
                 <a href="/adminUsers" class="nav-item" data-tooltip="Manage Users"><i class="fa-solid fa-users"></i></a>
                 <a href="/adminQuests" class="nav-item" data-tooltip="Quests"><i class="fa-solid fa-bullseye"></i></a>
-                <a href="/adminRewards" class="nav-item" data-tooltip="Rewards"><i class="fa-solid fa-gift"></i></a>
+                <a href="{{ route('adminRewards') }}" class="nav-item" data-tooltip="Rewards">
+                    <i class="fa-solid fa-gift"></i>
+                </a>
                 <a href="{{ route('admin.eco-library') }}" class="nav-item" data-tooltip="Library / Lifestyle"><i
                         class="fa-solid fa-book-open"></i></a>
                 <a href="/adminAnalytics" class="nav-item" data-tooltip="Analytics"><i
@@ -347,7 +351,11 @@
                 }
             });
         });
+
+
     </script>
+
+
 </body>
 
 </html>
