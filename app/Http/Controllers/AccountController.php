@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserPointsHistory;
+
+use App\Models\UserVoucher;
+use App\Models\Voucher;
+
 use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
@@ -13,19 +17,30 @@ class AccountController extends Controller
     {
         $user = Auth::user();
 
-        $totalPoints = UserPointsHistory::where('user_id', $user->user_id)
+        // Total earned points (sum of all positive points)
+        $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
+            ->where('points_change', '>', 0)
             ->sum('points_change');
 
+        // Points spent on vouchers (absolute value of negative points)
+        $pointsSpent = abs(UserPointsHistory::where('user_id', $user->user_id)
+            ->where('points_change', '<', 0)
+            ->sum('points_change'));
+
+        // Current points available for redemption
+        $currentPoints = $progressPoints - $pointsSpent;
+
+        // Badges based on total earned points
         $earnedBadges = 0;
         $badgeLevel = null;
 
-        if ($totalPoints >= 1000) {
+        if ($progressPoints >= 1000) {
             $earnedBadges = 3;
             $badgeLevel = '🌿 Eco Legend (1000+ pts)';
-        } elseif ($totalPoints >= 500) {
+        } elseif ($progressPoints >= 500) {
             $earnedBadges = 2;
             $badgeLevel = '🌱 Green Guardian (500+ pts)';
-        } elseif ($totalPoints >= 200) {
+        } elseif ($progressPoints >= 200) {
             $earnedBadges = 1;
             $badgeLevel = '🌸 Eco Starter (200+ pts)';
         } else {
@@ -35,8 +50,9 @@ class AccountController extends Controller
         // Dummy data for now
         $completedQuests = 0;
 
-        return compact('user', 'totalPoints', 'earnedBadges', 'badgeLevel', 'completedQuests');
+        return compact('user', 'progressPoints', 'currentPoints', 'earnedBadges', 'badgeLevel', 'completedQuests');
     }
+
 
     // --- Profile Page ---
     public function show()
