@@ -46,27 +46,34 @@ class EcoController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
+        if (Auth::check()) {
+            $user = Auth::user();
 
-        // Earned points
-        $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
-            ->where('points_change', '>', 0)
-            ->sum('points_change');
+            // Earned points
+            $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
+                ->where('points_change', '>', 0)
+                ->sum('points_change');
 
-        // Spent points
-        $pointsSpent = abs(
-            UserPointsHistory::where('user_id', $user->user_id)
-                ->where('points_change', '<', 0)
-                ->sum('points_change')
-        );
+            // Spent points
+            $pointsSpent = abs(
+                UserPointsHistory::where('user_id', $user->user_id)
+                    ->where('points_change', '<', 0)
+                    ->sum('points_change')
+            );
 
-        $currentPoints = $progressPoints - $pointsSpent;
+            $currentPoints = $progressPoints - $pointsSpent;
+        } else {
+            // Default values for guests
+            $progressPoints = 0;
+            $pointsSpent = 0;
+            $currentPoints = 0;
+        }
 
         // Tree stages
         $treeStages = 7;
 
-        // Define points required per stage (example: can scale up)
-        $stageThresholds = [50, 100, 200, 300, 450, 550, 700]; // Stage 1 → 10, Stage 2 → 20, etc.
+        // Define points required per stage
+        $stageThresholds = [50, 100, 200, 300, 450, 550, 700];
 
         // Determine current stage
         $stage = 1;
@@ -83,7 +90,9 @@ class EcoController extends Controller
 
         // Growth percentage for progress bar (relative to current stage)
         $prevThreshold = $stage > 1 ? $stageThresholds[$stage - 2] : 0;
-        $growthPercent = (($progressPoints - $prevThreshold) / ($growthMax - $prevThreshold)) * 100;
+        $growthPercent = $growthMax - $prevThreshold > 0
+            ? (($progressPoints - $prevThreshold) / ($growthMax - $prevThreshold)) * 100
+            : 0;
         $growthPercent = min(100, max(0, $growthPercent));
 
         return view('home', compact(
@@ -95,6 +104,7 @@ class EcoController extends Controller
             'treeStages'
         ));
     }
+
 
 
 
