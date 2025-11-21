@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //======================================================================================= VIEWPORT2 ======================================================================================
 
+
 window.addEventListener('scroll', () => {
     const plant = document.getElementById('plant-container');
     const textDiv = document.getElementById('plant-text');
@@ -87,10 +88,10 @@ window.addEventListener('scroll', () => {
         progressBar.style.opacity = '1';
 
         // 🌿 Update plant images based on user stage
-        plantBase.src = `/storage/tree/${stage}.svg`;
+        plantBase.src = `${plantBasePath}/${stage}.svg`;
         plantBase.style.clipPath = `inset(${100 - growthPercent}% 0 0 0)`;
 
-        plantTop.src = `/storage/tree/${stage}.svg`;
+        plantTop.src = `${plantBasePath}/${stage}.svg`;
         plantTop.style.clipPath = `inset(0 0 ${100 - growthPercent}% 0)`;
     } else {
         // Reset plant to initial 5.svg
@@ -101,14 +102,13 @@ window.addEventListener('scroll', () => {
         textEl.style.opacity = '1';
         progressBar.style.opacity = '0';
 
-        plantBase.src = '/storage/tree/5.svg';
+        plantBase.src = `${plantBasePath}/5.svg`;
         plantBase.style.clipPath = 'inset(81% 0 0 0)';
 
-        plantTop.src = '/storage/tree/5.svg';
+        plantTop.src = `${plantBasePath}/5.svg`;
         plantTop.style.clipPath = 'inset(0 0 19% 0)';
     }
 });
-
 const dropdownButton = document.getElementById('dropdownButton');
 const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -204,13 +204,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({ status })
             })
-            .then(res => res.json())
-            .then(data => {
-                if(data.success){
-                    alert(data.success); // optional feedback
-                }
-            })
-            .catch(err => console.error(err));
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.success); // optional feedback
+                    }
+                })
+                .catch(err => console.error(err));
         });
     });
 
@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const questId = button.dataset.questId;
             const questTitle = button.closest('tr').querySelector('td:nth-child(2)').innerText;
 
-            if(!confirm('Are you sure you want to archive this quest?')) return;
+            if (!confirm('Are you sure you want to archive this quest?')) return;
 
             fetch(`/quests/${questId}/archive`, {
                 method: 'POST',
@@ -233,35 +233,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             })
-            .then(res => res.json())
-            .then(data => {
-                if(data.success){
-                    // Remove the row from the table
-                    const row = button.closest('tr');
-                    if(row) row.remove();
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove the row from the table
+                        const row = button.closest('tr');
+                        if (row) row.remove();
 
-                    // Add the quest to the archive dropdown
-                    const li = document.createElement('li');
-                    li.className = "flex justify-between items-center px-4 py-2 hover:bg-[#E9F0E1] text-[#4E3A2E]";
+                        // Add the quest to the archive dropdown
+                        const li = document.createElement('li');
+                        li.className = "flex justify-between items-center px-4 py-2 hover:bg-[#E9F0E1] text-[#4E3A2E]";
 
-                    li.innerHTML = `
+                        li.innerHTML = `
                         <span class="cursor-pointer" data-quest="questTable-${questId}">${questTitle}</span>
                         <form onsubmit="return confirm('Recover this quest?')" class="ml-2" data-quest-id="${questId}">
                             <button type="button" class="text-green-600 hover:text-green-800 font-semibold text-sm btn-recover">Recover</button>
                         </form>
                     `;
-                    archiveMenu.appendChild(li);
+                        archiveMenu.appendChild(li);
 
-                    // Add recover button functionality
-                    li.querySelector('.btn-recover').addEventListener('click', () => recoverQuest(questId, li));
-                }
-            })
-            .catch(err => console.error(err));
+                        // Add recover button functionality
+                        li.querySelector('.btn-recover').addEventListener('click', () => recoverQuest(questId, li));
+                    }
+                })
+                .catch(err => console.error(err));
         });
     });
-        // Recover function
-    function recoverQuest(questId, liElement){
-        if(!confirm('Recover this quest?')) return;
+    // Recover function
+    function recoverQuest(questId, liElement) {
+        if (!confirm('Recover this quest?')) return;
 
         fetch(`/quests/${questId}/recover2`, {
             method: 'POST',
@@ -269,14 +269,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             }
         })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success){
-                liElement.remove(); // Remove from archive dropdown
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    liElement.remove(); // Remove from archive dropdown
 
-                // Optional: refresh table or re-add to active quests table
-                location.reload(); // Or implement JS to add it back dynamically
-            }
-        });
+                    // Optional: refresh table or re-add to active quests table
+                    location.reload(); // Or implement JS to add it back dynamically
+                }
+            });
     }
 });
