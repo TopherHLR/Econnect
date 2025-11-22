@@ -18,12 +18,12 @@ export default defineConfig({
     tailwindcss(),
   ],
 
-  // Uncomment if testing on another device (optional)
+  // // Uncomment if testing on another device (optional)
   // server: {
   //   host: '0.0.0.0',
   //   port: 5173,
   //   hmr: {
-  //     host: '192.168.1.15', // your local IP
+  //     host: '192.168.174.41', // your local IP
   //   },
   // },
 })

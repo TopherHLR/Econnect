@@ -151,43 +151,77 @@
                 </div>
                 <div class="absolute top-15 w-[250px] h-[350px] rounded-full bg-white/50 blur-2xl"></div>
             </div>
-            <!-- 🌱 Base Image (initially 5.svg) -->
-            <img id="plant-base" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant"
-                class="w-[333px] md:w-[333px] relative z-10"
-                style="clip-path: inset(81% 0 0 0); transform-origin: center 80%;" />
+            @auth
+            
+                <!-- 🌱 Base Image (initially 5.svg) -->
+                <img id="plant-base" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant"
+                    class="w-[333px] md:w-[333px] relative z-10"
+                    style="clip-path: inset(81% 0 0 0); transform-origin: center 80%;" />
 
-            <!-- 🌿 Animated Top Image (initially 5.svg) -->
-            <img id="plant-top" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant-top"
-                class="absolute top-0 left-0 w-[333px] md:w-[333px] animate-sway-top z-20"
-                style="clip-path: inset(0 0 19% 0); transform-origin: center 80%;" />
+                <!-- 🌿 Animated Top Image (initially 5.svg) -->
+                <img id="plant-top" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant-top"
+                    class="absolute top-0 left-0 w-[333px] md:w-[333px] animate-sway-top z-20"
+                    style="clip-path: inset(0 0 19% 0); transform-origin: center 80%;" />
 
+                <!-- 🌾 Horizontal Progress Bar -->
+                <div id="growth-bar"
+                    class="absolute opacity-0 bottom-[-80px] flex flex-col items-center transition-opacity duration-700 ease-out">
 
-            <!-- 🌾 Horizontal Progress Bar -->
-            <div id="growth-bar"
-                class="absolute opacity-0 bottom-[-80px] flex flex-col items-center transition-opacity duration-700 ease-out">
+                    <p class="text-[#5C7919] text-lg md:text-2xl font-serif italic mb-3 opacity-80">
+                        Your personal growth tree
+                    </p>
 
-                <p class="text-[#5C7919] text-lg md:text-2xl font-serif italic mb-3 opacity-80">
-                    Your personal growth tree
-                </p>
+                    <div
+                        class="relative w-[300px] md:w-[500px] h-[14px] rounded-full bg-[#d6cbb7]/40 overflow-hidden shadow-inner">
 
-                <div
-                    class="relative w-[300px] md:w-[500px] h-[14px] rounded-full bg-[#d6cbb7]/40 overflow-hidden shadow-inner">
-
-                    <!-- Dynamic width based on current stage -->
-                    <div id="growth-fill"
-                        class="absolute left-0 bottom-0 h-full bg-gradient-to-r from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2] rounded-full shadow-lg"
-                        style="width: {{ $growthPercent }}%;">
+                        <!-- Dynamic width based on current stage -->
+                        <div id="growth-fill"
+                            class="absolute left-0 bottom-0 h-full bg-gradient-to-r from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2] rounded-full shadow-lg"
+                            style="width: {{ $growthPercent }}%;">
+                        </div>
                     </div>
-                </div>
 
-                <!-- 🌟 Progress Label -->
-                <p id="growth-label" class="mt-2 text-[#6b665e] text-sm font-medium">
-                    Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }} points
-                </p>
-            </div>
+                    <!-- 🌟 Progress Label -->
+                    <p id="growth-label" class="mt-2 text-[#6b665e] text-sm font-medium">
+                        Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }} points
+                    </p>
+                </div>
+            @endauth
+            <!-- GUEST USERS -->
+            @guest
+                <!-- 🌱 Base Image (STATIC 5.svg) -->
+                <img id="plant-base" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant"
+                    class="w-[333px] md:w-[333px] relative z-10"
+                    style="clip-path: inset(81% 0 0 0); transform-origin: center 80%;" />
+
+                <!-- 🌿 Animated Top Image (STATIC 5.svg) -->
+                <img id="plant-top" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant-top"
+                    class="absolute top-0 left-0 w-[333px] md:w-[333px] animate-sway-top z-20"
+                    style="clip-path: inset(0 0 19% 0); transform-origin: center 80%;" />
+
+                <!-- 🌾 Progress Bar (STATIC 0%) -->
+                <div id="growth-bar" class="absolute bottom-[-80px] flex flex-col items-center opacity-100">
+
+                    <p class="text-[#5C7919] text-lg md:text-2xl font-serif italic mb-3 opacity-80">
+                        Your personal growth tree
+                    </p>
+
+                    <div
+                        class="relative w-[300px] md:w-[500px] h-[14px] rounded-full bg-[#d6cbb7]/40 overflow-hidden shadow-inner">
+
+                        <div id="growth-fill"
+                            class="absolute left-0 bottom-0 h-full bg-gradient-to-r from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2] rounded-full shadow-lg"
+                            style="width: 0%;">
+                        </div>
+                    </div>
+
+                    <p id="growth-label" class="mt-2 text-[#6b665e] text-sm font-medium">
+                        Please log in to see your personalized growth tree 🌿
+                    </p>
+                </div>
+            @endguest
         </div>
     </section>
-
 
     <section class="relative text-center py-20 px-6 overflow-hidden mb-[96px]">
         <!-- Left Cloud -->
@@ -398,8 +432,7 @@
 
             <!-- ♻️ Recycle Image Slider -->
             <div class="relative mx-auto aspect-square w-[260px] md:w-[320px]">
-                <img src="{{ Vite::asset('resources/images/viewport1/ecoexample.png') }}" alt="Eco Example"
-                    class="">
+                <img src="{{ Vite::asset('resources/images/viewport1/ecoexample.png') }}" alt="Eco Example">
                 <button class="absolute left-[-40px] top-1/2 transform -translate-y-1/2 text-[#4A6613] text-3xl">
                     &#8249;
                 </button>
@@ -408,84 +441,91 @@
                 </button>
             </div>
 
-            <!-- 💬 Testimonials -->
             <h3 class="text-[#4A6613] italic font-semibold text-2xl md:text-3xl mt-24 mb-12">
                 What our community <br> is saying:
             </h3>
 
+            <!-- ⭐ ADD FEEDBACK FORM -->
+            @auth
+                <form action="{{ route('feedback.store') }}" method="POST"
+                    class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-10 max-w-xl mx-auto text-left">
+                    @csrf
 
-            <div class="flex flex-col md:flex-row justify-center gap-6">
-                <!-- Testimonial 1 (moved higher) -->
-                <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-10 w-full md:w-1/4 text-left relative md:-top-8 -top-6">
+                    <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-comment-dots text-[#4A6613]"></i>
+                        Share Your Feedback
+                    </h4>
 
-                    <!-- Quotation Mark (top-left corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/quote1.png') }}" alt="Quote"
-                        class="absolute top-3 left-3 w-14 opacity-90">
+                    <textarea name="content" required rows="3"
+                        class="w-full p-4 border rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#4A6613]"
+                        placeholder="Write your feedback here..."></textarea>
 
-                    <!-- User Icon (top-right corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/usericon.png') }}" alt="User Icon"
-                        class="absolute top-3 right-3 w-14 opacity-90">
+                    <label class="block mt-4 mb-2 font-semibold text-[#4A6613]">Rating:</label>
 
-                    <p class="text-[#4E3A2E] italic mb-2 mt-4">
-                        “I really appreciate how this eco-based system encourages action, hindi lang puro awareness. May
-                        results
-                        talaga.”
-                    </p>
 
-                    <!-- Stars (bottom-left corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/star.png') }}" alt="Stars"
-                        class="absolute bottom-3 left-3 w-20">
+                    <div class="flex gap-2 mb-4" x-data="{ rating: 0 }">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <label class="cursor-pointer">
+                                <input type="radio" name="rating" value="{{ $i }}" class="hidden"
+                                    x-model="rating" required>
+                                <i class="fa-solid fa-star text-2xl"
+                                    :class="rating >= {{ $i }} ? 'text-yellow-500' : 'text-gray-300'"
+                                    @click="rating = {{ $i }}"></i>
+                            </label>
+                        @endfor
+                    </div>
 
-                    <!-- Picture (bottom-right corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/quoteq.png') }}" alt="Bottom Right Image"
-                        class="absolute bottom-5 right-5 w-14 opacity-90">
-                </div>
 
-                <!-- Testimonial 2 (lowered) -->
-                <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 w-full md:w-1/4 text-left relative md:top-20 top-10">
-                    <!-- Quotation Mark (top-left corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/quote1.png') }}" alt="Quote"
-                        class="absolute top-3 left-3 w-14 opacity-90">
+                    <button type="submit" class="bg-[#4A6613] text-white px-6 py-2 rounded-xl hover:bg-[#3a5010] transition">
+                        Submit Feedback
+                    </button>
+                </form>
+            @else
+                <p class="text-red-600 font-semibold mb-10">You must be logged in to submit feedback.</p>
+            @endauth
 
-                    <!-- User Icon (top-right corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/usericon.png') }}" alt="User Icon"
-                        class="absolute top-3 right-3 w-14 opacity-90">
+            <!-- FEEDBACK CARDS -->
+            <div class="flex flex-col md:flex-row justify-center gap-6 flex-wrap">
 
-                    <p class="text-[#4E3A2E] italic mb-2 mt-13">
-                        “It motivates me to do small eco-quests every day. Super fun and fulfilling!”
-                    </p>
-                    <!-- Stars (bottom-left corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/star.png') }}" alt="Stars"
-                        class="absolute bottom-3 left-3 w-20">
+                @foreach ($feedback as $item)
+                    <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 w-full md:w-1/4 text-left relative">
 
-                    <!-- Picture (bottom-right corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/quoteq.png') }}" alt="Bottom Right Image"
-                        class="absolute bottom-5 right-5 w-14 opacity-90">
-                </div>
+                        <!-- Quotation Mark -->
+                        <i class="fa-solid fa-quote-left text-4xl text-[#4A6613] absolute top-3 left-3 opacity-70"></i>
 
-                <!-- Testimonial 3 -->
-                <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 w-full md:w-1/4 text-left relative">
-                    <!-- Quotation Mark (top-left corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/quote1.png') }}" alt="Quote"
-                        class="absolute top-3 left-3 w-14 opacity-90">
+                        <!-- User Avatar -->
+                        <i class="fa-solid fa-user-circle text-4xl text-[#4A6613] absolute top-3 right-3 opacity-70"></i>
 
-                    <!-- User Icon (top-right corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/usericon.png') }}" alt="User Icon"
-                        class="absolute top-3 right-3 w-14 opacity-90">
+                        <!-- User Name -->
+                        <p class="font-semibold text-[#4A6613] mt-14">
+                            {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
+                        </p>
 
-                    <p class="text-[#4E3A2E] italic mb-2 mt-14">
-                        “Love how it turns eco-awareness into real actions that make an impact!”
-                    </p>
-                    <!-- Stars (bottom-left corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/star.png') }}" alt="Stars"
-                        class="absolute bottom-3 left-3 w-20">
+                        <!-- Feedback Content -->
+                        <p class="text-[#4E3A2E] italic mb-2">
+                            “{{ $item->content }}”
+                        </p>
 
-                    <!-- Picture (bottom-right corner) -->
-                    <img src="{{ Vite::asset('resources/images/viewport1/quoteq.png') }}" alt="Bottom Right Image"
-                        class="absolute bottom-5 right-5 w-14 opacity-90">
-                </div>
+                        <!-- ⭐ Dynamic Star Rating -->
+                        <div class="absolute bottom-3 left-3 flex">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <i
+                                    class="fa-solid fa-star {{ $i <= $item->rating ? 'text-yellow-500' : 'text-gray-300' }} text-xl"></i>
+                            @endfor
+                        </div>
+
+                        <!-- Decorative icon -->
+                        <i
+                            class="fa-solid fa-quote-right text-3xl text-[#4A6613] absolute bottom-3 right-5 opacity-60"></i>
+                    </div>
+                @endforeach
+
             </div>
+
+
         </div>
+
+
     </section>
 
     <section class="relative text-center py-32 px-6 bg-center bg-repeat"
@@ -517,6 +557,10 @@
     </section>
 
     <script>
+        window.isGuest = @guest true
+        @else
+            false
+        @endguest ;
         const plantBasePath = "{{ Vite::asset('resources/images/tree') }}";
         // Pass Blade variables to JS
         const stage = {{ $stage }};

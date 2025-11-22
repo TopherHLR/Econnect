@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //======================================================================================= VIEWPORT2 ======================================================================================
 
-
 window.addEventListener('scroll', () => {
     const plant = document.getElementById('plant-container');
     const textDiv = document.getElementById('plant-text');
@@ -78,21 +77,25 @@ window.addEventListener('scroll', () => {
         // Move & scale plant
         plant.style.transform = 'translateY(400px) scale(2)';
 
-        // Move text below plant
+        // Move text
         textDiv.style.top = '550px';
         textEl.textContent = 'We all yearn to make a difference...';
-        textEl.style.fontSize = window.innerWidth > 768 ? '4rem' : '2.5rem';
+        textEl.style.fontSize = window.innerWidth > 768 ? '2rem' : '2.5rem';
         textEl.style.opacity = '0.9';
 
         // Show progress bar
         progressBar.style.opacity = '1';
 
-        // 🌿 Update plant images based on user stage
+        // 🔥 If user is guest → STOP here (keep 5.svg)
+        if (window.isGuest) return;
+
+        // 🌿 Authenticated → update dynamic plant
         plantBase.src = `${plantBasePath}/${stage}.svg`;
         plantBase.style.clipPath = `inset(${100 - growthPercent}% 0 0 0)`;
 
         plantTop.src = `${plantBasePath}/${stage}.svg`;
         plantTop.style.clipPath = `inset(0 0 ${100 - growthPercent}% 0)`;
+
     } else {
         // Reset plant to initial 5.svg
         plant.style.transform = 'translateY(0px) scale(1.5)';
@@ -102,6 +105,7 @@ window.addEventListener('scroll', () => {
         textEl.style.opacity = '1';
         progressBar.style.opacity = '0';
 
+        // 🌿 Always reset to 5.svg for both guest & auth
         plantBase.src = `${plantBasePath}/5.svg`;
         plantBase.style.clipPath = 'inset(81% 0 0 0)';
 
@@ -109,6 +113,8 @@ window.addEventListener('scroll', () => {
         plantTop.style.clipPath = 'inset(0 0 19% 0)';
     }
 });
+
+
 const dropdownButton = document.getElementById('dropdownButton');
 const dropdownMenu = document.getElementById('dropdownMenu');
 

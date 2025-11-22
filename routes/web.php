@@ -12,7 +12,7 @@ use App\Http\Controllers\QuestController;
 use App\Http\Controllers\QuestSubmissionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotificationController;
-
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\UserRewardsController;
 //---------------------------------------------------- AUTH -------------------------------------------------
@@ -37,7 +37,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Example home route (redirect destination)
 Route::get('/', [EcoController::class, 'index'])->name('home');
-
+Route::post('/feedback/store', [FeedbackController::class, 'store'])
+    ->name('feedback.store');
+    
 //---------------------------------------------------- PUBLIC PAGES -------------------------------------------------
 
 Route::get('/lifestyle', function () {

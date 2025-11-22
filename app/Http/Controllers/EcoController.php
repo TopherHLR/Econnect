@@ -78,7 +78,7 @@ class EcoController extends Controller
         $stage = 1;
         foreach ($stageThresholds as $index => $threshold) {
             if ($progressPoints >= $threshold) {
-                $stage = $index + 1; // Stage is 1-indexed
+                $stage = $index + 1;
             } else {
                 break;
             }
@@ -87,12 +87,17 @@ class EcoController extends Controller
         // Current stage max for progress bar
         $growthMax = $stageThresholds[$stage - 1];
 
-        // Growth percentage for progress bar (relative to current stage)
+        // Growth percentage relative to current stage
         $prevThreshold = $stage > 1 ? $stageThresholds[$stage - 2] : 0;
         $growthPercent = $growthMax - $prevThreshold > 0
             ? (($progressPoints - $prevThreshold) / ($growthMax - $prevThreshold)) * 100
             : 0;
         $growthPercent = min(100, max(0, $growthPercent));
+
+        // ⭐ FETCH FEEDBACK (merging FeedbackController logic)
+        $feedback = \App\Models\Feedback::with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('home', compact(
             'currentPoints',
@@ -100,9 +105,11 @@ class EcoController extends Controller
             'progressPoints',
             'growthMax',
             'stage',
-            'treeStages'
+            'treeStages',
+            'feedback' // ← now passed to the view
         ));
     }
+
 
 
 
