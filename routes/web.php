@@ -37,9 +37,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Example home route (redirect destination)
 Route::get('/', [EcoController::class, 'index'])->name('home');
-Route::post('/feedback/store', [FeedbackController::class, 'store'])
-    ->name('feedback.store');
-    
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+
 //---------------------------------------------------- PUBLIC PAGES -------------------------------------------------
 
 Route::get('/lifestyle', function () {

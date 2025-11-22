@@ -33,7 +33,7 @@ class QuestSubmissionController extends Controller
             ]);
 
             // ---- Notify all admins that a new quest is accepted ----
-            $admins = User::where('role', 'admin')->get();
+            $admins = User::where('user_type', 'admin')->get();
             foreach ($admins as $admin) {
                 Notification::create([
                     'user_id' => $admin->user_id,
@@ -80,7 +80,7 @@ class QuestSubmissionController extends Controller
             $submission->save();
 
             // ---- Notify all admins that a quest has been submitted for verification ----
-            $admins = User::where('role', 'admin')->get();
+            $admins = User::where('user_type', 'admin')->get();
             foreach ($admins as $admin) {
                 Notification::create([
                     'user_id' => $admin->user_id,

@@ -23,7 +23,7 @@
                                     @if ($submission->status === 'pending')
                                         @php
                                             $daysLeft = $quest->end_date->isFuture()
-                                                ? (int) now()->diffInDays($quest->end_date)
+                                                ? ceil(now()->diffInHours($quest->end_date) / 24)
                                                 : 0;
 
                                             // Disable if days left is 0 or proof already exists
