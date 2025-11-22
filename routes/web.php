@@ -234,3 +234,9 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/about', function () {
     return view('about');
 })->name('about');
+
+//---------------------------------------------------- LEADERBOARD -------------------------------------------------
+Route::get('/leaderboard', [App\Http\Controllers\LeaderboardController::class, 'index'])
+    ->name('leaderboard')
+    ->middleware('auth');
+

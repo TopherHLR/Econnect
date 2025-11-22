@@ -84,4 +84,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(UserEcoAction::class, 'user_id', 'user_id');
     }
+    public function pointsHistory()
+    {
+        return $this->hasMany(UserPointsHistory::class, 'user_id', 'user_id');
+    }
+
 }

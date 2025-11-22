@@ -15,9 +15,9 @@
 
 <nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-100">
     <div class="navbar-container">
-        <div class="max-w-7xl mx-auto px-8 py-3 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-2 py-2 flex items-center justify-between">
             <!-- Left: Logo -->
-            <a href="/" class="flex items-center space-x-1">
+            <a href="/" class="flex items-center space-x-1 mr-5">
                 <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo"
                     class="h-10 w-auto">
             </a>
@@ -39,6 +39,10 @@
                 @endauth
                 <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">ABOUT</a>
                 <!-- nav-highlight will be inserted here by JavaScript -->
+                <a href="{{ route('leaderboard') }}"
+                    class="nav-link {{ request()->is('leaderboard') ? 'active' : '' }}">
+                    LEADERBOARD
+                </a>
             </div>
             <!-- Right: Profile / Auth Buttons -->
             <div x-data class="hidden md:flex items-center relative" id="profileDropdown">
@@ -58,7 +62,7 @@
                 @endguest
 
                 @auth
-                    <div class="flex items-center space-x-3 relative">
+                    <div class="flex items-center space-x-3 relative ms-5">
                         <!-- Notification Bell -->
                         <div x-data="{ open: false }" class="relative">
                             <button @click="open = !open"
@@ -90,7 +94,7 @@
                                                 <p class="font-medium text-gray-800">{{ $notif->title }}</p>
                                                 <p class="text-gray-500 text-sm">{{ $notif->message }}</p>
                                                 <p class="text-gray-400 text-xs mt-1">
-                                                  {{ $notif->created_at->diffForHumans() }}</p>
+                                                    {{ $notif->created_at->diffForHumans() }}</p>
 
                                             </div>
                                             @if (!$notif->read_at)
@@ -141,8 +145,9 @@
                                             <!-- Rectangle icon -->
                                             <span
                                                 class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#4F6B3F]">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    class="w-4 h-4 text-[#4F6B3F]">
                                                     <circle cx="12" cy="8" r="4" />
                                                     <path d="M4 20c0-4 4-7 8-7s8 3 8 7" />
                                                 </svg>

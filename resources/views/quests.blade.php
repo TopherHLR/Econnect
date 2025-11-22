@@ -19,89 +19,88 @@
 
                         <div class="space-y-3 flex-1">
                             @foreach ($quests as $quest)
-                                @foreach ($quest->submissions as $submission)
-                                    @if ($submission->status === 'pending')
-                                        @php
-                                            $daysLeft = $quest->end_date->isFuture()
-                                                ? ceil(now()->diffInHours($quest->end_date) / 24)
-                                                : 0;
+                                @php
+                                    // Get user's submission for THIS quest only
+                                $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                @endphp
 
-                                            // Disable if days left is 0 or proof already exists
-                                            $hasProof =
-                                                !empty($submission->proof_link) || !empty($submission->proof_image);
-                                            $isDisabled = $daysLeft === 0 || $hasProof;
+                                @if ($submission && $submission->status === 'pending')
+                                    @php
+                                        $daysLeft = $quest->end_date->isFuture()
+                                            ? ceil(now()->diffInHours($quest->end_date) / 24)
+                                            : 0;
 
-                                            // Determine hint message
-                                            $hintMessage =
-                                                $daysLeft === 0
-                                                    ? 'Quest expired'
-                                                    : ($hasProof
-                                                        ? 'Already submitted'
-                                                        : '');
-                                        @endphp
+                                        $hasProof = !empty($submission->proof_link) || !empty($submission->proof_image);
+                                        $isDisabled = $daysLeft === 0 || $hasProof;
 
-                                        <div class="flex flex-col">
-                                            <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border-l-4 border-[#da7a5f] hover:shadow-md transition cursor-pointer accepted-quest {{ $isDisabled ? 'pointer-events-none opacity-50 cursor-not-allowed' : '' }}"
-                                                data-submission-id="{{ $submission->submission_id }}"
-                                                data-description="{{ $quest->description }}">
-                                                <span class="text-sm font-medium text-[#4F6B3F]">{{ $quest->title }}</span>
-                                                <small class="text-gray-500 text-xs">
-                                                    {{ $daysLeft }} {{ $daysLeft === 1 ? 'day' : 'days' }} left
-                                                </small>
-                                                @if (!empty($hintMessage))
-                                                    <div class="mt-1.5 flex items-center space-x-1.5 text-amber-600">
-                                                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor"
-                                                            viewBox="0 0 20 20">
-                                                            <path fill-rule="evenodd"
-                                                                d="M10 1.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zM9 13a1 1 0 102 0V9a1 1 0 10-2 0v4zm1-7a1 1 0 100-2 1 1 0 000 2z"
-                                                                clip-rule="evenodd" />
-                                                        </svg>
-                                                        <span class="text-xs font-medium">{{ $hintMessage }}</span>
-                                                    </div>
-                                                @endif
-                                            </div>
+                                        $hintMessage =
+                                            $daysLeft === 0 ? 'Quest expired' : ($hasProof ? 'Already submitted' : '');
+                                        $dayLabel = $daysLeft == 1 ? 'day' : 'days';
+                                    @endphp
+
+                                    <div class="flex flex-col">
+                                        <div class="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border-l-4 border-[#da7a5f] hover:shadow-md transition cursor-pointer accepted-quest {{ $isDisabled ? 'pointer-events-none opacity-50 cursor-not-allowed' : '' }}"
+                                            data-submission-id="{{ $submission->submission_id }}"
+                                            data-description="{{ $quest->description }}">
+
+                                            <span class="text-sm font-medium text-[#4F6B3F]">{{ $quest->title }}</span>
+                                            <small class="text-gray-500 text-xs">{{ $daysLeft }} {{ $dayLabel }} left</small>
+
+                                            @if ($hintMessage)
+                                                <div class="mt-1.5 flex items-center space-x-1.5 text-amber-600">
+                                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10 1.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17zM9 13a1 1 0 102 0V9a1 1 0 10-2 0v4zm1-7a1 1 0 100-2 1 1 0 000 2z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                    <span class="text-xs font-medium">{{ $hintMessage }}</span>
+                                                </div>
+                                            @endif
                                         </div>
-                                    @endif
-                                @endforeach
+                                    </div>
+                                @endif
                             @endforeach
-                        </div>
 
+                        </div>
 
                         <!-- Completed Section -->
                         <div class="mt-6 border-t border-[#e0e0d6] pt-4 space-y-2">
                             <h3 class="text-sm font-semibold text-[#4F6B3F] mb-2">Completed Quests</h3>
                             @foreach ($quests as $quest)
-                                @foreach ($quest->submissions as $submission)
-                                    @if ($submission->status === 'completed')
-                                        <div class="flex justify-between items-center text-sm text-green-700 cursor-pointer completed-quest"
-                                            data-submission-id="{{ $submission->submission_id }}"
-                                            data-title="{{ $quest->title }}" data-description="{{ $quest->description }}"
-                                            data-points="{{ $quest->points_reward }}"
-                                            data-date="{{ optional($submission->date_completed)->format('d/m/Y') }}">
-                                            <span>✅ {{ $quest->title }}</span>
-                                            <small>{{ optional($submission->date_completed)->format('d/m/Y') }}</small>
-                                        </div>
-                                    @endif
-                                @endforeach
+                                @php
+                                    $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                @endphp
+
+                                @if ($submission && $submission->status === 'completed')
+                                    <div class="flex justify-between items-center text-sm text-green-700 cursor-pointer completed-quest"
+                                        data-submission-id="{{ $submission->submission_id }}"
+                                        data-title="{{ $quest->title }}" data-description="{{ $quest->description }}"
+                                        data-points="{{ $quest->points_reward }}"
+                                        data-date="{{ optional($submission->date_completed)->format('d/m/Y') }}">
+                                        <span>✅ {{ $quest->title }}</span>
+                                        <small>{{ optional($submission->date_completed)->format('d/m/Y') }}</small>
+                                    </div>
+                                @endif
                             @endforeach
+
                         </div>
 
                         <!-- Rejected Section -->
                         <div class="mt-6 border-t border-[#e0e0d6] pt-4 space-y-2">
                             <h3 class="text-sm font-semibold text-[#4F6B3F] mb-2">Rejected Quests</h3>
                             @foreach ($quests as $quest)
-                                @foreach ($quest->submissions as $submission)
-                                    @if ($submission->status === 'rejected')
-                                        <div class="flex justify-between items-center text-sm text-red-500 cursor-pointer rejected-quest"
-                                            data-submission-id="{{ $submission->submission_id }}"
-                                            data-description="{{ $quest->description }}">
-                                            <span>❌ {{ $quest->title }}</span>
-                                            <small>
-                                                {{ optional($submission->date_rejected)->format('d/m/Y') ?? 'Rejected' }}
-                                            </small>
-                                        </div>
-                                    @endif
-                                @endforeach
+                                @php
+                                    $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                @endphp
+
+                                @if ($submission && $submission->status === 'rejected')
+                                    <div class="flex justify-between items-center text-sm text-red-500 cursor-pointer rejected-quest"
+                                        data-submission-id="{{ $submission->submission_id }}"
+                                        data-description="{{ $quest->description }}">
+                                        <span>❌ {{ $quest->title }}</span>
+                                        <small>{{ optional($submission->date_rejected)->format('d/m/Y') }}</small>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
 
@@ -129,30 +128,31 @@
                             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
                                 @foreach ($quests as $quest)
                                     @php
-                                        // Get the current user's submission for this quest
-$submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                        $submission = $quest->submissions->firstWhere('user_id', auth()->id());
 
-// Category image
-$imagePath = match ($quest->category) {
-    'Waste Management',
-    'Upcycling / Creative Reuse',
-    'Sustainable Mobility / Climate Action',
-    'Community Cleanliness / Waste Reduction',
-    'E-Waste / Digital Sustainability',
-    'Biodiversity / Urban Greening',
-    'Local Partnership / Eco Business Support',
-    'Campus Greening / Waste Management'
-        => 'cat_images/sample.jpg',
-    'Sustainable Lifestyle' => 'cat_images/sustainable.png',
-    default => 'cat_images/sample.jpg',
-};
 
-// Determine quest state for current user
-$isCompleted = $submission?->status === 'completed';
-$isRejected = $submission?->status === 'rejected';
-$isPending = $submission?->status === 'pending';
-                                        $isExpired = $quest->end_date->isPast() && !$isCompleted;
+                                        // Category image
+                                        $imagePath = match ($quest->category) {
+                                            'Waste Management',
+                                            'Upcycling / Creative Reuse',
+                                            'Sustainable Mobility / Climate Action',
+                                            'Community Cleanliness / Waste Reduction',
+                                            'E-Waste / Digital Sustainability',
+                                            'Biodiversity / Urban Greening',
+                                            'Local Partnership / Eco Business Support',
+                                            'Campus Greening / Waste Management'
+                                                => 'cat_images/sample.jpg',
+                                            'Sustainable Lifestyle' => 'cat_images/sustainable.png',
+                                            default => 'cat_images/sample.jpg',
+                                        };
+
+                                        $isCompleted = $submission?->status === 'completed';
+                                        $isRejected  = $submission?->status === 'rejected';
+                                        $isPending   = $submission?->status === 'pending';
+                                        $isExpired   = $quest->end_date->isPast() && !$isCompleted;
+
                                         $isInactive = $isCompleted || $isExpired || $isRejected || $isPending;
+
                                     @endphp
 
                                     @if ($quest->status === 'active')
@@ -203,8 +203,6 @@ $isPending = $submission?->status === 'pending';
                                 @endforeach
                             </div>
                         </div>
-
-
                     </div> <!-- End Right Column -->
 
                 </div> <!-- End Top Container Columns -->
