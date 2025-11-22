@@ -189,9 +189,9 @@
                                                 <div>
                                                     <h3 class="text-sm font-semibold truncate">{{ $quest->title }}</h3>
                                                     @php
-                                                        $daysLeft = $quest->end_date->isFuture()
-                                                            ? (int) now()->diffInDays($quest->end_date)
-                                                            : 0;
+                                                    $daysLeft = $quest->end_date->isFuture()
+                                                        ? ceil(now()->diffInHours($quest->end_date) / 24)
+                                                        : 0;
                                                     @endphp
                                                     <p class="text-xs mt-1 opacity-100">Ends in {{ $daysLeft }} days
                                                     </p>

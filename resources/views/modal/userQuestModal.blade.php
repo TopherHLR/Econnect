@@ -61,18 +61,20 @@
                     @csrf
                     <input type="hidden" name="submission_id" id="modalSubmissionId">
 
-                    <div>
-                        <label class="block text-[#4F6B3F] font-medium mb-1">Proof Link</label>
-                        <input type="url" name="proof_link"
-                            class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
-                            placeholder="Paste a link to your proof (optional)">
-                    </div>
+                    <div id="proofFields">
+                        <div>
+                            <label class="block text-[#4F6B3F] font-medium mb-1">Proof Link</label>
+                            <input type="url" name="proof_link"
+                                class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                                placeholder="Paste a link to your proof (optional)">
+                        </div>
 
-                    <div>
-                        <label class="block text-[#4F6B3F] font-medium mb-1">Upload Image</label>
-                        <input type="file" name="proof_image"
-                            class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
-                            accept="image/*">
+                        <div>
+                            <label class="block text-[#4F6B3F] font-medium mb-1">Upload Image</label>
+                            <input type="file" name="proof_image"
+                                class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                                accept="image/*">
+                        </div>
                     </div>
 
                     <div class="flex justify-end gap-3 pt-3">
@@ -82,6 +84,7 @@
                             Submit</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
@@ -154,13 +157,34 @@
         });
         const acceptedModal = document.getElementById('acceptedQuestModal');
 
-        function openAcceptedQuestModal(submission) {
-            document.getElementById('modalAcceptedQuestTitle').textContent = submission.questTitle;
-            document.getElementById('modalAcceptedQuestDescription').textContent = submission.questDescription;
-            document.getElementById('modalSubmissionId').value = submission.submissionId;
+        function openAcceptedQuestModal(quest) {
+            const modal = document.getElementById('acceptedQuestModal');
+            const titleEl = document.getElementById('modalAcceptedQuestTitle');
+            const descEl = document.getElementById('modalAcceptedQuestDescription');
+            const submissionIdEl = document.getElementById('modalSubmissionId');
+            const proofFields = document.getElementById('proofFields');
+            const submitButton = modal.querySelector('button[type="submit"]'); // grab the submit button
 
-            acceptedModal.classList.remove('hidden');
+            // Fill modal content
+            titleEl.textContent = quest.questTitle || quest.title;
+            descEl.textContent = quest.questDescription || quest.description;
+            submissionIdEl.value = quest.submissionId || quest.submission_id;
+
+            // Hide proof fields and submit button if Daily Eco Action
+            if ((quest.questTitle || quest.title) === 'Daily Eco Action') {
+                proofFields.style.display = 'none';
+                submitButton.style.display = 'none';
+            } else {
+                proofFields.style.display = 'block';
+                submitButton.style.display = 'inline-flex'; // restore original display
+            }
+
+            modal.classList.remove('hidden');
         }
+
+
+
+
 
         function closeAcceptedQuestModal() {
             acceptedModal.classList.add('hidden');

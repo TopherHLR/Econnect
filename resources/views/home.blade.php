@@ -151,17 +151,22 @@
                 </div>
                 <div class="absolute top-15 w-[250px] h-[350px] rounded-full bg-white/50 blur-2xl"></div>
             </div>
+
             @auth
-            
-                <!-- 🌱 Base Image (initially 5.svg) -->
+                <!-- 🌱 Base Image -->
                 <img id="plant-base" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant"
                     class="w-[333px] md:w-[333px] relative z-10"
                     style="clip-path: inset(81% 0 0 0); transform-origin: center 80%;" />
 
-                <!-- 🌿 Animated Top Image (initially 5.svg) -->
+                <!-- 🌿 Top Image (NO SWAY ANIMATION) -->
                 <img id="plant-top" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant-top"
-                    class="absolute top-0 left-0 w-[333px] md:w-[333px] animate-sway-top z-20"
-                    style="clip-path: inset(0 0 19% 0); transform-origin: center 80%;" />
+                    class="absolute top-0 left-0 w-[333px] md:w-[333px] z-20 cursor-pointer"
+                    style="clip-path: inset(0 0 19% 0); transform-origin: center 80%;" data-taps="0" />
+                <!-- 🌟 Hint Message (subtle, beside the tree) -->
+                <div id="tap-message" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 text-xs italic text-white opacity-0 transition-opacity duration-500">
+                </div>
+
+
 
                 <!-- 🌾 Horizontal Progress Bar -->
                 <div id="growth-bar"
@@ -171,10 +176,9 @@
                         Your personal growth tree
                     </p>
 
+
                     <div
                         class="relative w-[300px] md:w-[500px] h-[14px] rounded-full bg-[#d6cbb7]/40 overflow-hidden shadow-inner">
-
-                        <!-- Dynamic width based on current stage -->
                         <div id="growth-fill"
                             class="absolute left-0 bottom-0 h-full bg-gradient-to-r from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2] rounded-full shadow-lg"
                             style="width: {{ $growthPercent }}%;">
@@ -187,32 +191,23 @@
                     </p>
                 </div>
             @endauth
-            <!-- GUEST USERS -->
+
             @guest
-                <!-- 🌱 Base Image (STATIC 5.svg) -->
-                <img id="plant-base" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant"
+                <img id="plant-base" src="{{ Vite::asset('resources/images/tree/5.svg') }}"
                     class="w-[333px] md:w-[333px] relative z-10"
                     style="clip-path: inset(81% 0 0 0); transform-origin: center 80%;" />
-
-                <!-- 🌿 Animated Top Image (STATIC 5.svg) -->
-                <img id="plant-top" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant-top"
-                    class="absolute top-0 left-0 w-[333px] md:w-[333px] animate-sway-top z-20"
+                <img id="plant-top" src="{{ Vite::asset('resources/images/tree/5.svg') }}"
+                    class="absolute top-0 left-0 w-[333px] md:w-[333px] z-20"
                     style="clip-path: inset(0 0 19% 0); transform-origin: center 80%;" />
 
-                <!-- 🌾 Progress Bar (STATIC 0%) -->
                 <div id="growth-bar" class="absolute bottom-[-80px] flex flex-col items-center opacity-100">
-
                     <p class="text-[#5C7919] text-lg md:text-2xl font-serif italic mb-3 opacity-80">
                         Your personal growth tree
                     </p>
 
                     <div
                         class="relative w-[300px] md:w-[500px] h-[14px] rounded-full bg-[#d6cbb7]/40 overflow-hidden shadow-inner">
-
-                        <div id="growth-fill"
-                            class="absolute left-0 bottom-0 h-full bg-gradient-to-r from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2] rounded-full shadow-lg"
-                            style="width: 0%;">
-                        </div>
+                        <div id="growth-fill" class="absolute left-0 bottom-0 h-full" style="width: 0%;"></div>
                     </div>
 
                     <p id="growth-label" class="mt-2 text-[#6b665e] text-sm font-medium">
@@ -222,6 +217,7 @@
             @endguest
         </div>
     </section>
+
 
     <section class="relative text-center py-20 px-6 overflow-hidden mb-[96px]">
         <!-- Left Cloud -->
@@ -571,6 +567,83 @@
 
             fill.style.transition = "width 1s ease-out";
             indicator.style.transition = "left 1s ease-out";
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const plantTop = document.getElementById('plant-top');
+            const growthFill = document.getElementById('growth-fill');
+            const growthLabel = document.getElementById('growth-label');
+
+
+            let taps = 0;
+
+            plantTop.addEventListener('click', () => {
+                taps++;
+                plantTop.dataset.taps = taps;
+
+                console.log(`Tree tapped ${taps} times`);
+
+                // Send taps immediately (or you can batch every few taps)
+                sendTaps(taps);
+            });
+
+
+            function sendTaps(tapCount) {
+                fetch("{{ url('/tree/tap') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            taps: tapCount
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+
+                        if (data.message) {
+                            showMessage(data.message);
+                        }
+
+                        if (data.points_awarded) {
+                            let currentPercent = parseFloat(growthFill.style.width) || 0;
+                            let newPercent = Math.min(currentPercent + data.points_awarded, 100);
+                            growthFill.style.width = newPercent + '%';
+
+                            growthLabel.textContent =
+                                `Stage {{ $stage }} / {{ $treeStages }} — Updated Points: ${newPercent}`;
+                        }
+
+                        if (data.has_quest === false) {
+                            showMessage(
+                                "You don't have an active small quest yet. Complete any pending quest to earn points!"
+                            );
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            function showMessage(msg) {
+                const tapMessage = document.getElementById('tap-message');
+                tapMessage.textContent = msg;
+
+                // Add class to show message
+                tapMessage.classList.remove('opacity-0');
+                tapMessage.classList.add('opacity-100');
+
+                // Optional: add slide effect if using transform
+                // tapMessage.classList.add('show');
+                // tapMessage.classList.remove('hide');
+
+                setTimeout(() => {
+                    tapMessage.classList.remove('opacity-100');
+                    tapMessage.classList.add('opacity-0');
+                    // tapMessage.classList.add('hide');
+                    // tapMessage.classList.remove('show');
+                }, 3000);
+            }
+
         });
     </script>
 @endsection

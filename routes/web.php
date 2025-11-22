@@ -15,6 +15,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\UserRewardsController;
+use App\Http\Controllers\TreeController;
+
 //---------------------------------------------------- AUTH -------------------------------------------------
 
 
@@ -240,3 +242,4 @@ Route::get('/leaderboard', [App\Http\Controllers\LeaderboardController::class, '
     ->name('leaderboard')
     ->middleware('auth');
 
+Route::post('/tree/tap', [TreeController::class, 'tapTree'])->middleware('auth');

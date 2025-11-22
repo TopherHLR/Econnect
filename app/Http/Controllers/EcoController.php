@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\UserPointsHistory;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\Models\QuestSubmission;
+use App\Models\Notification;
+use App\Models\Quest;
+use App\Models\User;
 
 class EcoController extends Controller
 {
@@ -99,6 +104,10 @@ class EcoController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        if ($user) {
+            // Automatically assign a small quest if applicable
+            $this->autoAssignSmallQuest($user->user_id);
+        }
         return view('home', compact(
             'currentPoints',
             'growthPercent',
@@ -109,8 +118,59 @@ class EcoController extends Controller
             'feedback' // ← now passed to the view
         ));
     }
+    
 
+    private function autoAssignSmallQuest($creatorUserId)
+    {
+        $today = Carbon::today();
+        $tomorrow = Carbon::tomorrow(); // 24-hour duration
 
+        // Check if a "Daily Eco Action" already exists globally
+        $existingQuest = Quest::where('title', 'Daily Eco Action')
+            ->whereDate('start_date', $today)
+            ->whereDate('end_date', $tomorrow)
+            ->first();
+
+        if ($existingQuest) {
+            return; // Quest already exists, do not create
+        }
+
+        // Create the global daily quest
+        $quest = Quest::create([
+            'title' => 'Daily Eco Action',
+            'description' => 'Complete a small eco-action today!',
+            'category' => 'Small Quest',
+            'points_reward' => 5,
+            'start_date' => $today,
+            'end_date' => $tomorrow,
+            'status' => 'active',
+            'created_by' => $creatorUserId
+        ]);
+
+        // Get all guest users
+        $users = User::where('user_type', 'guest')->get();
+
+        foreach ($users as $user) {
+            // Create a QuestSubmission for each user with pending status
+            QuestSubmission::create([
+                'user_id' => $user->user_id,
+                'quest_id' => $quest->quest_id,
+                'status' => 'pending',
+                'date_submitted' => now(),
+            ]);
+
+            // Notify the user
+            Notification::create([
+                'user_id' => $user->user_id,
+                'from_user_id' => $creatorUserId,
+                'type' => 'new_quest',
+                'reference_id' => $quest->quest_id,
+                'title' => 'New Quest Available!',
+                'message' => "A new quest \"{$quest->title}\" has been assigned to you. Complete it within 24 hours!",
+                'created_at' => now(),
+            ]);
+        }
+    }
 
 
 }

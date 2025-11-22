@@ -854,6 +854,7 @@
     margin-bottom: 0.10rem !important; /* Much tighter spacing */
 }
 
+
 /* Responsive adjustments for mobile */
 @media (max-width: 768px) {
     .glow-word {
@@ -892,4 +893,13 @@
             transform: translateX(-50%) scale(1.08); /* Smaller zoom on mobile */
         }
     }
+}
+
+#tap-message.show {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+#tap-message.hide {
+    opacity: 0;
+    transform: translateY(-50%) translateX(5px);
 }
