@@ -239,7 +239,6 @@ Route::get('/about', function () {
 
 //---------------------------------------------------- LEADERBOARD -------------------------------------------------
 Route::get('/leaderboard', [App\Http\Controllers\LeaderboardController::class, 'index'])
-    ->name('leaderboard')
-    ->middleware('auth');
+    ->name('leaderboard');
 
-Route::post('/tree/tap', [TreeController::class, 'tapTree'])->middleware('auth');
+Route::post('/tree/tap', [TreeController::class, 'tapTree']);

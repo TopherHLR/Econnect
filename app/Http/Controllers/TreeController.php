@@ -14,65 +14,109 @@ class TreeController extends Controller
     {
         try {
             $user = auth()->user();
-            if (!$user) {
-                return response()->json(['message' => 'Unauthorized'], 401);
-            }
-
-            $today = \Carbon\Carbon::today();
             $tapCount = $request->taps ?? 0;
 
-            // How many points to give based on taps
-            $pointsToGive = floor($tapCount / 100);
-            if ($pointsToGive <= 0) {
-                return response()->json(['message' => 'Not enough taps', 'has_quest' => false], 200);
+            // Early exit if no taps
+            if ($tapCount <= 0) {
+                return response()->json([
+                    'message' => 'No taps detected.',
+                    'has_quest' => false,
+                    'tap_progress' => 0
+                ], 200);
             }
 
-            // Daily tap points limit
-            $todayPoints = \App\Models\UserPointsHistory::where('user_id', $user->user_id)
+            // Get authenticated user
+            $user = auth()->user();
+            if (!$user) {
+                // Safe JSON response for guests
+                return response()->json([
+                    'message' => 'Please log in to track taps and earn points.',
+                    'has_quest' => false,
+                    'tap_progress' => $tapCount
+                ], 200); // 200 so your frontend can still read the response safely
+            }
+
+            // From here on, $user is guaranteed
+            $today = \Carbon\Carbon::today();
+
+            // Safe to use $user->pointsHistory() now
+            $todayPoints = $user->pointsHistory()
                 ->whereDate('created_at', $today)
-                ->where('source', 'tree_tap')
                 ->sum('points_change');
 
+            $pointsToGive = floor($tapCount / 100);
             if ($todayPoints >= 2) {
-                return response()->json(['message' => 'Daily tree tap limit reached', 'has_quest' => true], 200);
+                $pointsToGive = 0; // Already reached daily max
+            } else {
+                $pointsToGive = min($pointsToGive, 2 - $todayPoints);
             }
 
-            $allowed = 2 - $todayPoints;
-            $pointsToGive = min($pointsToGive, $allowed);
+            // Save points if any
+            if ($pointsToGive > 0) {
+                \App\Models\UserPointsHistory::create([
+                    'user_id' => $user->user_id,
+                    'points_change' => $pointsToGive,
+                    'created_at' => now(),
+                ]);
+            }
 
-            // Save points
-            \App\Models\UserPointsHistory::create([
-                'user_id' => $user->user_id,
-                'points_change' => $pointsToGive,
-                'source' => 'tree_tap',
-                'created_at' => now(),
-            ]);
-
-            // Check if the user has an active Daily Eco Action quest today
-            $smallQuestSubmission = \App\Models\QuestSubmission::where('user_id', $user->user_id)
-                ->whereHas('quest', function ($q) use ($today) {
-                    $q->where('category', 'Small Quest')
-                    ->where('title', 'Daily Eco Action')
-                    ->whereDate('start_date', $today);
-                })
+            // Fetch the active "Daily Eco Action" quest
+            $dailyQuest = \App\Models\Quest::where('category', 'Small Quest')
+                ->where('title', 'Daily Eco Action')
+                ->whereDate('start_date', $today)
                 ->first();
 
-            // If the user completed the taps (example: 100 taps = 1 point), mark quest as completed
-            if ($smallQuestSubmission && $tapCount >= 100) { // adjust 100 if your goal is different
-                $smallQuestSubmission->status = 'completed';
-                $smallQuestSubmission->date_completed = now();
-                $smallQuestSubmission->save();
+            $smallQuestSubmission = null;
+            $message = 'Current tap progress: 0';
+
+            if ($dailyQuest) {
+                // Get or create the user's QuestSubmission for this quest
+                $smallQuestSubmission = \App\Models\QuestSubmission::firstOrCreate(
+                    [
+                        'user_id' => $user->user_id,
+                        'quest_id' => $dailyQuest->quest_id
+                    ],
+                    [
+                        'status' => 'pending',
+                        'date_submitted' => now(),
+                    ]
+                );
+
+                // If already completed, show a message and do not increment taps
+                if ($smallQuestSubmission->status === 'completed') {
+                    $message = 'You have already completed today\'s tree-tapping mission. Come back tomorrow for a new mission!';
+                } else {
+                    // Add cumulative taps
+                    $smallQuestSubmission->tap_progress = ($smallQuestSubmission->tap_progress ?? 0) + $tapCount;
+
+                    // Complete the quest if cumulative taps >= 100
+                    if ($smallQuestSubmission->tap_progress >= 100 && $smallQuestSubmission->status !== 'completed') {
+                        $smallQuestSubmission->status = 'completed';
+                        $smallQuestSubmission->date_completed = now();
+                    }
+
+                    $smallQuestSubmission->save();
+                    $message = 'Current tap progress: ' . $smallQuestSubmission->tap_progress;
+                }
             }
 
             return response()->json([
-                'message' => 'Points added successfully',
+                'message' => $message,
                 'points_awarded' => $pointsToGive,
                 'has_quest' => (bool) $smallQuestSubmission,
+                'quest_status' => $smallQuestSubmission?->status ?? null,
+                'tap_progress' => $smallQuestSubmission?->tap_progress ?? $tapCount,
             ]);
+
         } catch (\Throwable $e) {
             \Log::error('Tree Tap Error: ' . $e->getMessage());
-            return response()->json(['message' => 'Server error: '.$e->getMessage()], 500);
+            return response()->json(['message' => 'Server error: ' . $e->getMessage()], 500);
         }
     }
+
+
+
+
+
 
 }

@@ -132,8 +132,11 @@
     @endauth
 
     <section class="relative -top-75 min-h-[200vh] flex items-center justify-center viewport2BG">
+
         <div id="plant-container"
             class="relative w-[250px] -top-210 flex items-center justify-center transition-transform duration-[1500ms] ease-out">
+                                    <!-- 🍂 Fallen Leaves Container -->
+                <div id="fallen-leaves" class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden"></div>
 
             <!-- 🌿 Text Above Plant -->
             <div id="plant-text"
@@ -151,8 +154,11 @@
                 </div>
                 <div class="absolute top-15 w-[250px] h-[350px] rounded-full bg-white/50 blur-2xl"></div>
             </div>
-
+                <!-- 🌟 Hint Message (subtle, beside the tree) -->
+                <div id="tap-message" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 text-xs italic text-white opacity-0 transition-opacity duration-500">
+                </div>
             @auth
+
                 <!-- 🌱 Base Image -->
                 <img id="plant-base" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant"
                     class="w-[333px] md:w-[333px] relative z-10"
@@ -162,10 +168,6 @@
                 <img id="plant-top" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant-top"
                     class="absolute top-0 left-0 w-[333px] md:w-[333px] z-20 cursor-pointer"
                     style="clip-path: inset(0 0 19% 0); transform-origin: center 80%;" data-taps="0" />
-                <!-- 🌟 Hint Message (subtle, beside the tree) -->
-                <div id="tap-message" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 text-xs italic text-white opacity-0 transition-opacity duration-500">
-                </div>
-
 
 
                 <!-- 🌾 Horizontal Progress Bar -->
@@ -217,7 +219,6 @@
             @endguest
         </div>
     </section>
-
 
     <section class="relative text-center py-20 px-6 overflow-hidden mb-[96px]">
         <!-- Left Cloud -->
@@ -583,7 +584,7 @@
                 console.log(`Tree tapped ${taps} times`);
 
                 // Send taps immediately (or you can batch every few taps)
-                sendTaps(taps);
+                sendTaps(1);
             });
 
 
@@ -643,7 +644,52 @@
                     // tapMessage.classList.remove('show');
                 }, 3000);
             }
-
         });
+        const plantTop = document.getElementById('plant-top');
+        const fallenLeavesContainer = document.getElementById('fallen-leaves');
+        const leafImages = [
+            "{{ Vite::asset('resources/images/leaves/leaf1.svg') }}",
+            "{{ Vite::asset('resources/images/leaves/leaf2.svg') }}",
+            "{{ Vite::asset('resources/images/leaves/leaf3.svg') }}"
+        ];
+
+        plantTop.addEventListener('click', () => {
+            const leaf = document.createElement('img');
+            leaf.src = leafImages[Math.floor(Math.random() * leafImages.length)];
+            leaf.classList.add('absolute', 'w-6', 'h-6', 'pointer-events-none');
+
+            // Get the bounding rectangle of the tree top
+            const treeRect = plantTop.getBoundingClientRect();
+            const containerRect = fallenLeavesContainer.getBoundingClientRect();
+
+            // Start X somewhere along the tree's top width
+            const startX = treeRect.left - containerRect.left + Math.random() * treeRect.width;
+            const startY = treeRect.top - containerRect.top;
+
+            leaf.style.left = `${startX}px`;
+            leaf.style.top = `${startY}px`;
+            leaf.style.opacity = 1;
+            leaf.style.transform = `rotate(${Math.random() * 360}deg)`; // initial rotation
+
+            fallenLeavesContainer.appendChild(leaf);
+
+            // Animate falling straight down
+            const fallDistance = containerRect.height - startY; // distance to bottom
+            const fallDuration = 3000 + Math.random() * 2000; // 3–5 sec
+
+            leaf.animate([
+                { transform: leaf.style.transform + ' translateY(0px)', opacity: 1 },
+                { transform: leaf.style.transform + ` translateY(${fallDistance}px)`, opacity: 0 }
+            ], {
+                duration: fallDuration,
+                easing: 'linear', // straight downward fall
+                fill: 'forwards'
+            });
+
+            setTimeout(() => leaf.remove(), fallDuration);
+        });
+
+
+
     </script>
 @endsection

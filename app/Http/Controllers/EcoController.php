@@ -64,7 +64,10 @@ class EcoController extends Controller
                     ->where('points_change', '<', 0)
                     ->sum('points_change')
             );
-
+            if ($user) {
+                // Automatically assign a small quest if applicable
+                $this->autoAssignSmallQuest($user->user_id);
+            }
             $currentPoints = $progressPoints - $pointsSpent;
         } else {
             // Default values for guests
@@ -103,11 +106,6 @@ class EcoController extends Controller
         $feedback = \App\Models\Feedback::with('user')
             ->orderBy('created_at', 'desc')
             ->get();
-
-        if ($user) {
-            // Automatically assign a small quest if applicable
-            $this->autoAssignSmallQuest($user->user_id);
-        }
         return view('home', compact(
             'currentPoints',
             'growthPercent',
@@ -138,7 +136,7 @@ class EcoController extends Controller
         // Create the global daily quest
         $quest = Quest::create([
             'title' => 'Daily Eco Action',
-            'description' => 'Complete a small eco-action today!',
+            'description' => 'Complete a small eco-action today! Get 100 Tree taps today.',
             'category' => 'Small Quest',
             'points_reward' => 5,
             'start_date' => $today,

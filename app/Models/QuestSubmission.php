@@ -32,6 +32,7 @@ class QuestSubmission extends Model
         'qr_verified',
         'admin_validated',
         'status',
+        'tap_progress', // <-- ADD THIS
         'date_submitted',
         'date_completed',
         'verified_by',
