@@ -135,8 +135,8 @@
 
         <div id="plant-container"
             class="relative w-[250px] -top-210 flex items-center justify-center transition-transform duration-[1500ms] ease-out">
-                                    <!-- 🍂 Fallen Leaves Container -->
-                <div id="fallen-leaves" class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden"></div>
+            <!-- 🍂 Fallen Leaves Container -->
+            <div id="fallen-leaves" class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden"></div>
 
             <!-- 🌿 Text Above Plant -->
             <div id="plant-text"
@@ -154,21 +154,14 @@
                 </div>
                 <div class="absolute top-15 w-[250px] h-[350px] rounded-full bg-white/50 blur-2xl"></div>
             </div>
-                <!-- 🌟 Hint Message (subtle, beside the tree) -->
-                <div id="tap-message" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 text-xs italic text-white opacity-0 transition-opacity duration-500">
-                </div>
+            <!-- 🌟 Hint Message (subtle, beside the tree) -->
+            <div id="tap-message"
+                class="absolute left-full ml-3 top-1/2 -translate-y-1/2 text-xs italic text-white opacity-0 transition-opacity duration-500">
+            </div>
             @auth
 
-                <!-- 🌱 Base Image -->
-                <img id="plant-base" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant"
-                    class="w-[333px] md:w-[333px] relative z-10"
-                    style="clip-path: inset(81% 0 0 0); transform-origin: center 80%;" />
-
-                <!-- 🌿 Top Image (NO SWAY ANIMATION) -->
-                <img id="plant-top" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="plant-top"
-                    class="absolute top-0 left-0 w-[333px] md:w-[333px] z-20 cursor-pointer"
-                    style="clip-path: inset(0 0 19% 0); transform-origin: center 80%;" data-taps="0" />
-
+                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="Plant"
+                    class="z-20 w-full transition-all duration-700">
 
                 <!-- 🌾 Horizontal Progress Bar -->
                 <div id="growth-bar"
@@ -195,12 +188,8 @@
             @endauth
 
             @guest
-                <img id="plant-base" src="{{ Vite::asset('resources/images/tree/5.svg') }}"
-                    class="w-[333px] md:w-[333px] relative z-10"
-                    style="clip-path: inset(81% 0 0 0); transform-origin: center 80%;" />
-                <img id="plant-top" src="{{ Vite::asset('resources/images/tree/5.svg') }}"
-                    class="absolute top-0 left-0 w-[333px] md:w-[333px] z-20"
-                    style="clip-path: inset(0 0 19% 0); transform-origin: center 80%;" />
+                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="Plant"
+                    class="z-20 w-full transition-all duration-700">
 
                 <div id="growth-bar" class="absolute bottom-[-80px] flex flex-col items-center opacity-100">
                     <p class="text-[#5C7919] text-lg md:text-2xl font-serif italic mb-3 opacity-80">
@@ -567,10 +556,10 @@
             const indicator = document.getElementById("growth-indicator");
 
             fill.style.transition = "width 1s ease-out";
-            indicator.style.transition = "left 1s ease-out";
+
         });
         document.addEventListener('DOMContentLoaded', () => {
-            const plantTop = document.getElementById('plant-top');
+            const plantTop = document.getElementById('plant-image');
             const growthFill = document.getElementById('growth-fill');
             const growthLabel = document.getElementById('growth-label');
 
@@ -587,7 +576,6 @@
                 sendTaps(1);
             });
 
-
             function sendTaps(tapCount) {
                 fetch("{{ url('/tree/tap') }}", {
                         method: "POST",
@@ -603,19 +591,19 @@
                     .then(data => {
                         console.log(data);
 
+                        // Show server message if any
                         if (data.message) {
                             showMessage(data.message);
                         }
 
-                        if (data.points_awarded) {
-                            let currentPercent = parseFloat(growthFill.style.width) || 0;
-                            let newPercent = Math.min(currentPercent + data.points_awarded, 100);
-                            growthFill.style.width = newPercent + '%';
+                        // Update progress bar using progressPoints
+                        if (data.progressPoints !== undefined) {
 
                             growthLabel.textContent =
-                                `Stage {{ $stage }} / {{ $treeStages }} — Updated Points: ${newPercent}`;
+                                `Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }} points`;
                         }
 
+                        // Show message if user has no active quest
                         if (data.has_quest === false) {
                             showMessage(
                                 "You don't have an active small quest yet. Complete any pending quest to earn points!"
@@ -624,6 +612,7 @@
                     })
                     .catch(err => console.error(err));
             }
+
 
             function showMessage(msg) {
                 const tapMessage = document.getElementById('tap-message');
@@ -645,7 +634,7 @@
                 }, 3000);
             }
         });
-        const plantTop = document.getElementById('plant-top');
+        const plantTop = document.getElementById('plant-image');
         const fallenLeavesContainer = document.getElementById('fallen-leaves');
         const leafImages = [
             "{{ Vite::asset('resources/images/leaves/leaf1.svg') }}",
@@ -677,9 +666,14 @@
             const fallDistance = containerRect.height - startY; // distance to bottom
             const fallDuration = 3000 + Math.random() * 2000; // 3–5 sec
 
-            leaf.animate([
-                { transform: leaf.style.transform + ' translateY(0px)', opacity: 1 },
-                { transform: leaf.style.transform + ` translateY(${fallDistance}px)`, opacity: 0 }
+            leaf.animate([{
+                    transform: leaf.style.transform + ' translateY(0px)',
+                    opacity: 1
+                },
+                {
+                    transform: leaf.style.transform + ` translateY(${fallDistance}px)`,
+                    opacity: 0
+                }
             ], {
                 duration: fallDuration,
                 easing: 'linear', // straight downward fall
@@ -688,8 +682,5 @@
 
             setTimeout(() => leaf.remove(), fallDuration);
         });
-
-
-
     </script>
 @endsection

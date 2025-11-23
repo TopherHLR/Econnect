@@ -110,21 +110,32 @@
                                                         data-verified-by-email="{{ $submission->verifier ? $submission->verifier->email : '' }}">
 
                                                         <td class="px-4 py-2">{{ $index + 1 }}</td>
-                                                        <td class="px-4 py-2 text-[#7A8C4F] hover:underline">
+                                                        <td class="px-4 py-2 text-[#7A8C4F] hover:underline participant-name">
                                                             {{ $submission->user->first_name }}
                                                             {{ $submission->user->last_name }}
                                                         </td>
+
+                                                        <!-- Editable Status -->
                                                         <td class="px-4 py-2 text-[#6A8A52]">
-                                                            @if ($submission->status === 'pending' && ($submission->proof_link || $submission->proof_image))
-                                                                Submitted
-                                                            @else
-                                                                {{ ucfirst($submission->status) }}
-                                                            @endif
+                                                            <select
+                                                                class="submission-status border rounded px-2 py-1 text-[#6A8A52]"
+                                                                data-submission-id="{{ $submission->submission_id }}">
+                                                                <option value="pending"
+                                                                    {{ $submission->status === 'pending' ? 'selected' : '' }}>
+                                                                    Pending</option>
+                                                                <option value="completed"
+                                                                    {{ $submission->status === 'completed' ? 'selected' : '' }}>
+                                                                    Completed</option>
+                                                                <option value="rejected"
+                                                                    {{ $submission->status === 'rejected' ? 'selected' : '' }}>
+                                                                    Rejected</option>
+                                                            </select>
                                                         </td>
+
                                                         <td class="px-4 py-2 text-[#4F6B3F]">
                                                             @if ($submission->status === 'completed' && $submission->verifier)
-                                                                Verified
-                                                                by {{ $submission->verifier->first_name . ' ' . $submission->verifier->last_name }}
+                                                                Verified by
+                                                                {{ $submission->verifier->first_name . ' ' . $submission->verifier->last_name }}
                                                             @elseif ($submission->status === 'rejected' && $submission->verifier)
                                                                 Rejected by
                                                                 {{ $submission->verifier->first_name . ' ' . $submission->verifier->last_name }}
@@ -134,6 +145,7 @@
                                                         </td>
                                                     </tr>
                                                 @endforeach
+
                                             </tbody>
 
                                         </table>
@@ -458,6 +470,37 @@
                 collectionInput.addEventListener('keyup', updateVisibility);
                 updateVisibility(); // Run on load
             }
+        });
+        document.querySelectorAll('.submission-status').forEach(select => {
+            select.addEventListener('change', async (e) => {
+                const submissionId = e.target.dataset.submissionId;
+                const newStatus = e.target.value;
+
+                try {
+                    const response = await fetch(`/submissions/${submissionId}/update-status`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .content
+                        },
+                        body: JSON.stringify({
+                            status: newStatus
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        alert(`Status updated to "${newStatus}"`);
+                        // Optionally update the Verified column dynamically
+                    } else {
+                        alert('Failed to update status.');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('An error occurred.');
+                }
+            });
         });
     </script>
     @include('modal.createQuestModal')

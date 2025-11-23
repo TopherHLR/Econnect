@@ -148,6 +148,18 @@ class QuestController extends Controller
         return response()->json(['success' => 'Quest status updated successfully.']);
     }
 
+    public function updateStatusQuestAdmin(Request $request, $submissionId)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,completed,rejected',
+        ]);
+
+        $submission = QuestSubmission::findOrFail($submissionId);
+        $submission->status = $request->status;
+        $submission->save();
+
+        return response()->json(['success' => true]);
+    }
 
     public function store(Request $request)
     {
@@ -193,4 +205,5 @@ class QuestController extends Controller
 
         return back()->with('success', 'Quest created successfully and notifications sent to users!');
     }
+    
 }

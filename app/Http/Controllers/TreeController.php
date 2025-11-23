@@ -21,22 +21,20 @@ class TreeController extends Controller
                 return response()->json([
                     'message' => 'No taps detected.',
                     'has_quest' => false,
-                    'tap_progress' => 0
+                    'tap_progress' => 0,
+                    'progressPoints' => 0, // ensure defined
                 ], 200);
             }
 
-            // Get authenticated user
-            $user = auth()->user();
             if (!$user) {
-                // Safe JSON response for guests
                 return response()->json([
                     'message' => 'Please log in to track taps and earn points.',
                     'has_quest' => false,
-                    'tap_progress' => $tapCount
-                ], 200); // 200 so your frontend can still read the response safely
+                    'tap_progress' => $tapCount,
+                    'progressPoints' => 0,
+                ], 200);
             }
 
-            // From here on, $user is guaranteed
             $today = \Carbon\Carbon::today();
 
             // Safe to use $user->pointsHistory() now
@@ -45,8 +43,9 @@ class TreeController extends Controller
                 ->sum('points_change');
 
             $pointsToGive = floor($tapCount / 100);
+
             if ($todayPoints >= 2) {
-                $pointsToGive = 0; // Already reached daily max
+                $pointsToGive = 0;
             } else {
                 $pointsToGive = min($pointsToGive, 2 - $todayPoints);
             }
@@ -60,7 +59,7 @@ class TreeController extends Controller
                 ]);
             }
 
-            // Fetch the active "Daily Eco Action" quest
+            // Fetch active daily quest
             $dailyQuest = \App\Models\Quest::where('category', 'Small Quest')
                 ->where('title', 'Daily Eco Action')
                 ->whereDate('start_date', $today)
@@ -70,7 +69,6 @@ class TreeController extends Controller
             $message = 'Current tap progress: 0';
 
             if ($dailyQuest) {
-                // Get or create the user's QuestSubmission for this quest
                 $smallQuestSubmission = \App\Models\QuestSubmission::firstOrCreate(
                     [
                         'user_id' => $user->user_id,
@@ -82,17 +80,28 @@ class TreeController extends Controller
                     ]
                 );
 
-                // If already completed, show a message and do not increment taps
+                // Reset tap_progress if it was already >=100 but still pending
+                if ($smallQuestSubmission->status === 'pending' && ($smallQuestSubmission->tap_progress ?? 0) >= 100) {
+                    $smallQuestSubmission->tap_progress = 0;
+                    $smallQuestSubmission->save();
+                }
+
                 if ($smallQuestSubmission->status === 'completed') {
                     $message = 'You have already completed today\'s tree-tapping mission. Come back tomorrow for a new mission!';
                 } else {
-                    // Add cumulative taps
                     $smallQuestSubmission->tap_progress = ($smallQuestSubmission->tap_progress ?? 0) + $tapCount;
 
-                    // Complete the quest if cumulative taps >= 100
                     if ($smallQuestSubmission->tap_progress >= 100 && $smallQuestSubmission->status !== 'completed') {
                         $smallQuestSubmission->status = 'completed';
                         $smallQuestSubmission->date_completed = now();
+                        $smallQuestSubmission->save();
+
+                        // Add 5 points for completing the quest
+                        \App\Models\UserPointsHistory::create([
+                            'user_id' => $user->user_id,
+                            'points_change' => 5,
+                            'created_at' => now(),
+                        ]);
                     }
 
                     $smallQuestSubmission->save();
@@ -100,12 +109,18 @@ class TreeController extends Controller
                 }
             }
 
+            // Total points earned today
+            $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
+                ->whereDate('created_at', $today)
+                ->sum('points_change');
+
             return response()->json([
                 'message' => $message,
-                'points_awarded' => $pointsToGive,
+                'points_awarded' => $smallQuestSubmission && $smallQuestSubmission->status === 'completed' ? 5 : 0,
                 'has_quest' => (bool) $smallQuestSubmission,
                 'quest_status' => $smallQuestSubmission?->status ?? null,
                 'tap_progress' => $smallQuestSubmission?->tap_progress ?? $tapCount,
+                'progressPoints' => $progressPoints,
             ]);
 
         } catch (\Throwable $e) {
@@ -113,6 +128,7 @@ class TreeController extends Controller
             return response()->json(['message' => 'Server error: ' . $e->getMessage()], 500);
         }
     }
+
 
 
 

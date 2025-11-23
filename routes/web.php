@@ -242,3 +242,6 @@ Route::get('/leaderboard', [App\Http\Controllers\LeaderboardController::class, '
     ->name('leaderboard');
 
 Route::post('/tree/tap', [TreeController::class, 'tapTree']);
+
+Route::post('/submissions/{submission}/update-status', [QuestController::class, 'updateStatusQuestAdmin']);
+

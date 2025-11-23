@@ -152,8 +152,11 @@
     const modalSubmissionId = document.getElementById('modalSubmissionId');
     const modalAction = document.getElementById('modalAction');
 
-    document.querySelectorAll('.participant-row').forEach(row => {
-        row.addEventListener('click', () => {
+    document.querySelectorAll('.participant-name').forEach(nameCell => {
+        nameCell.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent row-level clicks if any
+            const row = nameCell.closest('tr');
+
             const submissionId = row.dataset.submissionId;
             const user = row.dataset.user;
             const status = row.dataset.status;
@@ -172,20 +175,21 @@
 
             if (status.toLowerCase().trim() === 'pending') {
                 html += `
-                    <input type="hidden" name="verified_by" value="{{ auth()->user()->user_id }}">
-                    <div class="flex justify-end gap-3 mt-4">
-                        <button type="submit" onclick="setAction('reject')"
-                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Reject</button>
-                        <button type="submit" onclick="setAction('verify')"
-                            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Verify</button>
-                    </div>
-                `;
+                <input type="hidden" name="verified_by" value="{{ auth()->user()->user_id }}">
+                <div class="flex justify-end gap-3 mt-4">
+                    <button type="submit" onclick="setAction('reject')"
+                        class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Reject</button>
+                    <button type="submit" onclick="setAction('verify')"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Verify</button>
+                </div>
+            `;
             }
 
             modalContent.innerHTML = html;
             submissionModal.classList.remove('hidden');
         });
     });
+
 
     function closeSubmissionModal() {
         submissionModal.classList.add('hidden');

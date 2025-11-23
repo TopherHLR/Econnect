@@ -63,12 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('scroll', () => {
     const plant = document.getElementById('plant-container');
+    const plantImg = document.getElementById('plant-image');
     const textDiv = document.getElementById('plant-text');
     const textEl = textDiv.querySelector('h1');
     const progressBar = document.getElementById('growth-bar');
-
-    const plantBase = document.getElementById('plant-base');
-    const plantTop = document.getElementById('plant-top');
 
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
@@ -86,18 +84,14 @@ window.addEventListener('scroll', () => {
         // Show progress bar
         progressBar.style.opacity = '1';
 
-        // 🔥 If user is guest → STOP here (keep 5.svg)
+        // 🔥 If user is guest → STOP
         if (window.isGuest) return;
 
-        // 🌿 Authenticated → update dynamic plant
-        plantBase.src = `${plantBasePath}/${stage}.svg`;
-        plantBase.style.clipPath = `inset(${100 - growthPercent}% 0 0 0)`;
-
-        plantTop.src = `${plantBasePath}/${stage}.svg`;
-        plantTop.style.clipPath = `inset(0 0 ${100 - growthPercent}% 0)`;
+        // 🌿 Authenticated → update dynamic plant image
+        plantImg.src = `${plantBasePath}/${stage}.svg`;
 
     } else {
-        // Reset plant to initial 5.svg
+        // Reset plant
         plant.style.transform = 'translateY(0px) scale(1.5)';
         textDiv.style.top = '0px';
         textEl.textContent = 'Even in small ways';
@@ -105,14 +99,11 @@ window.addEventListener('scroll', () => {
         textEl.style.opacity = '1';
         progressBar.style.opacity = '0';
 
-        // 🌿 Always reset to 5.svg for both guest & auth
-        plantBase.src = `${plantBasePath}/5.svg`;
-        plantBase.style.clipPath = 'inset(81% 0 0 0)';
-
-        plantTop.src = `${plantBasePath}/5.svg`;
-        plantTop.style.clipPath = 'inset(0 0 19% 0)';
+        // Reset plant image to initial
+        plantImg.src = `${plantBasePath}/5.svg`;
     }
 });
+
 
 
 const dropdownButton = document.getElementById('dropdownButton');

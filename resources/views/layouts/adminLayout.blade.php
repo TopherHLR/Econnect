@@ -244,7 +244,7 @@
                 </button>
 
             </div>
-            @include('modal.notificationModal')
+
             <!-- Profile Icon -->
             <a href="#" class="text-[#6A8A52] hover:text-[#4F6B3F]" title="Profile">
                 <i class="fa-solid fa-user-circle text-4xl"></i>
@@ -257,6 +257,7 @@
                     <i class="fa-solid fa-right-from-bracket text-3xl"></i>
                 </button>
             </form>
+                        @include('modal.notificationModal')
         </div>
     </header>
 

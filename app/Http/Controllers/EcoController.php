@@ -142,7 +142,7 @@ class EcoController extends Controller
             'start_date' => $today,
             'end_date' => $tomorrow,
             'status' => 'active',
-            'created_by' => $creatorUserId
+            'created_by' => '2'
         ]);
 
         // Get all guest users
