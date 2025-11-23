@@ -74,7 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function savedLibraries()
     {
-        return $this->hasMany(UserLibrary::class, 'user_id', 'user_id');
+        return $this->hasMany(UserLibrary::class, 'user_id', 'user_id')->with('ecoLibrary');
     }
 
     /**
@@ -82,11 +82,18 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function savedEcoActions()
     {
-        return $this->hasMany(UserEcoAction::class, 'user_id', 'user_id');
+        return $this->hasMany(UserEcoAction::class, 'user_id', 'user_id')->with('ecoAction');
     }
     public function pointsHistory()
     {
         return $this->hasMany(UserPointsHistory::class, 'user_id', 'user_id');
     }
-
+    public function userVouchers()
+    {
+        return $this->hasMany(UserVoucher::class, 'user_id', 'user_id');
+    }
+    public function feedbacks()
+{
+    return $this->hasMany(Feedback::class, 'user_id', 'user_id');
+}
 }

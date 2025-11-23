@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Quest;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -19,14 +20,55 @@ class AdminController extends Controller
 
         return view('admin.adminHome', compact('categories'));
     }
-
-    // Admin Users
-    public function users()
+    public function index()
     {
-        $users = User::all(); // fetch all users from database
+        $users = User::with([
+            'savedLibraries.ecoLibrary',   // Saved libraries
+            'savedEcoActions.ecoAction',   // Eco actions
+            'pointsHistory',               // Points history
+            'userVouchers.voucher',        // Vouchers
+            'feedbacks'                    // Feedback
+        ])->get();
+
+        // Log all relationships
+        foreach ($users as $user) {
+            Log::info("User {$user->user_id} ({$user->first_name}) relationships:", [
+                'savedLibraries' => $user->savedLibraries->toArray(),
+                'savedEcoActions' => $user->savedEcoActions->toArray(),
+                'pointsHistory' => $user->pointsHistory->toArray(),
+                'userVouchers' => $user->userVouchers->toArray(),
+                'feedbacks' => $user->feedbacks->toArray(),
+            ]);
+        }
+
         return view('admin.adminUsers', compact('users'));
     }
 
+    /**
+     * Fetch single user (optional AJAX)
+     */
+    public function show($id)
+    {
+        Log::info("Fetching user with ID: {$id}");
+
+        $user = User::with([
+            'savedLibraries.ecoLibrary',
+            'savedEcoActions.ecoAction',
+            'pointsHistory',
+            'userVouchers.voucher',
+            'feedbacks'
+        ])->findOrFail($id);
+
+        Log::info("User {$id} loaded", [
+            'savedLibraries' => $user->savedLibraries->toArray(),
+            'savedEcoActions' => $user->savedEcoActions->toArray(),
+            'pointsHistory' => $user->pointsHistory->toArray(),
+            'userVouchers' => $user->userVouchers->toArray(),
+            'feedbacks' => $user->feedbacks->toArray(),
+        ]);
+
+        return response()->json($user);
+    }
     // Admin Quests
     public function quests()
     {

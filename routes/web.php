@@ -204,7 +204,7 @@ Route::post('/quests/submit', [QuestSubmissionController::class, 'submit'])->nam
 //---------------------------------------------------- ADMIN USERS (EXTRA ROUTE) -------------------------------------------------
 // Admin page for viewing users list
 
-Route::get('/adminUsers', [AdminController::class, 'users'])->name('adminUsers');
+Route::get('/adminUsers', [AdminController::class, 'index'])->name('adminUsers');
 
 //---------------------------------------------------- VOUCHER -------------------------------------------------
 Route::post('/vouchers/store', [App\Http\Controllers\VoucherController::class, 'store'])
