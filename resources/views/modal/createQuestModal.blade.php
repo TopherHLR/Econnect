@@ -100,7 +100,7 @@
                     Cancel
                 </button>
 
-                <button type="submit" class="btn-eco btn-leaf">
+                <button type="submit" id="questSubmitBtn" class="btn-eco btn-leaf">
                     <i class="fa-solid fa-plus"></i> Create Quest
                 </button>
 
@@ -140,6 +140,21 @@
 
     function closeQuestModal() {
         questModal.classList.add('hidden');
+
+        const form = document.getElementById('questForm');
+        form.reset();
+        form.action = "{{ route('quests.store') }}"; // reset to create route
+        form.method = 'POST';
+
+        // Reset modal title and button
+        const modalTitle = questModal.querySelector('h2');
+        modalTitle.innerHTML = `<i class="fa-solid fa-bullseye mr-2"></i> Create New Quest`;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Create Quest';
+
+        // Reset _method hidden input if exists
+        const methodInput = form.querySelector('input[name="_method"]');
+        if (methodInput) methodInput.remove();
     }
 
     // Close when clicking backdrop
@@ -197,5 +212,96 @@
 
     function setAction(action) {
         modalAction.value = action;
+    }
+    const questForm = document.getElementById('questForm');
+
+    document.querySelectorAll('.btn-edit').forEach(button => {
+        button.addEventListener('click', () => {
+            const quest = JSON.parse(button.dataset.quest);
+
+            // Prefill form
+            questForm.title.value = quest.title;
+            questForm.description.value = quest.description;
+            questForm.category.value = quest.category;
+            questForm.points_reward.value = quest.points_reward;
+            questForm.start_date.value = quest.start_date ?? new Date().toISOString().split('T')[0];
+            questForm.end_date.value = quest.end_date;
+            questForm.status.value = quest.status;
+
+            // Form action & method
+            questForm.action = `/quests/${quest.quest_id}`;
+            let methodInput = questForm.querySelector('input[name="_method"]');
+            if (!methodInput) {
+                methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                questForm.appendChild(methodInput);
+            }
+            methodInput.value = 'PUT';
+
+            // Open modal
+            openQuestModal();
+        });
+    });
+
+    // Attach submit listener once
+    questForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(questForm);
+        const action = questForm.action;
+
+        fetch(action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw data;
+                }
+                return response.json();
+            })
+            .then(data => {
+                closeQuestModal();
+                showMessage(data.message, 'success');
+
+                // Update table row
+                const row = document.querySelector(`#collectionTable tr[data-quest-id="${data.quest.quest_id}"]`);
+                if (row) {
+                    row.querySelector('td:nth-child(2)').textContent = data.quest.title;
+                    row.querySelector('td:nth-child(3)').textContent = data.quest.description;
+                    row.querySelector('td:nth-child(4)').textContent = data.quest.category || '';
+                    row.querySelector('td:nth-child(5)').textContent = data.quest.points_reward;
+                    row.querySelector('td:nth-child(6)').textContent = data.quest.start_date;
+                    row.querySelector('td:nth-child(7)').textContent = data.quest.end_date;
+                    row.querySelector('td:nth-child(8) select').value = data.quest.status;
+                }
+            })
+            .catch(error => {
+                if (error.errors) {
+                    const messages = Object.values(error.errors).flat().join("\n");
+                    showMessage(messages, 'error');
+                } else {
+                    showMessage('Something went wrong.', 'error');
+                }
+            });
+    });
+
+
+    function showMessage(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.className = type === 'success' ?
+            'fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 text-[#5C7919] text-lg px-6 py-3 z-[9999] opacity-100 rounded-lg shadow-md' :
+            'fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 text-[#d9534f] text-lg px-6 py-3 z-[9999] opacity-100 rounded-lg shadow-md';
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.remove(), 3000); // auto-remove after 3s
     }
 </script>

@@ -191,6 +191,8 @@ Route::post('/quests/{quest}/recover', [QuestController::class, 'recover'])->nam
 Route::post('/quests/{quest}/recover2', [QuestController::class, 'recover2'])->name('quests.recover2');
 Route::post('/quests/{quest}/archive', [QuestController::class, 'archive'])->name('quests.archive');
 Route::post('/quests/process', [QuestController::class, 'process'])->name('submissions.process');
+Route::put('/quests/{quest}', [QuestController::class, 'update'])->name('quests.update');
+
 
 //---------------------------------------------------- QUEST USER (ACCEPT / SUBMIT QUEST)-------------------------------------------------
 // User interactions with quests: accepting and submitting quest entries

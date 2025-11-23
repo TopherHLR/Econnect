@@ -23,6 +23,10 @@ class Quest extends Model
 
     // No default timestamps (no created_at or updated_at)
     public $timestamps = false;
+    public function getRouteKeyName()
+    {
+        return 'quest_id';
+    }
 
     // Fillable columns
     protected $fillable = [
@@ -36,11 +40,14 @@ class Quest extends Model
         'created_by',
     ];
 
+
     // Casts for automatic type conversion
     protected $casts = [
         'points_reward' => 'integer',
-        'start_date' => 'date',
-        'end_date' => 'date',
+    'start_date' => 'datetime:Y-m-d',
+    'end_date' => 'datetime:Y-m-d',
+
+
     ];
 
     // Default attribute values

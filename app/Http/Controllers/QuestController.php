@@ -7,6 +7,7 @@ use App\Models\QuestSubmission;
 use Illuminate\Http\Request;
 use App\Models\UserPointsHistory;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use App\Models\Notification; // make sure to import at the top
 
 class QuestController extends Controller
@@ -205,5 +206,29 @@ class QuestController extends Controller
 
         return back()->with('success', 'Quest created successfully and notifications sent to users!');
     }
-    
+
+    public function update(Request $request, Quest $quest)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:150',
+            'description' => 'required|string',
+            'category' => 'nullable|string|max:100',
+            'points_reward' => 'required|integer|min:1',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'status' => 'required|in:active,ending_soon,closed',
+        ]);
+
+        $quest->update($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Quest updated successfully!',
+                'quest' => $quest
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Quest updated successfully!');
+    }
+
 }

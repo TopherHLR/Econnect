@@ -110,7 +110,8 @@
                                                         data-verified-by-email="{{ $submission->verifier ? $submission->verifier->email : '' }}">
 
                                                         <td class="px-4 py-2">{{ $index + 1 }}</td>
-                                                        <td class="px-4 py-2 text-[#7A8C4F] hover:underline participant-name">
+                                                        <td
+                                                            class="px-4 py-2 text-[#7A8C4F] hover:underline participant-name">
                                                             {{ $submission->user->first_name }}
                                                             {{ $submission->user->last_name }}
                                                         </td>
@@ -185,16 +186,19 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($quests->where('status', '!=', 'archived') as $index => $quest)
-                                        <tr class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
+                                        <tr data-quest-id="{{ $quest->quest_id }}"
+                                            class="border-b border-[#E6EAD7] hover:bg-[#FAFBF8]">
                                             <td class="px-4 py-2">{{ $loop->iteration }}</td>
                                             <td class="px-4 py-2 text-[#4E3A2E]">{{ $quest->title }}</td>
                                             <td class="px-4 py-2">{{ $quest->description }}</td>
                                             <td class="px-4 py-2">{{ $quest->category }}</td>
                                             <td class="px-4 py-2">{{ $quest->points_reward }}</td>
-                                            <td class="px-4 py-2">{{ $quest->start_date }}</td>
-                                            <td class="px-4 py-2">{{ $quest->end_date }}</td>
-                                            <!-- Status Dropdown -->
-                                            <td class="px-4 py-2"> <select name="status"
+                                            <td class="px-4 py-2">
+                                                {{ \Carbon\Carbon::parse($quest->start_date)->format('m-d-Y') }}</td>
+                                            <td class="px-4 py-2">
+                                                {{ \Carbon\Carbon::parse($quest->end_date)->format('m-d-Y') }}</td>
+                                            <td class="px-4 py-2">
+                                                <select name="status"
                                                     class="border border-[#7A8C4F] rounded px-2 py-1 text-sm text-[#4E3A2E] status-dropdown"
                                                     data-quest-id="{{ $quest->quest_id }}">
                                                     <option value="active"
@@ -204,10 +208,12 @@
                                                         Soon</option>
                                                     <option value="closed"
                                                         {{ $quest->status === 'closed' ? 'selected' : '' }}>Closed</option>
-                                                </select> </td>
+                                                </select>
+                                            </td>
                                             <td class="px-4 py-2">
                                                 <div class="flex gap-1.5">
-                                                    <button class="btn-action btn-edit" title="Edit Quest">
+                                                    <button class="btn-action btn-edit"
+                                                        data-quest='@json($quest)' title="Edit Quest">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <button class="btn-action btn-archive"
@@ -218,6 +224,7 @@
                                             </td>
                                         </tr>
                                     @endforeach
+
                                 </tbody>
                             </table>
                         </div>
@@ -302,7 +309,7 @@
                         .then(res => res.json())
                         .then(data => {
                             if (data.success) {
-                                alert(data.success); // optional feedback
+                                showMessage(data.success, 'success');
                             }
                         })
                         .catch(err => console.error(err));
@@ -340,20 +347,24 @@
                                 const li = document.createElement('li');
                                 li.className =
                                     "flex justify-between items-center px-4 py-2 hover:bg-[#E9F0E1] text-[#4E3A2E]";
-
                                 li.innerHTML = `
-                        <span class="cursor-pointer" data-quest="questTable-${questId}">${questTitle}</span>
-                        <form onsubmit="return confirm('Recover this quest?')" class="ml-2" data-quest-id="${questId}">
-                            <button type="button" class="text-green-600 hover:text-green-800 font-semibold text-sm btn-recover">Recover</button>
-                        </form>
-                    `;
+            <span class="cursor-pointer" data-quest="questTable-${questId}">${questTitle}</span>
+            <form onsubmit="return confirm('Recover this quest?')" class="ml-2" data-quest-id="${questId}">
+                <button type="button" class="text-green-600 hover:text-green-800 font-semibold text-sm btn-recover">Recover</button>
+            </form>
+        `;
                                 archiveMenu.appendChild(li);
 
                                 // Add recover button functionality
                                 li.querySelector('.btn-recover').addEventListener('click', () =>
-                                    recoverQuest(questId, li));
+                                    recoverQuest(questId, li)
+                                );
+
+                                // ✅ Show success toast
+                                showMessage('Quest archived successfully!', 'success');
                             }
                         })
+
                         .catch(err => console.error(err));
                 });
             });
@@ -373,9 +384,11 @@
                             liElement.remove(); // Remove from archive dropdown
 
                             // Optional: refresh table or re-add to active quests table
-                            location.reload(); // Or implement JS to add it back dynamically
+                            showMessage('Quest recovered successfully!', 'success');
+                            location.reload(); // or dynamically re-add row if you prefer
                         }
-                    });
+                    })
+
             }
         });
 
@@ -491,10 +504,10 @@
 
                     const data = await response.json();
                     if (data.success) {
-                        alert(`Status updated to "${newStatus}"`);
-                        // Optionally update the Verified column dynamically
+                        // alert(`Status updated to "${newStatus}"`);
+                        showMessage(`Status updated to "${newStatus}"`, 'success');
                     } else {
-                        alert('Failed to update status.');
+                        showMessage('Failed to update status.', 'error');
                     }
                 } catch (err) {
                     console.error(err);
