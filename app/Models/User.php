@@ -46,6 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'qr_code',
         'user_type',
         'is_verified',
+            'is_active', // ← add this
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -67,6 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'is_active' => 'boolean', // ← add this
     ];
 
     /**

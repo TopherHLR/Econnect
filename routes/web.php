@@ -182,6 +182,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/quests', [QuestController::class, 'store'])->name('quests.store');
     });
 });
+Route::post('/user/{user}/set-inactive', [AdminController::class, 'setInactive']);
 
 //---------------------------------------------------- QUEST ADMIN (APPROVE / RECOVER / ARCHIVE / PROCESS) -------------------------------------------------
 // Quest management: updating status, recovering, archiving, and processing submissions

@@ -30,19 +30,20 @@ class AdminController extends Controller
             'feedbacks'                    // Feedback
         ])->get();
 
-        // Log all relationships
-        foreach ($users as $user) {
-            Log::info("User {$user->user_id} ({$user->first_name}) relationships:", [
-                'savedLibraries' => $user->savedLibraries->toArray(),
-                'savedEcoActions' => $user->savedEcoActions->toArray(),
-                'pointsHistory' => $user->pointsHistory->toArray(),
-                'userVouchers' => $user->userVouchers->toArray(),
-                'feedbacks' => $user->feedbacks->toArray(),
-            ]);
-        }
-
         return view('admin.adminUsers', compact('users'));
     }
+    public function setInactive(User $user)
+    {
+        \Log::info('User ID received:', ['id' => $user->id ?? 'none']);
+
+        $user->is_active = 0;
+        $user->save();
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
 
     /**
      * Fetch single user (optional AJAX)
