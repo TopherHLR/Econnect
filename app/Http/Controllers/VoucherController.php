@@ -17,12 +17,13 @@ class VoucherController extends Controller
     public function index()
     {
         $vouchers = Voucher::orderBy('voucher_id', 'DESC')->get();
+        $archived = Voucher::where('is_active', 0)->get();
 
         $redeemed = UserVoucher::with(['user', 'voucher'])
             ->orderBy('redemption_id', 'DESC')
             ->get();
 
-        return view('admin.adminRewards', compact('vouchers', 'redeemed'));
+        return view('admin.adminRewards', compact('vouchers', 'redeemed','archived'));
     }
 
     public function store(Request $request)
@@ -145,4 +146,13 @@ class VoucherController extends Controller
 
         return response()->json(['success' => 'Voucher redeemed successfully and user notified']);
     }
+    public function recover($id)
+    {
+        $voucher = Voucher::findOrFail($id);
+        $voucher->is_active = 1; // reactivate
+        $voucher->save();
+
+        return back()->with('success', 'Voucher recovered!');
+    }
+
 }

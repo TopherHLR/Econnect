@@ -214,6 +214,8 @@ Route::post('/vouchers/store', [App\Http\Controllers\VoucherController::class, '
 Route::get('/adminRewards', [VoucherController::class, 'index'])->name('adminRewards');
 
 Route::put('/rewards/update/{id}', [VoucherController::class, 'update'])->name('rewards.update');
+Route::put('/rewards/recover/{id}', [VoucherController::class, 'recover'])->name('rewards.recover');
+
 
 Route::delete('/rewards/delete/{id}', [VoucherController::class, 'destroy'])->name('rewards.delete');
 

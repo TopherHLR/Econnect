@@ -26,11 +26,10 @@
                         Vouchers Redeemed
                     </button>
 
-
-
-                    <button data-section="redeemed" class="tab-eco w-full flex justify-center items-center">
-                        Used Vouchers
+                    <button data-section="archived" class="tab-eco w-full flex justify-center items-center">
+                        Inactive | Archived
                     </button>
+
                 </div>
             </aside>
 
@@ -70,8 +69,6 @@
                     </div>
 
                 </div>
-
-
                 <!-- 📊 Reward Sections -->
                 <div id="rewardTables" class="space-y-8">
 
@@ -92,38 +89,45 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($vouchers as $voucher)
-                                        <tr class="border-b hover:bg-[#F9FBF4] transition">
-                                            <td class="px-4 py-2 font-medium">{{ $voucher->title }}</td>
-                                            <td class="px-4 py-2">{{ $voucher->required_points }}</td>
-                                            <td class="px-4 py-2">{{ $voucher->discount_value }}%</td>
-                                            <td class="px-4 py-2">{{ $voucher->expiry_date->format('M d, Y') }}</td>
-                                            <td class="px-4 py-2">
-                                                @if ($voucher->is_active)
+                                        @if ($voucher->is_active)
+                                            {{-- Only show active vouchers --}}
+                                            <tr class="border-b hover:bg-[#F9FBF4] transition">
+                                                <td class="px-4 py-2 font-medium">{{ $voucher->title }}</td>
+                                                <td class="px-4 py-2">{{ $voucher->required_points }}</td>
+                                                <td class="px-4 py-2">{{ $voucher->discount_value }}%</td>
+                                                <td class="px-4 py-2">{{ $voucher->expiry_date->format('M d, Y') }}</td>
+                                                <td class="px-4 py-2">
                                                     <span
                                                         class="bg-[#6A8A52] text-white rounded-full px-3 py-1 text-xs">Active</span>
-                                                @else
-                                                    <span
-                                                        class="bg-gray-400 text-white rounded-full px-3 py-1 text-xs">Inactive</span>
-                                                @endif
-                                            </td>
-                                            <td class="px-4 py-2">
-                                                <div class="flex gap-1.5">
-                                                    <button onclick="openEditVoucherModal({{ $voucher }})"
-                                                        class="btn-action btn-edit">
-                                                        <i class="fas fa-edit"></i> Edit
-                                                    </button>
-
-                                                    <form action="{{ route('rewards.delete', $voucher->voucher_id) }}"
-                                                        method="POST">
-                                                        @csrf @method('DELETE')
-                                                        <button class="btn-action btn-delete">
-                                                            <i class="fas fa-archive"></i> Archive
+                                                </td>
+                                                <td class="px-4 py-2">
+                                                    <div class="flex gap-1.5">
+                                                        <button class="btn-action btn-edit"
+                                                            onclick='openEditVoucherModal({
+                                                                voucher_id: {{ $voucher->voucher_id }},
+                                                                title: "{{ $voucher->title }}",
+                                                                description: "{{ $voucher->description }}",
+                                                                required_points: {{ $voucher->required_points }},
+                                                                discount_value: "{{ $voucher->discount_value }}",
+                                                                is_active: {{ $voucher->is_active ? 1 : 0 }},
+                                                                expiry_date: "{{ $voucher->expiry_date->format('Y-m-d') }}"
+                                                            })'>
+                                                            <i class="fas fa-edit"></i> Edit
                                                         </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
+
+                                                        <form action="{{ route('rewards.delete', $voucher->voucher_id) }}"
+                                                            method="POST">
+                                                            @csrf @method('DELETE')
+                                                            <button class="btn-action btn-delete">
+                                                                <i class="fas fa-archive"></i> Archive
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
+
                                 </tbody>
 
                             </table>
@@ -191,6 +195,53 @@
                         </div>
                     </div>
 
+                    <!-- 📁 Archived / Inactive Vouchers -->
+                    <div id="archivedTable" class="bg-white rounded-xl shadow p-5 border border-[#E6EAD7] hidden">
+                        <h2 class="text-lg font-semibold text-[#4F6B3F] mb-3">Archived Vouchers</h2>
+
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm text-[#4F3B2C]">
+                                <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left font-semibold">Reward Name</th>
+                                        <th class="px-4 py-2 text-left font-semibold">Points Cost</th>
+                                        <th class="px-4 py-2 text-left font-semibold">Discount</th>
+                                        <th class="px-4 py-2 text-left font-semibold">Expiry</th>
+                                        <th class="px-4 py-2 text-left font-semibold">Status</th>
+                                        <th class="px-4 py-2 text-left font-semibold">Change Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($archived as $voucher)
+                                        <tr class="border-b hover:bg-[#F9FBF4] transition">
+                                            <td class="px-4 py-2 font-medium">{{ $voucher->title }}</td>
+                                            <td class="px-4 py-2">{{ $voucher->required_points }}</td>
+                                            <td class="px-4 py-2">{{ $voucher->discount_value }}%</td>
+                                            <td class="px-4 py-2">{{ $voucher->expiry_date->format('M d, Y') }}</td>
+                                            <td class="px-4 py-2">
+                                                <span
+                                                    class="bg-gray-500 text-white rounded-full px-3 py-1 text-xs">Archived</span>
+                                            </td>
+                                            <td class="px-4 py-2">
+                                                <form action="{{ route('rewards.recover', $voucher->voucher_id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button class="btn-action btn-leaf">
+                                                        <i class="fas fa-undo"></i> Recover
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                    </div>
+
                     <!-- 📱 Mark as Used -->
                     <div id="scanSection"
                         class="bg-white rounded-xl shadow p-8 pb-10 border border-[#E6EAD7] hidden text-center">
@@ -213,8 +264,10 @@
             const tables = {
                 catalog: document.getElementById('catalogTable'),
                 redeemed: document.getElementById('redeemedTable'),
+                archived: document.getElementById('archivedTable'),
                 scan: document.getElementById('scanSection')
             };
+
 
             buttons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -232,9 +285,11 @@
             const rewardTables = {
                 catalog: document.getElementById('catalogTable'),
                 redeemed: document.getElementById('redeemedTable'),
+                archived: document.getElementById('archivedTable'),
                 scan: document.getElementById('scanSection'),
-                add: null // "Add New Reward" doesn't have a table
+                add: null
             };
+
 
             function activateReward(key, clickedElement) {
                 // Remove active class from all tabs
