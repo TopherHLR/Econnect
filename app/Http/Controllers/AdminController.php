@@ -23,12 +23,21 @@ class AdminController extends Controller
     public function index()
     {
         $users = User::with([
-            'savedLibraries.ecoLibrary',   // Saved libraries
-            'savedEcoActions.ecoAction',   // Eco actions
-            'pointsHistory',               // Points history
-            'userVouchers.voucher',        // Vouchers
-            'feedbacks'                    // Feedback
+            'savedLibraries.ecoLibrary',
+            'savedEcoActions.ecoAction',
+            'pointsHistory',
+            'userVouchers.voucher',
+            'feedbacks'
         ])->get();
+
+        // Log the QR code for each user
+        foreach ($users as $user) {
+            Log::info('User QR Code', [
+                'user_id' => $user->user_id,
+                'email' => $user->email,
+                'qr_code' => $user->qr_code
+            ]);
+        }
 
         return view('admin.adminUsers', compact('users'));
     }
@@ -43,7 +52,6 @@ class AdminController extends Controller
             'success' => true
         ]);
     }
-
 
     /**
      * Fetch single user (optional AJAX)
@@ -104,5 +112,25 @@ class AdminController extends Controller
     public function lifestyle()
     {
         return view('admin.adminLifestyle');
+    }
+    public function verifyUser($qr)
+    {
+        // Find user by QR
+        $user = User::where('qr_code', $qr)->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Update user type + verification status
+        $user->update([
+            'user_type' => 'verified_user',
+            'is_verified' => true,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'user' => $user
+        ]);
     }
 }

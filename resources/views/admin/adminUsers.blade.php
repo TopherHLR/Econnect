@@ -129,6 +129,7 @@
                                         'user_type' => $user->user_type,
                                         'is_verified' => $user->is_verified ? 1 : 0,
                                         'created_at' => $user->created_at->format('Y-m-d H:i'),
+                                        'qr_code'         => $user->qr_code,  // <-- add this
                                         'savedLibraries' => $user->savedLibraries->toArray(),
                                         'savedEcoActions' => $user->savedEcoActions->toArray(),
                                         'pointsHistory' => $user->pointsHistory->toArray(),
@@ -186,5 +187,5 @@
     </script>
 
 @endsection
-@include('modal.verifyUserModal')
+
 @include('modal.userModal')

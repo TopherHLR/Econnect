@@ -77,44 +77,7 @@
     </div>
 </div>
 
-<!-- QR Scanner Modal (Theme-Matched with Image Upload) -->
-<div id="qrScannerModal" class="hidden fixed inset-0 z-3000 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
 
-        <!-- Modal Header -->
-        <div class="flex justify-between items-center px-6 py-4 bg-[#8B6E4A] text-white">
-            <h3 class="text-lg font-semibold flex items-center">
-                <i class="fa-solid fa-qrcode mr-2"></i> Scan Voucher QR Code
-            </h3>
-            <button onclick="closeQrScanner()" class="text-white hover:text-[#E0E5D8]">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-        </div>
-
-        <!-- Modal Body -->
-        <div class="p-6 space-y-4">
-            <!-- Webcam Scanner -->
-            <div id="qr-reader" style="width:100%; height:348px;" class="rounded-lg border border-[#8B6E4A]/30"></div>
-
-            <!-- Image Upload -->
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Or Upload QR Code Image</label>
-                <input type="file" id="qr-file-input" accept="image/*"
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
-            </div>
-
-            <p id="qr-result" class="text-center text-md text-[#4F3B2C]">Scan QR Code</p>
-
-            <div class="flex justify-end gap-3 pt-3">
-                <button onclick="closeQrScanner()" class="btn-eco btn-sand">
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 <script>
     const modal = document.getElementById('addVoucherModal');
     const form = document.getElementById('voucherForm');
@@ -159,7 +122,6 @@
         modal.classList.remove('hidden');
     }
 
-
     function closeAddVoucherModal() {
         modal.classList.add('hidden');
     }
@@ -172,82 +134,6 @@
     addVoucherModal?.addEventListener('click', e => {
         if (e.target === addVoucherModal) closeAddVoucherModal();
     });
-
-    let html5QrCode = null;
-    const resultEl = document.getElementById('qr-result');
-
-    function openQrScanner() {
-        document.getElementById('qrScannerModal').classList.remove('hidden');
-        startQrScanner();
-    }
-
-    function closeQrScanner() {
-        document.getElementById('qrScannerModal').classList.add('hidden');
-        stopScanner();
-        document.getElementById('qr-file-input').value = null;
-    }
-
-    function stopScanner() {
-        if (html5QrCode) {
-            html5QrCode.stop().catch(() => {});
-            html5QrCode.clear();
-            html5QrCode = null;
-        }
-    }
-
-
-    let qrCooldown = false; // prevents multiple scans in short time
-
-    function startQrScanner() {
-        // Initialize scanner if not already
-        if (!html5QrCode) {
-            html5QrCode = new Html5Qrcode("qr-reader");
-        }
-
-        const qrReaderEl = document.getElementById('qr-reader');
-
-        // Mirror horizontally and reduce brightness slightly
-        qrReaderEl.style.transform = "scaleX(-1)"; // mirror
-        qrReaderEl.style.filter = "brightness(0.8) contrast(1.1)"; // dim and increase contrast
-
-        // Start camera scan
-        html5QrCode.start({
-                facingMode: "environment",
-            }, {
-                fps: 20,
-                qrbox: 250
-            },
-            qrCodeMessage => handleQrCode(qrCodeMessage)
-        ).catch(err => console.error("QR start failed:", err));
-
-        // Handle file input scanning
-        const fileInput = document.getElementById('qr-file-input');
-        fileInput.onchange = async e => {
-            if (e.target.files.length === 0) return;
-            const file = e.target.files[0];
-
-            // Stop camera before scanning file
-            await html5QrCode.stop().catch(() => {});
-
-            try {
-                const qrCodeMessage = await html5QrCode.scanFile(file, true);
-                handleQrCode(qrCodeMessage);
-            } catch (err) {
-                resultEl.textContent = `Error reading image: ${err}`;
-            } finally {
-                // Restart camera scan after file scan
-                html5QrCode.start({
-                        facingMode: "environment"
-                    }, {
-                        fps: 20,
-                        qrbox: 250
-                    },
-                    qrCodeMessage => handleQrCode(qrCodeMessage)
-                ).catch(() => {});
-            }
-        };
-    }
-
 
     function handleQrCode(qrCodeMessage) {
         if (qrCooldown) return; // skip if in cooldown

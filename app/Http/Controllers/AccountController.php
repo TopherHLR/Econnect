@@ -53,7 +53,6 @@ class AccountController extends Controller
         return compact('user', 'progressPoints', 'currentPoints', 'earnedBadges', 'badgeLevel', 'completedQuests');
     }
 
-
     // --- Profile Page ---
     public function show()
     {

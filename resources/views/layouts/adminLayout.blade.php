@@ -257,7 +257,7 @@
                     <i class="fa-solid fa-right-from-bracket text-3xl"></i>
                 </button>
             </form>
-                        @include('modal.notificationModal')
+            @include('modal.notificationModal')
         </div>
     </header>
 
@@ -283,6 +283,7 @@
 
         <!-- 🌾 Main Content -->
         <main class="flex-1 ml-32 mt-8 mr-6 mb-2 p-8 overflow-y-auto min-h-[78vh]">
+            @include('modal.qrScannerModal')
             @include('modal.ecoTopics_ecoActionModal')
             @yield('content')
         </main>
@@ -345,7 +346,7 @@
         </div>
     </footer>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         setTimeout(() => {
             const toast = document.getElementById('feedback-toast');
@@ -371,7 +372,6 @@
                 }
             });
         });
-
     </script>
 
 

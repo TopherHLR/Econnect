@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http; 
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\LoginNotificationMail; 
 use App\Mail\VerificationCodeMail;
@@ -96,12 +97,12 @@ class AuthController extends Controller
 
         $pending = Session::get('pending_registration');
 
-        // 🧩 Check verification code
+        // Check verification code
         if (!$pending || $request->code != $pending['verification_code']) {
             return back()->withErrors(['code' => 'Invalid or expired verification code.'])->withInput();
         }
 
-        // 🧩 Create user after successful verification
+        // Create user after successful verification
         $user = \App\Models\User::create([
             'first_name'  => $pending['first_name'],
             'middle_name' => $pending['middle_name'],
@@ -111,16 +112,28 @@ class AuthController extends Controller
             'is_verified' => true,
         ]);
 
-        // 🧩 Log the user in
+        /** -----------------------------
+         *  Generate QR code for the user
+         * -----------------------------
+         */
+        // Make folder if it doesn't exist
+        if (!file_exists(public_path('qrcodes'))) {
+            mkdir(public_path('qrcodes'), 0755, true);
+        }
+
+        $user->qr_code = 'USER-' . $user->user_id . '-' . Str::upper(Str::random(10));
+        $user->save();
+
+
+        // Log the user in
         Auth::login($user);
 
-        // 🧩 Clear pending registration
+        // Clear pending registration
         Session::forget('pending_registration');
 
-        // 🧩 Redirect to home with success message
+        // Redirect to home with success message
         return redirect()->route('home')->with('success', 'Your account has been verified and you are now logged in!');
     }
-
 
 
     /**
