@@ -8,6 +8,7 @@ use App\Http\Controllers\EcoController;
 use App\Http\Controllers\ActionController;
 use App\Http\Controllers\LibraryController;
 use Illuminate\Support\Facades\Auth;
+
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\QuestSubmissionController;
 use App\Http\Controllers\AdminController;
@@ -18,8 +19,6 @@ use App\Http\Controllers\UserRewardsController;
 use App\Http\Controllers\TreeController;
 
 //---------------------------------------------------- AUTH -------------------------------------------------
-
-
 //---------------------------------------------------- AUTHENTICATION (LOGIN / REGISTER / VERIFY) -------------------------------------------------
 
 // Email verification
@@ -82,13 +81,19 @@ Route::middleware(['auth'])->group(function () {
 
 
 //---------------------------------------------------- ACCOUNT SETTINGS -------------------------------------------------
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/account', [AccountController::class, 'show'])->name('account.show');
+        Route::put('/account/update', [AccountController::class, 'updateProfile'])->name('user.updateProfile');
+        Route::put('/account/password', [AccountController::class, 'changePassword'])->name('user.changePassword');
+
 });
 
 Route::get('/myprogress', [AccountController::class, 'myProgress'])->name('myprogress');
 
 Route::get('/rewards', [AccountController::class, 'rewards'])->name('rewards');
+
+
 
 //---------------------------------------------------- HOME WIDGETS (ECO RANDOM WIDGETS) -------------------------------------------------
 
@@ -195,6 +200,8 @@ Route::post('/quests/{quest}/recover2', [QuestController::class, 'recover2'])->n
 Route::post('/quests/{quest}/archive', [QuestController::class, 'archive'])->name('quests.archive');
 Route::post('/quests/process', [QuestController::class, 'process'])->name('submissions.process');
 Route::put('/quests/{quest}', [QuestController::class, 'update'])->name('quests.update');
+
+Route::get('/admin/user-qr/{qr_code}/pending-quests', [QuestController::class, 'getPendingQuestsByQr']);
 
 
 //---------------------------------------------------- QUEST USER (ACCEPT / SUBMIT QUEST)-------------------------------------------------

@@ -270,8 +270,9 @@
                 closeQuestModal();
                 showMessage(data.message, 'success');
 
-                // Update table row
-                const row = document.querySelector(`#collectionTable tr[data-quest-id="${data.quest.quest_id}"]`);
+                // Update table row (your existing logic)
+                const row = document.querySelector(
+                    `#collectionTable tr[data-quest-id="${data.quest.quest_id}"]`);
                 if (row) {
                     row.querySelector('td:nth-child(2)').textContent = data.quest.title;
                     row.querySelector('td:nth-child(3)').textContent = data.quest.description;
@@ -281,7 +282,23 @@
                     row.querySelector('td:nth-child(7)').textContent = data.quest.end_date;
                     row.querySelector('td:nth-child(8) select').value = data.quest.status;
                 }
+
+                // 🔥 NEW: Update Active Quests sidebar
+                if (data.quest.status !== 'archived') {
+                    const questList = document.getElementById('questList');
+
+                    // Create new <li>
+                    const li = document.createElement('li');
+                    li.dataset.quest = data.quest.quest_id;
+                    li.classList.add('tab-eco', 'cursor-pointer');
+                    li.textContent = data.quest.title;
+
+                    // Append to top of Active Quests (before the <hr>)
+                    const hr = questList.querySelector('hr');
+                    questList.insertBefore(li, hr);
+                }
             })
+
             .catch(error => {
                 if (error.errors) {
                     const messages = Object.values(error.errors).flat().join("\n");

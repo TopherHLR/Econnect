@@ -38,6 +38,7 @@
                 </select>
 
                 <!-- Verify Button -->
+                
                 <button onclick="openVerifyModal()" class="btn-eco btn-sand">
                     <i class="fa-solid fa-qrcode"></i>
                     <span>Verify User</span>
@@ -142,12 +143,12 @@
                                 </button>
 
                                 <!-- Verify -->
-                                @if (!$user->is_verified)
+                                {{-- @if (!$user->is_verified)
                                     <button class="btn-action btn-view" title="Verify User"
                                         onclick="alert('Verified {{ $user->first_name }}')">
                                         <i class="fas fa-check-circle"></i> Verify
                                     </button>
-                                @endif
+                                @endif --}}
                             </td>
                         </tr>
                     @endforeach

@@ -148,19 +148,112 @@ class QuestController extends Controller
 
         return response()->json(['success' => 'Quest status updated successfully.']);
     }
-
     public function updateStatusQuestAdmin(Request $request, $submissionId)
     {
+        \Log::info('updateStatusQuestAdmin called', [
+            'submissionId' => $submissionId,
+            'requestedStatus' => $request->status,
+            'adminId' => auth()->id(),
+        ]);
+
         $request->validate([
             'status' => 'required|in:pending,completed,rejected',
         ]);
 
         $submission = QuestSubmission::findOrFail($submissionId);
-        $submission->status = $request->status;
+        $oldStatus = $submission->status;
+        $newStatus = $request->status;
+        $points = $submission->quest->points_reward;
+
+        \Log::info('Submission loaded', [
+            'oldStatus' => $oldStatus,
+            'newStatus' => $newStatus,
+            'pointsReward' => $points,
+            'userId' => $submission->user_id,
+        ]);
+
+        // Update submission status
+        $submission->status = $newStatus;
         $submission->save();
 
-        return response()->json(['success' => true]);
+        \Log::info('Submission status updated', [
+            'submissionId' => $submission->submission_id,
+            'newStatus' => $submission->status,
+        ]);
+
+        // Handle points and notifications
+        $pointsRecord = UserPointsHistory::where('activity_type', 'Quest')
+            ->where('source_id', $submission->submission_id)
+            ->where('user_id', $submission->user_id)
+            ->first();
+
+        if ($oldStatus !== 'completed' && $newStatus === 'completed') {
+            // Add points (or unvoid existing)
+            if ($pointsRecord) {
+                $pointsRecord->voided = false;
+                $pointsRecord->save();
+            } else {
+                UserPointsHistory::create([
+                    'user_id' => $submission->user_id,
+                    'activity_type' => 'Quest',
+                    'source_id' => $submission->submission_id,
+                    'points_change' => $points,
+                    'voided' => false,
+                    'created_at' => now(),
+                ]);
+            }
+
+            \Log::info('Points added/unvoided', [
+                'userId' => $submission->user_id,
+                'points' => $points,
+                'action' => 'completed',
+            ]);
+
+            Notification::create([
+                'user_id' => $submission->user_id,
+                'from_user_id' => auth()->id(),
+                'type' => 'quest_verified',
+                'reference_id' => $submission->submission_id,
+                'title' => 'Quest Submission Verified',
+                'message' => "Your submission for '{$submission->quest->title}' has been verified. You earned {$points} points!",
+                'created_at' => now(),
+            ]);
+
+        } elseif ($oldStatus === 'completed' && $newStatus !== 'completed') {
+            // Void points record instead of deleting
+            if ($pointsRecord) {
+                $pointsRecord->voided = true;
+                $pointsRecord->save();
+            }
+
+            \Log::info('Points record voided', [
+                'userId' => $submission->user_id,
+                'points' => $points,
+                'action' => $newStatus === 'pending' ? 'reverted to pending' : 'rejected',
+            ]);
+
+            Notification::create([
+                'user_id' => $submission->user_id,
+                'from_user_id' => auth()->id(),
+                'type' => 'quest_status_changed',
+                'reference_id' => $submission->submission_id,
+                'title' => $newStatus === 'pending' ? 'Quest Submission Reverted to Pending' : 'Quest Submission Rejected',
+                'message' => "The status of your submission for '{$submission->quest->title}' has been changed to '{$newStatus}'. Points have been adjusted accordingly.",
+                'created_at' => now(),
+            ]);
+        }
+
+        \Log::info('updateStatusQuestAdmin finished', [
+            'submissionId' => $submission->submission_id,
+            'finalStatus' => $submission->status,
+        ]);
+
+        return response()->json(['success' => true, 'status' => $newStatus]);
     }
+
+
+
+
 
     public function store(Request $request)
     {
@@ -175,10 +268,8 @@ class QuestController extends Controller
             'status' => 'required|in:active,ending_soon,closed',
         ]);
 
-        // Use custom category if provided
         $data['category'] = $data['custom_category'] ?? $data['category'];
 
-        // Save new quest
         $quest = Quest::create([
             'title' => $data['title'],
             'description' => $data['description'],
@@ -190,7 +281,6 @@ class QuestController extends Controller
             'created_by' => auth()->id(),
         ]);
 
-        // ---- Notify all users ----
         $users = User::where('user_type', 'guest')->get();
         foreach ($users as $user) {
             Notification::create([
@@ -204,8 +294,12 @@ class QuestController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Quest created successfully and notifications sent to users!');
+        return response()->json([
+            'message' => 'Quest created successfully and notifications sent to users!',
+            'quest' => $quest
+        ]);
     }
+
 
     public function update(Request $request, Quest $quest)
     {
@@ -229,6 +323,38 @@ class QuestController extends Controller
         }
 
         return redirect()->back()->with('success', 'Quest updated successfully!');
+    }
+
+    // QuestController.php
+    public function getPendingQuestsByQr($qr_code)
+    {
+        Log::info("Fetching pending quests for QR code: {$qr_code}");
+
+        $user = User::where('qr_code', $qr_code)->first();
+
+        if (!$user) {
+            Log::warning("User not found for QR code: {$qr_code}");
+            return response()->json([
+                'error' => 'User not found for QR code: '.$qr_code
+            ], 404);
+        }
+
+        $pendingQuests = $user->questSubmissions()
+            ->where('status', 'pending')
+            ->with('quest')
+            ->get();
+
+        Log::info("User found: {$user->user_id} - {$user->first_name} {$user->last_name}");
+        Log::info("Pending quests count: " . $pendingQuests->count());
+
+        return response()->json([
+            'user' => [
+                'id' => $user->user_id,
+                'name' => "{$user->first_name} {$user->last_name}",
+                'email' => $user->email,
+            ],
+            'pendingQuests' => $pendingQuests,
+        ]);
     }
 
 }

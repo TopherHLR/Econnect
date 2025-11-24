@@ -38,19 +38,25 @@ class UserRewardsController extends Controller
             'count' => $myVouchers->count()
         ]);
 
-        // Compute points
+
+                // Earned points (ignore voided)
         $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
             ->where('points_change', '>', 0)
-            ->sum('points_change'); 
+            ->where('voided', false)
+            ->sum('points_change');
+
+        // Spent points (ignore voided)
+        $pointsSpent = abs(
+            UserPointsHistory::where('user_id', $user->user_id)
+                ->where('points_change', '<', 0)
+                ->where('voided', false)
+                ->sum('points_change')
+        );
+
         Log::info('Total earned points calculated', [
             'progressPoints' => $progressPoints
         ]);
 
-        $pointsSpent = abs(
-            UserPointsHistory::where('user_id', $user->user_id)
-                ->where('points_change', '<', 0)
-                ->sum('points_change')
-        );
         Log::info('Total spent points calculated', [
             'pointsSpent' => $pointsSpent
         ]);

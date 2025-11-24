@@ -35,6 +35,12 @@
             <span>Verify User</span>
         </button>
 
+        <!-- New Button: Scan User QR for Pending Quests -->
+        <button onclick="openUserQrScannerModal()" class="btn-eco btn-leaf">
+            <i class="fa-solid fa-user-check"></i>
+            <span>Scan User QR</span>
+        </button>
+
         <button class="btn-eco btn-sage">
             <i class="fa-solid fa-gear"></i>
             <span>System Settings</span>
@@ -45,7 +51,7 @@
             <i class="fa-solid fa-hourglass-half"></i>
             <span>Pending Submissions</span>
         </button>
-
+    </div>
 
 
 

@@ -30,12 +30,14 @@ class UserPointsHistory extends Model
         'activity_type',
         'source_id',
         'points_change',
+        'voided', // add this
         'created_at',
     ];
 
     // Casts for proper data handling
     protected $casts = [
         'points_change' => 'integer',
+        'voided' => 'boolean', // cast voided to boolean
         'created_at' => 'datetime',
     ];
 

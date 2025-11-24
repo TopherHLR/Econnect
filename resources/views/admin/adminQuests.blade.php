@@ -517,5 +517,4 @@
         });
     </script>
     @include('modal.createQuestModal')
-    @include('modal.verifyUserModal')
 @endsection

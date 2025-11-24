@@ -7,7 +7,7 @@
     <title>@yield('title', 'Admin Dashboard') - {{ config('app.name', 'Econnect') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/admin.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Crimson+Text:wght@400;600;700&display=swap"

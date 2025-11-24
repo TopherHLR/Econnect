@@ -52,16 +52,17 @@ class EcoController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-
-            // Earned points
+            // Earned points (ignore voided)
             $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
                 ->where('points_change', '>', 0)
+                ->where('voided', false)
                 ->sum('points_change');
 
-            // Spent points
+            // Spent points (ignore voided)
             $pointsSpent = abs(
                 UserPointsHistory::where('user_id', $user->user_id)
                     ->where('points_change', '<', 0)
+                    ->where('voided', false)
                     ->sum('points_change')
             );
             if ($user) {
