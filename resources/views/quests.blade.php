@@ -21,7 +21,7 @@
                             @foreach ($quests as $quest)
                                 @php
                                     // Get user's submission for THIS quest only
-                                $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+$submission = $quest->submissions->firstWhere('user_id', auth()->id());
                                 @endphp
 
                                 @if ($submission && $submission->status === 'pending')
@@ -44,7 +44,8 @@
                                             data-description="{{ $quest->description }}">
 
                                             <span class="text-sm font-medium text-[#4F6B3F]">{{ $quest->title }}</span>
-                                            <small class="text-gray-500 text-xs">{{ $daysLeft }} {{ $dayLabel }} left</small>
+                                            <small class="text-gray-500 text-xs">{{ $daysLeft }} {{ $dayLabel }}
+                                                left</small>
 
                                             @if ($hintMessage)
                                                 <div class="mt-1.5 flex items-center space-x-1.5 text-amber-600">
@@ -126,10 +127,26 @@
                         <!-- Grid of Challenges -->
                         <div class="max-w-full max-h-[500px] overflow-y-auto pr-2 flex-1 custom-scroll">
                             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
+
                                 @foreach ($quests as $quest)
                                     @php
-                                        $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                        $user = auth()->user();
 
+                                        // Calculate user's earned points (ignore voided)
+                                        $progressPoints = \App\Models\UserPointsHistory::where(
+                                            'user_id',
+                                            $user->user_id,
+                                        )
+                                            ->where('points_change', '>', 0)
+                                            ->where('voided', false)
+                                            ->sum('points_change');
+
+                                        // Skip quest if user doesn't have enough points
+                                        if ($progressPoints < $quest->required_points) {
+                                            continue;
+                                        }
+
+                                        $submission = $quest->submissions->firstWhere('user_id', $user->user_id);
 
                                         // Category image
                                         $imagePath = match ($quest->category) {
@@ -147,18 +164,17 @@
                                         };
 
                                         $isCompleted = $submission?->status === 'completed';
-                                        $isRejected  = $submission?->status === 'rejected';
-                                        $isPending   = $submission?->status === 'pending';
-                                        $isExpired   = $quest->end_date->isPast() && !$isCompleted;
-
+                                        $isRejected = $submission?->status === 'rejected';
+                                        $isPending = $submission?->status === 'pending';
+                                        $isExpired = $quest->end_date->isPast() && !$isCompleted;
                                         $isInactive = $isCompleted || $isExpired || $isRejected || $isPending;
 
                                     @endphp
 
                                     @if ($quest->status === 'active')
                                         <div class="bg-white rounded-2xl overflow-hidden shadow-sm transition relative
-                                          {{ $isInactive ? 'opacity-50 pointer-events-none' : 'hover:shadow-md transform hover:-translate-y-1 cursor-pointer' }}
-                                          eco-card"
+                                            {{ $isInactive ? 'opacity-50 pointer-events-none' : 'hover:shadow-md transform hover:-translate-y-1 cursor-pointer' }}
+                                            eco-card"
                                             data-id="{{ $quest->quest_id }}" data-type="ecoQuest"
                                             data-description="{{ $quest->description }}">
 
@@ -189,9 +205,9 @@
                                                 <div>
                                                     <h3 class="text-sm font-semibold truncate">{{ $quest->title }}</h3>
                                                     @php
-                                                    $daysLeft = $quest->end_date->isFuture()
-                                                        ? ceil(now()->diffInHours($quest->end_date) / 24)
-                                                        : 0;
+                                                        $daysLeft = $quest->end_date->isFuture()
+                                                            ? ceil(now()->diffInHours($quest->end_date) / 24)
+                                                            : 0;
                                                     @endphp
                                                     <p class="text-xs mt-1 opacity-100">Ends in {{ $daysLeft }} days
                                                     </p>
@@ -203,6 +219,7 @@
                                 @endforeach
                             </div>
                         </div>
+
                     </div> <!-- End Right Column -->
 
                 </div> <!-- End Top Container Columns -->

@@ -14,18 +14,16 @@ class QuestController extends Controller
 {
     public function index()
     {
-        $quests = Quest::with('submissions.user') // load users for submissions
+        // Load all quests with submissions and users
+        $quests = Quest::with('submissions.user')
                     ->orderBy('start_date', 'desc')
                     ->get();
 
-        $categories = Quest::distinct()
-                        ->pluck('category')
-                        ->filter()
-                        ->values();
+        // Get all unique categories for filters/dropdowns
+        $categories = $quests->pluck('category')->filter()->unique()->values();
 
-                // Get all submissions grouped by quest
+        // Group submissions by quest
         $questSubmissions = [];
-
         foreach ($quests as $quest) {
             foreach ($quest->submissions as $submission) {
                 $questSubmissions[$quest->quest_id][] = [
@@ -38,9 +36,9 @@ class QuestController extends Controller
             }
         }
 
-
         return view('admin.adminQuests', compact('quests', 'categories', 'questSubmissions'));
     }
+
 
     public function process(Request $request)
     {
@@ -100,17 +98,30 @@ class QuestController extends Controller
 
     public function userQuests()
     {
-        $quests = Quest::with('submissions.user') // load users for submissions
-                    ->orderBy('start_date', 'desc')
-                    ->get();
+        $user = auth()->user();
 
-        $categories = Quest::distinct()
-                        ->pluck('category')
-                        ->filter()
-                        ->values();
+        // Calculate user's earned points (ignore voided)
+        $progressPoints = \App\Models\UserPointsHistory::where('user_id', $user->user_id)
+            ->where('points_change', '>', 0)
+            ->where('voided', false)
+            ->sum('points_change');
+
+        // Fetch all quests and their submissions
+        $allQuests = Quest::with('submissions.user')
+            ->orderBy('start_date', 'desc')
+            ->get();
+
+        // Filter quests that the user can access
+        $quests = $allQuests->filter(function ($quest) use ($progressPoints) {
+            return $progressPoints >= $quest->required_points;
+        });
+
+        // Get unique categories
+        $categories = $quests->pluck('category')->filter()->unique()->values();
 
         return view('quests', compact('quests', 'categories'));
     }
+
     public function recover2($id)
     {
         $quest = Quest::findOrFail($id);
@@ -313,11 +324,6 @@ class QuestController extends Controller
         return response()->json(['success' => true, 'status' => $newStatus]);
     }
 
-
-
-
-
-
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -329,6 +335,7 @@ class QuestController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|in:active,ending_soon,closed',
+            'required_points' => 'nullable|integer|min:0',
         ]);
 
         $data['category'] = $data['custom_category'] ?? $data['category'];
@@ -341,11 +348,25 @@ class QuestController extends Controller
             'start_date' => $data['start_date'],
             'end_date' => $data['end_date'],
             'status' => $data['status'],
+            'required_points' => $data['required_points'] ?? 0,
             'created_by' => auth()->id(),
         ]);
 
-        $users = User::where('user_type', 'guest')->get();
-        foreach ($users as $user) {
+        // Fetch all guest or verified users
+        $users = User::whereIn('user_type', ['guest', 'verified_user'])->get();
+
+        // Filter only those who meet the quest's required points
+        $eligibleUsers = $users->filter(function ($user) use ($quest) {
+            $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
+                ->where('points_change', '>', 0)
+                ->where('voided', false)
+                ->sum('points_change');
+
+            return $progressPoints >= $quest->required_points;
+        });
+
+        // Send notifications only to eligible users
+        foreach ($eligibleUsers as $user) {
             Notification::create([
                 'user_id' => $user->user_id,
                 'from_user_id' => auth()->id(),
@@ -356,6 +377,8 @@ class QuestController extends Controller
                 'created_at' => now(),
             ]);
         }
+
+
 
         return response()->json([
             'message' => 'Quest created successfully and notifications sent to users!',

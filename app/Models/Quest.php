@@ -38,6 +38,7 @@ class Quest extends Model
         'end_date',
         'status',
         'created_by',
+         'required_points',  // new
     ];
 
 

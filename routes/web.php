@@ -8,7 +8,6 @@ use App\Http\Controllers\EcoController;
 use App\Http\Controllers\ActionController;
 use App\Http\Controllers\LibraryController;
 use Illuminate\Support\Facades\Auth;
-
 use App\Http\Controllers\QuestController;
 use App\Http\Controllers\QuestSubmissionController;
 use App\Http\Controllers\AdminController;

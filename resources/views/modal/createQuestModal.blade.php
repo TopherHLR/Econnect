@@ -68,6 +68,13 @@
                     class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
                     placeholder="Enter points awarded">
             </div>
+            <!-- Required Points -->
+            <div>
+                <label class="block text-[#4F6B3F] font-medium mb-1">Required Points</label>
+                <input type="number" name="required_points" min="0" value="0"
+                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                    placeholder="Enter minimum points to unlock quest">
+            </div>
 
             <!-- Start Date -->
             <div>
