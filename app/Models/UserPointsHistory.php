@@ -66,4 +66,10 @@ class UserPointsHistory extends Model
                 return null;
         }
     }
+    public function questSubmission()
+    {
+        return $this->belongsTo(QuestSubmission::class, 'source_id', 'submission_id');
+    }
+
+
 }

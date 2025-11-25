@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserPointsHistory;
+use App\Models\QuestSubmission;
+use App\Models\Quest;
+use App\Models\UserEcoAction;
+use App\Models\UserLibrary;
 use Illuminate\Support\Facades\Password; // ← add this
 use App\Models\UserVoucher;
 use App\Models\Voucher;
@@ -104,11 +108,99 @@ class AccountController extends Controller
         return view('account.profile', $this->getAccountData());
     }
 
-    // --- My Progress Page ---
     public function myProgress()
     {
-        return view('account.myprogress', $this->getAccountData());
+        $user = auth()->user();
+
+        // Total eco points
+        $ecoPoints = UserPointsHistory::where('user_id', $user->user_id)
+            ->sum('points_change');
+
+        // Today's Completed Daily Eco-Action Submissions
+        $todayActions = QuestSubmission::where('user_id', $user->user_id)
+            ->where('status', 'completed')
+            ->whereDate('date_completed', today())
+            ->whereHas('quest', function ($q) {
+                $q->where('title', 'Daily Eco Action'); 
+            })
+            ->count();
+
+        // Convert to Tree Progress (example: 1 daily action = 20%)
+        $treePercent = min($todayActions * 20, 100);
+
+        // Total eco actions
+        $ecoActions = UserEcoAction::where('user_id', $user->user_id)->count();
+        $actionsPercent = min(100, ($ecoActions / 20) * 100);
+
+        // Quests completed
+        $completedQuestsByUser = QuestSubmission::where('user_id', $user->user_id)
+                            ->where('status', 'completed')
+                            ->count();
+
+        $totalQuests = Quest::count();
+        $questsPercent = $totalQuests > 0 ? ($completedQuestsByUser / $totalQuests) * 100 : 0;
+        \Log::info("Completed Quests: $completedQuestsByUser, Total Quests: $totalQuests");
+
+        // Recent quest submissions
+        $recentSubmissions = QuestSubmission::with('quest')
+            ->where('user_id', $user->user_id)
+            ->orderBy('date_submitted', 'desc')
+            ->limit(5)
+            ->get();
+
+
+        // Recent Activity (History table)
+        $recentHistory = UserPointsHistory::where('user_id', $user->user_id)
+            ->with('questSubmission.quest') // load submission + quest
+            ->latest()
+            ->limit(10)
+            ->get();
+
+
+        // DEBUG LOG
+        \Log::info('Recent History:', $recentHistory->toArray());
+
+
+        // Daily Eco Action Streak Calculation
+        $streak = 0;
+        $day = 0;
+
+        while (true) {
+            $dateToCheck = now()->subDays($day)->toDateString();
+
+            $completed = QuestSubmission::where('user_id', $user->user_id)
+                ->where('status', 'completed')
+                ->whereDate('date_completed', $dateToCheck)
+                ->whereHas('quest', function ($q) {
+                    $q->where('title', 'Daily Eco Action');
+                })
+                ->exists();
+
+            if ($completed) {
+                $streak++;   // count the day
+                $day++;      // go back 1 more day
+            } else {
+                break;       // streak broken
+            }
+        }
+
+        // final streak value
+        $currentStreak = $streak;
+
+        return view('account.myprogress', compact(
+            'ecoPoints',
+            'treePercent',
+
+            'actionsPercent',
+            'questsPercent',
+            'ecoActions',
+            'completedQuestsByUser',
+            'recentSubmissions',
+            'recentHistory',
+            'currentStreak'
+        ));
     }
+
 
     // --- Rewards Page ---
     public function rewards()
