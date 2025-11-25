@@ -208,6 +208,34 @@
             </div>
         </div>
     </div>
+    <!-- Leaderboard Section -->
+    <div class="bg-gradient-to-br from-[#FCFFF6] to-[#FDFCF8] p-6 rounded-2xl shadow-md mb-8 border border-[#ECF4E7]">
+        <h2 class="text-2xl font-bold text-[#4F6B3F] mb-4">Top Progress Leaderboard</h2>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b-2 border-[#E8E6DC]">
+                        <th class="py-2 font-semibold">Rank</th>
+                        <th class="py-2 font-semibold">User</th>
+                        <th class="py-2 font-semibold">Progress Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($leaderboard as $index => $user)
+                        <tr class="border-b border-[#F2E8D5] hover:bg-[#FCFFF6] transition cursor-pointer"
+                            onclick="window.location='{{ route('leaderboard') }}'">
+                            <td class="py-2 font-semibold">{{ $index + 1 }}</td>
+                            <td class="py-2">{{ $user->first_name }} {{ $user->last_name }}</td>
+                            <td class="py-2 font-semibold text-[#4F6B3F]">{{ $user->progressPoints }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
 
     <!-- History Table -->
     <div class="bg-gradient-to-br from-[#FDFCF8] to-[#FCFFF6] p-6 rounded-2xl shadow-md border">
