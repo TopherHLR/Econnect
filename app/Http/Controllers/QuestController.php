@@ -181,14 +181,21 @@ class QuestController extends Controller
             'newStatus' => $submission->status,
         ]);
 
-        // Handle points and notifications
+        // Fetch existing quest points history
         $pointsRecord = UserPointsHistory::where('activity_type', 'Quest')
             ->where('source_id', $submission->submission_id)
             ->where('user_id', $submission->user_id)
             ->first();
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | CASE 1: Marking as COMPLETED
+        |--------------------------------------------------------------------------
+        */
         if ($oldStatus !== 'completed' && $newStatus === 'completed') {
-            // Add points (or unvoid existing)
+
+            // Award or unvoid points
             if ($pointsRecord) {
                 $pointsRecord->voided = false;
                 $pointsRecord->save();
@@ -206,9 +213,9 @@ class QuestController extends Controller
             \Log::info('Points added/unvoided', [
                 'userId' => $submission->user_id,
                 'points' => $points,
-                'action' => 'completed',
             ]);
 
+            // Notify quest completion
             Notification::create([
                 'user_id' => $submission->user_id,
                 'from_user_id' => auth()->id(),
@@ -219,8 +226,61 @@ class QuestController extends Controller
                 'created_at' => now(),
             ]);
 
-        } elseif ($oldStatus === 'completed' && $newStatus !== 'completed') {
-            // Void points record instead of deleting
+
+            /*
+            |--------------------------------------------------------------------------
+            | BADGE MILESTONE SYSTEM
+            |--------------------------------------------------------------------------
+            | Award ONLY when hitting *exact milestones*:
+            | 1, 5, 15, 30, 50 completed quests
+            |--------------------------------------------------------------------------
+            */
+
+            $completedQuests = QuestSubmission::where('user_id', $submission->user_id)
+                ->where('status', 'completed')
+                ->count();
+
+            $badgeMilestones = [
+                1  => 'Eco-Novice',
+                5  => 'Eco-Explorer',
+                15 => 'Eco-Enthusiast',
+                30 => 'Eco-Advocate',
+                50 => 'Eco-Guardian',
+            ];
+
+            if (isset($badgeMilestones[$completedQuests])) {
+
+                $badgeName = $badgeMilestones[$completedQuests];
+
+                Notification::create([
+                    'user_id' => $submission->user_id,
+                    'from_user_id' => auth()->id(),
+                    'type' => 'badge_unlocked',
+                    'reference_id' => null,
+                    'title' => 'New Badge Unlocked!',
+                    'message' => "Congratulations! You unlocked the '{$badgeName}' badge. Check it in your My Progress page!",
+                    'created_at' => now(),
+                ]);
+
+                \Log::info("Badge unlocked: {$badgeName}", [
+                    'userId' => $submission->user_id,
+                    'completedQuests' => $completedQuests,
+                ]);
+            }
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CASE 2: Reverting or Rejecting
+        |--------------------------------------------------------------------------
+        | Admin sets COMPLETED → PENDING or COMPLETED → REJECTED
+        | We VOID points (do not delete)
+        | No badge changes, no badge removal.
+        |--------------------------------------------------------------------------
+        */
+        elseif ($oldStatus === 'completed' && $newStatus !== 'completed') {
+
             if ($pointsRecord) {
                 $pointsRecord->voided = true;
                 $pointsRecord->save();
@@ -229,7 +289,6 @@ class QuestController extends Controller
             \Log::info('Points record voided', [
                 'userId' => $submission->user_id,
                 'points' => $points,
-                'action' => $newStatus === 'pending' ? 'reverted to pending' : 'rejected',
             ]);
 
             Notification::create([
@@ -237,11 +296,14 @@ class QuestController extends Controller
                 'from_user_id' => auth()->id(),
                 'type' => 'quest_status_changed',
                 'reference_id' => $submission->submission_id,
-                'title' => $newStatus === 'pending' ? 'Quest Submission Reverted to Pending' : 'Quest Submission Rejected',
+                'title' => $newStatus === 'pending'
+                    ? 'Quest Submission Reverted to Pending'
+                    : 'Quest Submission Rejected',
                 'message' => "The status of your submission for '{$submission->quest->title}' has been changed to '{$newStatus}'. Points have been adjusted accordingly.",
                 'created_at' => now(),
             ]);
         }
+
 
         \Log::info('updateStatusQuestAdmin finished', [
             'submissionId' => $submission->submission_id,
@@ -250,6 +312,7 @@ class QuestController extends Controller
 
         return response()->json(['success' => true, 'status' => $newStatus]);
     }
+
 
 
 

@@ -183,6 +183,78 @@ class AccountController extends Controller
             ->sortByDesc('progressPoints')
             ->values()
             ->take(10); // top 10
+        // ----------------------------------------------
+        // BADGE MILESTONES
+        // ----------------------------------------------
+
+        // Earned points (ignore voided)
+        $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
+            ->where('points_change', '>', 0)
+            ->where('voided', false)
+            ->sum('points_change');
+
+        // ----------------------------------------------
+        // TREE STAGE BADGES
+        // ----------------------------------------------
+        $treeStages = [
+            0     => ['name' => 'Seed', 'icon' => '🌱'],
+            25    => ['name' => 'Sprout', 'icon' => '🌿'],
+            100   => ['name' => 'Seedling', 'icon' => '🍃'],
+            500   => ['name' => 'Sapling', 'icon' => '🌳'],
+            1000  => ['name' => 'Young Tree', 'icon' => '🌲'],
+            2500  => ['name' => 'Growing Tree', 'icon' => '🎋'],
+            5000  => ['name' => 'Strong Tree', 'icon' => '🌴'],
+            7500  => ['name' => 'Mature Tree', 'icon' => '🌳'],
+            10000 => ['name' => 'Flowering Tree', 'icon' => '🌸'],
+            15000 => ['name' => 'Ancient Tree', 'icon' => '🌺'],
+        ];
+
+        $treeBadges = [];
+        foreach ($treeStages as $points => $stage) {
+            $treeBadges[] = [
+                'type' => 'tree',
+                'name' => $stage['name'],
+                'icon' => $stage['icon'],
+                'required_points' => $points,
+                'unlocked' => $progressPoints >= $points,
+                'unlocked_at' => $progressPoints >= $points ? now()->toDateString() : null,
+            ];
+        }
+
+        // ----------------------------------------------
+        // QUEST BADGES
+        // ----------------------------------------------
+        $questMilestones = [
+            1  => ['name' => 'Eco-Novice', 'icon' => '🌱'],
+            5  => ['name' => 'Eco-Explorer', 'icon' => '🌿'],
+            15 => ['name' => 'Eco-Enthusiast', 'icon' => '🍃'],
+            30 => ['name' => 'Eco-Advocate', 'icon' => '🌎'],
+            50 => ['name' => 'Eco-Guardian', 'icon' => '🛡️'],
+        ];
+
+        $userCompletedQuests = QuestSubmission::where('user_id', $user->user_id)
+            ->where('status', 'completed')
+            ->count();
+
+        $questBadges = [];
+        foreach ($questMilestones as $required => $badge) {
+            $questBadges[] = [
+                'type' => 'quest',
+                'name' => $badge['name'],
+                'icon' => $badge['icon'],
+                'required' => $required,
+                'unlocked' => $userCompletedQuests >= $required,
+                'unlocked_at' => $userCompletedQuests == $required ? now()->toDateString() : null,
+            ];
+        }
+
+        // ----------------------------------------------
+        // COMBINE ALL BADGES
+        // ----------------------------------------------
+        $badges = array_merge($treeBadges, $questBadges);
+        $unlockedCount = collect($badges)->where('unlocked', true)->count();
+        $totalBadges = count($badges);
+
 
         return view('account.myprogress', compact(
             'ecoPoints',
@@ -194,8 +266,12 @@ class AccountController extends Controller
             'recentSubmissions',
             'recentHistory',
             'currentStreak',
-            'leaderboard' // new
+            'leaderboard',
+            'badges',
+            'unlockedCount',
+            'totalBadges'
         ));
+
     }
 
 
