@@ -58,14 +58,19 @@ class UserPointsHistory extends Model
         switch ($this->activity_type) {
             case 'Tree Tap':
                 return $this->belongsTo(TreeTap::class, 'source_id', 'tap_id');
+
             case 'Eco Action':
                 return $this->belongsTo(UserEcoAction::class, 'source_id', 'log_id');
+
             case 'Quest':
                 return $this->belongsTo(QuestSubmission::class, 'source_id', 'submission_id');
+
             default:
-                return null;
+                // Always return a relationship object — a "null" relation
+                return $this->belongsTo(UserPointsHistory::class, 'id')->whereNull('id');
         }
     }
+
     public function questSubmission()
     {
         return $this->belongsTo(QuestSubmission::class, 'source_id', 'submission_id');
