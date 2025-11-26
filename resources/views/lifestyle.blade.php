@@ -66,16 +66,6 @@
                                 <!-- optional if you want enter to submit -->
                             </form>
 
-
-                            <!-- Category Dropdown -->
-                            <select id="categoryDropdown"
-                                class="text-sm text-gray-600 bg-[#FCFFF6] border border-[#7A8C4F] rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
-                                <option value="">All Categories ▾</option>
-
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category }}">{{ $category }}</option>
-                                @endforeach
-                            </select>
                         </div>
                     </div>
 

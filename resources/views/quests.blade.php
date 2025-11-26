@@ -12,10 +12,16 @@
                     <!-- ✅ Left Column: Accepted Challenges -->
                     <div
                         class="w-full md:w-1/4 bg-[#FCFFF6] rounded-2xl shadow-md p-4 max-h-[600px] overflow-y-auto flex flex-col justify-between">
-                        <h2 class="text-lg font-semibold text-[#4F6B3F] mb-4 py-3 rounded-xl text-center"
+
+                        <h2 class="text-lg font-semibold text-[#4F6B3F]  py-3 rounded-xl text-center"
                             style="font-family: var(--font-serif);">
                             Accepted Quests
                         </h2>
+                                                <!-- Search Box -->
+                        <div class="mb-4">
+                            <input type="text" id="questSearch" placeholder="Search quests..."
+                                class="w-full px-3 py-2 rounded border border-gray-300 shadow-sm text-sm focus:outline-none focus:ring-1 focus:ring-green-500" />
+                        </div>
 
                         <div class="space-y-3 flex-1">
                             @foreach ($quests as $quest)
@@ -111,17 +117,21 @@
                     <!-- 🌱 Right Column: Active Challenges -->
                     <div class="w-full md:w-3/4 bg-[#FCFFF6] rounded-2xl shadow-md p-5 flex flex-col">
 
-                        <!-- Heading + All Button -->
                         <div class="flex justify-between items-center mb-6 gap-4">
                             <h2 class="px-6 py-2 text-[#4F6B3F] rounded-xl text-lg font-semibold text-center"
                                 style="font-family: var(--font-serif);">
                                 Active Eco-Quests
                             </h2>
 
-                            <button
-                                class="text-sm bg-[#e8ead9] hover:bg-[#dfe1cc] px-4 py-2 rounded-full shadow transition">
-                                All
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <label for="questFilter" class="text-sm text-gray-700">Filter:</label>
+                                <select id="questFilter" class="px-3 py-1 rounded border border-gray-300 shadow-sm">
+                                    <option value="all">All Categories</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category }}">{{ $category }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                         <!-- Grid of Challenges -->
@@ -133,13 +143,13 @@
                                         $user = auth()->user();
 
                                         // Calculate user's earned points (ignore voided)
-                                        $progressPoints = \App\Models\UserPointsHistory::where(
-                                            'user_id',
-                                            $user->user_id,
-                                        )
-                                            ->where('points_change', '>', 0)
-                                            ->where('voided', false)
-                                            ->sum('points_change');
+                                            $progressPoints = \App\Models\UserPointsHistory::where(
+                                                'user_id',
+                                                $user->user_id,
+                                            )
+                                                ->where('points_change', '>', 0)
+                                                ->where('voided', false)
+                                                ->sum('points_change');
 
                                         // Skip quest if user doesn't have enough points
                                         if ($progressPoints < $quest->required_points) {
@@ -168,7 +178,6 @@
                                         $isPending = $submission?->status === 'pending';
                                         $isExpired = $quest->end_date->isPast() && !$isCompleted;
                                         $isInactive = $isCompleted || $isExpired || $isRejected || $isPending;
-
                                     @endphp
 
                                     @if ($quest->status === 'active')
@@ -176,6 +185,7 @@
                                             {{ $isInactive ? 'opacity-50 pointer-events-none' : 'hover:shadow-md transform hover:-translate-y-1 cursor-pointer' }}
                                             eco-card"
                                             data-id="{{ $quest->quest_id }}" data-type="ecoQuest"
+                                            data-category="{{ $quest->category }}"
                                             data-description="{{ $quest->description }}">
 
                                             {{-- Overlay Hint --}}
@@ -242,5 +252,40 @@
             </div>
         </div>
     @endif
+    <script>
+        const filterSelect = document.getElementById('questFilter');
+
+        filterSelect.addEventListener('change', () => {
+            const selected = filterSelect.value;
+            const cards = document.querySelectorAll('.eco-card');
+
+            cards.forEach(card => {
+                // Use inline style to hide/show
+                if (selected === 'all' || card.dataset.category === selected) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+        const searchInput = document.getElementById('questSearch');
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase().trim();
+
+            // Select all quest rows (pending, completed, rejected)
+            const questRows = document.querySelectorAll('.accepted-quest, .completed-quest, .rejected-quest');
+
+            questRows.forEach(row => {
+                const title = row.querySelector('span')?.textContent.toLowerCase() || '';
+                
+                if (title.includes(query)) {
+                    row.style.display = 'flex'; // show
+                } else {
+                    row.style.display = 'none'; // hide
+                }
+            });
+        });
+    </script>
     @include('modal.userQuestModal')
 @endsection
