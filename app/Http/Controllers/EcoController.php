@@ -86,21 +86,25 @@ class EcoController extends Controller
         // Determine current stage
         $stage = 1;
         foreach ($stageThresholds as $index => $threshold) {
-            if ($progressPoints >= $threshold) {
-                $stage = $index + 1;
-            } else {
+            if ($progressPoints < $threshold) {
                 break;
             }
+            $stage = $index + 2; // Stage shifts up by 1
         }
 
-        // Current stage max for progress bar
-        $growthMax = $stageThresholds[$stage - 1];
+        // Current stage's next target (growth max)
+        $growthMax = $stageThresholds[$stage - 1] ?? end($stageThresholds);
 
-        // Growth percentage relative to current stage
-        $prevThreshold = $stage > 1 ? $stageThresholds[$stage - 2] : 0;
-        $growthPercent = $growthMax - $prevThreshold > 0
+        // Previous threshold for this stage
+        $prevThreshold = $stage > 1
+            ? $stageThresholds[$stage - 2]
+            : 0;
+
+        // Compute percentage within the stage
+        $growthPercent = ($growthMax - $prevThreshold) > 0
             ? (($progressPoints - $prevThreshold) / ($growthMax - $prevThreshold)) * 100
             : 0;
+
         $growthPercent = min(100, max(0, $growthPercent));
 
         // ⭐ FETCH FEEDBACK (merging FeedbackController logic)
