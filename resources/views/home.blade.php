@@ -142,9 +142,9 @@
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-xl font-bold text-green-900">Available Quests</h2>
 
-                    @if ($pendingSubmissions->count() > 2)
+                    @if ($pendingSubmissions->count() > 0)
                         <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
-                            View all →
+                            View More →
                         </a>
                     @endif
                 </div>
@@ -193,9 +193,9 @@
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-xl font-bold text-green-900">Pending Submissions</h2>
 
-                    @if ($pendingSubmissions->count() > 2)
+                    @if ($pendingSubmissions->count() > 0)
                         <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
-                            View all →
+                            View More →
                         </a>
                     @endif
                 </div>
@@ -215,7 +215,7 @@
                                 </p>
                                 @php
                                     $submissionData = [
-                                        'submission_id' => $sub->id,
+                                        'submission_id' => $sub->submission_id,
                                         'questTitle' => $sub->quest->title,
                                         'questDescription' => $sub->quest->description,
                                     ];
