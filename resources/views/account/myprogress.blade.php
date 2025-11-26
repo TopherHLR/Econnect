@@ -1,8 +1,23 @@
 @extends('layouts.accountLayout')
 
 @section('account_content')
-    <!-- Header -->
+    <!-- Progress Bar -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-[#e8e6dc] mt-4">
+        <div class="flex justify-between items-center mb-3">
+            <span class="text-[#4b3f2f] font-medium">Your Overall Progress points:</span>
+            <span class="text-[#6b665e] text-sm">
+                {{ $progressPoints }}/{{ $growthMax }} points to next treshhold
+            </span>
+        </div>
+        <div class="w-full bg-[#e8e6dc] rounded-full h-3">
+            <div class="bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] h-3 rounded-full" 
+                style="width: {{ $growthPercent }}%">
+            </div>
+        </div>
+    </div>
+
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
+
         <div>
             <h1 class="text-3xl font-bold text-[#4F6B3F] flex items-center">
                 Your Eco-Journey So Far <span class="ml-3 text-2xl">🌱</span>
@@ -10,13 +25,8 @@
             <p class="text-[#6B665E] mt-2 text-lg">Track your growth, achievements, and daily impact.</p>
         </div>
 
-        <div class="flex flex-col md:items-end space-y-3 w-full md:w-auto">
-            <div
-                class="bg-gradient-to-r from-[#8B6E4A] to-[#9D845F] text-white rounded-full px-6 py-3 flex items-center space-x-3 font-bold shadow-lg">
-                <span class="text-xl">🌿</span>
-                <span class="text-xl">{{ $ecoPoints }} Eco Points</span>
-            </div>
 
+        <div class="flex flex-col md:items-end space-y-3 w-full md:w-auto">
             <div
                 class="bg-gradient-to-r from-[#F2E8D5] to-[#F8F2E6] text-[#4F6B3F] rounded-full px-5 py-2 font-semibold shadow-md border border-[#E8DBC7]">
                 Rank: Eco Defender
@@ -148,7 +158,6 @@
     </div>
 
     <!-- Badges Section -->
-
     <div class="bg-gradient-to-br from-[#F2E8D5] to-[#F8F2E6] rounded-3xl p-6 shadow-md mb-8 border border-[#E8DBC7]">
 
         <div class="flex justify-between items-center mb-6">

@@ -78,10 +78,10 @@ class EcoController extends Controller
         }
 
         // Tree stages
-        $treeStages = 7;
+        $treeStages = 10;
 
         // Define points required per stage
-        $stageThresholds = [50, 100, 200, 300, 450, 550, 700];
+        $stageThresholds = [50, 100, 200, 300, 450, 550, 700,850,1000,1500];
 
         // Determine current stage
         $stage = 1;

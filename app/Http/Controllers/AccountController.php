@@ -193,20 +193,49 @@ class AccountController extends Controller
             ->where('voided', false)
             ->sum('points_change');
 
+            // Define points required per stage
+            $stageThresholds = [50, 100, 200, 300, 450, 550, 700, 850, 1000, 1500];
+
+            // Determine current stage
+            $stage = 1;
+            foreach ($stageThresholds as $index => $threshold) {
+                if ($progressPoints < $threshold) {
+                    break;
+                }
+                $stage = $index + 2; // Stage shifts up by 1
+            }
+
+            // Current stage's next target (growth max)
+            $growthMax = $stageThresholds[$stage - 1] ?? end($stageThresholds);
+
+            // Previous threshold for this stage
+            $prevThreshold = $stage > 1
+                ? $stageThresholds[$stage - 2]
+                : 0;
+
+            // Compute percentage within the stage for progress bar
+            $growthPercent = ($growthMax - $prevThreshold) > 0
+                ? (($progressPoints - $prevThreshold) / ($growthMax - $prevThreshold)) * 100
+                : 0;
+
+            $growthPercent = min(100, max(0, $growthPercent));
+
+
         // ----------------------------------------------
         // TREE STAGE BADGES
         // ----------------------------------------------
         $treeStages = [
             0     => ['name' => 'Seed', 'icon' => '🌱'],
-            25    => ['name' => 'Sprout', 'icon' => '🌿'],
+            50    => ['name' => 'Sprout', 'icon' => '🌿'],
             100   => ['name' => 'Seedling', 'icon' => '🍃'],
-            500   => ['name' => 'Sapling', 'icon' => '🌳'],
-            1000  => ['name' => 'Young Tree', 'icon' => '🌲'],
-            2500  => ['name' => 'Growing Tree', 'icon' => '🎋'],
-            5000  => ['name' => 'Strong Tree', 'icon' => '🌴'],
-            7500  => ['name' => 'Mature Tree', 'icon' => '🌳'],
-            10000 => ['name' => 'Flowering Tree', 'icon' => '🌸'],
-            15000 => ['name' => 'Ancient Tree', 'icon' => '🌺'],
+            200   => ['name' => 'Sapling', 'icon' => '🌳'],
+            300  => ['name' => 'Young Tree', 'icon' => '🌲'],
+            450  => ['name' => 'Growing Tree', 'icon' => '🎋'],
+            550  => ['name' => 'Strong Tree', 'icon' => '🌴'],
+            700  => ['name' => 'Mature Tree', 'icon' => '🌳'],
+            850 => ['name' => 'Flowering Tree', 'icon' => '🌸'],
+            1000 => ['name' => 'Ancient Tree', 'icon' => '🌺'],
+            1500 => ['name' => 'Ancient Tree', 'icon' => '🌺'],
         ];
 
         $treeBadges = [];
@@ -258,6 +287,7 @@ class AccountController extends Controller
 
         return view('account.myprogress', compact(
             'ecoPoints',
+            'progressPoints',
             'treePercent',
             'actionsPercent',
             'questsPercent',
@@ -269,8 +299,11 @@ class AccountController extends Controller
             'leaderboard',
             'badges',
             'unlockedCount',
-            'totalBadges'
+            'totalBadges',
+            'growthPercent', // ← for progress bar
+            'growthMax'      // ← for "X points to next reward"
         ));
+
 
     }
 
