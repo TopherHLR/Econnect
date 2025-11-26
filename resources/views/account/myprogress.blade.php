@@ -10,8 +10,7 @@
             </span>
         </div>
         <div class="w-full bg-[#e8e6dc] rounded-full h-3">
-            <div class="bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] h-3 rounded-full" 
-                style="width: {{ $growthPercent }}%">
+            <div class="bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] h-3 rounded-full" style="width: {{ $growthPercent }}%">
             </div>
         </div>
     </div>
@@ -165,20 +164,18 @@
             <span class="text-[#6B665E] text-sm">{{ $unlockedCount }} of {{ $totalBadges }} unlocked</span>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 md:grid-cols-6 gap-2">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-8 gap-2">
 
             @foreach ($badges as $badge)
                 <div class="relative flex flex-col items-center group">
 
-                    <!-- Badge card -->
+                    <!-- Badge card with white background -->
                     <div
                         class="flex flex-col items-center bg-white rounded-2xl p-4 shadow border border-[#F2E8D5]
-                        {{ $badge['unlocked'] ? 'hover:scale-105 transition duration-300' : 'opacity-60' }}">
+                    {{ $badge['unlocked'] ? 'hover:scale-105 transition duration-300' : 'opacity-60' }}">
 
-                        <div
-                            class="w-28 h-28 flex items-center justify-center rounded-full
-                            {{ $badge['unlocked'] ? 'bg-gradient-to-br from-[#8B6E4A] to-[#9D845F] shadow-md' : 'bg-gray-300' }} mb-4">
-
+                        <!-- Badge icon -->
+                        <div class="w-30 h-30 flex items-center justify-center mb-4">
                             @php
                                 $badgeIcons = [
                                     'Eco-Novice' => 'seedling.svg',
@@ -197,34 +194,23 @@
                             @if ($badge['unlocked'])
                                 @if ($iconPath)
                                     <img src="{{ Vite::asset('resources/images/badges/' . $iconPath) }}"
-                                        alt="{{ $badge['name'] }}" class="w-24 h-24">
+                                        alt="{{ $badge['name'] }}" class="w-36 h-36">
                                 @else
-                                    <!-- Default unlocked icon -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-green-500"
-                                        fill="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm5 8l-6 6-3-3 1.414-1.414L11 13.172l4.586-4.586z" />
-                                    </svg>
+                                    <span class="text-5xl">{{ $badge['icon'] }}</span>
                                 @endif
                             @else
-                                <!-- Lock icon for locked badges -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-gray-500" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 11c.828 0 1.5.672 1.5 1.5S12.828 14 12 14s-1.5-.672-1.5-1.5S11.172 11 12 11z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 11V7a5 5 0 00-10 0v4M5 11h14a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2z" />
-                                </svg>
+                                <span class="text-5xl">🔒</span>
                             @endif
-
                         </div>
 
+                        <!-- Badge name -->
                         <p
                             class="text-base font-semibold {{ $badge['unlocked'] ? 'text-[#4B3F2F]' : 'text-gray-400' }} text-center">
                             {{ $badge['name'] }}
                         </p>
 
-                        <p class="text-sm mt-1 {{ $badge['unlocked'] ? 'text-gray-500' : 'text-gray-400' }}">
+                        <!-- Badge status -->
+                        <p class="text-sm mt-1 {{ $badge['unlocked'] ? 'text-gray-500' : 'text-gray-400' }} text-center">
                             {{ $badge['unlocked'] ? 'Unlocked' : 'Locked' }}
                         </p>
                     </div>
@@ -250,6 +236,7 @@
 
         </div>
     </div>
+
 
     <!-- Leaderboard Section -->
     <div class="bg-gradient-to-br from-[#FCFFF6] to-[#FDFCF8] p-6 rounded-2xl shadow-md mb-8 border border-[#ECF4E7]">
@@ -297,37 +284,17 @@
                 <tbody>
                     @foreach ($recentHistory as $row)
                         <tr class="border-b border-[#F2E8D5] hover:bg-[#FCFFF6] transition">
-                            <td class="py-3">{{ $row->created_at->format('M d, Y') }}</td>
+                            <td class="py-3">{{ $row->created_at ? $row->created_at->format('M d, Y') : 'N/A' }}</td>
                             <td
                                 class="py-3 font-semibold {{ $row->points_change > 0 ? 'text-green-700' : 'text-red-700' }}">
                                 {{ $row->points_change }}
                             </td>
                             <td class="py-3">
-                                @php
-                                    $reason = 'Activity';
-
-                                    if (is_string($row->source)) {
-                                        $reason = $row->source;
-                                    } elseif ($row->questSubmission) {
-                                        $questTitle = $row->questSubmission->quest
-                                            ? $row->questSubmission->quest->title
-                                            : 'Unknown Quest';
-                                        $reason =
-                                            'Quest #' .
-                                            $row->questSubmission->quest_id .
-                                            ' | ' .
-                                            $questTitle .
-                                            ' - ' .
-                                            ucfirst($row->questSubmission->status);
-                                    }
-                                @endphp
-
-                                {{ $reason }}
+                                {{ $row->display_reason ?? 'Activity' }}
                             </td>
-
-
                         </tr>
                     @endforeach
+
                 </tbody>
             </table>
         </div>

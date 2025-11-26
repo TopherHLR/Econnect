@@ -36,6 +36,7 @@ class UserPointsHistory extends Model
 
     // Casts for proper data handling
     protected $casts = [
+          'source_id' => 'integer',
         'points_change' => 'integer',
         'voided' => 'boolean', // cast voided to boolean
         'created_at' => 'datetime',
@@ -65,11 +66,17 @@ class UserPointsHistory extends Model
             case 'Quest':
                 return $this->belongsTo(QuestSubmission::class, 'source_id', 'submission_id');
 
+            case 'Voucher Redemption':
+                return $this->belongsTo(UserVoucher::class, 'source_id', 'redemption_id')->with('voucher')->withDefault();
+
+
+
             default:
                 // Always return a relationship object — a "null" relation
                 return $this->belongsTo(UserPointsHistory::class, 'id')->whereNull('id');
         }
     }
+
 
     public function questSubmission()
     {

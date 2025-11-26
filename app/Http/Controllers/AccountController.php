@@ -141,13 +141,61 @@ class AccountController extends Controller
             ->limit(5)
             ->get();
 
-        $recentHistory = UserPointsHistory::where('user_id', $user->user_id)
-            ->with('questSubmission.quest')
-            ->latest()
-            ->limit(10)
-            ->get();
+        // ---------- RECENT HISTORY WITH VOUCHER FIX ----------
+            $recentHistory = UserPointsHistory::where('user_id', $user->user_id)
+                ->with([
+                    'questSubmission.quest',
+                    'source.voucher'   // <-- add this!
+                ])
+                ->latest()
+                ->limit(10)
+                ->get()
 
-        // Daily streak
+            ->map(function ($row) {
+                // Compute display reason for Blade template
+                if ($row->activity_type === 'Voucher Redemption') {
+                    if ($row->source) {
+                        $voucher = $row->source->voucher;
+                        $voucherTitle = $voucher ? $voucher->title : 'Unknown Voucher';
+                        $points = abs($row->points_change);
+                        $status = ucfirst($row->source->status); // Active / Used
+
+                        if ($row->source->status === 'active') {
+                            $row->display_reason = "Redeemed Voucher | {$voucherTitle} (-{$points} pts) [{$status}]";
+                        } elseif ($row->source->status === 'used') {
+                            $row->display_reason = "Used Voucher | {$voucherTitle} (-{$points} pts) [{$status}]";
+                        } else {
+                            $row->display_reason = "Voucher Redemption | {$voucherTitle} ";
+                        }
+                    } else {
+                        $row->display_reason = "Voucher Redemption ";
+                    }
+                } elseif ($row->activity_type === 'Quest' && $row->questSubmission) {
+                    $questTitle = $row->questSubmission->quest
+                        ? $row->questSubmission->quest->title
+                        : 'Unknown Quest';
+                    $row->display_reason = 'Quest #' . $row->questSubmission->quest_id
+                        . ' | ' . $questTitle
+                        . ' - ' . ucfirst($row->questSubmission->status);
+                } else {
+                    $row->display_reason = 'Activity';
+                }
+
+                // DEBUG LOG
+                \Log::info('UserPointsHistory Row:', [
+                    'history_id' => $row->history_id,
+                    'activity_type' => $row->activity_type,
+                    'points_change' => $row->points_change,
+                    'source_id' => $row->source_id,
+                    'source_exists' => $row->source ? true : false,
+                    'source_data' => $row->source ? $row->source->toArray() : null,
+                    'display_reason' => $row->display_reason,
+                ]);
+
+                return $row;
+            });
+
+        // ---------- DAILY STREAK ----------
         $streak = 0;
         $day = 0;
         while (true) {
@@ -167,63 +215,40 @@ class AccountController extends Controller
         }
         $currentStreak = $streak;
 
-        // ---------- New: Leaderboard ----------
+        // ---------- LEADERBOARD ----------
         $leaderboard = User::where('user_type', '!=', 'admin')
-            ->with('pointsHistory')
+            ->with('pointsHistory', 'questSubmissions')
             ->get()
             ->map(function ($u) {
                 $ecoPoints = $u->pointsHistory->where('points_change', '>', 0)->sum('points_change');
                 $questsCompleted = $u->questSubmissions->where('status', 'completed')->count();
-                
-                // Example formula: total progress = eco points + (quests completed * 10)
                 $u->progressPoints = $ecoPoints + ($questsCompleted * 10);
-
                 return $u;
             })
             ->sortByDesc('progressPoints')
             ->values()
-            ->take(10); // top 10
-        // ----------------------------------------------
-        // BADGE MILESTONES
-        // ----------------------------------------------
+            ->take(10);
 
-        // Earned points (ignore voided)
+        // ---------- BADGES ----------
         $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
             ->where('points_change', '>', 0)
             ->where('voided', false)
             ->sum('points_change');
 
-            // Define points required per stage
-            $stageThresholds = [50, 100, 200, 300, 450, 550, 700, 850, 1000, 1500];
+        $stageThresholds = [50, 100, 200, 300, 450, 550, 700, 850, 1000, 1500];
+        $stage = 1;
+        foreach ($stageThresholds as $index => $threshold) {
+            if ($progressPoints < $threshold) break;
+            $stage = $index + 2;
+        }
+        $growthMax = $stageThresholds[$stage - 1] ?? end($stageThresholds);
+        $prevThreshold = $stage > 1 ? $stageThresholds[$stage - 2] : 0;
+        $growthPercent = ($growthMax - $prevThreshold) > 0
+            ? (($progressPoints - $prevThreshold) / ($growthMax - $prevThreshold)) * 100
+            : 0;
+        $growthPercent = min(100, max(0, $growthPercent));
 
-            // Determine current stage
-            $stage = 1;
-            foreach ($stageThresholds as $index => $threshold) {
-                if ($progressPoints < $threshold) {
-                    break;
-                }
-                $stage = $index + 2; // Stage shifts up by 1
-            }
-
-            // Current stage's next target (growth max)
-            $growthMax = $stageThresholds[$stage - 1] ?? end($stageThresholds);
-
-            // Previous threshold for this stage
-            $prevThreshold = $stage > 1
-                ? $stageThresholds[$stage - 2]
-                : 0;
-
-            // Compute percentage within the stage for progress bar
-            $growthPercent = ($growthMax - $prevThreshold) > 0
-                ? (($progressPoints - $prevThreshold) / ($growthMax - $prevThreshold)) * 100
-                : 0;
-
-            $growthPercent = min(100, max(0, $growthPercent));
-
-
-        // ----------------------------------------------
-        // TREE STAGE BADGES
-        // ----------------------------------------------
+        // TREE STAGES
         $treeStages = [
             0     => ['name' => 'Seed', 'icon' => '🌱'],
             50    => ['name' => 'Sprout', 'icon' => '🌿'],
@@ -237,7 +262,6 @@ class AccountController extends Controller
             1000 => ['name' => 'Ancient Tree', 'icon' => '🌺'],
             1500 => ['name' => 'Ancient Tree', 'icon' => '🌺'],
         ];
-
         $treeBadges = [];
         foreach ($treeStages as $points => $stage) {
             $treeBadges[] = [
@@ -250,9 +274,7 @@ class AccountController extends Controller
             ];
         }
 
-        // ----------------------------------------------
         // QUEST BADGES
-        // ----------------------------------------------
         $questMilestones = [
             1  => ['name' => 'Eco-Novice', 'icon' => '🌱'],
             5  => ['name' => 'Eco-Explorer', 'icon' => '🌿'],
@@ -260,11 +282,9 @@ class AccountController extends Controller
             30 => ['name' => 'Eco-Advocate', 'icon' => '🌎'],
             50 => ['name' => 'Eco-Guardian', 'icon' => '🛡️'],
         ];
-
         $userCompletedQuests = QuestSubmission::where('user_id', $user->user_id)
             ->where('status', 'completed')
             ->count();
-
         $questBadges = [];
         foreach ($questMilestones as $required => $badge) {
             $questBadges[] = [
@@ -277,13 +297,9 @@ class AccountController extends Controller
             ];
         }
 
-        // ----------------------------------------------
-        // COMBINE ALL BADGES
-        // ----------------------------------------------
         $badges = array_merge($treeBadges, $questBadges);
         $unlockedCount = collect($badges)->where('unlocked', true)->count();
         $totalBadges = count($badges);
-
 
         return view('account.myprogress', compact(
             'ecoPoints',
@@ -300,12 +316,11 @@ class AccountController extends Controller
             'badges',
             'unlockedCount',
             'totalBadges',
-            'growthPercent', // ← for progress bar
-            'growthMax'      // ← for "X points to next reward"
+            'growthPercent',
+            'growthMax'
         ));
-
-
     }
+
 
 
 
