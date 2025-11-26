@@ -22,6 +22,7 @@ class NotificationController extends Controller
     /**
      * Mark a notification as read
      */
+    // Mark single notification as read
     public function markAsRead($id)
     {
         $notification = Notification::where('notification_id', $id)
@@ -33,6 +34,15 @@ class NotificationController extends Controller
         return response()->json(['success' => true]);
     }
 
+    // Mark all notifications as read
+    public function markAllAsRead()
+    {
+        Notification::where('user_id', Auth::id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        return response()->json(['success' => true]);
+    }
     /**
      * Create a notification (used by backend events)
      */

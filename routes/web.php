@@ -243,8 +243,9 @@ Route::post('/admin/voucher/redeem/{qr_code}', [VoucherController::class, 'redee
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/notifications/mark-read/{id}', [NotificationController::class, 'markAsRead']);
-    Route::post('/notifications', [NotificationController::class, 'create']); // optional if creating via API
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
 });
+
 
 Route::get('/about', function () {
     return view('about');

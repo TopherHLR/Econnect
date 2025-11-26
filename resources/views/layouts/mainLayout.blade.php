@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Econnect') }}</title>
 
@@ -62,55 +63,22 @@
                 @endguest
 
                 @auth
+                    @include('modal.notificationModal')
                     <div class="flex items-center space-x-3 relative ms-5">
                         <!-- Notification Bell -->
-                        <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open"
+                        <!-- Notification Bell -->
+                        <div class="relative">
+                            <button id="notification-btn"
                                 class="relative text-[#6A8A52] hover:text-[#4F6B3F] focus:outline-none">
                                 <i class="fa-solid fa-bell text-2xl"></i>
                                 <!-- Red dot for unread -->
                                 @if (App\Models\Notification::where('user_id', Auth::id())->whereNull('read_at')->exists())
-                                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                                    <span id="notification-dot"
+                                        class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
                                 @endif
                             </button>
-
-                            <!-- Notification Modal -->
-                            <div x-show="open" @click.away="open = false"
-                                x-transition:enter="transition ease-out duration-200"
-                                x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
-                                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                                x-transition:leave="transition ease-in duration-150"
-                                x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                                x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
-                                class="absolute right-0 mt-2 w-80 bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden z-50">
-                                <div class="p-4 border-b border-gray-100 font-semibold bg-[#f5f8ef]">
-                                    Notifications
-                                </div>
-                                <ul class="max-h-64 overflow-y-auto">
-                                    @foreach (App\Models\Notification::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get() as $notif)
-                                        <li
-                                            class="px-4 py-2 border-b border-gray-100 hover:bg-gray-50 flex justify-between items-start">
-                                            <div>
-                                                <p class="font-medium text-gray-800">{{ $notif->title }}</p>
-                                                <p class="text-gray-500 text-sm">{{ $notif->message }}</p>
-                                                <p class="text-gray-400 text-xs mt-1">
-                                                    {{ $notif->created_at->diffForHumans() }}</p>
-
-                                            </div>
-                                            @if (!$notif->read_at)
-                                                <span class="w-2 h-2 bg-red-500 rounded-full mt-1"></span>
-                                            @endif
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                <div class="p-2 text-center bg-gray-50">
-                                    <button class="text-sm text-[#6A8A52] hover:text-[#4F6B3F]"
-                                        @click.prevent="$wire.markAllNotificationsRead()">
-                                        Mark all as read
-                                    </button>
-                                </div>
-                            </div>
                         </div>
+
                         <div x-data="{ open: false }" class="relative">
                             <!-- Profile Button -->
                             <button @click="open = !open"
@@ -145,9 +113,8 @@
                                             <!-- Rectangle icon -->
                                             <span
                                                 class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                    fill="none" stroke="currentColor" stroke-width="2"
-                                                    class="w-4 h-4 text-[#4F6B3F]">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#4F6B3F]">
                                                     <circle cx="12" cy="8" r="4" />
                                                     <path d="M4 20c0-4 4-7 8-7s8 3 8 7" />
                                                 </svg>
@@ -161,9 +128,8 @@
                                             class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
                                             <span
                                                 class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
-                                                    class="w-4 h-4 text-[#4F6B3F]">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor" stroke-width="2" class="w-4 h-4 text-[#4F6B3F]">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="M3 17l6-6 4 4 8-8" />
                                                 </svg>
@@ -177,8 +143,8 @@
                                             class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
                                             <span
                                                 class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor" stroke-width="2"
                                                     class="w-4 h-4 text-[#4F6B3F]">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="M12 8v8m0 0l-3-3m3 3l3-3m-3-7v7" />
