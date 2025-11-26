@@ -21,7 +21,7 @@
                             @foreach ($quests as $quest)
                                 @php
                                     // Get user's submission for THIS quest only
-$submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                $submission = $quest->submissions->firstWhere('user_id', auth()->id());
                                 @endphp
 
                                 @if ($submission && $submission->status === 'pending')

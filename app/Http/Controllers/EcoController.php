@@ -111,6 +111,40 @@ class EcoController extends Controller
         $feedback = \App\Models\Feedback::with('user')
             ->orderBy('created_at', 'desc')
             ->get();
+            // =========================
+        // GET AVAILABLE QUESTS
+        // =========================
+        $availableQuests = Quest::where('status', 'active')
+            ->where(function ($q) {
+                $today = now()->toDateString();
+                $q->whereNull('start_date')->orWhere('start_date', '<=', $today);
+            })
+            ->where(function ($q) {
+                $today = now()->toDateString();
+                $q->whereNull('end_date')->orWhere('end_date', '>=', $today);
+            })
+            ->whereDoesntHave('submissions', function ($q) use ($user) {
+                if ($user) {
+                    $q->where('user_id', $user->user_id);
+                }
+            })
+            ->orderBy('start_date', 'desc')
+            ->get();
+
+
+        // =========================
+        // GET PENDING USER SUBMISSIONS
+        // =========================
+        $pendingSubmissions = $user
+            ? QuestSubmission::with('quest')
+                ->where('user_id', $user->user_id)
+                ->where('status', 'pending')
+                ->whereNull('proof_image')
+                ->whereNull('proof_link')
+                ->get()
+            : collect();
+
+
         return view('home', compact(
             'currentPoints',
             'growthPercent',
@@ -118,8 +152,11 @@ class EcoController extends Controller
             'growthMax',
             'stage',
             'treeStages',
-            'feedback' // ← now passed to the view
+            'feedback',
+            'availableQuests',
+            'pendingSubmissions'
         ));
+
     }
     
 

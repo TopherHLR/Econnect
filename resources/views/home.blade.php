@@ -68,6 +68,7 @@
         </div>
     </section>
     <!-- 🌿 Widgets for Logged-in Users -->
+    @include('modal.userQuestModal')
     @include('modal.ecoDetailModal')
     @auth
         <div class="eco-widgets-container">
@@ -133,8 +134,114 @@
 
     <section class="relative -top-75 min-h-[200vh] flex items-center justify-center viewport2BG">
 
+        @auth
+            <!-- 🌿 LEFT MODAL PANEL -->
+            <div
+                class="absolute left-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
+                <!-- Title + View More Link -->
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xl font-bold text-green-900">Available Quests</h2>
+
+                    @if ($pendingSubmissions->count() > 2)
+                        <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
+                            View all →
+                        </a>
+                    @endif
+                </div>
+
+                @if ($availableQuests->isEmpty())
+                    <p class="text-gray-500 text-sm italic">No available quests at the moment 🌱</p>
+                @else
+                    <div class="space-y-3">
+
+                        @foreach ($availableQuests->take(2) as $quest)
+                            <div class="p-4 bg-white/80 shadow rounded-xl border border-green-100">
+                                <h3 class="font-semibold text-green-800">{{ $quest->title }}</h3>
+
+                                <p class="text-xs text-gray-600 mt-1">
+                                    Reward:
+                                    <span class="font-bold text-green-700">{{ $quest->points_reward }} points</span>
+                                </p>
+
+                                <span
+                                    onclick="openActiveQuestModal({
+                                            id: {{ $quest->quest_id }},
+                                            title: '{{ $quest->title }}',
+                                            description: '{{ $quest->description }}',
+                                            category: '{{ $quest->category }}',
+                                            points_reward: {{ $quest->points_reward }},
+                                            status: '{{ $quest->status }}',
+                                            start_date: '{{ $quest->start_date }}',
+                                            end_date: '{{ $quest->end_date }}'
+                                        })"
+                                    class="text-xs text-blue-700 underline mt-2 block cursor-pointer">
+                                    View Quest →
+                                </span>
+
+                            </div>
+                        @endforeach
+
+                    </div>
+                @endif
+
+            </div>
+            <!-- 🌿 RIGHT MODAL PANEL -->
+            <div
+                class="absolute right-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
+
+                <!-- Title + View More Link -->
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xl font-bold text-green-900">Pending Submissions</h2>
+
+                    @if ($pendingSubmissions->count() > 2)
+                        <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
+                            View all →
+                        </a>
+                    @endif
+                </div>
+
+                @if ($pendingSubmissions->isEmpty())
+                    <p class="text-gray-500 text-sm italic">No pending tasks 🎉</p>
+                @else
+                    <div class="space-y-3">
+
+                        @foreach ($pendingSubmissions->take(2) as $sub)
+                            <div class="p-4 bg-white/80 shadow rounded-xl border border-green-100">
+                                <h3 class="font-semibold text-green-800">{{ $sub->quest->title }}</h3>
+
+                                <p class="text-xs text-gray-600 mt-1">
+                                    Status:
+                                    <span class="font-medium text-orange-600">{{ ucfirst($sub->status) }}</span>
+                                </p>
+                                @php
+                                    $submissionData = [
+                                        'submission_id' => $sub->id,
+                                        'questTitle' => $sub->quest->title,
+                                        'questDescription' => $sub->quest->description,
+                                    ];
+                                @endphp
+
+                                <span onclick='openAcceptedQuestModal(@json($submissionData))'
+                                    class="text-xs text-blue-700 underline mt-2 block cursor-pointer">
+                                    Continue →
+                                </span>
+
+
+                            </div>
+                        @endforeach
+
+                    </div>
+                @endif
+
+            </div>
+
+        @endauth
+
+
+
         <div id="plant-container"
-            class="relative w-[250px] -top-210 flex items-center justify-center transition-transform duration-[1500ms] ease-out">
+            class="relative w-[250px] -top-210 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
+
             <!-- 🍂 Fallen Leaves Container -->
             <div id="fallen-leaves" class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden"></div>
 
@@ -150,14 +257,18 @@
             <!-- 🌾 Glow Background -->
             <div class="absolute top-20 flex items-center justify-center">
                 <div
-                    class="w-[400px] h-[550px] rounded-full bg-gradient-to-b from-yellow-200/60 via-yellow-100/30 to-transparent blur-3xl scale-110">
+                    class="w-[400px] h-[550px] rounded-full bg-gradient-to-b 
+                            from-yellow-200/60 via-yellow-100/30 to-transparent 
+                            blur-3xl scale-110">
                 </div>
                 <div class="absolute top-15 w-[250px] h-[350px] rounded-full bg-white/50 blur-2xl"></div>
             </div>
-            <!-- 🌟 Hint Message (subtle, beside the tree) -->
+
+            <!-- 🌟 Hint Message -->
             <div id="tap-message"
                 class="absolute left-full ml-3 top-1/2 -translate-y-1/2 text-xs italic text-white opacity-0 transition-opacity duration-500">
             </div>
+
             @auth
 
                 <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="Plant"
@@ -171,20 +282,20 @@
                         Your personal growth tree
                     </p>
 
-
                     <div
                         class="relative w-[300px] md:w-[500px] h-[14px] rounded-full bg-[#d6cbb7]/40 overflow-hidden shadow-inner">
                         <div id="growth-fill"
-                            class="absolute left-0 bottom-0 h-full bg-gradient-to-r from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2] rounded-full shadow-lg"
+                            class="absolute left-0 bottom-0 h-full bg-gradient-to-r 
+                                from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2] rounded-full shadow-lg"
                             style="width: {{ $growthPercent }}%;">
                         </div>
                     </div>
 
-                    <!-- 🌟 Progress Label -->
                     <p id="growth-label" class="mt-2 text-[#6b665e] text-sm font-medium">
                         Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }} points
                     </p>
                 </div>
+
             @endauth
 
             @guest
@@ -206,8 +317,10 @@
                     </p>
                 </div>
             @endguest
+
         </div>
     </section>
+
 
     <section class="relative text-center py-20 px-6 overflow-hidden mb-[96px]">
         <!-- Left Cloud -->
