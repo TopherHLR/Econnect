@@ -239,13 +239,11 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/admin/voucher/redeem/{qr_code}', [VoucherController::class, 'redeemByQrCode'])
     ->name('admin.voucher.redeem');
 
-//---------------------------------------------------- NOTIFICATION -------------------------------------------------
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/notifications/mark-read/{id}', [NotificationController::class, 'markAsRead']);
     Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
 });
-
 
 Route::get('/about', function () {
     return view('about');

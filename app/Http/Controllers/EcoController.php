@@ -161,7 +161,6 @@ class EcoController extends Controller
         ));
 
     }
-    
 
     private function autoAssignSmallQuest($creatorUserId)
     {
