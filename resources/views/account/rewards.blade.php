@@ -14,7 +14,7 @@
         <div class="flex flex-col">
             <h1 class="text-3xl font-bold text-[#4b3f2f] flex items-center">
                 Celebrate Your Effort
-                <span class="ml-3 text-2xl">🎉</span>
+                <span class="ml-3 text-2xl"></span>
             </h1>
             <p class="text-[#6b665e] mt-2 text-lg max-w-2xl">
                 Redeem your eco-points for digital rewards and recognition. Every action counts!
@@ -22,7 +22,6 @@
         </div>
         <div
             class="bg-gradient-to-r from-[#a86f46] to-[#bd845a] text-white rounded-full px-6 py-3 flex items-center space-x-3 shadow-lg">
-            <span class="text-xl">🌿</span>
             <span class="font-bold text-xl">{{ $currentPoints }} Eco Points</span>
         </div>
     </div>
