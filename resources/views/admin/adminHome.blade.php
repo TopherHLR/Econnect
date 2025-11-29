@@ -36,16 +36,6 @@
                     <i class="fa-solid fa-user-check"></i>
                     <span class="hidden xl:inline">Scan QR</span>
                 </button>
-
-                <!-- System Actions -->
-                <button class="btn-eco btn-sage compact" title="System Settings">
-                    <i class="fa-solid fa-gear"></i>
-                    <span class="hidden xl:inline">Settings</span>
-                </button>
-                <button class="btn-eco btn-clay compact" title="Pending Submissions">
-                    <i class="fa-solid fa-hourglass-half"></i>
-                    <span class="hidden xl:inline">Pending</span>
-                </button>
             </div>
         </div>
 

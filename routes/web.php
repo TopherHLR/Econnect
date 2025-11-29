@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/adminHome', fn() => view('admin.adminHome'))->name('adminHome');
         Route::get('/adminUsers', fn() => view('admin.adminUsers'))->name('adminUsers');
         Route::get('/adminQuests', fn() => view('admin.adminQuests'))->name('adminQuests');
-        Route::get('/adminAnalytics', fn() => view('admin.adminAnalytics'))->name('adminAnalytics');
+        Route::get('/adminAnalytics', [AdminController::class, 'analytics'])->name('adminAnalytics');
         Route::get('/adminSystemAlerts', fn() => view('admin.adminSystemAlerts'))->name('adminSystemAlerts');
         Route::get('/adminSettings', fn() => view('admin.adminSettings'))->name('adminSettings');
             Route::get('/adminLifestyle', [LibraryController::class, 'adminIndex'])->name('adminLifestyle');

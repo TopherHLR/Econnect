@@ -332,7 +332,239 @@ class AdminController extends Controller
     // Admin Analytics
     public function analytics()
     {
-        return view('admin.adminAnalytics');
+  // ======== USERS ========
+        $totalUsers = User::count();
+        $verifiedUsers = User::where('is_verified', true)->count();
+
+        // User verification growth (last 7 days vs previous 7 days)
+        $verifiedLast7 = User::where('is_verified', true)
+            ->where('created_at', '>=', now()->subDays(7))
+            ->count();
+
+        $verifiedPrev7 = User::where('is_verified', true)
+            ->whereBetween('created_at', [now()->subDays(14), now()->subDays(7)])
+            ->count();
+
+        $userGrowth = $verifiedPrev7 > 0
+            ? round((($verifiedLast7 - $verifiedPrev7) / $verifiedPrev7) * 100)
+            : $verifiedLast7;
+
+        // ======== QUESTS ========
+        $liveQuests = Quest::where('status', 'live')->count();
+        $upcomingQuests = Quest::where('status', 'upcoming')->count();
+        $totalQuests = Quest::count();
+        $pendingSubmissions = QuestSubmission::where('status', 'pending')->count();
+        $overdueSubmissions = QuestSubmission::where('status', 'pending')
+            ->where('date_submitted', '<', now()->subDays(3))
+            ->count();
+
+        // ======== VOUCHERS ========
+        $vouchersThisWeek = UserVoucher::whereBetween('redeemed_date', [now()->startOfWeek(), now()])->count();
+        $vouchersLastWeek = UserVoucher::whereBetween(
+            'redeemed_date',
+            [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()]
+        )->count();
+        $voucherGrowth = $vouchersThisWeek - $vouchersLastWeek;
+
+        // ======== ECO ACTIONS SUMMARY ========
+        $ecoActionsLast7 = UserPointsHistory::where('activity_type', 'Tree Tap')
+            ->where('created_at', '>=', now()->subDays(7))
+            ->count();
+        $avgDailyEcoActions = $ecoActionsLast7 / 7;
+
+        $ecoActionsPrev7 = UserPointsHistory::where('activity_type', 'Tree Tap')
+            ->whereBetween('created_at', [now()->subDays(14), now()->subDays(7)])
+            ->count();
+
+        // ======== POINTS DISTRIBUTED (EARNED ONLY) ========
+        $pointsDistributed = UserPointsHistory::where('voided', false)
+            ->where('points_change', '>', 0) // exclude negative points
+            ->where('created_at', '>=', now()->subDays(7))
+            ->sum('points_change');
+
+        // ======== POINTS REDEEMED (SPENT) ========
+        $pointsRedeemed = UserPointsHistory::where('activity_type', 'Voucher Redemption')
+            ->where('voided', false)
+            ->where('created_at', '>=', now()->subDays(7))
+            ->sum(DB::raw('ABS(points_change)'));
+
+        // ======== FEEDBACK ========
+        $newFeedbackCount = Feedback::where('created_at', '>=', now()->subDays(7))->count();
+
+        // ======== QUEST CATEGORIES ========
+        $categories = Quest::distinct()->pluck('category')->filter()->values();
+
+        // -------- ECO ACTIONS (Tree Tap only) --------
+        $ecoActionsDailyRaw = UserPointsHistory::selectRaw('DATE(created_at) as date, COUNT(*) as total')
+            ->where('activity_type', 'Tree Tap')
+            ->where('created_at', '>=', now()->subDays(6)->startOfDay())
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('total', 'date');
+
+        $ecoActionsDaily = [];
+        $dayLabels = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $day = now()->subDays($i)->toDateString();
+            $ecoActionsDaily[] = $ecoActionsDailyRaw[$day] ?? 0;
+            $dayLabels[] = now()->subDays($i)->format('D'); // Mon, Tue, Wed...
+        }
+
+        // -------- POINTS DISTRIBUTED PER DAY (EARNED ONLY) --------
+        $pointsDailyRaw = UserPointsHistory::selectRaw('DATE(created_at) as date, SUM(points_change) as total')
+            ->where('voided', false)
+            ->where('points_change', '>', 0)
+            ->where('created_at', '>=', now()->subDays(6)->startOfDay())
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('total', 'date');
+
+        $pointsDaily = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $day = now()->subDays($i)->toDateString();
+            $pointsDaily[] = $pointsDailyRaw[$day] ?? 0;
+        }
+
+        // -------- POINTS REDEEMED PER DAY --------
+        $pointsRedeemedDailyRaw = UserPointsHistory::selectRaw('DATE(created_at) as date, SUM(ABS(points_change)) as total')
+            ->where('activity_type', 'Voucher Redemption')
+            ->where('voided', false)
+            ->where('created_at', '>=', now()->subDays(6)->startOfDay())
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('total', 'date');
+
+        $pointsRedeemedDaily = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $day = now()->subDays($i)->toDateString();
+            $pointsRedeemedDaily[] = $pointsRedeemedDailyRaw[$day] ?? 0;
+        }
+
+        // Total Quests Accomplished
+        $questsAccomplished = QuestSubmission::where('status', 'completed')->count();
+
+        // Total Vouchers Used (redeemed)
+        $vouchersUsed = UserVoucher::whereNotNull('redeemed_date')->count();
+
+        // ======== LEADERBOARD: MOST ACTIVE USERS ========
+        $users = User::with(['pointsHistory', 'savedLibraries', 'savedEcoActions', 'userVouchers'])->get();
+
+        $activeUsersLeaderboard = collect();
+
+        foreach ($users as $user) {
+            $lastActivityDates = collect();
+
+            if ($user->pointsHistory->count()) $lastActivityDates->push($user->pointsHistory->max('created_at'));
+            if ($user->savedLibraries->count()) $lastActivityDates->push($user->savedLibraries->max('saved_at'));
+            if ($user->savedEcoActions->count()) $lastActivityDates->push($user->savedEcoActions->max('log_date'));
+            if ($user->userVouchers->count()) $lastActivityDates->push($user->userVouchers->max('redeemed_date'));
+
+            $lastActivity = $lastActivityDates->count() ? $lastActivityDates->max() : null;
+
+            // Consider active if last activity within 6 months
+            if ($lastActivity && \Carbon\Carbon::parse($lastActivity)->gte(now()->subMonths(6))) {
+                $activityCount = $user->pointsHistory->count()
+                    + $user->savedLibraries->count()
+                    + $user->savedEcoActions->count()
+                    + $user->userVouchers->count();
+
+                $activeUsersLeaderboard->push((object)[
+                    'user' => $user,
+                    'activityCount' => $activityCount,
+                ]);
+            }
+        }
+
+        // Sort descending by activity count and take top 10
+        $topActiveUsers = $activeUsersLeaderboard->sortByDesc('activityCount')->values()->take(10);
+
+        // Most Saved Library Category (by saved libraries)
+        $mostCategorySaved = UserLibrary::join('eco_library', 'user_libraries.library_id', '=', 'eco_library.library_id')
+            ->select('eco_library.category', DB::raw('COUNT(*) as total'))
+            ->groupBy('eco_library.category')
+            ->orderByDesc('total')
+            ->first();
+
+        $mostCategorySavedName = $mostCategorySaved ? $mostCategorySaved->category : 'N/A';
+        $topByPoints = $users->map(function($user) {
+            $progressPoints = $user->pointsHistory->sum('points_change');
+            return (object)[
+                'user' => $user,
+                'progressPoints' => $progressPoints,
+            ];
+        })->sortByDesc('progressPoints')->values()->take(10);
+        $topByQuests = $users->map(function($user) {
+            $questsCompleted = $user->pointsHistory->where('activity_type', 'Quest')->count()
+                + $user->userVouchers->where('status', 'completed')->count(); // optional if you track completion elsewhere
+            return (object)[
+                'user' => $user,
+                'questsCompleted' => $questsCompleted,
+            ];
+        })->sortByDesc('questsCompleted')->values()->take(10);
+        $topDailyActions = $users->map(function($user) {
+            $dailyEcoActions = $user->pointsHistory->where('activity_type', 'Tree Tap')
+                ->where('created_at', '>=', now()->startOfDay())->count();
+            return (object)[
+                'user' => $user,
+                'dailyEcoActions' => $dailyEcoActions,
+            ];
+        })->sortByDesc('dailyEcoActions')->values()->take(10);
+
+        $topLibrarySavers = $users->map(function($user) {
+            return (object)[
+                'user' => $user,
+                'librarySaves' => $user->savedLibraries->count(),
+            ];
+        })->sortByDesc('librarySaves')->values()->take(10);
+        $topVoucherRedeemers = $users->map(function($user) {
+            return (object)[
+                'user' => $user,
+                'vouchersRedeemed' => $user->userVouchers->whereNotNull('redeemed_date')->count(),
+            ];
+        })->sortByDesc('vouchersRedeemed')->values()->take(10);
+
+        $topPointsLast7Days = $users->map(function($user) {
+            $pointsEarned = $user->pointsHistory->where('created_at', '>=', now()->subDays(7))
+                ->where('points_change', '>', 0)->sum('points_change');
+            return (object)[
+                'user' => $user,
+                'pointsEarned' => $pointsEarned,
+            ];
+        })->sortByDesc('pointsEarned')->values()->take(10);
+
+        return view('admin.adminAnalytics', compact(
+            'totalUsers',
+            'verifiedUsers',
+            'userGrowth',
+            'liveQuests',
+            'upcomingQuests',
+            'totalQuests',
+            'pendingSubmissions',
+            'overdueSubmissions',
+            'vouchersThisWeek',
+            'voucherGrowth',
+            'avgDailyEcoActions',
+            'ecoActionsPrev7',
+            'pointsDistributed',
+            'pointsRedeemed',
+            'newFeedbackCount',
+            'categories',
+            'ecoActionsDaily',
+            'pointsDaily',
+            'pointsRedeemedDaily',
+            'dayLabels',
+            'questsAccomplished',
+            'vouchersUsed',
+            'topActiveUsers',
+            'mostCategorySavedName',
+            'topByPoints',
+            'topByQuests',
+            'topDailyActions',
+            'topLibrarySavers',
+            'topVoucherRedeemers',
+            'topPointsLast7Days'
+        ));
+
     }
 
     // Admin System Alerts
