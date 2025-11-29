@@ -123,10 +123,13 @@
             document.getElementById('modalQuestCategory').textContent = quest.category;
             document.getElementById('modalQuestPoints').textContent = quest.points_reward;
             document.getElementById('modalQuestStatus').textContent = quest.status;
-            document.getElementById('modalQuestStart').textContent = new Date(quest.start_date).toLocaleDateString();
-            document.getElementById('modalQuestEnd').textContent = new Date(quest.end_date).toLocaleDateString();
 
-            // Set the hidden input value for form submission
+            document.getElementById('modalQuestStart').textContent =
+                quest.start_date ? new Date(quest.start_date).toLocaleDateString() : 'N/A';
+
+            document.getElementById('modalQuestEnd').textContent =
+                quest.end_date ? new Date(quest.end_date).toLocaleDateString() : 'N/A';
+
             document.getElementById('modalQuestId').value = quest.id;
 
             activeModal.classList.remove('hidden');
@@ -137,24 +140,26 @@
             activeModal.classList.add('hidden');
         }
 
-        // Attach click events to quest cards
         document.querySelectorAll('.eco-card').forEach(item => {
             item.addEventListener('click', function() {
+
                 const quest = {
                     id: this.dataset.id,
-                    title: this.querySelector('h3').textContent,
-                    description: this.dataset.description ||
-                        'No description available', // optional: pass real description from blade
+                    title: this.dataset.title,
+                    description: this.dataset.description || 'No description available',
                     category: this.dataset.category || 'General',
-                    points_reward: this.querySelector('p.font-bold').textContent.replace(' pts 🌱', ''),
-                    status: 'active',
-                    start_date: this.dataset.start_date || new Date().toISOString(),
-                    end_date: this.dataset.end_date || new Date().toISOString(),
+                    points_reward: this.dataset.points,
+                    status: this.dataset.status || 'active',
+
+                    // FIXED camelCase access
+                    start_date: this.dataset.startDate || null,
+                    end_date: this.dataset.endDate || null,
                 };
 
                 openActiveQuestModal(quest);
             });
         });
+
         const acceptedModal = document.getElementById('acceptedQuestModal');
 
         function openAcceptedQuestModal(quest) {

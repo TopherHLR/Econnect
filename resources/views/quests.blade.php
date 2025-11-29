@@ -17,7 +17,7 @@
                             style="font-family: var(--font-serif);">
                             Accepted Quests
                         </h2>
-                                                <!-- Search Box -->
+                        <!-- Search Box -->
                         <div class="mb-4">
                             <input type="text" id="questSearch" placeholder="Search quests..."
                                 class="w-full px-3 py-2 rounded border border-gray-300 shadow-sm text-sm focus:outline-none focus:ring-1 focus:ring-green-500" />
@@ -27,7 +27,7 @@
                             @foreach ($quests as $quest)
                                 @php
                                     // Get user's submission for THIS quest only
-                                $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+$submission = $quest->submissions->firstWhere('user_id', auth()->id());
                                 @endphp
 
                                 @if ($submission && $submission->status === 'pending')
@@ -143,15 +143,15 @@
                                         $user = auth()->user();
 
                                         // Calculate user's earned points (ignore voided)
-                                            $progressPoints = \App\Models\UserPointsHistory::where(
-                                                'user_id',
-                                                $user->user_id,
-                                            )
-                                                ->where('points_change', '>', 0)
-                                                ->where('voided', false)
-                                                ->sum('points_change');
+$progressPoints = \App\Models\UserPointsHistory::where(
+    'user_id',
+    $user->user_id,
+)
+    ->where('points_change', '>', 0)
+    ->where('voided', false)
+    ->sum('points_change');
 
-                                        // Skip quest if user doesn't have enough points
+// Skip quest if user doesn't have enough points
                                         if ($progressPoints < $quest->required_points) {
                                             continue;
                                         }
@@ -184,9 +184,12 @@
                                         <div class="bg-white rounded-2xl overflow-hidden shadow-sm transition relative
                                             {{ $isInactive ? 'opacity-50 pointer-events-none' : 'hover:shadow-md transform hover:-translate-y-1 cursor-pointer' }}
                                             eco-card"
-                                            data-id="{{ $quest->quest_id }}" data-type="ecoQuest"
+                                            data-id="{{ $quest->quest_id }}" data-title="{{ $quest->title }}"
+                                            data-description="{{ $quest->description }}"
                                             data-category="{{ $quest->category }}"
-                                            data-description="{{ $quest->description }}">
+                                            data-points="{{ $quest->points_reward }}" data-status="{{ $quest->status }}"
+                                            data-start-date="{{ $quest->start_date }}"
+                                            data-end-date="{{ $quest->end_date }}">
 
                                             {{-- Overlay Hint --}}
                                             @if ($isInactive)
@@ -278,7 +281,7 @@
 
             questRows.forEach(row => {
                 const title = row.querySelector('span')?.textContent.toLowerCase() || '';
-                
+
                 if (title.includes(query)) {
                     row.style.display = 'flex'; // show
                 } else {

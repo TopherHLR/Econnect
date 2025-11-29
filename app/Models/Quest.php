@@ -72,5 +72,19 @@ class Quest extends Model
     {
         return $this->hasMany(QuestSubmission::class, 'quest_id', 'quest_id');
     }
+    protected $appends = [
+        'start_date_formatted',
+        'end_date_formatted',
+    ];
+
+    public function getStartDateFormattedAttribute()
+    {
+        return $this->start_date ? $this->start_date->format('Y-m-d') : null;
+    }
+
+    public function getEndDateFormattedAttribute()
+    {
+        return $this->end_date ? $this->end_date->format('Y-m-d') : null;
+    }
 
 }
