@@ -1,13 +1,13 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-<div class="min-h-screen bg-[#E2EBD7] p-10">
+<div class="min-h-screen bg-[#E2EBD7] p-10 text-[#4F6B3F]"> <!-- Applied text color here -->
     <div class="grid grid-cols-12 gap-8">
 
         <!-- LEFT SIDEBAR -->
         <div class="col-span-3 bg-[#FAF7EE] rounded-3xl p-6 shadow-md space-y-6">
 
-            <h2 class="text-lg font-semibold text-gray-700">Your Stats</h2>
+            <h2 class="text-lg font-semibold">Your Stats</h2>
 
             <div class="grid grid-cols-2 gap-4">
                 <!-- Taller top boxes -->
@@ -20,21 +20,21 @@
 
             <!-- Pending Quests taller -->
             <div>
-                <p class="font-medium text-gray-700 mb-2">Pending Quests</p>
+                <p class="font-medium mb-2">Pending Quests</p>
                 <div class="bg-white rounded-2xl h-90 shadow-sm"></div>
             </div>
 
         </div>
 
         <!-- RIGHT SIDE -->
-        <div class="col-span-9 bg-[#F9F6EB] rounded-3xl p-10 shadow-md">
+        <div class="col-span-9 bg-[#F9F6EB] rounded-3xl p-10 shadow-md text-[#4F6B3F]"> <!-- Ensure right side inherits text color -->
 
             <!-- BUTTONS -->
             <div class="flex justify-between items-center mb-6">
 
                 <div>
-                    <h1 class="text-[36px] font-bold text-black">Leaderboard</h1>
-                    <p class="text-[16px] text-gray-700 -mt-1">Track your progress</p>
+                    <h1 class="text-[36px] font-bold">Leaderboard</h1>
+                    <p class="text-[16px] -mt-1">Track your progress and achievements</p>
                 </div>
 
                 <!-- BUTTONS RIGHT -->
@@ -57,10 +57,10 @@
             </div>
 
             <!-- ==== TOP BY PROGRESS POINTS ==== -->
-            <div id="leaderboard-points" class="bg-white rounded-3xl p-10 shadow-sm mb-10 h-[675px] overflow-y-auto">
-                <h2 class="text-2xl font-bold text-green-800 mb-6">Top Progress Points</h2>
+            <div id="leaderboard-points" class="bg-white rounded-3xl p-10 shadow-sm h-[675px] overflow-y-auto">
+                <h2 class="text-2xl font-bold mb-6">Top Progress Points</h2>
 
-                <div class="grid grid-cols-3 text-center text-xl font-semibold text-black pb-3 mb-3 border-b border-[#D7E2C3]">
+                <div class="grid grid-cols-3 text-center text-xl font-semibold pb-3 mb-3 border-b border-[#D7E2C3]">
                     <p>Rank</p>
                     <p>User</p>
                     <p>Points</p>
@@ -71,17 +71,17 @@
                         onclick="window.location='{{ route('myprogress') }}'">
                         <p class="font-semibold">{{ $index + 1 }}</p>
                         <p>{{ $user->first_name }} {{ $user->last_name }}</p>
-                        <p class="font-semibold text-green-800">{{ $user->progressPoints }}</p>
+                        <p class="font-semibold">{{ $user->progressPoints }}</p>
                     </div>
                 @endforeach
             </div>
 
             <!-- ==== TOP BY COMPLETED QUESTS ==== -->
             <div id="leaderboard-quests"
-                class="bg-white rounded-3xl p-10 shadow-sm mb-10 h-[675px] overflow-y-auto hidden">
-                <h2 class="text-2xl font-bold text-green-800 mb-6">Top Completed Quests</h2>
+                class="bg-white rounded-3xl p-10 shadow-sm h-[675px] overflow-y-auto hidden">
+                <h2 class="text-2xl font-bold mb-6">Top Completed Quests</h2>
 
-                <div class="grid grid-cols-3 text-center text-xl font-semibold text-black pb-3 mb-3 border-b border-[#D7E2C3]">
+                <div class="grid grid-cols-3 text-center text-xl font-semibold pb-3 mb-3 border-b border-[#D7E2C3]">
                     <p>Rank</p>
                     <p>User</p>
                     <p>Quests Completed</p>
@@ -92,16 +92,16 @@
                         onclick="window.location='{{ route('myprogress') }}'">
                         <p class="font-semibold">{{ $index + 1 }}</p>
                         <p>{{ $user->first_name }} {{ $user->last_name }}</p>
-                        <p class="font-semibold text-green-800">{{ $user->questsCompleted }}</p>
+                        <p class="font-semibold">{{ $user->questsCompleted }}</p>
                     </div>
                 @endforeach
             </div>
 
             <!-- ==== TOP DAILY ECO ACTIONS ==== -->
             <div id="leaderboard-ewan" class="bg-white rounded-3xl p-10 shadow-sm h-[675px] overflow-y-auto hidden">
-                <h2 class="text-2xl font-bold text-green-800 mb-6">Top Daily Eco-Taps</h2>
+                <h2 class="text-2xl font-bold mb-6">Top Daily Eco-Taps</h2>
 
-                <div class="grid grid-cols-3 text-center text-xl font-semibold text-black pb-3 mb-3 border-b border-[#D7E2C3]">
+                <div class="grid grid-cols-3 text-center text-xl font-semibold pb-3 mb-3 border-b border-[#D7E2C3]">
                     <p>Rank</p>
                     <p>User</p>
                     <p>Daily Eco Actions</p>
@@ -112,7 +112,7 @@
                         onclick="window.location='{{ route('myprogress') }}'">
                         <p class="font-semibold">{{ $index + 1 }}</p>
                         <p>{{ $user->first_name }} {{ $user->last_name }}</p>
-                        <p class="font-semibold text-green-800">{{ $user->dailyEcoActions }}</p>
+                        <p class="font-semibold">{{ $user->dailyEcoActions }}</p>
                     </div>
                 @endforeach
             </div>
@@ -136,28 +136,22 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function showSection(target) {
-        // Hide all sections
         Object.values(sections).forEach(sec => sec.classList.add('hidden'));
-        // Show target section
         sections[target].classList.remove('hidden');
 
-        // Reset all buttons to original color
         Object.values(buttons).forEach(btn => {
             btn.classList.remove('bg-[#5E7345]', 'font-semibold');
             btn.classList.add('bg-[#7A8F55]');
         });
 
-        // Set clicked button as active
         buttons[target].classList.remove('bg-[#7A8F55]');
         buttons[target].classList.add('bg-[#5E7345]', 'font-semibold');
     }
 
-    // Add click listeners
     buttons.points.addEventListener('click', () => showSection('points'));
     buttons.quests.addEventListener('click', () => showSection('quests'));
     buttons.ewan.addEventListener('click', () => showSection('ewan'));
 
-    // Optional: set default active on page load
     showSection('points');
 });
 </script>
