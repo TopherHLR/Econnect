@@ -71,7 +71,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/adminAnalytics', fn() => view('admin.adminAnalytics'))->name('adminAnalytics');
         Route::get('/adminSystemAlerts', fn() => view('admin.adminSystemAlerts'))->name('adminSystemAlerts');
         Route::get('/adminSettings', fn() => view('admin.adminSettings'))->name('adminSettings');
-        Route::get('/adminLifestyle', fn() => view('admin.adminLifestyle'))->name('adminLifestyle');
+            Route::get('/adminLifestyle', [LibraryController::class, 'adminIndex'])->name('adminLifestyle');
+
     });
 });
 
@@ -153,10 +154,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/libraries/{id}', [LibraryController::class, 'destroy']);
 });
 
-// Admin eco library page
-Route::middleware(['auth'])->group(function () {
-    Route::get('/adminLifestyle', [LibraryController::class, 'adminIndex'])->name('admin.eco-library');
-});
+
 
 //---------------------------------------------------- ADMIN CONTROLLERS (ADMIN HOME + QUEST MANAGEMENT) -------------------------------------------------
 
