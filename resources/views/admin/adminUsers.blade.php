@@ -18,14 +18,6 @@
                 <i class="fa-solid fa-qrcode"></i>
                 <span class="hidden lg:inline">Verify User</span>
             </button>
-            <button class="btn-eco btn-leaf compact" title="Export Users">
-                <i class="fa-solid fa-download"></i>
-                <span class="hidden xl:inline">Export</span>
-            </button>
-            <button class="btn-eco btn-sage compact" title="Bulk Actions">
-                <i class="fa-solid fa-users"></i>
-                <span class="hidden xl:inline">Bulk Actions</span>
-            </button>
         </div>
     </div>
 <!-- 🔍 TABLE HEADER WITH TITLE, ALERTS & SEARCH -->
@@ -37,14 +29,6 @@
             <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans whitespace-nowrap">
                 User Accounts <span class="text-[#6A8A52]">({{ count($users) }})</span>
             </h2>
-        </div>
-
-        <!-- 🚨 URGENT ALERTS -->
-        <div class="bg-[#FEF2F2] border border-[#FECACA] rounded-xl px-3 py-2 shrink-0">
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 bg-[#DC2626] rounded-full animate-pulse"></div>
-                <span class="font-semibold text-[#DC2626] text-sm whitespace-nowrap">5 pending</span>
-            </div>
         </div>
 
         <!-- Search Input -->
