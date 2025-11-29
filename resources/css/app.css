@@ -443,27 +443,24 @@
 
 /* =========================================================== BUTTONS ================================================================== */
 @layer components {
-
- /* ————————————————————————————
-     🌿 BASE BUTTON — Uniform Neumorphism
-  ———————————————————————————— */
-  .btn-eco {
+/* 🌿 BASE BUTTON — Uniform Neumorphism */
+.btn-eco {
     @apply relative inline-flex items-center justify-center gap-2 font-semibold cursor-pointer 
            rounded-full select-none transition-all duration-300 ease-out 
-           px-4 py-2 text-[0.95rem]; /* smaller padding & slightly smaller text */
-   z-index: 5;
+           px-4 py-2 text-[0.95rem];
+    z-index: 5;
     color: #5A4A36;
     background: rgba(240, 245, 235, 0.95);
 
-    /* Default Neumorphism (sunken + soft inner shadows) */
+    /* Neumorphism shadows */
     box-shadow:
       inset 2px 2px 4px rgba(140, 160, 130, 0.25),
       inset -2px -2px 4px rgba(255, 255, 255, 0.65),
       0 2px 6px rgba(140, 160, 130, 0.12);
-  }
+}
 
-  /* Hover — Gentle Lift */
-  .btn-eco:hover {
+/* Hover — Gentle Lift */
+.btn-eco:hover {
     transform: translateY(-1px);
     box-shadow:
       0 4px 8px rgba(140, 160, 130, 0.12),
@@ -471,67 +468,72 @@
       2px 2px 4px rgba(160, 180, 150, 0.25);
 
     filter: brightness(1.03);
-  }
+}
 
-  /* Active — Soft Press */
-  .btn-eco:active {
+/* Active — Soft Press */
+.btn-eco:active {
     transform: translateY(1px);
     box-shadow:
       inset 3px 3px 5px rgba(120, 140, 110, 0.3),
       inset -2px -2px 4px rgba(255, 255, 255, 0.55);
 
     filter: brightness(0.97);
-  }
+}
 
-  /* Icon Animation */
-  .btn-eco i {
+/* Icon Animation */
+.btn-eco i {
     @apply transition-transform duration-300 ease-out;
-  }
-  .btn-eco:hover i {
+}
+.btn-eco:hover i {
     transform: scale(1.1);
-  }
+}
 
-  /* ————————————————————————————
-     🎨 COLOR VARIANTS — Unified Neumorph
-  ———————————————————————————— */
-  .btn-sage { background: rgba(240, 245, 235, 0.95); color: #5A4A36; }
-  .btn-sand { background: rgba(250, 248, 242, 0.95); color: #5A4A36; }
+/* ————————————————————————————
+   🎨 COLOR VARIANTS — Unified Neumorph
+———————————————————————————— */
+.btn-sage { background: rgba(240, 245, 235, 0.95); color: #5A4A36; }
+.btn-sand { background: rgba(250, 248, 242, 0.95); color: #5A4A36; }
 
-  .btn-clay {
+.btn-clay {
     background: rgba(195, 122, 73, 0.92);
     color: white;
     box-shadow:
       inset 2px 2px 4px rgba(120, 80, 50, 0.3),
       inset -2px -2px 4px rgba(255, 200, 170, 0.5),
       0 2px 6px rgba(195, 122, 73, 0.2);
-  }
+}
 
-  .btn-mint {
+.btn-mint {
     background: rgba(122, 140, 79, 0.92);
     color: white;
     box-shadow:
       inset 2px 2px 4px rgba(70, 85, 45, 0.35),
       inset -2px -2px 4px rgba(200, 220, 170, 0.4),
       0 2px 6px rgba(122, 140, 79, 0.25);
-  }
+}
 
-  .btn-leaf {
+.btn-leaf {
     background: rgba(84, 110, 48, 0.92);
     color: white;
     box-shadow:
       inset 2px 2px 4px rgba(50, 65, 30, 0.35),
       inset -2px -2px 4px rgba(200, 225, 170, 0.35),
       0 2px 6px rgba(84, 110, 48, 0.25);
-  }
+}
 
-  .btn-olive {
+.btn-olive {
     background: rgba(122, 140, 79, 0.92);
     color: white;
     box-shadow:
       inset 2px 2px 4px rgba(60, 75, 40, 0.35),
       inset -2px -2px 4px rgba(220, 240, 190, 0.4),
       0 2px 6px rgba(122, 140, 79, 0.25);
-  }
+}
+
+/* 🌿 UNIFORM WIDTH FOR ALL QUICK ACTION BUTTONS */
+.btn-eco.w-40 {
+    @apply min-w-[10rem] text-center; /* 160px */
+}
 }
 @layer components {
   .tab-eco {

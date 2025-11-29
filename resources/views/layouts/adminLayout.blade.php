@@ -7,7 +7,7 @@
     <title>@yield('title', 'Admin Dashboard') - {{ config('app.name', 'Econnect') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/admin.css'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Crimson+Text:wght@400;600;700&display=swap"
@@ -31,7 +31,7 @@
         }
 
         /* 🌱 Sidebar */
-        aside {
+        aside.mainsidebar {
             background: #FCF9EF;
             border-radius: 1.8rem;
             box-shadow: 0 4px 10px rgba(79, 107, 63, 0.05);
@@ -153,18 +153,10 @@
         }
 
         /* 🌿 Main Container */
-        main {
-            background: #FCF9EF;
-            border-radius: 2rem;
-            box-shadow: 0 4px 8px rgba(79, 107, 63, 0.1);
-            border: 1px solid rgba(79, 107, 63, 0.06);
-            transition: all 0.3s ease-in-out;
-            font-family: 'Nunito Sans', sans-serif;
-            z-index: 1;
-        }
+   
 
         /* 🌿 Main Container */
-        main {
+        main.mainonly {
             background: #FCF9EF;
             border-radius: 2rem;
             box-shadow: 0 4px 8px rgba(79, 107, 63, 0.1);
@@ -224,46 +216,92 @@
             </div>
         @endif
 
-        <!-- Logo and Greeting -->
-        <div class="flex items-center space-x-3">
-            <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="Econnect Logo" class="h-10 w-auto">
-            <h1 class="text-2xl font-semibold">
-                Welcome back, <span class="font-bold">Admin Name</span>! 🌱
-            </h1>
-        </div>
+<div class="flex items-center space-x-4">
+    <img 
+        src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" 
+        alt="Econnect Logo" 
+        class="h-12 w-auto"
+    >
 
-        <!-- Profile, Notifications, Logout -->
-        <div class="flex items-center space-x-4 relative">
-            <!-- Notification Bell -->
-            <div class="relative">
-                <button id="notification-btn" class="text-[#6A8A52] hover:text-[#4F6B3F] relative">
-                    <i class="fa-solid fa-bell text-3xl"></i>
-                    <!-- Red dot for unread -->
-                    <span id="notification-dot"
-                        class="absolute top-0 right-0 inline-block w-3 h-3 bg-red-500 rounded-full"></span>
-                </button>
+    <h1 class="text-xl md:text-2xl font-semibold leading-tight">
+        Welcome back, <span class="font-bold">Admin</span>! 🌱
+    </h1>
+</div>
+<!-- Profile, Notifications, Logout + Dynamic Eco Image -->
+<div class="flex items-center space-x-6 relative">
 
-            </div>
+<!-- Include Alpine.js if not already -->
+<script src="//unpkg.com/alpinejs" defer></script>
 
-            <!-- Profile Icon -->
-            <a href="#" class="text-[#6A8A52] hover:text-[#4F6B3F]" title="Profile">
-                <i class="fa-solid fa-user-circle text-4xl"></i>
-            </a>
+<!-- ⭐ ECO-ACTIVITY IMAGE -->
+<div x-data="{ open: false }" class="relative">
+    <img 
+        src="{{ Vite::asset('resources/images/nav-image1.jpg') }}" 
+        class="w-[1000px] h-16 object-cover rounded-xl hidden md:block cursor-zoom-in"
+        alt="Eco Activity"
+        @click="open = true"
 
-            <!-- Logout -->
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="text-[#9B4040] hover:text-[#642B2B]" title="Logout">
-                    <i class="fa-solid fa-right-from-bracket text-3xl"></i>
-                </button>
-            </form>
-            @include('modal.notificationModal')
-        </div>
-    </header>
+        
+    />
+
+    <!-- Lightbox Overlay -->
+    <div 
+            x-show="open" 
+    x-transition
+    @click.self="open = false"
+    class="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+    style="display: none;"
+    >
+        <!-- Close Button -->
+        <button 
+            @click="open = false" 
+            class="absolute top-5 right-5 text-white text-3xl font-bold z-50 hover:text-gray-300"
+        >
+            &times;
+        </button>
+
+        <!-- Zoomed Image -->
+        <img 
+            src="{{ Vite::asset('resources/images/nav-image1.jpg') }}" 
+            class="max-h-[90vh] max-w-[90vw] rounded-xl shadow-lg"
+            alt="Eco Activity"
+        />
+    </div>
+</div>
+
+
+
+    <!-- Notification Bell -->
+    <div class="relative">
+        <button id="notification-btn" class="text-[#6A8A52] hover:text-[#4F6B3F] relative">
+            <i class="fa-solid fa-bell text-3xl"></i>
+            <span id="notification-dot"
+                class="absolute top-0 right-0 inline-block w-3 h-3 bg-red-500 rounded-full"></span>
+        </button>
+    </div>
+
+    <!-- Profile Icon -->
+    <a href="#" class="text-[#6A8A52] hover:text-[#4F6B3F]" title="Profile">
+        <i class="fa-solid fa-user-circle text-4xl"></i>
+    </a>
+
+    <!-- Logout -->
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="text-[#9B4040] hover:text-[#642B2B]" title="Logout">
+            <i class="fa-solid fa-right-from-bracket text-3xl"></i>
+        </button>
+    </form>
+
+    @include('modal.notificationModal')
+
+</div>
+
+</header>
 
     <!-- 🍃 Sidebar -->
     <div class="flex flex-1 relative">
-        <aside class="absolute top-8 left-6 h-[78vh] w-20 flex flex-col items-center py-8">
+<aside class="mainsidebar absolute top-8 left-6 h-[78vh] w-20 flex flex-col items-center py-8">
             <nav class="flex flex-col items-center justify-evenly h-full">
                 <a href="/adminHome" class="nav-item" data-tooltip="Dashboard"><i class="fa-solid fa-house"></i></a>
                 <a href="/adminUsers" class="nav-item" data-tooltip="Manage Users"><i class="fa-solid fa-users"></i></a>
@@ -282,8 +320,7 @@
         </aside>
 
         <!-- 🌾 Main Content -->
-        <main class="flex-1 ml-32 mt-8 mr-6 mb-2 p-8 overflow-y-auto min-h-[78vh]">
-            @include('modal.qrScannerModal')
+    <main class="mainonly flex-1 ml-32 mt-8 mr-6 mb-2 p-8 overflow-y-auto min-h-[78vh]">
             @include('modal.ecoTopics_ecoActionModal')
             @yield('content')
         </main>
@@ -346,7 +383,7 @@
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <script>
         setTimeout(() => {
             const toast = document.getElementById('feedback-toast');
@@ -372,6 +409,7 @@
                 }
             });
         });
+
     </script>
 
 
