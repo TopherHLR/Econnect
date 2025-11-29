@@ -19,7 +19,7 @@
 
         <div>
             <h1 class="text-3xl font-bold text-[#4F6B3F] flex items-center">
-                Your Eco-Journey So Far <span class="ml-3 text-2xl">🌱</span>
+                Your Eco-Journey So Far <span class="ml-3 text-2xl"></span>
             </h1>
             <p class="text-[#6B665E] mt-2 text-lg">Track your growth, achievements, and daily impact.</p>
         </div>
@@ -108,7 +108,7 @@
         </div>
 
         <p class="text-[#4B3F2F] mb-4 text-center md:text-left">
-            You've been consistent for {{ $currentStreak ?? 0 }} days! Keep going 😊
+            You've been consistent for {{ $currentStreak ?? 0 }} days! Keep going
         </p>
 
         <div class="flex items-center justify-center md:justify-start space-x-3 flex-wrap gap-3">

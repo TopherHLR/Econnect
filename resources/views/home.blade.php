@@ -201,7 +201,7 @@
                 </div>
 
                 @if ($pendingSubmissions->isEmpty())
-                    <p class="text-gray-500 text-sm italic">No pending tasks 🎉</p>
+                    <p class="text-gray-500 text-sm italic">No pending tasks </p>
                 @else
                     <div class="space-y-3">
 

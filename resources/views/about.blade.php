@@ -6,7 +6,8 @@
         <div class="bg-[#fdf8ef] w-10/12 md:w-2/3 rounded-3xl shadow-xl p-6 md:p-10 pt-16 pb-20 relative">
 
             <!-- Title -->
-            <h2 class="ml-6 text-3xl md:text-4xl italic font-semibold text-[#6B462D] flex items-center gap-2" style="font-family: var(--font-serif);">
+            <h2 class="ml-6 text-3xl md:text-4xl italic font-semibold text-[#6B462D] flex items-center gap-2"
+                style="font-family: var(--font-serif);">
                 About<span class="text-[#C37A49]">ECOnnect</span>
                 <img src="{{ Vite::asset('resources/images/viewport1/minidahon.png') }}" class="w-10 h-10 " />
             </h2>
@@ -183,6 +184,4 @@
         </div>
 
     </div>
-
-
 @endsection

@@ -222,7 +222,7 @@
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="Econnect Logo" class="h-12 w-auto">
 
             <h1 class="text-xl md:text-2xl font-semibold leading-tight">
-                Welcome back, <span class="font-bold">Admin</span>! 🌱
+                Welcome back, <span class="font-bold">Admin</span>! 
             </h1>
         </div>
         <!-- Profile, Notifications, Logout + Dynamic Eco Image -->

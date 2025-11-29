@@ -67,7 +67,7 @@
 
                 @if (($totalPoints ?? 0) < 200)
                     <div class="mt-3 text-center text-gray-500 text-sm italic">
-                        🌱 Earn more points and complete eco challenges to level up!
+                        Earn more points and complete eco challenges to level up!
                     </div>
                 @endif
 
