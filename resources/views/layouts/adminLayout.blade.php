@@ -153,7 +153,7 @@
         }
 
         /* 🌿 Main Container */
-   
+
 
         /* 🌿 Main Container */
         main.mainonly {
@@ -216,92 +216,73 @@
             </div>
         @endif
 
-<div class="flex items-center space-x-4">
-    <img 
-        src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" 
-        alt="Econnect Logo" 
-        class="h-12 w-auto"
-    >
+        <div class="flex items-center space-x-4">
+            <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="Econnect Logo" class="h-12 w-auto">
 
-    <h1 class="text-xl md:text-2xl font-semibold leading-tight">
-        Welcome back, <span class="font-bold">Admin</span>! 🌱
-    </h1>
-</div>
-<!-- Profile, Notifications, Logout + Dynamic Eco Image -->
-<div class="flex items-center space-x-6 relative">
+            <h1 class="text-xl md:text-2xl font-semibold leading-tight">
+                Welcome back, <span class="font-bold">Admin</span>! 🌱
+            </h1>
+        </div>
+        <!-- Profile, Notifications, Logout + Dynamic Eco Image -->
+        <div class="flex items-center space-x-6 relative">
 
-<!-- Include Alpine.js if not already -->
-<script src="//unpkg.com/alpinejs" defer></script>
+            <!-- Include Alpine.js if not already -->
+            <script src="//unpkg.com/alpinejs" defer></script>
 
-<!-- ⭐ ECO-ACTIVITY IMAGE -->
-<div x-data="{ open: false }" class="relative">
-    <img 
-        src="{{ Vite::asset('resources/images/nav-image1.jpg') }}" 
-        class="w-[1000px] h-16 object-cover rounded-xl hidden md:block cursor-zoom-in"
-        alt="Eco Activity"
-        @click="open = true"
+            <!-- ⭐ ECO-ACTIVITY IMAGE -->
+            <div x-data="{ open: false }" class="relative">
+                <img src="{{ Vite::asset('resources/images/nav-image1.jpg') }}"
+                    class="w-[1000px] h-16 object-cover rounded-xl hidden md:block cursor-zoom-in" alt="Eco Activity"
+                    @click="open = true" />
 
-        
-    />
+                <!-- Lightbox Overlay -->
+                <div x-show="open" x-transition @click.self="open = false"
+                    class="fixed inset-0 bg-black/80 flex items-center justify-center z-50" style="display: none;">
+                    <!-- Close Button -->
+                    <button @click="open = false"
+                        class="absolute top-5 right-5 text-white text-3xl font-bold z-50 hover:text-gray-300">
+                        &times;
+                    </button>
 
-    <!-- Lightbox Overlay -->
-    <div 
-            x-show="open" 
-    x-transition
-    @click.self="open = false"
-    class="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
-    style="display: none;"
-    >
-        <!-- Close Button -->
-        <button 
-            @click="open = false" 
-            class="absolute top-5 right-5 text-white text-3xl font-bold z-50 hover:text-gray-300"
-        >
-            &times;
-        </button>
-
-        <!-- Zoomed Image -->
-        <img 
-            src="{{ Vite::asset('resources/images/nav-image1.jpg') }}" 
-            class="max-h-[90vh] max-w-[90vw] rounded-xl shadow-lg"
-            alt="Eco Activity"
-        />
-    </div>
-</div>
+                    <!-- Zoomed Image -->
+                    <img src="{{ Vite::asset('resources/images/nav-image1.jpg') }}"
+                        class="max-h-[90vh] max-w-[90vw] rounded-xl shadow-lg" alt="Eco Activity" />
+                </div>
+            </div>
 
 
 
-    <!-- Notification Bell -->
-    <div class="relative">
-        <button id="notification-btn" class="text-[#6A8A52] hover:text-[#4F6B3F] relative">
-            <i class="fa-solid fa-bell text-3xl"></i>
-            <span id="notification-dot"
-                class="absolute top-0 right-0 inline-block w-3 h-3 bg-red-500 rounded-full"></span>
-        </button>
-    </div>
+            <!-- Notification Bell -->
+            <div class="relative">
+                <button id="notification-btn" class="text-[#6A8A52] hover:text-[#4F6B3F] relative">
+                    <i class="fa-solid fa-bell text-3xl"></i>
+                    <span id="notification-dot"
+                        class="absolute top-0 right-0 inline-block w-3 h-3 bg-red-500 rounded-full"></span>
+                </button>
+            </div>
 
-    <!-- Profile Icon -->
-    <a href="#" class="text-[#6A8A52] hover:text-[#4F6B3F]" title="Profile">
-        <i class="fa-solid fa-user-circle text-4xl"></i>
-    </a>
+            <!-- Profile Icon -->
+            <a href="#" class="text-[#6A8A52] hover:text-[#4F6B3F]" title="Profile">
+                <i class="fa-solid fa-user-circle text-4xl"></i>
+            </a>
 
-    <!-- Logout -->
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="text-[#9B4040] hover:text-[#642B2B]" title="Logout">
-            <i class="fa-solid fa-right-from-bracket text-3xl"></i>
-        </button>
-    </form>
+            <!-- Logout -->
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="text-[#9B4040] hover:text-[#642B2B]" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket text-3xl"></i>
+                </button>
+            </form>
 
-    @include('modal.notificationModal')
+            @include('modal.notificationModal')
 
-</div>
+        </div>
 
-</header>
+    </header>
 
     <!-- 🍃 Sidebar -->
     <div class="flex flex-1 relative">
-<aside class="mainsidebar absolute top-8 left-6 h-[78vh] w-20 flex flex-col items-center py-8">
+        <aside class="mainsidebar absolute top-8 left-6 h-[78vh] w-20 flex flex-col items-center py-8">
             <nav class="flex flex-col items-center justify-evenly h-full">
                 <a href="/adminHome" class="nav-item" data-tooltip="Dashboard"><i class="fa-solid fa-house"></i></a>
                 <a href="/adminUsers" class="nav-item" data-tooltip="Manage Users"><i class="fa-solid fa-users"></i></a>
@@ -309,7 +290,7 @@
                 <a href="{{ route('adminRewards') }}" class="nav-item" data-tooltip="Rewards">
                     <i class="fa-solid fa-gift"></i>
                 </a>
-                <a href="{{ route('admin.eco-library') }}" class="nav-item" data-tooltip="Library / Lifestyle"><i
+                <a href="{{ route('adminLifestyle') }}" class="nav-item" data-tooltip="Library / Lifestyle"><i
                         class="fa-solid fa-book-open"></i></a>
                 <a href="/adminAnalytics" class="nav-item" data-tooltip="Analytics"><i
                         class="fa-solid fa-chart-column"></i></a>
@@ -320,7 +301,7 @@
         </aside>
 
         <!-- 🌾 Main Content -->
-    <main class="mainonly flex-1 ml-32 mt-8 mr-6 mb-2 p-8 overflow-y-auto min-h-[78vh]">
+        <main class="mainonly flex-1 ml-32 mt-8 mr-6 mb-2 p-8 overflow-y-auto min-h-[78vh]">
             @include('modal.ecoTopics_ecoActionModal')
             @yield('content')
         </main>
@@ -409,7 +390,6 @@
                 }
             });
         });
-
     </script>
 
 
