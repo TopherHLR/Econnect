@@ -11,6 +11,7 @@ use App\Models\UserPointsHistory;
 use App\Models\UserLibrary;
 use App\Models\UserAction;
 use App\Models\UserVoucher;
+use App\Models\Voucher;
 use App\Models\Notification;
 use Illuminate\Support\Facades\DB;
 
@@ -332,7 +333,7 @@ class AdminController extends Controller
     // Admin Analytics
     public function analytics()
     {
-  // ======== USERS ========
+        // ======== USERS ========
         $totalUsers = User::count();
         $verifiedUsers = User::where('is_verified', true)->count();
 
@@ -708,7 +709,58 @@ class AdminController extends Controller
     // Admin System Alerts
     public function systemAlerts()
     {
-        return view('admin.adminSystemAlerts');
+        // ========== NEEDS ATTENTION ==========
+
+        // 1. Pending User Verifications (users not verified for 7 days)
+        $pendingVerifications = User::where('is_verified', false)
+            ->where('created_at', '<=', now()->subDays(7))
+            ->count();
+
+        // 2. High Invalid Submission Rate
+        $totalSubmissions = QuestSubmission::count();
+        $invalidSubmissions = QuestSubmission::where('status', 'invalid')->count();
+        $invalidRate = $totalSubmissions > 0 ? round(($invalidSubmissions / $totalSubmissions) * 100) : 0;
+
+        // 3. QR Scan Activity (Unusual patterns)
+        $qrScansToCheck = UserPointsHistory::where('activity_type', 'QR Scan') 
+            ->where('created_at', '>=', now()->subDay())
+            ->count();
+
+
+        // ========== FOR REVIEW ==========
+
+        // 4. Quests ending soon
+        $endingQuests = Quest::where('status', 'live')
+            ->where('end_date', '<=', now()->addDays(3))
+            ->count();
+
+        // 5. Vouchers expiring soon
+        $expiringVouchers = Voucher::where('expiry_date', '<=', now()->addDays(7))->count();
+
+
+        // TOTAL ALERT COUNTS
+        $needsAttentionCount = 0;
+        if ($pendingVerifications > 0) $needsAttentionCount++;
+        if ($invalidRate >= 30) $needsAttentionCount++;
+        if ($qrScansToCheck > 0) $needsAttentionCount++;
+
+        $forReviewCount = 0;
+        if ($endingQuests > 0) $forReviewCount++;
+        if ($expiringVouchers > 0) $forReviewCount++;
+
+        $totalAlerts = $needsAttentionCount + $forReviewCount;
+
+
+        return view('admin.adminSystemAlerts', compact(
+            'pendingVerifications',
+            'invalidRate',
+            'qrScansToCheck',
+            'endingQuests',
+            'expiringVouchers',
+            'needsAttentionCount',
+            'forReviewCount',
+            'totalAlerts'
+        ));
     }
 
     // Admin Settings

@@ -69,7 +69,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/adminUsers', fn() => view('admin.adminUsers'))->name('adminUsers');
         Route::get('/adminQuests', fn() => view('admin.adminQuests'))->name('adminQuests');
         Route::get('/adminAnalytics', [AdminController::class, 'analytics'])->name('adminAnalytics');
-        Route::get('/adminSystemAlerts', fn() => view('admin.adminSystemAlerts'))->name('adminSystemAlerts');
+        Route::get('/adminSystemAlerts', [AdminController::class, 'systemAlerts'])->name('systemAlerts');
         Route::get('/adminSettings', fn() => view('admin.adminSettings'))->name('adminSettings');
             Route::get('/adminLifestyle', [LibraryController::class, 'adminIndex'])->name('adminLifestyle');
         Route::get('/admin/users/filter', [AdminController::class, 'filterUsers'])->name('admin.users.filter');
