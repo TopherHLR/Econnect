@@ -313,7 +313,7 @@
                     </div>
 
                     <p id="growth-label" class="mt-2 text-[#6b665e] text-sm font-medium">
-                        Please log in to see your personalized growth tree 🌿
+                        Please log in to see your personalized growth tree
                     </p>
                 </div>
             @endguest
@@ -352,65 +352,50 @@
     </section>
 
     <section class="py-20 px-8 overflow-hidden relative">
-        <!-- 🕊️ Bird -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (9).png') }}" alt="Bird"
-            class="absolute top-[80px] right-[0px] w-[440px] z-0">
 
-        <!-- 🦎 Chameleon -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (10).png') }}" alt="Chameleon"
-            class="absolute top-[380px] left-[-120px] w-[560px] z-0">
-
-        <!-- 🦥 Sloth -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (11).png') }}" alt="Sloth"
-            class="absolute bottom-[-0px] right-[-2px] w-[380px] z-0">
 
         <!-- 🌿 Cards -->
         <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
 
             <!-- 🌱 Card 1 -->
             <div
-                class="bg-gradient-to-r from-[#E3F2D3] to-[#F7FBEE] rounded-3xl p-8 shadow-md flex items-center justify-between w-[520px] ml-[80px]">
-                <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (5).png') }}"
-                    alt="Eco Habit Light Bulb" class="w-[120px] mr-6">
+                class="bg-gradient-to-r from-[#E3F2D3] to-[#F7FBEE] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px]">
                 <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-2xl">Discover eco-friendly habits</h3>
-                    <p class="text-gray-700 mt-2">EcoBrew shares simple ways to live more sustainably—at no cost.</p>
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover eco-friendly habits</h3>
+                    <p class="text-gray-700 mt-2 text-[20px]">EcoBrew shares simple ways to live more sustainably—at no
+                        cost.</p>
                     <div class="flex justify-end">
-                        <button class="mt-4 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                        <button class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
                             Explore eco-library
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- 🌿 Card 2 -->
-            <div
-                class="bg-gradient-to-r from-[#F7FBEE] to-[#E3F2D3] rounded-3xl p-8 shadow-md flex items-center justify-between w-[520px] ml-auto mr-[160px]">
-                <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-2xl">Take on fun eco-quests</h3>
-                    <p class="text-gray-700 mt-2">Turn small actions into meaningful impact.</p>
-                    <!-- 🔽 Button moved to left side -->
-                    <div class="flex justify-start">
-                        <button class="mt-4 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                            Explore quests
-                        </button>
-                    </div>
+        <!-- 🌿 Card 2 -->
+        <div
+            class="bg-gradient-to-r from-[#F7FBEE] to-[#E3F2D3] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] ml-[160px] mr-[160px] min-h-[300px]">
+            <div class="flex-1">
+                <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
+                <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
+                <!-- 🔽 Button moved to left side -->
+                <div class="flex justify-start">
+                    <button class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                        Explore quests
+                    </button>
                 </div>
-                <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (6).png') }}"
-                    alt="Eco Ribbon" class="w-[120px] ml-6">
             </div>
+        </div>
 
-            <!-- ☕ Card 3 -->
+        <!-- ☕ Card 3 -->
             <div
-                class="bg-gradient-to-r from-[#E3F2D3] to-[#F7FBEE] rounded-3xl p-8 shadow-md flex items-center justify-between w-[520px] ml-[100px]">
-                <img src="{{ Vite::asset('resources/images/viewport1/cup.png') }}" alt="Eco Cup"
-                    class="w-[120px] mr-6">
+                class="bg-gradient-to-r from-[#E3F2D3] to-[#F7FBEE] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px]">
                 <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-2xl">Be inspired by ECOnnect</h3>
-                    <p class="text-gray-700 mt-2">See how one café walks its sustainability talk.</p>
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]"> Be inspired by ECOnnect</h3>
+                    <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
                     <div class="flex justify-end">
-                        <button class="mt-4 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                            About us
+                        <button class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            Explore eco-library
                         </button>
                     </div>
                 </div>

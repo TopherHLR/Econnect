@@ -116,13 +116,13 @@
             <div class="overlay-container" id="overlayCon">
                 <div class="overlay text-sm">
                     <div class="overlay-panel overlay-left">
-                        <h1 class="text-xl mb-2">Welcome Back!</h1>
-                        <p class="mb-3">Remember, small steps create meaningful change.</p>
+                        <h1 class="text-3xl mb-2">Hello, Friend!</h1>
+                        <p class="mb-3">Enter your personal details, you’re one step away from caring!</p>
                         <button @click="$store.authModal.mode = 'signin'" class="text-sm py-2 px-4 rounded-full bg-[#5a6b3e] hover:bg-[#4a5b33] text-white font-semibold transition">Sign In</button>
                     </div>
                     <div class="overlay-panel overlay-right">
-                        <h1 class="text-xl mb-2">Hello, Friend!</h1>
-                        <p class="mb-3">Enter your personal details, you’re one step away from caring!</p>
+                        <h1 class="text-3xl mb-2">Welcome Back!</h1>
+                        <p class="mb-3">Remember, small steps create meaningful change.</p>
                         <button @click="$store.authModal.mode = 'signup'" class="text-sm py-2 px-4 rounded-full bg-[#5a6b3e] hover:bg-[#4a5b33] text-white font-semibold transition">Sign Up</button>
                     </div>
                 </div>
