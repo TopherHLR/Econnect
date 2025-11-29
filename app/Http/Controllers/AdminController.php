@@ -88,6 +88,23 @@ class AdminController extends Controller
         // ======== QUEST CATEGORIES ========
         $categories = Quest::distinct()->pluck('category')->filter()->values();
 
+        // ======== ECO ACTIONS - PER DAY (7 days) ========
+        $ecoActionsDaily = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $ecoActionsDaily[] = UserPointsHistory::where('activity_type', 'Tree Tap')
+                ->whereDate('created_at', now()->subDays($i))
+                ->count();
+        }
+
+        // ======== POINTS DISTRIBUTED - PER DAY (7 days) ========
+        $pointsDaily = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $pointsDaily[] = UserPointsHistory::where('voided', false)
+                ->whereDate('created_at', now()->subDays($i))
+                ->sum('points_change');
+        }
+
+
 
         return view('admin.adminHome', compact(
             'totalUsers',
@@ -104,7 +121,9 @@ class AdminController extends Controller
             'ecoActionsPrev7',
             'pointsDistributed',
             'newFeedbackCount',
-            'categories'
+            'categories',
+            'ecoActionsDaily',   // <-- add this
+            'pointsDaily'        // <-- add this
         ));
     }
 

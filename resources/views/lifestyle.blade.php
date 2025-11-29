@@ -110,41 +110,42 @@
                     </div>
                 </div>
                 <!-- END Left Column -->
+                @auth
+                    <!-- Sidebar -->
+                    <div id="ecoSidebar"
+                        class="w-[32rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 border border-green-100 max-h-[80vh] overflow-y-auto overflow-x-hidden custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
+                        <h2 class="text-lg font-semibold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
+                        <div class="space-y-3" id="savedList">
+                            @foreach ($savedTopics as $saved)
+                                <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
+                                    data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
+                                    data-category="{{ $saved->category }}">
+                                    <div class="flex items-center">
+                                        <img src="{{ $saved->image ? Vite::asset('resources/images/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
+                                            alt="{{ $saved->title }}"
+                                            class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                                onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
+                                                {{ $saved->title }}
+                                            </h4>
 
-                <!-- Sidebar -->
-                <div id="ecoSidebar"
-                    class="w-[32rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 border border-green-100 max-h-[80vh] overflow-y-auto overflow-x-hidden custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
-                    <h2 class="text-lg font-semibold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
-                    <div class="space-y-3" id="savedList">
-                        @foreach ($savedTopics as $saved)
-                            <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
-                                data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
-                                data-category="{{ $saved->category }}">
-                                <div class="flex items-center">
-                                    <img src="{{ $saved->image ? Vite::asset('resources/images/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
-                                        alt="{{ $saved->title }}"
-                                        class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
-                                    <div class="flex-1 min-w-0">
-                                        <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
-                                            onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
-                                            {{ $saved->title }}
-                                        </h4>
-
+                                        </div>
                                     </div>
+                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                            </svg>
+                                        </button>
+                                    </form>
                                 </div>
-                                <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+                @endauth
                 <!-- END Sidebar -->
             </div> <!-- END Top Controls Row -->
 
