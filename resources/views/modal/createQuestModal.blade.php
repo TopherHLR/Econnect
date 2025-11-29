@@ -1,10 +1,10 @@
-<!-- Create New Quest Modal -->
+<!-- Create / Edit Quest Modal -->
 <div id="createQuestModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
     <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
 
         <!-- Modal Header -->
         <div class="flex justify-between items-center px-6 py-4 bg-[#8B6E4A] text-white">
-            <h2 class="text-lg font-semibold flex items-center">
+            <h2 id="modalTitle" class="text-lg font-semibold flex items-center">
                 <i class="fa-solid fa-bullseye mr-2"></i> Create New Quest
             </h2>
             <button onclick="closeQuestModal()" class="text-white hover:text-[#E0E5D8]">
@@ -14,7 +14,6 @@
 
         <form id="questForm" class="p-6 space-y-4" method="POST" action="{{ route('quests.store') }}">
             @csrf
-
             <!-- Title -->
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Quest Title</label>
@@ -31,29 +30,22 @@
                     placeholder="Describe the quest"></textarea>
             </div>
 
+            <!-- Category -->
             <div x-data="{ custom: false }">
                 <label class="block text-[#4F6B3F] font-medium mb-1">Category</label>
-
-                <!-- Dropdown -->
                 <select x-show="!custom" name="category" x-on:change="custom = ($event.target.value === '__custom')"
                     class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
                     <option value="">Select Category</option>
-
                     @foreach ($categories as $cat)
                         <option value="{{ $cat }}">{{ $cat }}</option>
                     @endforeach
-
                     <option value="__custom">➕ Add new category...</option>
                 </select>
-
-                <!-- Custom Input -->
                 <div x-show="custom" x-transition>
                     <input type="text" name="custom_category"
                         class="mt-2 w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
                         placeholder="Type new category..." x-ref="customInput"
                         x-on:shown="setTimeout(() => $refs.customInput.focus(), 10)">
-
-                    <!-- Back to dropdown button -->
                     <button type="button" x-on:click="custom = false"
                         class="mt-2 text-sm text-[#4F6B3F] underline hover:text-[#6A8A52]">
                         ← Back to select dropdown
@@ -68,6 +60,7 @@
                     class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
                     placeholder="Enter points awarded">
             </div>
+
             <!-- Required Points -->
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Required Points</label>
@@ -76,14 +69,12 @@
                     placeholder="Enter minimum points to unlock quest">
             </div>
 
-            <!-- Start Date -->
+            <!-- Start & End Date -->
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Start Date</label>
                 <input type="date" name="start_date" required
                     class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
             </div>
-
-            <!-- End Date -->
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">End Date</label>
                 <input type="date" name="end_date" required
@@ -110,11 +101,11 @@
                 <button type="submit" id="questSubmitBtn" class="btn-eco btn-leaf">
                     <i class="fa-solid fa-plus"></i> Create Quest
                 </button>
-
             </div>
         </form>
     </div>
 </div>
+
 
 <!-- Submission Modal -->
 <div id="submissionModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
@@ -221,19 +212,28 @@
         modalAction.value = action;
     }
     const questForm = document.getElementById('questForm');
-
+    // JS: Prefill form for editing
     document.querySelectorAll('.btn-edit').forEach(button => {
         button.addEventListener('click', () => {
             const quest = JSON.parse(button.dataset.quest);
 
             // Prefill form
+            const questForm = document.getElementById('questForm');
             questForm.title.value = quest.title;
             questForm.description.value = quest.description;
             questForm.category.value = quest.category;
             questForm.points_reward.value = quest.points_reward;
+            questForm.required_points.value = quest.required_points ?? 0;
             questForm.start_date.value = quest.start_date ?? new Date().toISOString().split('T')[0];
             questForm.end_date.value = quest.end_date;
             questForm.status.value = quest.status;
+
+            // Update modal title
+            document.getElementById('modalTitle').textContent = "Edit Quest";
+
+            // Update submit button text & icon
+            const submitBtn = document.getElementById('questSubmitBtn');
+            submitBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Update Quest';
 
             // Form action & method
             questForm.action = `/quests/${quest.quest_id}`;
@@ -250,7 +250,19 @@
             openQuestModal();
         });
     });
+    // Reset modal when creating new quest
+    function openCreateQuestModal() {
+        const questForm = document.getElementById('questForm');
+        questForm.reset();
+        questForm.action = "{{ route('quests.store') }}";
+        const methodInput = questForm.querySelector('input[name="_method"]');
+        if (methodInput) methodInput.remove();
 
+        document.getElementById('modalTitle').textContent = "Create New Quest";
+        document.getElementById('questSubmitBtn').innerHTML = '<i class="fa-solid fa-plus"></i> Create Quest';
+
+        openQuestModal();
+    }
     // Attach submit listener once
     questForm.addEventListener('submit', function(e) {
         e.preventDefault();
