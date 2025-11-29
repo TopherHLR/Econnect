@@ -99,6 +99,21 @@
                     <p>Daily Eco Actions</p>
                 </div>
 
+<<<<<<< HEAD
+=======
+    {{-- Top by Daily Eco Actions --}}
+    <div>
+        <h2 class="text-2xl font-bold text-green-800 mb-4">Top Daily Eco-Taps</h2>
+        <table class="w-full text-left border-collapse mb-4">
+            <thead>
+                <tr class="border-b">
+                    <th class="py-2">Rank</th>
+                    <th class="py-2">User</th>
+                    <th class="py-2">Daily Eco Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+>>>>>>> 487624faff039268c5f02a3ffc1d79a5188c88ee
                 @foreach ($topDailyActions as $index => $user)
                 <div class="grid grid-cols-3 text-center py-3 border-b hover:bg-green-50 cursor-pointer"
                      onclick="window.location='{{ route('myprogress') }}'">

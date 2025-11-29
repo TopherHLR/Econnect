@@ -61,7 +61,7 @@ class TreeController extends Controller
 
             // Fetch active daily quest
             $dailyQuest = \App\Models\Quest::where('category', 'Small Quest')
-                ->where('title', 'Daily Eco Action')
+                ->where('title', 'Daily Eco Taps')
                 ->whereDate('start_date', $today)
                 ->first();
 

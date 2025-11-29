@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Quest;
+use App\Models\QuestSubmission;
+use App\Models\Feedback;
+use App\Models\UserPointsHistory;
+use App\Models\UserVoucher;
+use App\Models\Notification;
+
 use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
@@ -12,14 +18,96 @@ class AdminController extends Controller
     // Admin Home
     public function home()
     {
-                // Get distinct categories from already stored quests
-        $categories = Quest::distinct()
-            ->pluck('category')
-            ->filter()
-            ->values();
+        // ======== USERS ========
+        $totalUsers = User::count();
+        $verifiedUsers = User::where('is_verified', true)->count();
 
-        return view('admin.adminHome', compact('categories'));
+        // User verification growth (last 7 days vs previous 7 days)
+        $verifiedLast7 = User::where('is_verified', true)
+            ->where('created_at', '>=', now()->subDays(7))
+            ->count();
+
+        $verifiedPrev7 = User::where('is_verified', true)
+            ->whereBetween('created_at', [now()->subDays(14), now()->subDays(7)])
+            ->count();
+
+        $userGrowth = $verifiedPrev7 > 0
+            ? round((($verifiedLast7 - $verifiedPrev7) / $verifiedPrev7) * 100)
+            : $verifiedLast7;
+
+
+        // ======== QUESTS ========
+        $liveQuests = Quest::where('status', 'live')->count();
+        $upcomingQuests = Quest::where('status', 'upcoming')->count();
+        $totalQuests = Quest::count();
+
+        // Pending submissions
+        $pendingSubmissions = QuestSubmission::where('status', 'pending')->count();
+
+        // Overdue → pending more than 3 days
+        $overdueSubmissions = QuestSubmission::where('status', 'pending')
+            ->where('date_submitted', '<', now()->subDays(3))
+            ->count();
+
+
+        // ======== VOUCHERS ========
+        $vouchersThisWeek = UserVoucher::whereBetween('redeemed_date', [now()->startOfWeek(), now()])
+            ->count();
+
+        $vouchersLastWeek = UserVoucher::whereBetween('redeemed_date', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()])
+            ->count();
+
+        $voucherGrowth = $vouchersThisWeek - $vouchersLastWeek;
+
+
+        // ======== ECO ACTIONS ========
+        $ecoActionsLast7 = UserPointsHistory::where('activity_type', 'Tree Tap')
+            ->where('created_at', '>=', now()->subDays(7))
+            ->count();
+
+        // Average daily eco actions
+        $avgDailyEcoActions = $ecoActionsLast7 / 7;
+
+        // Comparison: last week
+        $ecoActionsPrev7 = UserPointsHistory::where('activity_type', 'Eco Action')
+            ->whereBetween('created_at', [now()->subDays(14), now()->subDays(7)])
+            ->count();
+
+
+        // ======== POINTS DISTRIBUTED ========
+        $pointsDistributed = UserPointsHistory::where('voided', false)
+            ->where('created_at', '>=', now()->subDays(7))
+            ->sum('points_change');
+
+
+        // ======== FEEDBACK ========
+        $newFeedbackCount = Feedback::where('created_at', '>=', now()->subDays(7))
+            ->count();
+
+
+        // ======== QUEST CATEGORIES ========
+        $categories = Quest::distinct()->pluck('category')->filter()->values();
+
+
+        return view('admin.adminHome', compact(
+            'totalUsers',
+            'verifiedUsers',
+            'userGrowth',
+            'liveQuests',
+            'upcomingQuests',
+            'totalQuests',
+            'pendingSubmissions',
+            'overdueSubmissions',
+            'vouchersThisWeek',
+            'voucherGrowth',
+            'avgDailyEcoActions',
+            'ecoActionsPrev7',
+            'pointsDistributed',
+            'newFeedbackCount',
+            'categories'
+        ));
     }
+
     public function index()
     {
         $users = User::with([
