@@ -66,19 +66,6 @@
                 </p>
             </div>
 
-            <!-- Admin QR Section -->
-            <div
-                class="border border-[#8B6E4A]/30 rounded-xl p-4 flex flex-col items-center justify-center hover:shadow-lg transition cursor-pointer">
-                <h3 class="font-semibold text-[#4F6B3F] mb-2 text-center">Option 2: Show Admin QR</h3>
-                <div class="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center text-gray-600">
-                    <i class="fa-solid fa-qrcode text-4xl"></i>
-                </div>
-                <p class="text-sm text-[#6A8A52] mt-2 text-center">
-                    Let users scan this QR code if they don't have one.
-                </p>
-                <button class="mt-2 btn-eco btn-mint text-sm">Copy QR</button>
-            </div>
-
         </div>
         <div id="user-info-panel" class="hidden border p-4 rounded">
             <h3 class="text-lg font-bold mb-2">User Details</h3>

@@ -28,7 +28,7 @@
                 </button>
 
                 <!-- Secondary Actions -->
-                <button onclick="openVerifyModal()" class="btn-eco btn-sand compact" title="Verify User">
+                <button onclick="openUserQrScanner()" class="btn-eco btn-sand compact" title="Verify User">
                     <i class="fa-solid fa-qrcode"></i>
                     <span class="hidden xl:inline">Verify</span>
                 </button>

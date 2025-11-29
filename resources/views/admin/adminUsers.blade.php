@@ -14,7 +14,7 @@
         
         <!-- Quick Actions -->
         <div class="flex flex-wrap gap-2 justify-end">
-            <button onclick="openVerifyModal()" class="btn-eco btn-mint compact" title="Verify User">
+            <button onclick="openUserQrScanner()" class="btn-eco btn-mint compact" title="Verify User">
                 <i class="fa-solid fa-qrcode"></i>
                 <span class="hidden lg:inline">Verify User</span>
             </button>
