@@ -17,7 +17,10 @@
                 <i class="fa-solid fa-circle-plus"></i>
                 <span class="hidden lg:inline">New Voucher</span>
             </button>
-
+            <button onclick="openQrScanner()" class="btn-eco btn-leaf compact" title="Scan QR Code">
+                <i class="fa-solid fa-qrcode"></i>
+                <span class="hidden xl:inline">Scan Voucher</span>
+            </button>
             <button class="btn-eco btn-sage compact" title="Quick Actions">
                 <i class="fa-solid fa-bolt"></i>
                 <span class="hidden xl:inline">Quick Actions</span>
@@ -277,7 +280,10 @@
                     <div class="flex flex-col items-center gap-4">
                         <i class="fa-solid fa-qrcode text-[#7F8A4F] text-4xl"></i>
                         <h2 class="text-xl font-semibold text-[#4F6B3F]">Scan Voucher QR Code</h2>
-
+                        <button class="btn-eco btn-sand" onclick="openQrScanner()">
+                            <i class="fa-solid fa-camera"></i>
+                            Start Scanning
+                        </button>
                         <p class="text-sm text-[#6A8A52] mt-2">Use your camera to verify redeemed vouchers.</p>
                     </div>
                 </div>
