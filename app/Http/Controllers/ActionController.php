@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\EcoAction;
 use App\Models\UserEcoAction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log; // Optional for simple logging
 
 class ActionController extends Controller
@@ -55,7 +56,7 @@ class ActionController extends Controller
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
                 'category' => 'nullable|string|max:100',
-                'type'         => 'nullable|string|max:100', // ✅ validate type
+                'type' => 'nullable|string|max:100',
                 'points_value' => 'required|integer|min:1',
                 'is_active' => 'boolean',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -63,10 +64,9 @@ class ActionController extends Controller
 
             $imageName = null;
             if ($request->hasFile('image')) {
-                $imageName = $request->file('image')->getClientOriginalName();
-                $request->file('image')->move(resource_path('images/eco-actions'), $imageName);
+                $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+                $request->file('image')->storeAs('eco-actions', $imageName, 'public');
 
-                // Debug: log image upload
                 Log::debug("Image uploaded: " . $imageName);
             }
 
@@ -74,7 +74,7 @@ class ActionController extends Controller
                 'title' => $request->title,
                 'description' => $request->description,
                 'category' => $request->category ?? 'General',
-                'type'         => $request->type ?? 'General', // ✅ Add type
+                'type' => $request->type ?? 'General',
                 'points_value' => $request->points_value,
                 'is_active' => $request->is_active ?? true,
                 'image' => $imageName,
@@ -82,29 +82,23 @@ class ActionController extends Controller
                 'created_at' => now(),
             ]);
 
-            // Debug: log the newly created action
             Log::debug('EcoAction created', $action->toArray());
 
             return redirect()
                 ->route('adminLifestyle')
                 ->with('success', 'Eco Action created successfully!');
         } catch (\Exception $e) {
-            // Log the error
             Log::error('Failed to create EcoAction', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
 
-            // Redirect back with an error message
             return redirect()
                 ->back()
                 ->withInput()
                 ->with('error', 'Failed to create Eco Action. Please try again.');
         }
     }
-
-
-
     /**
      * Update an existing eco action (admin only).
      */
@@ -118,16 +112,31 @@ class ActionController extends Controller
             'category'     => 'nullable|string|max:100',
             'points_value' => 'required|integer|min:1',
             'is_active'    => 'boolean',
+            'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $action->update($request->only([
-                'title', 'description', 'category', 'type', 'points_value', 'is_active'
+            'title', 'description', 'category', 'type', 'points_value', 'is_active'
         ]));
 
-        return response()->json([
-            'message' => 'Eco Action updated successfully.',
-            'data' => $action
-        ]);
+        // IMAGE UPDATE — follow the same pattern as EcoTopic
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($action->image && Storage::disk('public')->exists('eco-actions/' . $action->image)) {
+                Storage::disk('public')->delete('eco-actions/' . $action->image);
+            }
+
+            // Store new image in storage/app/public/eco-actions
+            $filename = time() . '_' . $request->image->getClientOriginalName();
+            $request->image->storeAs('eco-actions', $filename, 'public');
+
+            $action->image = $filename;
+            $action->save();
+        }
+
+        return redirect()
+            ->route('adminLifestyle')
+            ->with('success', 'Eco Action updated successfully!');
     }
 
     /**
