@@ -17,14 +17,6 @@
                     <i class="fa-solid fa-circle-plus"></i>
                     <span class="hidden lg:inline">New Quest</span>
                 </button>
-                <button class="btn-eco btn-leaf compact" title="Quest Analytics">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <span class="hidden xl:inline">Analytics</span>
-                </button>
-                <button class="btn-eco btn-sage compact" title="Bulk Actions">
-                    <i class="fa-solid fa-bolt"></i>
-                    <span class="hidden xl:inline">Quick Actions</span>
-                </button>
             </div>
         </div>
         <div class="flex flex-col lg:flex-row gap-6 w-full">
@@ -34,7 +26,6 @@
                     <!-- Active Quests Header -->
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans">Active Quests</h2>
-
                     </div>
 
                     <!-- Quest Navigation - RESTORED UL/LI STRUCTURE -->
@@ -75,49 +66,15 @@
 
                             </ul>
                         </div>
-
-
+                        <hr class="border-[#E6EAD7] my-4">
+                        <!-- Archive Tab -->
+                        <li data-quest="archived" class="tab-eco cursor-pointer">
+                            <div class="flex justify-between items-center">
+                                <span class="truncate">Archived Quests</span>
+                            </div>
+                        </li>
 
                     </ul>
-
-                    <!-- Archive Section -->
-                    <div class="relative">
-                        <button id="archiveDropdownBtn" class="btn-eco w-full flex justify-center items-center relative">
-                            <span>Archive</span>
-                            <i id="archiveArrow"
-                                class="fa-solid fa-chevron-down transition-transform duration-200 absolute right-4 top-1/2 -translate-y-1/2"></i>
-                        </button>
-
-                        <ul id="archiveDropdownMenu"
-                            class="absolute left-0 right-0 bg-white border border-[#E6EAD7] rounded-lg mt-2 shadow-lg hidden z-10 max-h-60 overflow-y-auto">
-                            <!-- Archived Quests -->
-                            @foreach ($quests->where('status', 'archived') as $quest)
-                                <li
-                                    class="flex justify-between items-center px-4 py-2 hover:bg-[#F7F9F3] border-b border-[#E6EAD7] last:border-b-0">
-                                    <span class="cursor-pointer text-sm text-[#4F6B3F] truncate"
-                                        data-quest="questTable-{{ $quest->quest_id }}">
-                                        {{ $quest->title }}
-                                    </span>
-
-                                    <!-- Recover form - RESTORED ORIGINAL STRUCTURE -->
-                                    <form action="{{ route('quests.recover', $quest->quest_id) }}" method="POST"
-                                        onsubmit="return confirm('Recover this quest?')">
-                                        @csrf
-                                        <button type="submit"
-                                            class="text-green-600 hover:text-green-800 font-semibold text-sm">
-                                            Recover
-                                        </button>
-                                    </form>
-                                </li>
-                            @endforeach
-
-                            @if ($quests->where('status', 'archived')->count() === 0)
-                                <li class="px-4 py-3 text-center text-[#6A8A52] text-sm">
-                                    No archived quests
-                                </li>
-                            @endif
-                        </ul>
-                    </div>
                 </aside>
             </div>
             <!-- MAIN CONTENT AREA -->
@@ -349,6 +306,74 @@
                             </table>
                         </div>
                     </div>
+                    <!-- Archived Quests Main Table -->
+                    <div id="archiveMain" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
+                                <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left font-semibold w-16">#</th>
+                                        <th class="px-4 py-3 text-left font-semibold">Quest Title</th>
+                                        <th class="px-4 py-3 text-left font-semibold">Description</th>
+                                        <th class="px-4 py-3 text-left font-semibold">Category</th>
+                                        <th class="px-4 py-3 text-left font-semibold">Points</th>
+                                        <th class="px-4 py-3 text-left font-semibold">Start Date</th>
+                                        <th class="px-4 py-3 text-left font-semibold">End Date</th>
+                                        <th class="px-4 py-3 text-left font-semibold">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($quests->where('status', 'archived') as $index => $quest)
+                                        <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
+                                            <td class="px-4 py-3">{{ $loop->iteration }}</td>
+                                            <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $quest->title }}</td>
+                                            <td class="px-4 py-3 text-[#6A8A52]">{{ Str::limit($quest->description, 50) }}
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <span
+                                                    class="px-2 py-1 rounded-full text-xs font-medium bg-[#F0F7E6] text-[#4F6B3F]">
+                                                    {{ $quest->category }}
+                                                </span>
+                                            </td>
+                                            <td class="px-4 py-3 font-semibold text-[#C37A49]">{{ $quest->points_reward }}
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                {{ \Carbon\Carbon::parse($quest->start_date)->format('m/d/Y') }}</td>
+                                            <td class="px-4 py-3">
+                                                {{ \Carbon\Carbon::parse($quest->end_date)->format('m/d/Y') }}</td>
+                                            <td class="px-4 py-3">
+                                                <span
+                                                    class="text-gray-600 font-medium">{{ ucfirst($quest->status) }}</span>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <div class="flex gap-2">
+                                                    <form action="{{ route('quests.recover', $quest->quest_id) }}"
+                                                        method="POST" onsubmit="return confirm('Recover this quest?')">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="text-green-600 hover:text-green-800 font-semibold text-sm">
+                                                            Recover
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                    @if ($quests->where('status', 'archived')->count() === 0)
+                                        <tr>
+                                            <td colspan="9" class="text-center py-4 text-[#6A8A52] text-sm">
+                                                <i class="fa-solid fa-inbox mb-2 text-2xl opacity-50"></i>
+                                                <div>No archived quests</div>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
                 </div>
             </main>
 
@@ -406,6 +431,7 @@
                     const questHeaders = document.querySelectorAll('[id^="questHeader-"]');
                     const collectionHeader = document.getElementById('collectionHeader');
                     const collectionTable = document.getElementById('collectionTable');
+                    const archiveMain = document.getElementById('archiveMain'); // Archived quests table
 
                     questListItems.forEach(item => {
                         item.addEventListener('click', () => {
@@ -416,21 +442,21 @@
                             questHeaders.forEach(header => header.classList.add('hidden'));
                             collectionHeader.classList.add('hidden');
                             collectionTable.classList.add('hidden');
+                            if (archiveMain) archiveMain.classList.add('hidden'); // hide archive table
 
                             if (selectedId === 'collection') {
                                 collectionHeader.classList.remove('hidden');
                                 collectionTable.classList.remove('hidden');
+                            } else if (selectedId === 'archived') {
+                                // Show archive table
+                                if (archiveMain) archiveMain.classList.remove('hidden');
                             } else {
                                 // Show selected quest header and table
                                 const selectedHeader = document.getElementById('questHeader-' + selectedId);
                                 const selectedTable = document.getElementById('questTable-' + selectedId);
 
-                                if (selectedHeader) {
-                                    selectedHeader.classList.remove('hidden');
-                                }
-                                if (selectedTable) {
-                                    selectedTable.classList.remove('hidden');
-                                }
+                                if (selectedHeader) selectedHeader.classList.remove('hidden');
+                                if (selectedTable) selectedTable.classList.remove('hidden');
                             }
 
                             // Highlight active tab
@@ -441,24 +467,6 @@
                     });
                 });
 
-                document.addEventListener('DOMContentLoaded', () => {
-                    const archiveBtn = document.getElementById('archiveDropdownBtn');
-                    const archiveMenu = document.getElementById('archiveDropdownMenu');
-                    const archiveArrow = document.getElementById('archiveArrow');
-
-                    archiveBtn.addEventListener('click', () => {
-                        archiveMenu.classList.toggle('hidden'); // show/hide menu
-                        archiveArrow.classList.toggle('rotate-180'); // rotate arrow
-                    });
-
-                    // Optional: close the dropdown if user clicks outside
-                    document.addEventListener('click', (e) => {
-                        if (!archiveBtn.contains(e.target) && !archiveMenu.contains(e.target)) {
-                            archiveMenu.classList.add('hidden');
-                            archiveArrow.classList.remove('rotate-180');
-                        }
-                    });
-                });
 
                 document.addEventListener('DOMContentLoaded', () => {
 
