@@ -112,7 +112,10 @@
                                                 <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $voucher->title }}</td>
                                                 <td class="px-4 py-3 font-semibold text-[#C37A49]">
                                                     {{ $voucher->required_points }}</td>
-                                                <td class="px-4 py-3 text-[#6A8A52]">{{ $voucher->discount_value }}%</td>
+                                                <td class="px-4 py-3 text-[#6A8A52]">
+                                                    {{ Str::contains($voucher->discount_value, '%') ? $voucher->discount_value : $voucher->discount_value . '%' }}
+                                                </td>
+
                                                 <td class="px-4 py-3">{{ $voucher->expiry_date->format('M d, Y') }}</td>
                                                 <td class="px-4 py-3">
                                                     <span

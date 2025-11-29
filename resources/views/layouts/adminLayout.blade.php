@@ -201,20 +201,22 @@
 
     <!-- 🌿 Top Bar -->
     <header class="flex justify-between items-center py-4 px-3 w-[97%] mx-auto mt-3 relative">
-        <!-- Success/Error Toasts -->
+        <!-- 🌿 Feedback Notification -->
         @if (session('success'))
             <div id="feedback-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 text-[#5C7919] text-lg px-6 py-3 z-[9999] opacity-100 rounded-lg shadow-md">
+                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
                 🌱 {{ session('success') }}
             </div>
         @endif
 
         @if (session('error'))
             <div id="error-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 text-[#d9534f] text-lg px-6 py-3 z-[9999] opacity-100 rounded-lg shadow-md">
+                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
                 ❌ {{ session('error') }}
             </div>
         @endif
+
+
 
         <div class="flex items-center space-x-4">
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="Econnect Logo" class="h-12 w-auto">
