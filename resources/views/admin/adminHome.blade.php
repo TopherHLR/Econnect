@@ -128,26 +128,70 @@
                         <i class="fa-solid fa-chart-bar text-[#7F8A4F] text-lg"></i>
                     </div>
                     <div class="mt-4">
+
                         <div class="flex justify-between items-end mb-3">
-                            <div class="metric-value text-[#4F6B3F]" id="avgEcoActions">
+                            <div class="metric-value text-[#4F6B3F]">
                                 {{ number_format($avgDailyEcoActions, 1) }}
                             </div>
-                            <div class="metric-trend positive" id="ecoActionsTrend">
+
+                            <div class="metric-trend positive">
                                 <i class="fa-solid fa-arrow-up"></i>
-                                <span id="ecoActionsComparison">from {{ $ecoActionsPrev7 }} last week</span>
+                                <span>from {{ $ecoActionsPrev7 }} last week</span>
                             </div>
                         </div>
 
-                        <!-- keep your static bars for now -->
-                        <div class="h-20 flex items-end space-x-1 justify-center" id="ecoActionsChart">
-                            <div class="w-3 bg-[#D8B08C] h-8 rounded-t bar-1"></div>
-                            <div class="w-3 bg-[#C9A37E] h-10 rounded-t bar-2"></div>
-                            <div class="w-3 bg-[#B48E6A] h-12 rounded-t bar-3"></div>
-                            <div class="w-3 bg-[#A17856] h-16 rounded-t bar-4"></div>
-                            <div class="w-3 bg-[#8B6543] h-20 rounded-t bar-5"></div>
-                            <div class="w-3 bg-[#755330] h-24 rounded-t bar-6"></div>
+                        <!-- SVG Line Chart -->
+                        @php
+                            // Prepare values for line chart
+                            $max = max($ecoActionsDaily) ?: 1;
+                            $points = [];
+                            $w = 260; // width
+                            $h = 100; // height
+                            $step = $w / (count($ecoActionsDaily) - 1);
+
+                            foreach ($ecoActionsDaily as $i => $v) {
+                                $x = $i * $step;
+                                $y = $h - ($v / $max) * $h;
+                                $points[] = "$x,$y";
+                            }
+                        @endphp
+
+                        <div class="relative w-full flex justify-center">
+                            <svg width="100%" height="120" viewBox="0 0 {{ $w }} 120"
+                                class="overflow-visible">
+
+                                <!-- Grid lines -->
+                                <line x1="0" y1="100" x2="{{ $w }}" y2="100"
+                                    stroke="#dee2d6" stroke-width="1" />
+                                <line x1="0" y1="50" x2="{{ $w }}" y2="50"
+                                    stroke="#edf0e6" stroke-width="1" />
+
+                                <!-- Line Path -->
+                                <polyline fill="none" stroke="#7F8A4F" stroke-width="3"
+                                    points="{{ implode(' ', $points) }}" stroke-linecap="round" stroke-linejoin="round">
+                                </polyline>
+
+                                <!-- Points with hover tooltips -->
+                                @foreach ($points as $i => $p)
+                                    @php [$x, $y] = explode(',', $p); @endphp
+
+                                    <circle cx="{{ $x }}" cy="{{ $y }}" r="4" fill="#7F8A4F">
+                                        <title>{{ $ecoActionsDaily[$i] }} taps</title>
+                                    </circle>
+                                @endforeach
+
+                            </svg>
                         </div>
+
+                        <!-- Day Labels -->
+                        <div class="flex justify-between text-xs text-[#4F6B3F] mt-2 px-1">
+                            @foreach ($dayLabels as $d)
+                                <span>{{ $d }}</span>
+                            @endforeach
+                        </div>
+
                     </div>
+
                 </div>
 
                 <!-- Points Distributed -->
@@ -156,17 +200,166 @@
                         <h3 class="metric-title">Points Distributed</h3>
                         <i class="fa-solid fa-coins text-[#C37A49] text-lg"></i>
                     </div>
+
                     <div class="mt-4">
-                        <div class="metric-value text-[#4F6B3F]" id="pointsDistributed">{{ $pointsDistributed }} pts
+                        <div class="metric-value text-[#4F6B3F]">
+                            {{ $pointsDistributed }} pts
                         </div>
                         <div class="metric-subtext" id="pointsPeriod">for the last 7 days</div>
 
-                        <!-- static bars retained -->
-                        <div class="mt-3 h-12 flex space-x-2 justify-center" id="pointsChart">
-                            <div class="w-5 bg-[#C9A37E] h-8 rounded bar-1"></div>
-                            <div class="w-5 bg-[#A46C47] h-10 rounded bar-2"></div>
-                            <div class="w-5 bg-[#7F5C3A] h-12 rounded bar-3"></div>
+                        <!-- SVG Line Chart for Points -->
+                        @php
+                            $maxPoints = max($pointsDaily) ?: 1;
+                            $pointsCoords = [];
+                            $w = 260;
+                            $h = 100;
+                            $step = $w / (count($pointsDaily) - 1);
+
+                            foreach ($pointsDaily as $i => $v) {
+                                $x = $i * $step;
+                                $y = $h - ($v / $maxPoints) * $h;
+                                $pointsCoords[] = "$x,$y";
+                            }
+                        @endphp
+
+                        <div class="relative w-full flex justify-center mt-4">
+                            <svg width="100%" height="120" viewBox="0 0 {{ $w }} 120"
+                                class="overflow-visible">
+
+                                <!-- Grid lines -->
+                                <line x1="0" y1="100" x2="{{ $w }}" y2="100"
+                                    stroke="#e2dcdc" stroke-width="1" />
+                                <line x1="0" y1="50" x2="{{ $w }}" y2="50"
+                                    stroke="#f4f1f1" stroke-width="1" />
+
+                                <!-- Line Path -->
+                                <polyline fill="none" stroke="#C37A49" stroke-width="3"
+                                    points="{{ implode(' ', $pointsCoords) }}" stroke-linecap="round"
+                                    stroke-linejoin="round"></polyline>
+
+                                <!-- Points with tooltips -->
+                                @foreach ($pointsCoords as $i => $p)
+                                    @php [$x, $y] = explode(',', $p); @endphp
+                                    <circle cx="{{ $x }}" cy="{{ $y }}" r="4" fill="#C37A49">
+                                        <title>{{ $pointsDaily[$i] }} pts</title>
+                                    </circle>
+                                @endforeach
+
+                            </svg>
                         </div>
+
+                        <!-- Day Labels -->
+                        <div class="flex justify-between text-xs text-[#4F3B2C] mt-2 px-1">
+                            @foreach ($dayLabels as $d)
+                                <span>{{ $d }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Points Redeemed -->
+                <div class="metric-card">
+                    <div class="flex justify-between items-start">
+                        <h3 class="metric-title">Points Redeemed</h3>
+                        <i class="fa-solid fa-gift text-[#DC2626] text-lg"></i>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex justify-between items-end mb-3">
+                            <div class="metric-value text-[#DC2626]">{{ $pointsRedeemed }} pts</div>
+                            <div class="metric-subtext">redeemed in the last 7 days</div>
+                        </div>
+
+                        <!-- Dynamic bar chart -->
+                        <div class="h-28 flex items-end justify-center space-x-3">
+                            @php $max = max($pointsRedeemedDaily) ?: 1; @endphp
+
+                            @foreach ($pointsRedeemedDaily as $i => $value)
+                                @php $height = ($value / $max) * 100; @endphp
+
+                                <div class="flex flex-col items-center">
+                                    <div class="relative group">
+                                        <!-- Bar -->
+                                        <div class="w-5 bg-[#DC2626] rounded transition-all duration-500"
+                                            style="height: {{ $height }}px">
+                                        </div>
+
+                                        <!-- Tooltip -->
+                                        <span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2
+                             px-2 py-1 text-xs rounded bg-black text-white opacity-0 
+                             group-hover:opacity-100 transition">{{ $value }}
+                                            pts</span>
+                                    </div>
+
+                                    <!-- Day Label -->
+                                    <div class="text-xs mt-1 text-[#4F3B2C]">{{ $dayLabels[$i] }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quests Accomplished -->
+                <div class="metric-card">
+                    <div class="flex justify-between items-start">
+                        <h3 class="metric-title">Quests Accomplished</h3>
+                        <i class="fa-solid fa-check-circle text-[#4F6B3F] text-lg"></i>
+                    </div>
+                    <div class="mt-4">
+                        <div class="metric-value text-[#4F6B3F]">{{ $questsAccomplished }}</div>
+                    </div>
+                </div>
+
+                <!-- Vouchers Used -->
+                <div class="metric-card">
+                    <div class="flex justify-between items-start">
+                        <h3 class="metric-title">Vouchers Used</h3>
+                        <i class="fa-solid fa-ticket text-[#4F6B3F] text-lg"></i>
+                    </div>
+                    <div class="mt-4">
+                        <div class="metric-value text-[#4F6B3F]">{{ $vouchersUsed }}</div>
+                    </div>
+                </div>
+                <div class="metric-card"">
+                    <h2 class="text-2xl font-bold text-green-800 mb-6">Top Active Users</h2>
+
+                    <div class="grid grid-cols-3 text-center text-xl font-semibold text-black border-b pb-3 mb-3">
+                        <p>Rank</p>
+                        <p>User</p>
+                        <p>Total Activities</p>
+                    </div>
+
+                    @foreach ($topActiveUsers as $index => $entry)
+                        <div class="grid grid-cols-3 text-center py-3 border-b hover:bg-green-50 cursor-pointer"
+                            onclick="window.location='{{ route('myprogress') }}'">
+                            <p class="font-semibold">{{ $index + 1 }}</p>
+                            <p>{{ $entry->user->first_name }} {{ $entry->user->last_name }}</p>
+                            <p class="font-semibold text-green-800">{{ $entry->activityCount }}</p>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Total Active Users -->
+                <div class="metric-card">
+                    <div class="flex justify-between items-start">
+                        <h3 class="metric-title">Total Active Users</h3>
+                        <i class="fa-solid fa-users text-[#7F8A4F] text-lg"></i>
+                    </div>
+                    <div class="mt-4">
+                        <div class="metric-value text-[#4F6B3F]">
+                            {{ $topActiveUsers->count() }} <!-- Count of active users in leaderboard -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Most Saved Category -->
+                <div class="metric-card">
+                    <div class="flex justify-between items-start">
+                        <h3 class="metric-title">Most Saved Category</h3>
+                        <i class="fa-solid fa-layer-group text-[#4F6B3F] text-lg"></i>
+                    </div>
+                    <div class="mt-4">
+                        <div class="metric-value text-[#4F6B3F]">{{ $mostCategorySavedName }}</div>
                     </div>
                 </div>
 
@@ -181,8 +374,116 @@
                         <div class="metric-subtext" id="feedbackStatus">awaiting review</div>
                     </div>
                 </div>
-            </div>
 
+            </div>
+            <!-- ===== Leaderboards Section ===== -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+
+                <!-- Most Active Users -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Most Active Users</h3>
+                    <ul class="space-y-2">
+                        @foreach ($topActiveUsers as $rank => $entry)
+                            <li class="flex justify-between items-center">
+                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
+                                    {{ $entry->user->last_name }}</span>
+                                <span class="font-semibold">{{ $entry->activityCount }} activities</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <!-- Top Points Earned -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Points Earned (All Time)</h3>
+                    <ul class="space-y-2">
+                        @foreach ($topByPoints as $rank => $entry)
+                            <li class="flex justify-between items-center">
+                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
+                                    {{ $entry->user->last_name }}</span>
+                                <span class="font-semibold">{{ $entry->progressPoints }} pts</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <!-- Top Completed Quests -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Quest Completers</h3>
+                    <ul class="space-y-2">
+                        @foreach ($topByQuests as $rank => $entry)
+                            <li class="flex justify-between items-center">
+                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
+                                    {{ $entry->user->last_name }}</span>
+                                <span class="font-semibold">{{ $entry->questsCompleted }} quests</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <!-- Top Daily Eco Actions -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Daily Eco Actions</h3>
+                    <ul class="space-y-2">
+                        @foreach ($topDailyActions as $rank => $entry)
+                            <li class="flex justify-between items-center">
+                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
+                                    {{ $entry->user->last_name }}</span>
+                                <span class="font-semibold">{{ $entry->dailyEcoActions }} actions</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <!-- Top Library Savers -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Library Savers</h3>
+                    <ul class="space-y-2">
+                        @foreach ($topLibrarySavers as $rank => $entry)
+                            <li class="flex justify-between items-center">
+                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
+                                    {{ $entry->user->last_name }}</span>
+                                <span class="font-semibold">{{ $entry->librarySaves }} saves</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <!-- Top Voucher Redeemers -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Voucher Redeemers</h3>
+                    <ul class="space-y-2">
+                        @foreach ($topVoucherRedeemers as $rank => $entry)
+                            <li class="flex justify-between items-center">
+                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
+                                    {{ $entry->user->last_name }}</span>
+                                <span class="font-semibold">{{ $entry->vouchersRedeemed }} vouchers</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <!-- Most Saved Library Category -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Most Saved Library Category</h3>
+                    <div class="text-[#4F6B3F] font-semibold text-center">{{ $mostCategorySavedName }}</div>
+                </div>
+
+                <!-- Top Points Earned (Last 7 Days) -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Points Earned (Last 7 Days)</h3>
+                    <ul class="space-y-2">
+                        @foreach ($topPointsLast7Days as $rank => $entry)
+                            <li class="flex justify-between items-center">
+                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
+                                    {{ $entry->user->last_name }}</span>
+                                <span class="font-semibold">{{ $entry->pointsEarned }} pts</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+            </div>
         </section>
 
 
