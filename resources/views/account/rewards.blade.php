@@ -14,7 +14,6 @@
         <div class="flex flex-col">
             <h1 class="text-3xl font-bold text-[#4b3f2f] flex items-center">
                 Celebrate Your Effort
-                <span class="ml-3 text-2xl"></span>
             </h1>
             <p class="text-[#6b665e] mt-2 text-lg max-w-2xl">
                 Redeem your eco-points for digital rewards and recognition. Every action counts!

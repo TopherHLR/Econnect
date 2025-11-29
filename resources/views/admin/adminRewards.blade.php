@@ -189,7 +189,10 @@
                                             <td class="px-4 py-3">{{ $r->user->first_name }} {{ $r->user->last_name }}
                                             </td>
                                             <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $r->voucher->title }}</td>
-                                            <td class="px-4 py-3">{{ $r->redeemed_date->format('m/d/Y') }}</td>
+                                            <td class="px-4 py-3">
+                                                {{ $r->redeemed_date ? $r->redeemed_date->format('m/d/Y') : 'Not Redeemed' }}
+                                            </td>
+
                                             <td class="px-4 py-3 font-semibold text-[#C37A49]">
                                                 {{ $r->redeem_points_cost }}</td>
                                             <td class="px-4 py-3">

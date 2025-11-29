@@ -73,6 +73,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/adminSettings', fn() => view('admin.adminSettings'))->name('adminSettings');
             Route::get('/adminLifestyle', [LibraryController::class, 'adminIndex'])->name('adminLifestyle');
         Route::get('/admin/users/filter', [AdminController::class, 'filterUsers'])->name('admin.users.filter');
+        Route::post('/admin/reward/give', [AdminController::class, 'giveReward'])->name('admin.giveReward');
 
     });
 });

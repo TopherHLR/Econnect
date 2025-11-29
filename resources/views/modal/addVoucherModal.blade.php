@@ -79,60 +79,49 @@
 
 
 <script>
-    const modal = document.getElementById('addVoucherModal');
+    const addVoucherModal = document.getElementById('addVoucherModal');
+    
     const form = document.getElementById('voucherForm');
     const modalTitle = document.getElementById('voucherModalTitle');
     const methodField = document.getElementById('voucherMethod');
     const voucherSubmit = document.getElementById('voucherSubmit');
 
-    // OPEN for ADD
-    function openAddVoucherModal() {
-        form.reset();
-        modalTitle.innerHTML = `<i class="fa-solid fa-ticket mr-2"></i> Add New Voucher`;
-        voucherSubmit.innerHTML = `<i class="fa-solid fa-plus"></i> Add Voucher`;
 
-        form.action = "{{ route('vouchers.store') }}";
-        methodField.value = "POST";
 
-        modal.classList.remove('hidden');
-
-    }
-
-    // OPEN for EDIT
+    // -------------------------------------------------------------------
+    // OPEN EDIT VOUCHER MODAL
+    // -------------------------------------------------------------------
     function openEditVoucherModal(voucher) {
         modalTitle.innerHTML = `<i class="fa-solid fa-ticket mr-2"></i> Edit Voucher`;
-        voucherSubmit.innerHTML = `<i class="fa-solid fas fa-edit "></i> Update Voucher`;
-
+        voucherSubmit.innerHTML = `<i class="fa-solid fa-edit"></i> Update Voucher`;
 
         form.action = `/rewards/update/${voucher.voucher_id}`;
-
         methodField.value = "PUT";
 
-        // fill inputs
         form.title.value = voucher.title;
         form.description.value = voucher.description;
         form.required_points.value = voucher.required_points;
         form.discount_value.value = voucher.discount_value;
         form.is_active.value = voucher.is_active ? 1 : 0;
-        form.expiry_date.value = voucher.expiry_date; // "2025-11-26"
+        form.expiry_date.value = voucher.expiry_date;
 
-
-
-
-        modal.classList.remove('hidden');
+        addVoucherModal.classList.remove('hidden');
     }
 
-    function closeAddVoucherModal() {
-        modal.classList.add('hidden');
-    }
-
+    // -------------------------------------------------------------------
+    // CLOSE MODAL
+    // -------------------------------------------------------------------
     function closeAddVoucherModal() {
         addVoucherModal.classList.add('hidden');
     }
 
-    // Close when clicking backdrop
+    // -------------------------------------------------------------------
+    // CLOSE WHEN CLICKING OUTSIDE MODAL
+    // -------------------------------------------------------------------
     addVoucherModal?.addEventListener('click', e => {
-        if (e.target === addVoucherModal) closeAddVoucherModal();
+        if (e.target === addVoucherModal) {
+            closeAddVoucherModal();
+        }
     });
-
 </script>
+

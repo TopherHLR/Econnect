@@ -14,6 +14,7 @@ use App\Models\UserVoucher;
 use App\Models\Voucher;
 use App\Models\Notification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 
 use Illuminate\Support\Facades\Log;
@@ -532,6 +533,20 @@ class AdminController extends Controller
                 'pointsEarned' => $pointsEarned,
             ];
         })->sortByDesc('pointsEarned')->values()->take(10);
+        // ======== MOST DESERVING PLAYER (Highest Points Earned in Last 7 Days) ========
+        $mostDeserving = $users->map(function($user) {
+            $pointsEarned = $user->pointsHistory->where('created_at', '>=', now()->subDays(7))
+                ->where('points_change', '>', 0)
+                ->sum('points_change');
+
+            return (object)[
+                'user' => $user,
+                'pointsEarned' => $pointsEarned,
+            ];
+        })
+        ->sortByDesc('pointsEarned')
+        ->first(); // Top 1
+
 
         return view('admin.adminAnalytics', compact(
             'totalUsers',
@@ -563,9 +578,40 @@ class AdminController extends Controller
             'topDailyActions',
             'topLibrarySavers',
             'topVoucherRedeemers',
-            'topPointsLast7Days'
+            'topPointsLast7Days',
+            'mostDeserving', // << Added
         ));
 
+    }
+    public function giveReward(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,user_id',
+            'voucher_id' => 'required|exists:vouchers,voucher_id',
+        ]);
+
+        $userVoucher = UserVoucher::create([
+            'user_id' => $request->user_id,
+            'voucher_id' => $request->voucher_id,
+            'voucher_code' => strtoupper(Str::random(10)),
+            'qr_code' => strtoupper(Str::random(10)),
+            'redeemed_date' => now(), // Not redeemed yet
+            'status' => 'active',
+            'redeem_points_cost' => 0, // Free reward
+        ]);
+
+        // ---- Notification for Admin ----
+        Notification::create([
+            'user_id' =>$request->user_id, // Admin user_id (can be dynamic)
+            'from_user_id' => 1,
+            'type' => 'reward_given',
+            'reference_id' => $userVoucher->redemption_id ?? $userVoucher->id, // Depending on your PK
+            'title' => 'Reward Given',
+            'message' => 'A reward has been given to you congratulations in your prize',
+            'created_at' => now()
+        ]);
+
+        return back()->with('success', 'Reward successfully given to the player!');
     }
     public function filterUsers(Request $request)
     {

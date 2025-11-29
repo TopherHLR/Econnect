@@ -3,6 +3,8 @@
 @section('title', 'Admin Analytics')
 
 @section('content')
+    @include('modal.AddVoucherModal')
+    @include('modal.deservingPlayerModal')
     <div class="space-y-6">
         <!-- 📊 METRICS DASHBOARD SECTION -->
         <section>
@@ -13,6 +15,24 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <!-- 🟢 HIGH PRIORITY CARDS (Top Row) -->
+                @if ($mostDeserving && $mostDeserving->pointsEarned > 0)
+                    <div class="p-4 bg-white border rounded-xl shadow">
+                        <h3 class="text-lg font-semibold text-green-700">Most Deserving Player</h3>
+
+                        <div class="mt-2">
+                            <p><strong>Name:</strong> {{ $mostDeserving->user->first_name }}
+                                {{ $mostDeserving->user->last_name }}</p>
+                            <p><strong>Points Earned (Last 7 Days):</strong> {{ $mostDeserving->pointsEarned }}</p>
+                        </div>
+
+                        <!-- Reward Button -->
+                        <button onclick="openRewardModal()"
+                            class="mt-3 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            Give Reward
+                        </button>
+
+                    </div>
+                @endif
 
                 <!-- Total Verified Users -->
                 <div class="metric-card">
