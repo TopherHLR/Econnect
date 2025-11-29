@@ -124,7 +124,7 @@
                 <!-- Average Daily Eco-Actions -->
                 <div class="metric-card lg:col-span-2">
                     <div class="flex justify-between items-start">
-                        <h3 class="metric-title">Avg. Daily Eco-Actions</h3>
+                        <h3 class="metric-title">Avg. Daily Eco-Taps</h3>
                         <i class="fa-solid fa-chart-bar text-[#7F8A4F] text-lg"></i>
                     </div>
                     <div class="mt-4">
