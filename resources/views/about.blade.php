@@ -78,7 +78,7 @@
             <div class="flex items-center relative">
                 <!-- Paperclip Image -->
                 <img src="{{ Vite::asset('resources/images/viewport1/vissionclip.png') }}" alt="paperclip"
-                    class="absolute top-10 right-64 w-30 z-20" />
+                    class="absolute top-10 right-64 w-30 z-20">
 
                 <div
                     class="bg-[#7a8f57] text-white rounded-3xl ml-20 p-6 shadow-xl w-[70%] md:w-[55%] min-h-[260px] relative">
