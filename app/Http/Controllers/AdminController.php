@@ -566,6 +566,144 @@ class AdminController extends Controller
         ));
 
     }
+    public function filterUsers(Request $request)
+    {
+        $search = $request->search;
+        $type = $request->type;
+        $status = $request->status;
+
+        $query = User::query()
+            ->with(['pointsHistory', 'savedLibraries', 'savedEcoActions', 'userVouchers', 'feedbacks']);
+
+        /* ---------------------------------------
+            SEARCH
+        ---------------------------------------*/
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%$search%")
+                ->orWhere('last_name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%");
+            });
+        }
+
+        /* ---------------------------------------
+            FILTER USER TYPE
+        ---------------------------------------*/
+        if ($type) {
+            $query->where('user_type', $type);
+        }
+
+        /* ---------------------------------------
+            FILTER STATUS
+        ---------------------------------------*/
+        if ($status) {
+            if ($status === 'verified') {
+                $query->where('is_verified', 1);
+            } elseif ($status === 'unverified') {
+                $query->where('is_verified', 0);
+            } elseif ($status === 'active') {
+                $query->where('is_active', 1);
+            } elseif ($status === 'inactive') {
+                $query->where('is_active', 0);
+            }
+        }
+
+        $users = $query->get();
+
+
+        /* ---------------------------------------
+            BUILD TABLE ROWS
+        ---------------------------------------*/
+        $html = '';
+
+        foreach ($users as $index => $user) {
+
+            // Last Activity Check
+            $lastActivityDates = collect();
+            if ($user->pointsHistory->count()) $lastActivityDates->push($user->pointsHistory->max('created_at'));
+            if ($user->savedLibraries->count()) $lastActivityDates->push($user->savedLibraries->max('saved_at'));
+            if ($user->savedEcoActions->count()) $lastActivityDates->push($user->savedEcoActions->max('log_date'));
+            if ($user->userVouchers->count()) $lastActivityDates->push($user->userVouchers->max('redeemed_date'));
+
+            $lastActivity = $lastActivityDates->count() ? $lastActivityDates->max() : null;
+
+            $inactiveMessage = '';
+            if (!$user->is_active) {
+                $inactiveMessage = 'Inactive';
+            } elseif ($lastActivity && \Carbon\Carbon::parse($lastActivity)->lt(now()->subMonths(6))) {
+                $inactiveMessage = 'Inactive for 6+ months';
+            }
+
+            // USER TYPE BADGE COLORS
+            $userTypeColor =
+                $user->user_type === "admin" ?
+                    "bg-[#FFFBEB] text-[#D97706]" :
+                ($user->user_type === "verified_user" ?
+                    "bg-[#F0F7E6] text-[#4F6B3F]" :
+                    "bg-[#EFF6FF] text-[#1E40AF]"
+                );
+
+            // BUILD ROW
+            $html .= '
+            <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
+
+                <td class="px-4 py-2">'.($index + 1).'</td>
+
+                <td class="px-4 py-2 font-medium">'.$user->first_name.' '.$user->middle_name.' '.$user->last_name.'</td>
+
+                <td class="px-4 py-2">'.$user->email.'</td>
+
+                <!-- USER TYPE -->
+                <td class="px-4 py-2">
+                    <span class="px-2 py-1 rounded-full text-xs font-medium '.$userTypeColor.'">
+                        '.$user->user_type.'
+                    </span>
+                </td>
+
+                <!-- ACTIVITY -->
+                <td class="px-4 py-2">'.
+                    ($inactiveMessage
+                        ? '<span class="text-red-600 font-semibold px-2 py-1 rounded-full bg-red-50 text-xs">'.$inactiveMessage.'</span>'
+                        : '<span class="text-green-600 font-semibold px-2 py-1 rounded-full bg-green-50 text-xs">Active</span>'
+                    )
+                .'</td>
+
+                <!-- VERIFIED -->
+                <td class="px-4 py-2">'.
+                    ($user->is_verified
+                        ? '<span class="text-green-600 font-semibold px-2 py-1 rounded-full bg-green-50 text-xs">Verified</span>'
+                        : '<span class="text-red-600 font-semibold px-2 py-1 rounded-full bg-red-50 text-xs">Unverified</span>'
+                    )
+                .'</td>
+
+                <td class="px-4 py-2">'.$user->created_at->format("Y-m-d").'</td>
+
+                <!-- ACTION BUTTONS -->
+                <td class="px-4 py-2">
+                    <div class="flex flex-wrap gap-1.5">
+
+                        <button class="btn-action btn-view compact"
+                            onclick=\'openViewUserModal('.json_encode($user).')\'>
+                            <i class="fas fa-eye"></i>
+                            <span class="hidden sm:inline">View</span>
+                        </button>'.
+
+                        (!$user->is_verified
+                            ? '<button class="btn-action btn-mint compact" onclick="alert(\'Verify '.$user->first_name.'\')">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="hidden sm:inline">Verify</span>
+                            </button>'
+                            : ''
+                        )
+
+                    .'</div>
+                </td>
+
+            </tr>';
+        }
+
+        return $html;
+    }
 
     // Admin System Alerts
     public function systemAlerts()
