@@ -168,7 +168,7 @@ class EcoController extends Controller
         $tomorrow = Carbon::tomorrow(); // 24-hour duration
 
         // Check if a "Daily Eco Action" already exists globally
-        $existingQuest = Quest::where('title', 'Daily Eco Action')
+        $existingQuest = Quest::where('title', 'Daily Eco Taps')
             ->whereDate('start_date', $today)
             ->whereDate('end_date', $tomorrow)
             ->first();
@@ -180,7 +180,7 @@ class EcoController extends Controller
         // Create the global daily quest
         $quest = Quest::create([
             'title' => 'Daily Eco Action',
-            'description' => 'Complete a small eco-action today! Get 100 Tree taps today.',
+            'description' => 'Complete a small eco-taps today! Get 100 Tree taps today.',
             'category' => 'Small Quest',
             'points_reward' => 5,
             'start_date' => $today,

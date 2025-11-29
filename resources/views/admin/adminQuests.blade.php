@@ -520,11 +520,11 @@
                                         li.className =
                                             "flex justify-between items-center px-4 py-2 hover:bg-[#E9F0E1] text-[#4E3A2E]";
                                         li.innerHTML = `
-            <span class="cursor-pointer" data-quest="questTable-${questId}">${questTitle}</span>
-            <form onsubmit="return confirm('Recover this quest?')" class="ml-2" data-quest-id="${questId}">
-                <button type="button" class="text-green-600 hover:text-green-800 font-semibold text-sm btn-recover">Recover</button>
-            </form>
-        `;
+                                                        <span class="cursor-pointer" data-quest="questTable-${questId}">${questTitle}</span>
+                                                        <form onsubmit="return confirm('Recover this quest?')" class="ml-2" data-quest-id="${questId}">
+                                                            <button type="button" class="text-green-600 hover:text-green-800 font-semibold text-sm btn-recover">Recover</button>
+                                                        </form>
+                                                    `;
                                         archiveMenu.appendChild(li);
 
                                         // Add recover button functionality

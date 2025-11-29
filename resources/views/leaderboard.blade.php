@@ -53,7 +53,7 @@
 
     {{-- Top by Daily Eco Actions --}}
     <div>
-        <h2 class="text-2xl font-bold text-green-800 mb-4">Top Daily Eco Actions</h2>
+        <h2 class="text-2xl font-bold text-green-800 mb-4">Top Daily Eco-Taps</h2>
         <table class="w-full text-left border-collapse mb-4">
             <thead>
                 <tr class="border-b">
