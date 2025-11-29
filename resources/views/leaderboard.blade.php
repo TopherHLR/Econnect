@@ -1,6 +1,7 @@
 @extends('layouts.mainLayout')
 
 @section('content')
+<<<<<<< HEAD
 <div class="min-h-screen bg-[#E2EBD7] p-10 text-[#4F6B3F]">
     <div class="grid grid-cols-12 gap-8">
 
@@ -12,9 +13,25 @@
                 <div class="bg-white rounded-2xl p-8 h-38 text-center shadow-sm"></div>
             </div>
             <div class="bg-white rounded-2xl p-10 h-40 text-center shadow-sm"></div>
+=======
+<div class="min-h-screen bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]"> <!-- Responsive padding -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+
+        <!-- LEFT SIDEBAR -->
+        <div class="lg:col-span-3 bg-[#FAF7EE] rounded-3xl p-4 md:p-6 shadow-md space-y-6">
+            <h2 class="text-lg md:text-xl font-semibold">Your Stats</h2>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-2xl p-6 md:p-8 h-32 md:h-38 text-center shadow-sm"></div>
+                <div class="bg-white rounded-2xl p-6 md:p-8 h-32 md:h-38 text-center shadow-sm"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-8 md:p-10 h-32 md:h-40 text-center shadow-sm"></div>
+
+>>>>>>> 2b4dbf6ab5dc797fec561f2d84563a910caf638a
             <div>
                 <p class="font-medium mb-2">Pending Quests</p>
-                <div class="bg-white rounded-2xl h-90 shadow-sm"></div>
+                <div class="bg-white rounded-2xl h-48 md:h-90 shadow-sm"></div>
             </div>
         </div>
 
@@ -60,8 +77,6 @@
                         <p>{{ $user->first_name }} {{ $user->last_name }}</p>
                         <p class="font-semibold">{{ $user->progressPoints }}</p>
                     </div>
-                @endforeach
-            </div>
 
             <!-- TOP BY COMPLETED QUESTS -->
             <div id="leaderboard-quests" class="bg-white rounded-3xl p-10 shadow-sm h-[675px] overflow-y-auto hidden">
