@@ -57,4 +57,10 @@ class Voucher extends Model
     {
         return $this->hasMany(UserVoucher::class, 'voucher_id', 'voucher_id');
     }
+    public function redeemedUserVouchers()
+    {
+        return $this->hasMany(UserVoucher::class, 'voucher_id', 'voucher_id')
+                    ->whereIn('status', ['active', 'used']);
+    }
+
 }

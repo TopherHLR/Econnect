@@ -43,7 +43,6 @@
             </div>
         </div>
     </div>
-
     <!-- Main Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
 
@@ -52,12 +51,20 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-[#4b3f2f]">Available Rewards</h2>
                 <div class="flex space-x-2">
-                    <button
-                        class="bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-full text-sm font-medium hover:bg-[#d8d6cc] transition-colors">All</button>
-                    <button
-                        class="bg-white text-[#6b665e] px-3 py-1 rounded-full text-sm font-medium hover:bg-[#e8e6dc] transition-colors">Affordable</button>
-                    <button
-                        class="bg-white text-[#6b665e] px-3 py-1 rounded-full text-sm font-medium hover:bg-[#e8e6dc] transition-colors">Popular</button>
+                    <button onclick="showAll()"
+                        class="filter-btn bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-full text-sm font-medium hover:bg-[#d8d6cc] transition-colors">
+                        All
+                    </button>
+
+                    <button onclick="showAffordable()"
+                        class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-full text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                        Affordable
+                    </button>
+
+                    <button onclick="showPopular()"
+                        class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-full text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                        Popular
+                    </button>
                 </div>
             </div>
 
@@ -65,36 +72,53 @@
                 @foreach ($availableVouchers as $voucher)
                     @php
                         $redeemed = $myVouchers->contains(fn($uv) => $uv->voucher_id === $voucher->voucher_id);
+                        $maxRedemptions = $availableVouchers->max('user_vouchers_count');
                     @endphp
-                    <div
-                        class="rounded-2xl p-6 flex flex-col justify-between shadow-lg transform transition-all duration-300
-                       {{ $redeemed ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-gradient-to-br from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-xl hover:scale-[1.02]' }}">
+
+
+                    <div class="voucher-card rounded-2xl p-6 flex flex-col justify-between shadow-lg transform transition-all duration-300
+                    {{ $redeemed ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-gradient-to-br from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-xl hover:scale-[1.02]' }}"
+                        data-points="{{ $voucher->required_points }}"
+                        data-popular="{{ $voucher->user_vouchers_count == $maxRedemptions ? '1' : '0' }}">
                         <div>
                             <div class="flex justify-between items-start mb-3">
-                                @if ($voucher->is_popular ?? false)
+
+                                {{-- ⭐ MOST POPULAR if widely used --}}
+                                @if ($voucher->user_vouchers_count == $maxRedemptions)
                                     <span
-                                        class="rounded-full px-3 py-1 text-xs font-semibold {{ $redeemed ? 'bg-gray-400/50' : 'bg-white/20' }}">Most
-                                        Popular</span>
+                                        class="rounded-full px-3 py-1 text-xs font-semibold {{ $redeemed ? 'bg-gray-400/50' : 'bg-white/20' }}">
+                                        Most Popular
+                                    </span>
                                 @endif
-                                <span
-                                    class="text-sm {{ $redeemed ? 'text-gray-600' : 'text-white/80' }}">{{ $voucher->category ?? 'General' }}</span>
+
+
+                                <span class="text-sm {{ $redeemed ? 'text-gray-600' : 'text-white/80' }}">
+                                    {{ $voucher->category ?? 'General' }}
+                                </span>
                             </div>
+
                             <h2
-                                class="text-2xl font-bold leading-tight mb-2 {{ $redeemed ? 'text-gray-700' : 'text-white' }}">
-                                {{ $voucher->title }}</h2>
+                                class="text-2xl font-bold leading-tight mb-2 
+                            {{ $redeemed ? 'text-gray-700' : 'text-white' }}">
+                                {{ $voucher->title }}
+                            </h2>
+
                             <p class="text-sm mb-4 {{ $redeemed ? 'text-gray-600' : 'text-white/90' }}">
-                                {{ $voucher->description }}</p>
+                                {{ $voucher->description }}
+                            </p>
                         </div>
+
                         <div class="flex justify-between items-center">
                             <button {{ $redeemed ? 'disabled' : '' }}
                                 onclick="{{ $redeemed ? '' : "openVoucherModal({$voucher->voucher_id})" }}"
                                 class="px-5 py-2.5 rounded-lg font-semibold shadow-md transform transition
-                               {{ $redeemed ? 'bg-gray-400 text-gray-700 cursor-not-allowed' : 'bg-gradient-to-r from-[#d1703d] to-[#e1804d] text-white hover:shadow-lg hover:scale-105' }}">
+                            {{ $redeemed ? 'bg-gray-400 text-gray-700 cursor-not-allowed' : 'bg-gradient-to-r from-[#d1703d] to-[#e1804d] text-white hover:shadow-lg hover:scale-105' }}">
                                 {{ $redeemed ? 'Redeemed' : 'REDEEM' }}
                             </button>
 
                             <span
-                                class="font-bold rounded-full px-4 py-2 shadow-md {{ $redeemed ? 'text-gray-700 bg-gray-200' : 'text-[#4b3f2f] bg-white/90' }}">
+                                class="font-bold rounded-full px-4 py-2 shadow-md 
+                            {{ $redeemed ? 'text-gray-700 bg-gray-200' : 'text-[#4b3f2f] bg-white/90' }}">
                                 {{ $voucher->required_points }} pts
                             </span>
                         </div>
@@ -118,26 +142,34 @@
                     @php $used = $uv->status === 'used'; @endphp
                     <div onclick="{{ $used ? '' : "openVoucherUsageModal('{$uv->voucher_code}')" }}"
                         class="rounded-xl p-4 shadow-md transform transition
-                       {{ $used ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-lg hover:scale-[1.02] cursor-pointer' }}">
+                    {{ $used ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-lg hover:scale-[1.02] cursor-pointer' }}">
                         <div class="flex justify-between items-start mb-2">
+                            <span class="font-bold text-lg {{ $used ? 'text-gray-700' : '' }}">
+                                {{ $uv->voucher->title }}
+                            </span>
+
                             <span
-                                class="font-bold text-lg {{ $used ? 'text-gray-700' : '' }}">{{ $uv->voucher->title }}</span>
-                            <span
-                                class="rounded-full px-2 py-1 text-xs font-semibold {{ $used ? 'bg-gray-400 text-gray-700' : 'bg-white/20' }}">{{ ucfirst($uv->status) }}</span>
+                                class="rounded-full px-2 py-1 text-xs font-semibold 
+                            {{ $used ? 'bg-gray-400 text-gray-700' : 'bg-white/20' }}">
+                                {{ ucfirst($uv->status) }}
+                            </span>
                         </div>
+
                         <p class="text-sm mb-3 {{ $used ? 'text-gray-600' : 'text-white/90' }}">
-                            {{ $uv->voucher->description }}</p>
+                            {{ $uv->voucher->description }}
+                        </p>
+
                         <div class="flex justify-between items-center text-xs">
                             <span>Expires: {{ \Carbon\Carbon::parse($uv->voucher->expiry_date)->format('M d, Y') }}</span>
-                            <span class="rounded px-2 py-1 {{ $used ? 'bg-gray-200 text-gray-700' : 'bg-white/20' }}">Tap
-                                to use</span>
+                            <span class="rounded px-2 py-1 {{ $used ? 'bg-gray-200 text-gray-700' : 'bg-white/20' }}">
+                                Tap to use
+                            </span>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
 
-    </div>
     </div>
 
     <!-- Footer Note -->
@@ -146,4 +178,27 @@
             "Every eco-action brings us closer to a sustainable future. Thank you for making a difference!"
         </p>
     </div>
+    <script>
+        const currentPointsUser = {{ $currentPoints ?? 0 }}; // user points from PHP
+
+        function showAffordable() {
+            document.querySelectorAll('.voucher-card').forEach(card => {
+                const requiredPoints = parseInt(card.dataset.points, 10);
+                console.log('Card points:', requiredPoints, 'User points:', currentPointsUser); // debug
+                card.style.display = requiredPoints <= currentPointsUser ? 'block' : 'none';
+            });
+        }
+
+        function showAll() {
+            document.querySelectorAll('.voucher-card').forEach(card => {
+                card.style.display = 'block';
+            });
+        }
+
+        function showPopular() {
+            document.querySelectorAll('.voucher-card').forEach(card => {
+                card.style.display = card.dataset.popular === '1' ? 'block' : 'none';
+            });
+        }
+    </script>
 @endsection
