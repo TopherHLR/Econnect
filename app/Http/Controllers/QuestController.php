@@ -16,8 +16,10 @@ class QuestController extends Controller
     {
         // Load all quests with submissions and users
         $quests = Quest::with('submissions.user')
-                    ->orderBy('start_date', 'desc')
-                    ->get();
+            ->whereIn('status', ['active', 'ending_soon'])
+            ->orderBy('start_date', 'desc')
+            ->paginate(6);
+
 
         // Get all unique categories for filters/dropdowns
         $categories = $quests->pluck('category')->filter()->unique()->values();

@@ -85,7 +85,7 @@
                     @foreach ($quests as $quest)
                         <!-- Table Header Container -->
                         <div id="questHeader-{{ $quest->quest_id }}"
-                            class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] {{ $loop->first ? '' : 'hidden' }}">
+                            class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden }}">
 
                             <!-- Table Header with Alerts & Search -->
                             <div class="overflow-x-auto">
@@ -144,7 +144,7 @@
 
                         <!-- Main Table Container -->
                         <div id="questTable-{{ $quest->quest_id }}"
-                            class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] {{ $loop->first ? '' : 'hidden' }}">
+                            class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden }}">
 
                             <!-- Participants Table -->
                             <div class="overflow-x-auto">
@@ -208,7 +208,7 @@
                     @endforeach
 
                     <!-- Quest Collection Table Header -->
-                    <div id="collectionHeader" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden">
+                    <div id="collectionHeader" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] ">
                         <!-- Table Header -->
                         <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -231,7 +231,7 @@
                     </div>
 
                     <!-- Quest Collection Main Table -->
-                    <div id="collectionTable" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden">
+                    <div id="collectionTable" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] ">
                         <!-- Quest Collection Table -->
                         <div class="overflow-x-auto">
                             <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
@@ -304,6 +304,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="mt-4">
+                                {{ $quests->links('vendor.pagination.tailwind') }}
+                            </div>
                         </div>
                     </div>
                     <!-- Archived Quests Main Table -->
@@ -425,6 +428,20 @@
 
             <!-- JS for dynamic quest table switching -->
             <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const questListItems = document.querySelectorAll('#questList li');
+
+                    // Highlight Quest Collection tab
+                    questListItems.forEach(li => li.classList.remove('bg-[#E9F0E1]', 'font-semibold'));
+                    const collectionTab = document.querySelector('#questList li[data-quest="collection"]');
+                    if (collectionTab) collectionTab.classList.add('bg-[#E9F0E1]', 'font-semibold');
+                });
+
+                // Show collection table by default
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('collectionTable').classList.remove('hidden');
+                });
+
                 document.addEventListener('DOMContentLoaded', () => {
                     const questListItems = document.querySelectorAll('#questList li');
                     const questTables = document.querySelectorAll('[id^="questTable-"]');
