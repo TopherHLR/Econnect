@@ -8,6 +8,7 @@ use App\Models\EcoLibrary;
 use App\Models\EcoAction;
 use App\Models\UserLibrary;
 use App\Models\UserEcoAction;
+use Illuminate\Support\Facades\Storage;
 
 class LibraryController extends Controller
 {
@@ -247,9 +248,12 @@ class LibraryController extends Controller
 
         try {
             $imageName = null;
+
             if ($request->hasFile('image')) {
                 $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
-                $request->file('image')->move(resource_path('images/eco-library'), $imageName);
+
+                // Store in storage/app/public/eco-library
+                $request->file('image')->storeAs('eco-library', $imageName, 'public');
             }
 
             $library = EcoLibrary::create([
@@ -275,6 +279,7 @@ class LibraryController extends Controller
         }
     }
 
+
     public function update(Request $request, $id)
     {
         $library = EcoLibrary::findOrFail($id);
@@ -285,12 +290,29 @@ class LibraryController extends Controller
             'category' => 'nullable|string|max:100',
             'type' => 'nullable|string|max:50',
             'source_link' => 'nullable|url|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $library->update($request->only(['title', 'content', 'category', 'type', 'source_link']));
 
+        // IMAGE UPDATE
+        if ($request->hasFile('image')) {
+
+            // Delete old image if exists
+            if ($library->image && Storage::disk('public')->exists('eco-library/' . $library->image)) {
+                Storage::disk('public')->delete('eco-library/' . $library->image);
+            }
+
+            // Store new image in storage/app/public/eco-library
+            $filename = time() . '_' . $request->image->getClientOriginalName();
+            $request->image->storeAs('eco-library', $filename, 'public');
+
+            $library->image = $filename;
+            $library->save();
+        }
+
         return redirect()
-            ->route('admin.home')
+            ->route('adminLifestyle')
             ->with('success', 'Eco Topic updated successfully!');
     }
 

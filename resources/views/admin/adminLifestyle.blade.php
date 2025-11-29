@@ -55,10 +55,11 @@
                 <!-- Action Buttons Group -->
                 <div class="flex gap-2 shrink-0">
                     <button id="addEcoItemBtn" class="btn-eco btn-leaf flex items-center gap-2"
-                        onclick="openEcoTopicModal()">
+                        onclick="openCreateEcoTopicModal()">
                         <i class="fa-solid fa-plus"></i>
                         <span>Add Topic</span>
                     </button>
+
                     <button class="btn-eco btn-sage compact" title="Quick Actions">
                         <i class="fa-solid fa-bolt"></i>
                         <span class="hidden sm:inline">Actions</span>
@@ -79,10 +80,6 @@
                             <p class="text-sm text-[#6A8A52]">{{ $ecoTopics->count() }} topics available</p>
                         </div>
                     </div>
-                    <div class="text-sm text-[#7A8C4F]">
-                        <i class="fa-solid fa-grid-2 mr-1"></i>
-                        Grid View
-                    </div>
                 </div>
 
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -90,9 +87,10 @@
                         <div
                             class="bg-[#FCF9EF] border border-[#D8E2CA] rounded-2xl shadow-sm p-5 hover:shadow-md transition-all duration-200 group">
                             <div class="flex items-start gap-4 mb-4">
-                                <img src="{{ Vite::asset('resources/images/eco-library/' . ($topic->image ?? 'default.jpg')) }}"
+                                <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('images/default.jpg') }}"
                                     alt="{{ $topic->title }}"
                                     class="w-16 h-16 object-cover rounded-xl border border-[#C8D9B5] flex-shrink-0">
+
                                 <div class="flex-1 min-w-0">
                                     <h3 class="font-semibold text-[#4F6B3F] text-base leading-tight mb-1">
                                         {{ $topic->title }}</h3>
@@ -110,10 +108,13 @@
 
                                 <!-- Edit Topic -->
                                 <a href="javascript:void(0)" class="btn-action btn-edit-eco compact"
-                                    data-topic='@json($topic)' title="Edit Topic">
+                                    data-topic='@json($topic, JSON_HEX_APOS | JSON_HEX_QUOT)'
+                                    data-image="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : '' }}"
+                                    title="Edit Topic">
                                     <i class="fa-solid fa-pen"></i>
                                     <span class="hidden xs:inline">Edit</span>
                                 </a>
+
 
 
                                 <!-- Delete Topic -->
@@ -149,10 +150,6 @@
                             <p class="text-sm text-[#6A8A52]">{{ $ecoActions->count() }} actions available</p>
                         </div>
                     </div>
-                    <div class="text-sm text-[#7A8C4F]">
-                        <i class="fa-solid fa-grid-2 mr-1"></i>
-                        Grid View
-                    </div>
                 </div>
 
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -160,8 +157,8 @@
                         <div
                             class="bg-[#FCF9EF] border border-[#D8E2CA] rounded-2xl shadow-sm p-5 hover:shadow-md transition-all duration-200 group">
                             <div class="flex items-start gap-4 mb-4">
-                                <img src="{{ Vite::asset('resources/images/eco-actions/' . ($action->image ?? 'default.jpg')) }}"
-                                    alt="{{ $action->title }}"
+                                <img src="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : '' }}"
+                                    alt="Eco Action" alt="{{ $action->title }}"
                                     class="w-16 h-16 object-cover rounded-xl border border-[#C8D9B5] flex-shrink-0">
                                 <div class="flex-1 min-w-0">
                                     <h3 class="font-semibold text-[#4F6B3F] text-base leading-tight mb-1">
@@ -179,11 +176,17 @@
                                 </a>
 
                                 <!-- Edit Button -->
-                                <a href="{{ url('/admin/actions/' . $action->id) }}" class="btn-action btn-edit compact"
+                                <!-- Edit Action -->
+                                <!-- Example Edit Button -->
+                                <a href="javascript:void(0)" class="btn-action btn-edit-eco-action"
+                                    data-action='@json($action, JSON_HEX_APOS | JSON_HEX_QUOT)'
+                                    data-image="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : '' }}"
                                     title="Edit Action">
-                                    <i class="fa-solid fa-pen"></i>
-                                    <span class="hidden xs:inline">Edit</span>
+                                    <i class="fa-solid fa-pen"></i> Edit
                                 </a>
+
+
+
 
                                 <!-- Delete Button -->
                                 <form method="POST" action="{{ url('/admin/actions/' . $action->id) }}" class="inline">
@@ -283,7 +286,7 @@
             addBtn.innerHTML = isTopics ?
                 '<i class="fa-solid fa-plus"></i> <span>Add Eco Topic</span>' :
                 '<i class="fa-solid fa-plus"></i> <span>Add Eco Action</span>';
-            addBtn.setAttribute('onclick', isTopics ? 'openEcoTopicModal()' : 'openEcoActionModal()');
+            addBtn.setAttribute('onclick', isTopics ? 'openCreateEcoTopicModal()' : 'openEcoActionModal()');
         };
 
         // Event listeners
