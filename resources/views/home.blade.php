@@ -135,36 +135,36 @@
     <section class="relative -top-75 min-h-[200vh] flex items-center justify-center viewport2BG">
 
         @auth
-            <!-- 🌿 LEFT MODAL PANEL -->
-            <div
-                class="absolute left-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
-                <!-- Title + View More Link -->
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-xl font-bold text-green-900">Available Quests</h2>
+            @if (auth()->user()->user_type === 'verified_user')
+                <!-- 🌿 LEFT MODAL PANEL -->
+                <div
+                    class="absolute left-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
+                    <!-- Title + View More Link -->
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-xl font-bold text-green-900">Available Quests</h2>
 
-                    @if ($pendingSubmissions->count() > 0)
-                        <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
-                            View More →
-                        </a>
-                    @endif
-                </div>
+                        @if ($pendingSubmissions->count() > 0)
+                            <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
+                                View More →
+                            </a>
+                        @endif
+                    </div>
 
-                @if ($availableQuests->isEmpty())
-                    <p class="text-gray-500 text-sm italic">No available quests at the moment 🌱</p>
-                @else
-                    <div class="space-y-3">
+                    @if ($availableQuests->isEmpty())
+                        <p class="text-gray-500 text-sm italic">No available quests at the moment 🌱</p>
+                    @else
+                        <div class="space-y-3">
+                            @foreach ($availableQuests->take(2) as $quest)
+                                <div class="p-4 bg-white/80 shadow rounded-xl border border-green-100">
+                                    <h3 class="font-semibold text-green-800">{{ $quest->title }}</h3>
 
-                        @foreach ($availableQuests->take(2) as $quest)
-                            <div class="p-4 bg-white/80 shadow rounded-xl border border-green-100">
-                                <h3 class="font-semibold text-green-800">{{ $quest->title }}</h3>
+                                    <p class="text-xs text-gray-600 mt-1">
+                                        Reward:
+                                        <span class="font-bold text-green-700">{{ $quest->points_reward }} points</span>
+                                    </p>
 
-                                <p class="text-xs text-gray-600 mt-1">
-                                    Reward:
-                                    <span class="font-bold text-green-700">{{ $quest->points_reward }} points</span>
-                                </p>
-
-                                <span
-                                    onclick="openActiveQuestModal({
+                                    <span
+                                        onclick="openActiveQuestModal({
                                             id: {{ $quest->quest_id }},
                                             title: '{{ $quest->title }}',
                                             description: '{{ $quest->description }}',
@@ -174,66 +174,95 @@
                                             start_date: '{{ $quest->start_date }}',
                                             end_date: '{{ $quest->end_date }}'
                                         })"
-                                    class="text-xs text-blue-700 underline mt-2 block cursor-pointer">
-                                    View Quest →
-                                </span>
-
-                            </div>
-                        @endforeach
-
-                    </div>
-                @endif
-
-            </div>
-            <!-- 🌿 RIGHT MODAL PANEL -->
-            <div
-                class="absolute right-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
-
-                <!-- Title + View More Link -->
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-xl font-bold text-green-900">Pending Submissions</h2>
-
-                    @if ($pendingSubmissions->count() > 0)
-                        <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
-                            View More →
-                        </a>
+                                        class="text-xs text-blue-700 underline mt-2 block cursor-pointer">
+                                        View Quest →
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
 
-                @if ($pendingSubmissions->isEmpty())
-                    <p class="text-gray-500 text-sm italic">No pending tasks </p>
-                @else
-                    <div class="space-y-3">
+                <!-- 🌿 RIGHT MODAL PANEL -->
+                <div
+                    class="absolute right-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
+                    <!-- Title + View More Link -->
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-xl font-bold text-green-900">Pending Submissions</h2>
 
-                        @foreach ($pendingSubmissions->take(2) as $sub)
-                            <div class="p-4 bg-white/80 shadow rounded-xl border border-green-100">
-                                <h3 class="font-semibold text-green-800">{{ $sub->quest->title }}</h3>
-
-                                <p class="text-xs text-gray-600 mt-1">
-                                    Status:
-                                    <span class="font-medium text-orange-600">{{ ucfirst($sub->status) }}</span>
-                                </p>
-                                @php
-                                    $submissionData = [
-                                        'submission_id' => $sub->submission_id,
-                                        'questTitle' => $sub->quest->title,
-                                        'questDescription' => $sub->quest->description,
-                                    ];
-                                @endphp
-
-                                <span onclick='openAcceptedQuestModal(@json($submissionData))'
-                                    class="text-xs text-blue-700 underline mt-2 block cursor-pointer">
-                                    Continue →
-                                </span>
-
-
-                            </div>
-                        @endforeach
-
+                        @if ($pendingSubmissions->count() > 0)
+                            <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
+                                View More →
+                            </a>
+                        @endif
                     </div>
-                @endif
 
-            </div>
+                    @if ($pendingSubmissions->isEmpty())
+                        <p class="text-gray-500 text-sm italic">No pending tasks </p>
+                    @else
+                        <div class="space-y-3">
+                            @foreach ($pendingSubmissions->take(2) as $sub)
+                                <div class="p-4 bg-white/80 shadow rounded-xl border border-green-100">
+                                    <h3 class="font-semibold text-green-800">{{ $sub->quest->title }}</h3>
+
+                                    <p class="text-xs text-gray-600 mt-1">
+                                        Status:
+                                        <span class="font-medium text-orange-600">{{ ucfirst($sub->status) }}</span>
+                                    </p>
+
+                                    @php
+                                        $submissionData = [
+                                            'submission_id' => $sub->submission_id,
+                                            'questTitle' => $sub->quest->title,
+                                            'questDescription' => $sub->quest->description,
+                                        ];
+                                    @endphp
+
+                                    <span onclick='openAcceptedQuestModal(@json($submissionData))'
+                                        class="text-xs text-blue-700 underline mt-2 block cursor-pointer">
+                                        Continue →
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            @else
+                <!-- 🌿 LEFT MODAL PANEL LOCKED -->
+                <div
+                    class="absolute left-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
+                    <div class="flex justify-center items-center h-full">
+                        <!-- 🔒 Overlay Lock -->
+                        <div
+                            class="bg-white/50 backdrop-blur-md border border-white/30 rounded-2xl p-6 shadow-lg flex flex-col items-center text-center w-full">
+                            <div class="text-6xl text-green-800 mb-4"><i class="fas fa-lock"></i></div>
+                            <h2 class="text-2xl font-semibold text-green-900 mb-2">Access Restricted</h2>
+                            <p class="text-green-800 text-sm">
+                                Only verified users can access Available Quests. Become a customer and scan your Account QR at
+                                your first in-store purchase.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
+                <div
+                    class="absolute right-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
+                    <div class="flex justify-center items-center h-full">
+                        <!-- 🔒 Overlay Lock -->
+                        <div
+                            class="bg-white/50 backdrop-blur-md border border-white/30 rounded-2xl p-6 shadow-lg flex flex-col items-center text-center w-full">
+                            <div class="text-6xl text-green-800 mb-4"><i class="fas fa-lock"></i></div>
+                            <h2 class="text-2xl font-semibold text-green-900 mb-2">Access Restricted</h2>
+                            <p class="text-green-800 text-sm">
+                                Only verified users can access Pending Submissions. Become a customer and scan your Account QR
+                                at your first in-store purchase.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
 
         @endauth
 
@@ -372,22 +401,22 @@
                 </div>
             </div>
 
-        <!-- 🌿 Card 2 -->
-        <div
-            class="bg-gradient-to-r from-[#F7FBEE] to-[#E3F2D3] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] ml-[160px] mr-[160px] min-h-[300px]">
-            <div class="flex-1">
-                <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
-                <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
-                <!-- 🔽 Button moved to left side -->
-                <div class="flex justify-start">
-                    <button class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                        Explore quests
-                    </button>
+            <!-- 🌿 Card 2 -->
+            <div
+                class="bg-gradient-to-r from-[#F7FBEE] to-[#E3F2D3] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] ml-[160px] mr-[160px] min-h-[300px]">
+                <div class="flex-1">
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
+                    <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
+                    <!-- 🔽 Button moved to left side -->
+                    <div class="flex justify-start">
+                        <button class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            Explore quests
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- ☕ Card 3 -->
+            <!-- ☕ Card 3 -->
             <div
                 class="bg-gradient-to-r from-[#E3F2D3] to-[#F7FBEE] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px]">
                 <div class="flex-1">
@@ -692,24 +721,33 @@
                         // Show server message if any
                         if (data.message) {
                             showMessage(data.message);
+
+
                         }
 
                         // Update progress bar using progressPoints
                         if (data.progressPoints !== undefined) {
-
                             growthLabel.textContent =
                                 `Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }} points`;
                         }
 
                         // Show message if user has no active quest
                         if (data.has_quest === false) {
-                            showMessage(
-                                "You don't have an active small quest yet. Complete any pending quest to earn points!"
-                            );
+                            // Special message for unverified users
+                            if (data.message.includes("Only verified users")) {
+                                showMessage(
+                                    "Please verify your account with the admin to start earning points!");
+                            } else {
+                                showMessage(
+                                    "You don't have an active small quest yet. Complete any pending quest to earn points!"
+                                );
+                            }
+
                         }
                     })
                     .catch(err => console.error(err));
             }
+
 
 
             function showMessage(msg) {

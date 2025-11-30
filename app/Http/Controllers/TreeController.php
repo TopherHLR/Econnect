@@ -14,6 +14,17 @@ class TreeController extends Controller
     {
         try {
             $user = auth()->user();
+
+            // Early exit if user is not verified
+            if (!$user || $user->user_type !== 'verified_user') {
+                return response()->json([
+                    'message' => 'Only verified users',
+                    'has_quest' => false,
+                    'tap_progress' => 0,
+                    'progressPoints' => 0,
+                ], 200);
+            }
+
             $tapCount = $request->taps ?? 0;
 
             // Early exit if no taps
@@ -22,15 +33,6 @@ class TreeController extends Controller
                     'message' => 'No taps detected.',
                     'has_quest' => false,
                     'tap_progress' => 0,
-                    'progressPoints' => 0, // ensure defined
-                ], 200);
-            }
-
-            if (!$user) {
-                return response()->json([
-                    'message' => 'Please log in to track taps and earn points.',
-                    'has_quest' => false,
-                    'tap_progress' => $tapCount,
                     'progressPoints' => 0,
                 ], 200);
             }
@@ -110,7 +112,7 @@ class TreeController extends Controller
             }
 
             // Total points earned today
-            $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
+            $progressPoints = \App\Models\UserPointsHistory::where('user_id', $user->user_id)
                 ->whereDate('created_at', $today)
                 ->sum('points_change');
 
@@ -128,4 +130,5 @@ class TreeController extends Controller
             return response()->json(['message' => 'Server error: ' . $e->getMessage()], 500);
         }
     }
+
 }
