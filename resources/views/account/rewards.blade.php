@@ -24,23 +24,6 @@
             <span class="font-bold text-xl">{{ $currentPoints }} Eco Points</span>
         </div>
     </div>
-
-    <!-- Progress Bar -->
-    <div class="bg-white rounded-2xl p-5 shadow-sm border border-[#e8e6dc] mt-4">
-        <div class="flex justify-between items-center mb-3">
-            <span class="text-[#4b3f2f] font-medium">Your Rewards Progress</span>
-            <span class="text-[#6b665e] text-sm">
-                {{ $progressPoints }}/60 points to next reward
-            </span>
-        </div>
-        @php
-            $progress = min(100, ($progressPoints / 60) * 100);
-        @endphp
-        <div class="w-full bg-[#e8e6dc] rounded-full h-3">
-            <div class="bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] h-3 rounded-full" style="width: {{ $progress }}%">
-            </div>
-        </div>
-    </div>
     <!-- Main Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
 
