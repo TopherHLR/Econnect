@@ -172,11 +172,12 @@
                                             $isPending = $submission?->status === 'pending';
                                             $isExpired = $quest->end_date->isPast() && !$isCompleted;
                                             $isInactive = $isCompleted || $isExpired || $isRejected || $isPending;
+                                            $isNotStarted = $quest->start_date->isFuture() && !$isCompleted;
                                         @endphp
 
                                         @if ($quest->status === 'active')
                                             <div class="bg-white rounded-2xl overflow-hidden shadow-sm transition relative
-                                                {{ $isInactive ? 'opacity-50 pointer-events-none' : 'hover:shadow-md transform hover:-translate-y-1 cursor-pointer' }}
+                                                {{ $isInactive || $isNotStarted ? 'opacity-50 pointer-events-none' : 'hover:shadow-md transform hover:-translate-y-1 cursor-pointer' }}
                                                 eco-card"
                                                 data-id="{{ $quest->quest_id }}" data-title="{{ $quest->title }}"
                                                 data-description="{{ $quest->description }}"
@@ -186,7 +187,8 @@
                                                 data-start-date="{{ $quest->start_date }}"
                                                 data-end-date="{{ $quest->end_date }}">
 
-                                                @if ($isInactive)
+                                                <!-- Overlay for statuses -->
+                                                @if ($isInactive || $isNotStarted)
                                                     <div
                                                         class="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
                                                         <span class="text-white font-semibold text-sm">
@@ -198,6 +200,8 @@
                                                                 Rejected
                                                             @elseif($isPending)
                                                                 Pending
+                                                            @elseif($isNotStarted)
+                                                                Starts on {{ $quest->start_date->format('d/m/Y') }}
                                                             @endif
                                                         </span>
                                                     </div>

@@ -75,7 +75,7 @@
                         <th class="px-4 py-3 text-left font-semibold font-sans">Email</th>
                         <th class="px-4 py-3 text-left font-semibold font-sans">User Type</th>
                         <th class="px-4 py-3 text-left font-semibold font-sans">Activity Status</th>
-                        <th class="px-4 py-3 text-left font-semibold font-sans">Verified</th>
+                        <th class="px-4 py-3 text-left font-semibold font-sans">Verified by Email</th>
                         <th class="px-4 py-3 text-left font-semibold font-sans">Registered</th>
                         <th class="px-4 py-3 text-left font-semibold font-sans">Actions</th>
                     </tr>

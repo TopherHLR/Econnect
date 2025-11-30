@@ -128,11 +128,4 @@ class TreeController extends Controller
             return response()->json(['message' => 'Server error: ' . $e->getMessage()], 500);
         }
     }
-
-
-
-
-
-
-
 }

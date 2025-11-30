@@ -179,7 +179,7 @@ class EcoController extends Controller
 
         // Create the global daily quest
         $quest = Quest::create([
-            'title' => 'Daily Eco Action',
+            'title' => 'Daily Eco Taps',
             'description' => 'Complete a small eco-taps today! Get 100 Tree taps today.',
             'category' => 'Small Quest',
             'points_reward' => 5,

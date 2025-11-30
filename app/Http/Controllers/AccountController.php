@@ -120,7 +120,7 @@ class AccountController extends Controller
         $todayActions = QuestSubmission::where('user_id', $user->user_id)
             ->where('status', 'completed')
             ->whereDate('date_completed', today())
-            ->whereHas('quest', fn($q) => $q->where('title', 'Daily Eco Action'))
+            ->whereHas('quest', fn($q) => $q->where('title', 'Daily Eco Taps'))
             ->count();
 
         $treePercent = min($todayActions * 20, 100);
@@ -203,7 +203,7 @@ class AccountController extends Controller
             $completed = QuestSubmission::where('user_id', $user->user_id)
                 ->where('status', 'completed')
                 ->whereDate('date_completed', $dateToCheck)
-                ->whereHas('quest', fn($q) => $q->where('title', 'Daily Eco Action'))
+                ->whereHas('quest', fn($q) => $q->where('title', 'Daily Eco Taps'))
                 ->exists();
 
             if ($completed) {
