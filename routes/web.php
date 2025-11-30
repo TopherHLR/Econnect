@@ -181,6 +181,7 @@ Route::middleware(['auth'])->group(function () {
 
          // Admin quest listing
         Route::get('/adminQuests', [QuestController::class, 'index'])->name('adminQuests');
+        
 
         // ✅ Add this POST route for storing quests
         Route::post('/admin/quests', [QuestController::class, 'store'])->name('quests.store');

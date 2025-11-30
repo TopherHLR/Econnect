@@ -3,6 +3,51 @@
 @section('title', 'Quests')
 
 @section('content')
+    <style>
+        /* RESTORED TAB STYLING */
+        .tab-eco {
+            @apply px-4 py-3 rounded-xl text-[#4F6B3F] hover:bg-[#E9F0E1] transition-all duration-200 cursor-pointer;
+        }
+
+        .tab-eco.bg-\[\#E9F0E1\] {
+            @apply bg-[#E9F0E1] font-semibold;
+        }
+
+        /* Compact Action Buttons */
+        .btn-action.compact {
+            @apply px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200;
+        }
+
+        .btn-edit {
+            @apply bg-[#EFF6FF] text-[#1E40AF] hover:bg-[#DBEAFE];
+        }
+
+        .btn-archive {
+            @apply bg-[#FEF2F2] text-[#DC2626] hover:bg-[#FECACA];
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .btn-action.compact span {
+                display: none;
+            }
+
+            .btn-action.compact {
+                @apply px-2 py-2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .flex-col.lg\:flex-row {
+                flex-direction: column;
+            }
+
+            .w-full.lg\:w-1\/4 {
+                width: 100%;
+                max-width: none;
+            }
+        }
+    </style>
     <div class="space-y-6">
         <!-- Header Section with Quick Actions -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -29,7 +74,7 @@
                     </div>
 
                     <!-- Quest Navigation - RESTORED UL/LI STRUCTURE -->
-                    <ul id="questList" class="space-y-2 mb-6">
+                    <ul class="space-y-2 mb-6">
 
                         <!-- Quest Collection -->
                         <li data-quest="collection" class="tab-eco cursor-pointer">
@@ -40,10 +85,8 @@
                         </li>
                         <hr class="border-[#E6EAD7] my-4">
                         <div class="max-h-[350px] overflow-y-auto pr-1">
-                            <ul id="questList" class="space-y-2 mb-6">
-
-                                <!-- Active Quests - Only show active and ending_soon, exclude closed -->
-                                @foreach ($quests->whereIn('status', ['active', 'ending_soon']) as $quest)
+                            <ul id="questList" class="space-y-2 mb-2 ">
+                                @foreach ($questsList->whereIn('status', ['active', 'ending_soon']) as $quest)
                                     <li data-quest="{{ $quest->quest_id }}"
                                         class="tab-eco cursor-pointer {{ $loop->first ? 'bg-[#E9F0E1] font-semibold' : '' }}">
                                         <div class="flex justify-between items-center">
@@ -62,10 +105,34 @@
                                         <div>No active quests</div>
                                     </li>
                                 @endif
-
-
                             </ul>
+
+
+                            <!-- Pagination buttons -->
+                            <div id="questPagination" class="flex justify-center items-center gap-2 mt-2">
+                                <button id="prevPage" class="px-2 py-1 border rounded text-xs">&laquo;</button>
+
+                                <div id="pageNumbers" class="flex gap-2">
+                                    @php
+                                        $perPage = 5;
+                                        $activeQuests = $questsList->whereIn('status', ['active', 'ending_soon']);
+                                        $totalPages = ceil($activeQuests->count() / $perPage);
+                                    @endphp
+
+                                    @for ($i = 1; $i <= min(5, $totalPages); $i++)
+                                        <button
+                                            class="page-btn px-3 py-1 border rounded text-xs {{ $i === 1 ? 'bg-[#E9F0E1] font-semibold' : '' }}"
+                                            data-page="{{ $i }}">
+                                            {{ $i }}
+                                        </button>
+                                    @endfor
+                                </div>
+
+                                <button id="nextPage" class="px-2 py-1 border rounded text-xs">&raquo;</button>
+                            </div>
+
                         </div>
+
                         <hr class="border-[#E6EAD7] my-4">
                         <!-- Archive Tab -->
                         <li data-quest="archived" class="tab-eco cursor-pointer">
@@ -82,7 +149,7 @@
                 <!-- Quest Tables Container -->
                 <div id="questTables" class="space-y-6">
                     <!-- Individual Quest Tables -->
-                    @foreach ($quests as $quest)
+                    @foreach ($questsList as $quest)
                         <!-- Table Header Container -->
                         <div id="questHeader-{{ $quest->quest_id }}"
                             class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden }}">
@@ -147,75 +214,11 @@
                             class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden }}">
 
                             <!-- Participants Table -->
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
-                                    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-                                        <tr>
-                                            <th class="px-4 py-3 text-left font-semibold w-16">#</th>
-                                            <th class="px-4 py-3 text-left font-semibold">Participant</th>
-                                            <th class="px-4 py-3 text-left font-semibold">Status</th>
-                                            <th class="px-4 py-3 text-left font-semibold">Checked By</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($quest->submissions as $index => $submission)
-                                            <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition participant-row cursor-pointer"
-                                                data-submission-id="{{ $submission->submission_id }}"
-                                                data-user="{{ $submission->user->first_name }} {{ $submission->user->last_name }}"
-                                                data-status="{{ $submission->status }}"
-                                                data-proof-link="{{ $submission->proof_link }}"
-                                                data-proof-image="{{ $submission->proof_image }}"
-                                                data-verified-by-email="{{ $submission->verifier ? $submission->verifier->email : '' }}">
-
-                                                <td class="px-4 py-3">{{ $index + 1 }}</td>
-                                                <td class="px-4 py-3 text-[#7A8C4F] hover:underline participant-name">
-                                                    {{ $submission->user->first_name }} {{ $submission->user->last_name }}
-                                                </td>
-
-                                                <td class="px-4 py-3">
-                                                    @php
-                                                        $hasProof =
-                                                            !empty($submission->proof_link) ||
-                                                            !empty($submission->proof_image);
-                                                    @endphp
-
-                                                    <select
-                                                        class="submission-status border border-[#7A8C4F] rounded-lg px-3 py-1.5 text-sm text-[#4F6B3F] bg-white focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]"
-                                                        data-submission-id="{{ $submission->submission_id }}">
-
-                                                        <option value="pending"
-                                                            {{ $submission->status === 'pending' ? 'selected' : '' }}>
-                                                            {{ $submission->status === 'pending' && $hasProof ? 'Submitted' : 'Pending' }}
-                                                        </option>
-
-                                                        <option value="completed"
-                                                            {{ $submission->status === 'completed' ? 'selected' : '' }}>
-                                                            Completed
-                                                        </option>
-
-                                                        <option value="rejected"
-                                                            {{ $submission->status === 'rejected' ? 'selected' : '' }}>
-                                                            Rejected
-                                                        </option>
-                                                    </select>
-
-                                                </td>
-
-                                                <td class="px-4 py-3 text-[#4F6B3F]">
-                                                    @if ($submission->status === 'completed' && $submission->verifier)
-                                                        <span class="text-green-600 font-medium">Verified by
-                                                            {{ $submission->verifier->first_name . ' ' . $submission->verifier->last_name }}</span>
-                                                    @elseif ($submission->status === 'rejected' && $submission->verifier)
-                                                        <span class="text-red-600 font-medium">Rejected by
-                                                            {{ $submission->verifier->first_name . ' ' . $submission->verifier->last_name }}</span>
-                                                    @else
-                                                        <span class="text-gray-500">Not verified yet</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="overflow-x-auto" id="table-data-participants">
+                                <div class="text-center py-16 text-[#6A8A52]">
+                                    <i class="fa-solid fa-spinner fa-spin text-4xl mb-4"></i>
+                                    <p>Loading participants...</p>
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -228,7 +231,7 @@
                                 <i class="fa-solid fa-layer-group text-[#7F8A4F] text-lg"></i>
                                 <h2 class="text-xl font-bold text-[#4F6B3F] font-serif">
                                     Quest Collection <span
-                                        class="text-[#6A8A52]">({{ $quests->where('status', '!=', 'archived')->count() }})</span>
+                                        class="text-[#6A8A52]">({{ $questsList->where('status', '!=', 'archived')->count() }})</span>
                                 </h2>
                             </div>
 
@@ -248,7 +251,7 @@
                         <!-- Quest Collection Table -->
                         <div class="overflow-x-auto" id="table-data">
 
-                            @include("admin.partials.quest_collection_table")
+                            @include('admin.partials.quest_collection_table')
                         </div>
                     </div>
                     <!-- Archived Quests Main Table -->
@@ -265,10 +268,11 @@
                                         <th class="px-4 py-3 text-left font-semibold">Start Date</th>
                                         <th class="px-4 py-3 text-left font-semibold">End Date</th>
                                         <th class="px-4 py-3 text-left font-semibold">Status</th>
+                                        <th class="px-4 py-3 text-left font-semibold">Recover</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($quests->where('status', 'archived') as $index => $quest)
+                                    @foreach ($archivedQuests as $index => $quest)
                                         <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
                                             <td class="px-4 py-3">{{ $loop->iteration }}</td>
                                             <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $quest->title }}</td>
@@ -305,7 +309,7 @@
                                         </tr>
                                     @endforeach
 
-                                    @if ($quests->where('status', 'archived')->count() === 0)
+                                    @if ($archivedQuests->where('status', 'archived')->count() === 0)
                                         <tr>
                                             <td colspan="9" class="text-center py-4 text-[#6A8A52] text-sm">
                                                 <i class="fa-solid fa-inbox mb-2 text-2xl opacity-50"></i>
@@ -317,363 +321,389 @@
                             </table>
                         </div>
                     </div>
-
-
                 </div>
             </main>
+        </div>
+    </div>
 
-            <style>
-                /* RESTORED TAB STYLING */
-                .tab-eco {
-                    @apply px-4 py-3 rounded-xl text-[#4F6B3F] hover:bg-[#E9F0E1] transition-all duration-200 cursor-pointer;
-                }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // SELECT ALL TABS (Collection, Individual Quests, Archived)
+            const allTabs = document.querySelectorAll('aside ul li.tab-eco[data-quest]');
 
-                .tab-eco.bg-\[\#E9F0E1\] {
-                    @apply bg-[#E9F0E1] font-semibold;
-                }
+            const questHeaders = document.querySelectorAll('[id^="questHeader-"]');
+            const questTables = document.querySelectorAll('[id^="questTable-"]');
+            const collectionHeader = document.getElementById('collectionHeader');
+            const collectionTable = document.getElementById('collectionTable');
+            const archiveMain = document.getElementById('archiveMain');
 
-                /* Compact Action Buttons */
-                .btn-action.compact {
-                    @apply px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200;
-                }
+            // Hide all content areas
+            const hideAllContent = () => {
+                questHeaders.forEach(h => h.classList.add('hidden'));
+                questTables.forEach(t => t.classList.add('hidden'));
+                if (collectionHeader) collectionHeader.classList.add('hidden');
+                if (collectionTable) collectionTable.classList.add('hidden');
+                if (archiveMain) archiveMain.classList.add('hidden');
+            };
 
-                .btn-edit {
-                    @apply bg-[#EFF6FF] text-[#1E40AF] hover:bg-[#DBEAFE];
-                }
+            // Click handler for ALL sidebar tabs
+            allTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const questId = tab.dataset.quest;
+                    hideAllContent();
+                    allTabs.forEach(t => t.classList.remove('bg-[#E9F0E1]', 'font-semibold'));
+                    tab.classList.add('bg-[#E9F0E1]', 'font-semibold');
 
-                .btn-archive {
-                    @apply bg-[#FEF2F2] text-[#DC2626] hover:bg-[#FECACA];
-                }
+                    if (questId === 'collection') {
+                        collectionHeader?.classList.remove('hidden');
+                        collectionTable?.classList.remove('hidden');
+                    } else if (questId === 'archived') {
+                        archiveMain?.classList.remove('hidden');
+                    } else {
+                        // Show header and empty table container
+                        const header = document.getElementById('questHeader-' + questId);
+                        const container = document.getElementById('questTable-' + questId);
+                        const tableDiv = container.querySelector('#table-data-participants');
 
-                /* Responsive Design */
-                @media (max-width: 1024px) {
-                    .btn-action.compact span {
-                        display: none;
-                    }
+                        header?.classList.remove('hidden');
+                        container?.classList.remove('hidden');
 
-                    .btn-action.compact {
-                        @apply px-2 py-2;
-                    }
-                }
+                        // Load only if not already loaded
+                        if (!container.dataset.loaded) {
+                            tableDiv.innerHTML = `
+                    <div class="text-center py-16 text-[#6A8A52]">
+                        <i class="fa-solid fa-spinner fa-spin text-4xl mb-4"></i>
+                        <p>Loading participants...</p>
+                    </div>`;
 
-                @media (max-width: 768px) {
-                    .flex-col.lg\:flex-row {
-                        flex-direction: column;
-                    }
-
-                    .w-full.lg\:w-1\/4 {
-                        width: 100%;
-                        max-width: none;
-                    }
-                }
-            </style>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const questListItems = document.querySelectorAll('#questList li');
-
-                    // Highlight Quest Collection tab
-                    questListItems.forEach(li => li.classList.remove('bg-[#E9F0E1]', 'font-semibold'));
-                    const collectionTab = document.querySelector('#questList li[data-quest="collection"]');
-                    if (collectionTab) collectionTab.classList.add('bg-[#E9F0E1]', 'font-semibold');
-                });
-
-                // Show collection table by default
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.getElementById('collectionTable').classList.remove('hidden');
-                });
-
-                document.addEventListener('DOMContentLoaded', () => {
-                    const questListItems = document.querySelectorAll('#questList li');
-                    const questTables = document.querySelectorAll('[id^="questTable-"]');
-                    const questHeaders = document.querySelectorAll('[id^="questHeader-"]');
-                    const collectionHeader = document.getElementById('collectionHeader');
-                    const collectionTable = document.getElementById('collectionTable');
-                    const archiveMain = document.getElementById('archiveMain'); // Archived quests table
-
-                    questListItems.forEach(item => {
-                        item.addEventListener('click', () => {
-                            const selectedId = item.dataset.quest;
-
-                            // Hide all quest tables and headers
-                            questTables.forEach(table => table.classList.add('hidden'));
-                            questHeaders.forEach(header => header.classList.add('hidden'));
-                            collectionHeader.classList.add('hidden');
-                            collectionTable.classList.add('hidden');
-                            if (archiveMain) archiveMain.classList.add('hidden'); // hide archive table
-
-                            if (selectedId === 'collection') {
-                                collectionHeader.classList.remove('hidden');
-                                collectionTable.classList.remove('hidden');
-                            } else if (selectedId === 'archived') {
-                                // Show archive table
-                                if (archiveMain) archiveMain.classList.remove('hidden');
-                            } else {
-                                // Show selected quest header and table
-                                const selectedHeader = document.getElementById('questHeader-' + selectedId);
-                                const selectedTable = document.getElementById('questTable-' + selectedId);
-
-                                if (selectedHeader) selectedHeader.classList.remove('hidden');
-                                if (selectedTable) selectedTable.classList.remove('hidden');
-                            }
-
-                            // Highlight active tab
-                            questListItems.forEach(li => li.classList.remove('bg-[#E9F0E1]',
-                                'font-semibold'));
-                            item.classList.add('bg-[#E9F0E1]', 'font-semibold');
-                        });
-                    });
-                });
-
-
-                document.addEventListener('DOMContentLoaded', () => {
-
-                    // Status update via AJAX
-                    document.querySelectorAll('.status-dropdown').forEach(dropdown => {
-                        dropdown.addEventListener('change', (e) => {
-                            const questId = e.target.dataset.questId;
-                            const status = e.target.value;
-
-                            fetch(`/quests/${questId}/status`, {
-                                    method: 'POST',
+                            // THIS IS THE ONLY CORRECT URL
+                            fetch(`{{ route('adminQuests') }}?quest_id=${questId}`, {
                                     headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                    },
-                                    body: JSON.stringify({
-                                        status
-                                    })
-                                })
-                                .then(res => res.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        showMessage(data.success, 'success');
+                                        'X-Requested-With': 'XMLHttpRequest'
                                     }
                                 })
-                                .catch(err => console.error(err));
-                        });
-                    });
-
-                });
-
-                document.addEventListener('DOMContentLoaded', () => {
-                    const archiveMenu = document.getElementById('archiveDropdownMenu');
-
-                    document.querySelectorAll('.btn-archive').forEach(button => {
-                        button.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            const questId = button.dataset.questId;
-                            const questTitle = button.closest('tr').querySelector('td:nth-child(2)')
-                                .innerText;
-
-                            if (!confirm('Are you sure you want to archive this quest?')) return;
-
-                            fetch(`/quests/${questId}/archive`, {
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                    }
+                                .then(r => r.text())
+                                .then(html => {
+                                    tableDiv.innerHTML = html;
+                                    container.dataset.loaded = 'true';
                                 })
-                                .then(res => res.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        // Remove the row from the table
-                                        const row = button.closest('tr');
-                                        if (row) row.remove();
-
-                                        // Add the quest to the archive dropdown
-                                        const li = document.createElement('li');
-                                        li.className =
-                                            "flex justify-between items-center px-4 py-2 hover:bg-[#E9F0E1] text-[#4E3A2E]";
-                                        li.innerHTML = `
-                                                        <span class="cursor-pointer" data-quest="questTable-${questId}">${questTitle}</span>
-                                                        <form onsubmit="return confirm('Recover this quest?')" class="ml-2" data-quest-id="${questId}">
-                                                            <button type="button" class="text-green-600 hover:text-green-800 font-semibold text-sm btn-recover">Recover</button>
-                                                        </form>
-                                                    `;
-                                        archiveMenu.appendChild(li);
-
-                                        // Add recover button functionality
-                                        li.querySelector('.btn-recover').addEventListener('click', () =>
-                                            recoverQuest(questId, li)
-                                        );
-
-                                        // ✅ Show success toast
-                                        showMessage('Quest archived successfully!', 'success');
-                                    }
-                                })
-
-                                .catch(err => console.error(err));
-                        });
-                    });
-                    // Recover function
-                    function recoverQuest(questId, liElement) {
-                        if (!confirm('Recover this quest?')) return;
-
-                        fetch(`/quests/${questId}/recover2`, {
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                }
-                            })
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.success) {
-                                    liElement.remove(); // Remove from archive dropdown
-
-                                    // Optional: refresh table or re-add to active quests table
-                                    showMessage('Quest recovered successfully!', 'success');
-                                    location.reload(); // or dynamically re-add row if you prefer
-                                }
-                            })
-
+                                .catch(err => {
+                                    console.error(err);
+                                    tableDiv.innerHTML =
+                                        `<div class="text-red-600 text-center py-8">Failed to load participants</div>`;
+                                });
+                        }
                     }
                 });
+            });
 
-                document.addEventListener('DOMContentLoaded', () => {
-                    const searchInputs = document.querySelectorAll('.table-search');
+            // Default: Open "Quest Collection" on page load
+            const collectionTab = document.querySelector('li[data-quest="collection"]');
+            if (collectionTab) {
+                collectionTab.click();
+            }
+        });
 
-                    searchInputs.forEach(input => {
-                        const tableId = input.dataset.tableId;
-                        const tableBody = document.querySelector(`#${tableId} tbody`);
+        // ——————————————————————————————————————
+        // PAGINATION FOR ACTIVE QUESTS LIST (Sidebar)
+        // ——————————————————————————————————————
+        document.addEventListener('DOMContentLoaded', () => {
+            const questListItems = Array.from(document.querySelectorAll('#questList li'));
+            const perPage = 5;
+            const totalPages = Math.ceil(questListItems.length / perPage);
 
-                        // Create a "No participants found" row
-                        let emptyRow = document.createElement('tr');
-                        emptyRow.classList.add('no-results');
-                        emptyRow.innerHTML =
-                            `<td colspan="3" class="px-4 py-2 text-center text-[#7A8C4F]">No participants found</td>`;
-                        tableBody.appendChild(emptyRow);
+            const pageNumbersContainer = document.getElementById('pageNumbers');
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
 
-                        const updateVisibility = () => {
-                            const filter = input.value.toLowerCase();
-                            const rows = Array.from(tableBody.querySelectorAll('tr:not(.no-results)'));
-                            let anyVisible = false;
+            let currentPage = 1;
+            let maxPageButtons = 5;
 
-                            if (rows.length === 0) {
-                                // If no rows exist in the table, show the empty row
-                                emptyRow.style.display = '';
-                                return;
-                            }
+            const renderPageButtons = () => {
+                pageNumbersContainer.innerHTML = '';
 
-                            rows.forEach(row => {
-                                const participantCell = row.cells[1];
-                                const participantText = participantCell ? participantCell.textContent
-                                    .toLowerCase() : '';
+                // Determine the start and end page numbers to display
+                let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+                let endPage = startPage + maxPageButtons - 1;
 
-                                if (participantText.includes(filter)) {
-                                    row.style.display = '';
-                                    anyVisible = true;
-                                } else {
-                                    row.style.display = 'none';
-                                }
-                            });
+                if (endPage > totalPages) {
+                    endPage = totalPages;
+                    startPage = Math.max(1, endPage - maxPageButtons + 1);
+                }
 
-                            emptyRow.style.display = anyVisible ? 'none' : '';
-                        };
+                for (let i = startPage; i <= endPage; i++) {
+                    const btn = document.createElement('button');
+                    btn.className =
+                        `page-btn px-3 py-1 border rounded text-xs ${i === currentPage ? 'bg-[#E9F0E1] font-semibold' : ''}`;
+                    btn.dataset.page = i;
+                    btn.textContent = i;
 
-                        // Run on keyup
-                        input.addEventListener('keyup', updateVisibility);
-
-                        // Run on page load to handle empty tables
-                        updateVisibility();
+                    btn.addEventListener('click', () => {
+                        currentPage = i;
+                        showPage(currentPage);
+                        renderPageButtons();
                     });
+
+                    pageNumbersContainer.appendChild(btn);
+                }
+            };
+
+            const showPage = (page) => {
+                const start = (page - 1) * perPage;
+                const end = page * perPage;
+
+                questListItems.forEach((item, i) => {
+                    item.style.display = i >= start && i < end ? 'block' : 'none';
                 });
+            };
 
-                document.addEventListener('DOMContentLoaded', () => {
-                    // Collection search
-                    const collectionInput = document.querySelector('.collection-search');
-                    if (collectionInput) {
-                        const tableId = collectionInput.dataset.tableId;
-                        const tableBody = document.querySelector(`#${tableId} tbody`);
+            prevBtn?.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    showPage(currentPage);
+                    renderPageButtons();
+                }
+            });
 
-                        // Create "No quests found" row
-                        let emptyRow = document.createElement('tr');
-                        emptyRow.classList.add('no-results');
-                        emptyRow.innerHTML =
-                            `<td colspan="9" class="px-4 py-2 text-center text-[#7A8C4F]">No quests found</td>`;
-                        tableBody.appendChild(emptyRow);
+            nextBtn?.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    showPage(currentPage);
+                    renderPageButtons();
+                }
+            });
 
-                        const updateVisibility = () => {
-                            const filter = collectionInput.value.toLowerCase();
-                            const rows = Array.from(tableBody.querySelectorAll('tr:not(.no-results)'));
-                            let anyVisible = false;
+            // Initial render
+            if (questListItems.length > 0) {
+                showPage(currentPage);
+                renderPageButtons();
+            }
+        });
 
-                            if (rows.length === 0) {
-                                emptyRow.style.display = '';
-                                return;
-                            }
 
-                            rows.forEach(row => {
-                                const rowText = Array.from(row.cells)
-                                    .map(cell => cell.textContent.toLowerCase())
-                                    .join(' ');
-                                if (rowText.includes(filter)) {
-                                    row.style.display = '';
-                                    anyVisible = true;
-                                } else {
-                                    row.style.display = 'none';
-                                }
-                            });
+        // ——————————————————————————————————————
+        // SEARCH FILTERS (Participants & Collection)
+        // ——————————————————————————————————————
+        document.addEventListener('DOMContentLoaded', () => {
+            // Participant search inside individual quest tables
+            document.querySelectorAll('.table-search').forEach(input => {
+                const tableId = input.dataset.tableId;
+                const tbody = document.querySelector(`#${tableId} tbody`);
 
-                            emptyRow.style.display = anyVisible ? 'none' : '';
-                        };
+                if (!tbody) return;
 
-                        collectionInput.addEventListener('keyup', updateVisibility);
-                        updateVisibility(); // Run on load
-                    }
-                });
-                document.querySelectorAll('.submission-status').forEach(select => {
-                    select.addEventListener('change', async (e) => {
-                        const submissionId = e.target.dataset.submissionId;
-                        const newStatus = e.target.value;
+                let noResultsRow = tbody.querySelector('.no-results');
+                if (!noResultsRow) {
+                    noResultsRow = document.createElement('tr');
+                    noResultsRow.className = 'no-results';
+                    noResultsRow.innerHTML =
+                        `<td colspan="4" class="text-center py-8 text-[#6A8A52]">No participants found</td>`;
+                    tbody.appendChild(noResultsRow);
+                }
 
-                        try {
-                            const response = await fetch(`/submissions/${submissionId}/update-status`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                        .content
-                                },
-                                body: JSON.stringify({
-                                    status: newStatus
-                                })
-                            });
+                const filterRows = () => {
+                    const term = input.value.toLowerCase();
+                    const rows = tbody.querySelectorAll('tr:not(.no-results)');
+                    let visible = 0;
 
-                            const data = await response.json();
-                            if (data.success) {
-                                // alert(`Status updated to "${newStatus}"`);
-                                showMessage(`Status updated to "${newStatus}"`, 'success');
-                            } else {
-                                showMessage('Failed to update status.', 'error');
-                            }
-                        } catch (err) {
-                            console.error(err);
-                            alert('An error occurred.');
+                    rows.forEach(row => {
+                        const name = row.querySelector('.participant-name')?.textContent
+                            .toLowerCase() || '';
+                        if (name.includes(term)) {
+                            row.style.display = '';
+                            visible++;
+                        } else {
+                            row.style.display = 'none';
                         }
                     });
-                });
-                $(document).on('click', '.pagination a', function(e) {
-                    e.preventDefault();
 
-                    var url = $(this).attr('href');
-                    fetchData(url)
-                    console.log('Pagination clicked:', url);
-                });
+                    noResultsRow.style.display = visible === 0 ? '' : 'none';
+                };
 
-                function fetchData(url) {
-                    $.ajax({
-                        url: url,
-                        type: 'GET',
-                        dataType: "html",
-                        success: function(response) {
-                            $("#table-data").html(response);
+                input.addEventListener('keyup', filterRows);
+                filterRows(); // initial
+            });
+
+            // Collection table search
+            const collectionSearch = document.querySelector('.collection-search');
+            if (collectionSearch) {
+                const tbody = document.querySelector('#collectionTable tbody');
+                if (tbody) {
+                    let noResultsRow = tbody.querySelector('.no-results');
+                    if (!noResultsRow) {
+                        noResultsRow = document.createElement('tr');
+                        noResultsRow.className = 'no-results';
+                        noResultsRow.innerHTML =
+                            `<td colspan="9" class="text-center py-8 text-[#6A8A52]">No quests found</td>`;
+                        tbody.appendChild(noResultsRow);
+                    }
+
+                    const filter = () => {
+                        const term = collectionSearch.value.toLowerCase();
+                        const rows = tbody.querySelectorAll('tr:not(.no-results)');
+                        let visible = 0;
+
+                        rows.forEach(row => {
+                            const text = row.textContent.toLowerCase();
+                            if (text.includes(term)) {
+                                row.style.display = '';
+                                visible++;
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+
+                        noResultsRow.style.display = visible === 0 ? '' : 'none';
+                    };
+
+                    collectionSearch.addEventListener('keyup', filter);
+                    filter();
+                }
+            }
+        });
+
+        // ——————————————————————————————————————
+        // SUBMISSION STATUS UPDATE (AJAX)
+        // ——————————————————————————————————————
+        document.querySelectorAll('.submission-status').forEach(select => {
+            select.addEventListener('change', async function() {
+                const submissionId = this.dataset.submissionId;
+                const newStatus = this.value;
+
+                try {
+                    const res = await fetch(`/submissions/${submissionId}/update-status`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .content
                         },
-                        error: function(err) {
-                            console.error('Pagination AJAX error:', err);
-                        }
+                        body: JSON.stringify({
+                            status: newStatus
+                        })
                     });
+
+                    const data = await res.json();
+                    if (data.success) {
+                        showMessage(`Status updated to "${newStatus}"`, 'success');
+                    } else {
+                        showMessage('Update failed', 'error');
+                        this.value = this.dataset.previousValue || 'pending';
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showMessage('Network error', 'error');
                 }
-            </script>
-            @include('modal.createQuestModal')
-        @endsection
+            });
+
+            // Store initial value for rollback on error
+            select.dataset.previousValue = select.value;
+        });
+
+        // ——————————————————————————————————————
+        // COLLECTION TABLE PAGINATION (Laravel default links)
+        // ——————————————————————————————————————
+        // Collection table pagination (only trigger on collection table links)
+        $(document).on('click', '#collectionTable .pagination a', function(e) {
+            e.preventDefault();
+            const url = $(this).attr('href');
+
+            $.get(url, function(data) {
+                $('#table-data').html(data); // this is your collection table container
+            });
+        });
+        // Pagination inside individual quest tables
+        $(document).on('click', '#questTables .pagination a', function(e) {
+            e.preventDefault();
+            const url = this.href;
+            const questId = $(this).closest('[id^="questTable-"]').attr('id').split('-')[1];
+
+            // CORRECT
+            $.get(url.replace('adminQuests', 'adminQuests') + '&quest_id=' + questId, function(data) {
+                $('#questTable-' + questId + ' #table-data-participants').html(data);
+            });
+        });
+
+        // Optional: Toast helper (if you don't have one already)
+        function showMessage(message, type = 'success') {
+            // You can replace this with Toast, SweetAlert, or your own system
+            const bg = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+            const div = document.createElement('div');
+            div.className = `fixed top-4 right-4 text-white px-6 py-3 rounded-lg shadow-lg z-50 ${bg} animate-pulse`;
+            div.textContent = message;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
+        }
+        // ————————————————————————————————
+        // ARCHIVE BUTTON (works on ALL pages, even after pagination)
+        // ————————————————————————————————
+        $(document).on('click', '.btn-archive', function(e) {
+            e.preventDefault();
+
+            const button = $(this);
+            const questId = button.data('quest-id');
+            const questRow = button.closest('tr');
+            const questTitle = questRow.find('td').eq(1).text().trim(); // Title column
+
+            if (!confirm(`Archive quest "${questTitle}"?`)) {
+                return;
+            }
+
+            // Optional: disable button while processing
+            button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+            $.ajax({
+                url: `/quests/${questId}/archive`,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Remove row from table
+                        questRow.fadeOut(300, function() {
+                            $(this).remove();
+                        });
+
+                        // Optional: Add to Archived Quests sidebar instantly
+                        const archivedTab = $(`li[data-quest="archived"]`);
+                        if (archivedTab.length) {
+                            // Just refresh the count or show success
+                            showMessage(`"${questTitle}" archived successfully!`, 'success');
+                        }
+
+                        // If you're on the last page and it becomes empty → go to previous page
+                        if ($('#table-data tbody tr').length === 1) { // only "no data" row left
+                            const prevLink = $('.pagination .page-item.active').prev(
+                                '.page-item:not(.disabled)').find('a');
+                            if (prevLink.length) prevLink[0].click();
+                        }
+                    } else {
+                        showMessage('Failed to archive quest.', 'error');
+                        button.prop('disabled', false).html(
+                            '<i class="fas fa-archive"></i><span class="hidden sm:inline">Archive</span>'
+                        );
+                    }
+                },
+                error: function() {
+                    showMessage('Server error. Try again.', 'error');
+                    button.prop('disabled', false).html(
+                        '<i class="fas fa-archive"></i><span class="hidden sm:inline">Archive</span>'
+                    );
+                }
+            });
+        });
+
+        // Simple toast function (you can replace with SweetAlert/Toastify if you want)
+        function showMessage(message, type = 'success') {
+            const bg = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            const div = $(
+                `<div class="${bg} text-white px-6 py-3 rounded-lg shadow-lg fixed top-5 right-5 z-50 animate-pulse">${message}</div>`
+            );
+            $('body').append(div);
+            setTimeout(() => div.fadeOut(() => div.remove()), 3000);
+        }
+    </script>
+    @include('modal.createQuestModal')
+@endsection

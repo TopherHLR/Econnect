@@ -14,23 +14,47 @@ class QuestController extends Controller
 {
     public function index(Request $request)
     {
+        // Main data
         $quests = Quest::with('submissions.user')
             ->whereIn('status', ['active', 'ending_soon'])
             ->orderBy('start_date', 'desc')
-            ->paginate(6);
+            ->paginate(5);
 
-        Log::info('Quests page requested', [
-            'page' => $request->get('page', 1),
-            'ajax' => $request->ajax()
-        ]);
+        $archivedQuests = Quest::with('submissions.user')
+            ->where('status', 'archived')
+            ->orderBy('end_date', 'desc')
+            ->get();
 
-        if ($request->ajax()) {
-            return view("admin.partials.quest_collection_table", compact('quests'));
-        }
+        $questsList = Quest::with('submissions.user')
+            ->orderBy('start_date', 'desc')
+            ->get();
 
         $categories = $quests->pluck('category')->filter()->unique()->values();
 
-        return view('admin.adminQuests', compact('quests', 'categories'));
+        // ————————————————————————
+        // HANDLE AJAX REQUESTS SMARTLY
+        // ————————————————————————
+        if ($request->ajax()) {
+            // 1. Participants table pagination (individual quest)
+            if ($request->has('quest_id')) {
+                $questId = $request->get('quest_id');
+                $quest = Quest::findOrFail($questId);
+
+                $paginatedSubmissions = $quest->submissions()
+                    ->with('user', 'verifier')
+                    ->orderBy('date_submitted', 'desc')  // ← THIS WAS THE ONLY BUG
+                    ->paginate(10);
+
+                $quest->setRelation('submissions', $paginatedSubmissions);
+
+                return view('admin.partials.quest_participants_table', compact('quest'));
+            }
+
+            // 2. Quest Collection table pagination (default case)
+            return view('admin.partials.quest_collection_table', compact('quests'))->render();
+        }
+
+        return view('admin.adminQuests', compact('quests', 'archivedQuests', 'categories', 'questsList'));
     }
 
 

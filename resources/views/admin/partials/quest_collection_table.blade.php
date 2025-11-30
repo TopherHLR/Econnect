@@ -1,3 +1,4 @@
+
                             <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
                                 <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
                                     <tr>
@@ -74,3 +75,4 @@
 
                             </table>
                             {{ $quests->links('vendor.pagination.bootstrap_5') }}
+                            
