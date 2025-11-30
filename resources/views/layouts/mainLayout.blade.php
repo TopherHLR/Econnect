@@ -220,12 +220,14 @@
     </div>
 @endif
 
-@if (session('error'))
+@if (session('error') || $errors->any())
     <div id="error-toast"
-        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
-        ❌ {{ session('error') }}
+        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]
+        font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000">
+        ❌ {{ session('error') ?? $errors->first() }}
     </div>
 @endif
+
 
 {{-- Main Content --}}
 <main class="mt-10">

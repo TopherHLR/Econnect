@@ -40,26 +40,59 @@ class AuthController extends Controller
             ]);
             Log::info('✅ STEP 2: Validation passed', $validated);
 
+            // ⭐ STEP 2.1 — Validate reCAPTCHA
+            Log::info('🤖 STEP 2.1: Validating reCAPTCHA');
+
+            $recaptchaToken = $request->input('g-recaptcha-response');
+            $secretKey = env('RECAPTCHA_SECRET_KEY');
+
+            if (!$recaptchaToken) {
+                Log::warning('❌ RECAPTCHA TOKEN MISSING');
+                return back()->withErrors([
+                    'g-recaptcha-response' => 'Please complete the reCAPTCHA verification.'
+                ]);
+            }
+
+            $recaptchaResponse = Http::asForm()->post(
+                'https://www.google.com/recaptcha/api/siteverify',
+                [
+                    'secret'   => $secretKey,
+                    'response' => $recaptchaToken
+                ]
+            );
+
+            $recaptchaResult = $recaptchaResponse->json();
+            Log::info('🤖 reCAPTCHA Response:', $recaptchaResult);
+
+            if (!isset($recaptchaResult['success']) || $recaptchaResult['success'] !== true) {
+                Log::warning('❌ RECAPTCHA FAILED', $recaptchaResult);
+                return back()->withErrors([
+                    'g-recaptcha-response' => 'ReCAPTCHA verification failed. Please try again.'
+                ]);
+            }
+
+            Log::info('✅ STEP 2.1: reCAPTCHA PASSED');
+
             // STEP 3 — Generate verification code
             $code = rand(100000, 999999);
             Log::info("🔢 STEP 3: Generated verification code: {$code}");
 
-            // STEP 4 — Store pending registration in session
+            // STEP 4 — Store pending registration
             Log::info('💾 STEP 4: Storing pending registration in session');
             Session::put('pending_registration', array_merge($validated, [
                 'verification_code' => $code,
             ]));
             Log::info('✅ STEP 4: Session data stored successfully');
 
-            // STEP 5 — Send verification email
+            // STEP 5 — Send email
             Log::info('📧 STEP 5: Preparing to send email to ' . $validated['email']);
             Mail::to($validated['email'])->send(new VerificationCodeMail((object)[
-                'first_name' => $validated['first_name'],
-                'verification_code' => $code,
+                'first_name'         => $validated['first_name'],
+                'verification_code'  => $code,
             ]));
             Log::info('✅ STEP 5: Verification email sent successfully');
 
-            // STEP 6 — Redirect to verification form
+            // STEP 6 — Redirect
             Log::info('➡️ STEP 6: Redirecting to verify.email.form route');
             return redirect()->route('verify.email.form')
                 ->with('info', 'A verification code has been sent to your email.');
@@ -70,7 +103,6 @@ class AuthController extends Controller
 
         } catch (\Illuminate\Mail\Mailable $e) {
             Log::error('📮 MAIL ERROR', ['error' => $e->getMessage()]);
-
             return back()->with('error', 'Failed to send verification email. Please try again.');
 
         } catch (\Throwable $e) {
@@ -82,6 +114,7 @@ class AuthController extends Controller
             return back()->with('error', 'Something went wrong during registration.');
         }
     }
+
 
     public function showVerificationForm()
     {
@@ -95,45 +128,59 @@ class AuthController extends Controller
     {
         $request->validate(['code' => 'required|digits:6']);
 
-        $pending = Session::get('pending_registration');
+        try {
 
-        // Check verification code
-        if (!$pending || $request->code != $pending['verification_code']) {
-            return back()->withErrors(['code' => 'Invalid or expired verification code.'])->withInput();
+            $pending = Session::get('pending_registration');
+
+            // Check verification code
+            if (!$pending || $request->code != $pending['verification_code']) {
+                return back()->withErrors(['code' => 'Invalid or expired verification code.'])->withInput();
+            }
+
+            // Create user after successful verification
+            $user = \App\Models\User::create([
+                'first_name'  => $pending['first_name'],
+                'middle_name' => $pending['middle_name'],
+                'last_name'   => $pending['last_name'],
+                'email'       => $pending['email'],
+                'password'    => Hash::make($pending['password']),
+                'is_verified' => true,
+            ]);
+
+            /**
+             * -----------------------------
+             *  Generate QR code for the user
+             * -----------------------------
+             */
+            // Create folder if not exist
+            if (!file_exists(public_path('qrcodes'))) {
+                mkdir(public_path('qrcodes'), 0755, true);
+            }
+
+            $user->qr_code = 'USER-' . $user->user_id . '-' . Str::upper(Str::random(10));
+            $user->save();
+
+            // Log the user in
+            Auth::login($user);
+
+            // Clear pending registration
+            Session::forget('pending_registration');
+
+            return redirect()->route('home')->with('success', 'Your account has been verified and you are now logged in!');
+
+        } catch (\Exception $e) {
+
+            // Log the error for debugging
+            \Log::error('User verification failed: ' . $e->getMessage(), [
+                'stack' => $e->getTraceAsString()
+            ]);
+
+            // Redirect back with a user-friendly message
+            return back()->with('error', 'Email already taken');
+
         }
-
-        // Create user after successful verification
-        $user = \App\Models\User::create([
-            'first_name'  => $pending['first_name'],
-            'middle_name' => $pending['middle_name'],
-            'last_name'   => $pending['last_name'],
-            'email'       => $pending['email'],
-            'password'    => Hash::make($pending['password']),
-            'is_verified' => true,
-        ]);
-
-        /** -----------------------------
-         *  Generate QR code for the user
-         * -----------------------------
-         */
-        // Make folder if it doesn't exist
-        if (!file_exists(public_path('qrcodes'))) {
-            mkdir(public_path('qrcodes'), 0755, true);
-        }
-
-        $user->qr_code = 'USER-' . $user->user_id . '-' . Str::upper(Str::random(10));
-        $user->save();
-
-
-        // Log the user in
-        Auth::login($user);
-
-        // Clear pending registration
-        Session::forget('pending_registration');
-
-        // Redirect to home with success message
-        return redirect()->route('home')->with('success', 'Your account has been verified and you are now logged in!');
     }
+
 
 
     /**
