@@ -446,6 +446,6 @@
         });
     </script>
 
+@include('modal.addVoucherModal')
 @endsection
 
-@include('modal.addVoucherModal')

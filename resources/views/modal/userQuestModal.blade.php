@@ -194,10 +194,26 @@
 
             if (!proofLink && proofImage === 0) {
                 e.preventDefault(); // stop form submission
-                alert('Please provide at least one proof: a link or an image.');
+
+                // Create the toast div dynamically
+                const toast = document.createElement('div');
+                toast.id = 'error-toast';
+                toast.className = `fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]
+                    font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000`;
+                toast.textContent = '❌ Please provide at least one proof: a link or an image.';
+
+                document.body.appendChild(toast);
+
+                // Auto-hide after 3 seconds
+                setTimeout(() => {
+                    toast.classList.add('opacity-0');
+                    setTimeout(() => toast.remove(), 1000); // remove from DOM after transition
+                }, 3000);
+
                 return false;
             }
         });
+
 
 
         function closeAcceptedQuestModal() {

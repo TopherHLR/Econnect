@@ -129,8 +129,6 @@
 </div>
 
 <Script>
-
-
     function openVoucherModal(voucherId) {
         const voucher = availableVouchers.find(v => v.voucher_id === voucherId);
         if (!voucher) return alert("Voucher not found");
@@ -239,6 +237,23 @@
         if (e.target === this) closeVoucherUsageModal();
     });
 
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `fixed top-6 left-1/2 -translate-x-1/2 font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 
+        ${type === 'success' 
+            ? 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]' 
+            : 'bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]'}`;
+        toast.textContent = type === 'success' ? `🌱 ${message}` : `❌ ${message}`;
+
+        document.body.appendChild(toast);
+
+        // Auto-hide
+        setTimeout(() => {
+            toast.classList.add('opacity-0');
+            setTimeout(() => toast.remove(), 1000);
+        }, 3000);
+    }
+
     function redeemVoucher(voucherId) {
         fetch(`/rewards/redeem/${voucherId}`, {
                 method: 'POST',
@@ -246,14 +261,22 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
                 }
-            }).then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.success);
-                    location.reload();
+            })
+            .then(res => res.json().then(data => ({
+                status: res.status,
+                body: data
+            })))
+            .then(({
+                status,
+                body
+            }) => {
+                if (status >= 200 && status < 300) {
+                    showToast(body.success, 'success');
+                    setTimeout(() => location.reload(), 1500); // reload after showing toast
                 } else {
-                    alert(data.error);
+                    showToast(body.error || 'Something went wrong', 'error');
                 }
-            });
+            })
+            .catch(() => showToast('Something went wrong', 'error'));
     }
 </Script>

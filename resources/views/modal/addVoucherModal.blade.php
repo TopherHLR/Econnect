@@ -80,14 +80,25 @@
 
 <script>
     const addVoucherModal = document.getElementById('addVoucherModal');
-    
+    const modal = document.getElementById('addVoucherModal');
     const form = document.getElementById('voucherForm');
     const modalTitle = document.getElementById('voucherModalTitle');
     const methodField = document.getElementById('voucherMethod');
     const voucherSubmit = document.getElementById('voucherSubmit');
 
 
+    // OPEN for ADD
+    function openAddVoucherModal() {
+        form.reset();
+        modalTitle.innerHTML = `<i class="fa-solid fa-ticket mr-2"></i> Add New Voucher`;
+        voucherSubmit.innerHTML = `<i class="fa-solid fa-plus"></i> Add Voucher`;
 
+        form.action = "{{ route('vouchers.store') }}";
+        methodField.value = "POST";
+
+        modal.classList.remove('hidden');
+
+    }
     // -------------------------------------------------------------------
     // OPEN EDIT VOUCHER MODAL
     // -------------------------------------------------------------------
@@ -124,4 +135,3 @@
         }
     });
 </script>
-
