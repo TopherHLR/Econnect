@@ -3,51 +3,7 @@
 @section('title', 'Quests')
 
 @section('content')
-    <style>
-        /* RESTORED TAB STYLING */
-        .tab-eco {
-            @apply px-4 py-3 rounded-xl text-[#4F6B3F] hover:bg-[#E9F0E1] transition-all duration-200 cursor-pointer;
-        }
 
-        .tab-eco.bg-\[\#E9F0E1\] {
-            @apply bg-[#E9F0E1] font-semibold;
-        }
-
-        /* Compact Action Buttons */
-        .btn-action.compact {
-            @apply px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200;
-        }
-
-        .btn-edit {
-            @apply bg-[#EFF6FF] text-[#1E40AF] hover:bg-[#DBEAFE];
-        }
-
-        .btn-archive {
-            @apply bg-[#FEF2F2] text-[#DC2626] hover:bg-[#FECACA];
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .btn-action.compact span {
-                display: none;
-            }
-
-            .btn-action.compact {
-                @apply px-2 py-2;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .flex-col.lg\:flex-row {
-                flex-direction: column;
-            }
-
-            .w-full.lg\:w-1\/4 {
-                width: 100%;
-                max-width: none;
-            }
-        }
-    </style>
     <div class="space-y-6">
         <!-- Header Section with Quick Actions -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -85,16 +41,33 @@
                         </li>
                         <hr class="border-[#E6EAD7] my-4">
                         <div class="max-h-[350px] overflow-y-auto pr-1">
-                            <ul id="questList" class="space-y-2 mb-2 ">
+                            <ul id="questList" class="space-y-2 mb-2">
                                 @foreach ($questsList->whereIn('status', ['active', 'ending_soon']) as $quest)
                                     <li data-quest="{{ $quest->quest_id }}"
                                         class="tab-eco cursor-pointer {{ $loop->first ? 'bg-[#E9F0E1] font-semibold' : '' }}">
                                         <div class="flex justify-between items-center">
                                             <span class="truncate">{{ $quest->title }}</span>
-                                            @if ($quest->status === 'ending_soon')
-                                                <span
-                                                    class="text-xs bg-[#FEF3C7] text-[#D97706] px-2 py-1 rounded-full">Soon</span>
-                                            @endif
+
+                                            <div class="flex items-center gap-2">
+                                                @if ($quest->status === 'ending_soon')
+                                                    <span
+                                                        class="text-xs bg-[#FEF3C7] text-[#D97706] px-2 py-1 rounded-md">Soon</span>
+                                                @endif
+
+                                                @if ($quest->submissions->where('status', 'pending')->count() > 0)
+                                                    <div
+                                                        class="flex items-center gap-1.5 px-2 py-.5 rounded-full bg-rose-100 border border-rose-300 text-rose-700 text-xs font-semibold">
+                                                        <div class="relative">
+                                                            <div
+                                                                class="w-1 h-1 bg-rose-500 rounded-full animate-ping absolute">
+                                                            </div>
+                                                            <div class="w-1 h-1 bg-rose-500 rounded-full"></div>
+                                                        </div>
+                                                        <span>{{ $quest->submissions->where('status', 'pending')->count() }}
+                                                            pending</span>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
                                     </li>
                                 @endforeach
@@ -110,7 +83,7 @@
 
                             <!-- Pagination buttons -->
                             <div id="questPagination" class="flex justify-center items-center gap-2 mt-2">
-                                <button id="prevPage" class="px-2 py-1 border rounded text-xs">&laquo;</button>
+                                <button id="prevPage" class="px-2 py-1 border rounded-md text-xs">&laquo;</button>
 
                                 <div id="pageNumbers" class="flex gap-2">
                                     @php
@@ -121,14 +94,14 @@
 
                                     @for ($i = 1; $i <= min(5, $totalPages); $i++)
                                         <button
-                                            class="page-btn px-3 py-1 border rounded text-xs {{ $i === 1 ? 'bg-[#E9F0E1] font-semibold' : '' }}"
+                                            class="page-btn px-3 py-1 border rounded-md text-xs {{ $i === 1 ? 'bg-[#E9F0E1] font-semibold' : '' }}"
                                             data-page="{{ $i }}">
                                             {{ $i }}
                                         </button>
                                     @endfor
                                 </div>
 
-                                <button id="nextPage" class="px-2 py-1 border rounded text-xs">&raquo;</button>
+                                <button id="nextPage" class="px-2 py-1 border rounded-md text-xs">&raquo;</button>
                             </div>
 
                         </div>
