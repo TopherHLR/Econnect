@@ -64,14 +64,14 @@
                     <div id="proofFields">
                         <div>
                             <label class="block text-[#4F6B3F] font-medium mb-1">Proof Link</label>
-                            <input type="url" name="proof_link"
+                            <input type="url" name="proof_link" id="proofLink"
                                 class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
                                 placeholder="Paste a link to your proof (optional)">
                         </div>
 
                         <div>
                             <label class="block text-[#4F6B3F] font-medium mb-1">Upload Image</label>
-                            <input type="file" name="proof_image"
+                            <input type="file" name="proof_image" id="proofImage"
                                 class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
                                 accept="image/*">
                         </div>
@@ -188,7 +188,16 @@
         }
 
 
+        document.getElementById('acceptedQuestForm').addEventListener('submit', function(e) {
+            const proofLink = document.getElementById('proofLink').value.trim();
+            const proofImage = document.getElementById('proofImage').files.length;
 
+            if (!proofLink && proofImage === 0) {
+                e.preventDefault(); // stop form submission
+                alert('Please provide at least one proof: a link or an image.');
+                return false;
+            }
+        });
 
 
         function closeAcceptedQuestModal() {
