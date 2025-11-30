@@ -21,8 +21,7 @@
                 <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition participant-row cursor-pointer"
                     data-submission-id="{{ $submission->submission_id }}"
                     data-user="{{ $submission->user->first_name }} {{ $submission->user->last_name }}"
-                    data-status="{{ $submission->status }}"
-                    data-proof-link="{{ $submission->proof_link }}"
+                    data-status="{{ $submission->status }}" data-proof-link="{{ $submission->proof_link }}"
                     data-proof-image="{{ $submission->proof_image }}"
                     data-verified-by-email="{{ $submission->verifier?->email ?? '' }}">
 
@@ -40,24 +39,29 @@
                             $hasProof = !empty($submission->proof_link) || !empty($submission->proof_image);
                         @endphp
 
-                        <select class="submission-status border border-[#7A8C4F] rounded-lg px-3 py-1.5 text-sm text-[#4F6B3F] bg-white focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]"
-                                data-submission-id="{{ $submission->submission_id }}">
+                        <select
+                            class="submission-status border border-[#7A8C4F] rounded-lg px-3 py-1.5 text-sm text-[#4F6B3F] bg-white focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]"
+                            data-submission-id="{{ $submission->submission_id }}">
                             <option value="pending" {{ $submission->status === 'pending' ? 'selected' : '' }}>
                                 {{ $submission->status === 'pending' && $hasProof ? 'Submitted' : 'Pending' }}
                             </option>
-                            <option value="completed" {{ $submission->status === 'completed' ? 'selected' : '' }}>Completed</option>
-                            <option value="rejected" {{ $submission->status === 'rejected' ? 'selected' : '' }}>Rejected</option>
+                            <option value="completed" {{ $submission->status === 'completed' ? 'selected' : '' }}>
+                                Completed</option>
+                            <option value="rejected" {{ $submission->status === 'rejected' ? 'selected' : '' }}>
+                                Rejected</option>
                         </select>
                     </td>
 
                     <td class="px-4 py-3 text-[#4F6B3F]">
                         @if ($submission->status === 'completed' && $submission->verifier)
                             <span class="text-green-600 font-medium">
-                                Verified by {{ $submission->verifier->first_name }} {{ $submission->verifier->last_name }}
+                                Verified by {{ $submission->verifier->first_name }}
+                                {{ $submission->verifier->last_name }}
                             </span>
                         @elseif ($submission->status === 'rejected' && $submission->verifier)
                             <span class="text-red-600 font-medium">
-                                Rejected by {{ $submission->verifier->first_name }} {{ $submission->verifier->last_name }}
+                                Rejected by {{ $submission->verifier->first_name }}
+                                {{ $submission->verifier->last_name }}
                             </span>
                         @else
                             <span class="text-gray-500">Not verified yet</span>
@@ -69,7 +73,4 @@
     </tbody>
 </table>
 
-{{-- PAGINATION — This is the most important part! --}}
-<div class="mt-6 flex justify-center">
-    {{ $quest->submissions->links('vendor.pagination.bootstrap_5') }}
-</div>
+{{ $quest->submissions->links('vendor.pagination.bootstrap_5') }}
