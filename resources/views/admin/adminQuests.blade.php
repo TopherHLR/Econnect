@@ -173,19 +173,26 @@
                                                 </td>
 
                                                 <td class="px-4 py-3">
-                                                    <select
-                                                        class="submission-status border border-[#7A8C4F] rounded-lg px-3 py-1.5 text-sm text-[#4F6B3F] bg-white focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]"
-                                                        data-submission-id="{{ $submission->submission_id }}">
-                                                        <option value="pending"
-                                                            {{ $submission->status === 'pending' ? 'selected' : '' }}>
-                                                            Pending</option>
-                                                        <option value="completed"
-                                                            {{ $submission->status === 'completed' ? 'selected' : '' }}>
-                                                            Completed</option>
-                                                        <option value="rejected"
-                                                            {{ $submission->status === 'rejected' ? 'selected' : '' }}>
-                                                            Rejected</option>
-                                                    </select>
+                                                <select
+                                                    class="submission-status border border-[#7A8C4F] rounded-lg px-3 py-1.5 text-sm text-[#4F6B3F] bg-white focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]"
+                                                    data-submission-id="{{ $submission->submission_id }}">
+                                                    
+                                                    <option value="pending"
+                                                        {{ $submission->status === 'pending' ? 'selected' : '' }}>
+                                                        {{ ($submission->status === 'pending' && $submission->image_proof && $submission->image_link) ? 'Submitted' : 'Pending' }}
+                                                    </option>
+                                                    
+                                                    <option value="completed"
+                                                        {{ $submission->status === 'completed' ? 'selected' : '' }}>
+                                                        Completed
+                                                    </option>
+                                                    
+                                                    <option value="rejected"
+                                                        {{ $submission->status === 'rejected' ? 'selected' : '' }}>
+                                                        Rejected
+                                                    </option>
+                                                </select>
+
                                                 </td>
 
                                                 <td class="px-4 py-3 text-[#4F6B3F]">
