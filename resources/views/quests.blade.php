@@ -227,19 +227,55 @@
 
                     </div> <!-- End Top Container Columns -->
                 @else
-                    <!-- 🚫 Access Restricted UI -->
-                    <div class="flex items-center justify-center min-h-96">
-                        <div class="text-center p-8 bg-[#FCF9EF] rounded-2xl shadow border border-[#C6D0B2] max-w-md">
-                            <div class="text-6xl text-[#7A8C4F] mb-4">
-                                <i class="fas fa-lock"></i>
+                    <div class="relative w-full">
+                        <!-- 🌿 Main Container Blurred -->
+                        <div
+                            class="bg-[#F7F3E7] rounded-4xl shadow-md border border-green-100 overflow-hidden p-8 filter blur-sm pointer-events-none select-none">
+                            <!-- Top Container Columns (blurred preview) -->
+                            <div class="flex flex-col md:flex-row gap-8">
+                                <!-- Left Column: Accepted Quests Preview -->
+                                <div
+                                    class="w-full md:w-1/4 bg-[#FCFFF6] rounded-2xl shadow-md p-4 flex flex-col gap-3 max-h-[700px] overflow-hidden">
+                                    <h2 class="text-lg font-semibold text-[#4F6B3F] py-3 text-center">Accepted Quests</h2>
+                                    <div class="space-y-2">
+                                        @for ($i = 0; $i < 3; $i++)
+                                            <div class="bg-white p-2 rounded-xl opacity-70"></div>
+                                        @endfor
+                                    </div>
+                                </div>
+
+                                <!-- Right Column: Active Quests Preview -->
+                                <div
+                                    class="w-full md:w-3/4 bg-[#FCFFF6] rounded-2xl shadow-md p-6 flex flex-col gap-3 max-h-[700px] overflow-hidden">
+                                    <h2 class="text-lg font-semibold text-[#4F6B3F] text-center">Active Eco-Quests</h2>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-5 mt-3">
+                                        @for ($i = 0; $i < 6; $i++)
+                                            <div class="bg-white rounded-2xl h-36 opacity-70"></div>
+                                        @endfor
+                                    </div>
+                                </div>
                             </div>
-                            <h2 class="text-2xl font-semibold text-[#4E3A2E] mb-2">Access Restricted</h2>
-                            <p class="text-[#7A8C4F] mb-6">
-                                Only verified users can access Eco-Quests.
-                            </p>
                         </div>
+
+                        <!-- 🔒 Overlay Lock & Message on Top (Light Glass UI) -->
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center z-20">
+                            <div
+                                class="bg-white/50 backdrop-blur-md border border-white/30 rounded-2xl p-8 shadow-lg flex flex-col items-center w-80 text-center">
+                                <div class="text-6xl text-green-800 mb-4">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <h2 class="text-2xl font-semibold text-green-900 mb-2">Access Restricted</h2>
+                                <p class="text-green-800 text-md">
+                                    Only verified users can access Eco-Quests. Become a customer and scan your Account QR at
+                                    your first in-store purchase.
+                                </p>
+                            </div>
+                        </div>
+
                     </div>
                 @endif
+
             </div> <!-- End Main Container -->
 
         </div>
