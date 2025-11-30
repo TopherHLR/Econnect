@@ -12,33 +12,25 @@ use App\Models\Notification; // make sure to import at the top
 
 class QuestController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Load all quests with submissions and users
         $quests = Quest::with('submissions.user')
             ->whereIn('status', ['active', 'ending_soon'])
             ->orderBy('start_date', 'desc')
             ->paginate(6);
 
+        Log::info('Quests page requested', [
+            'page' => $request->get('page', 1),
+            'ajax' => $request->ajax()
+        ]);
 
-        // Get all unique categories for filters/dropdowns
-        $categories = $quests->pluck('category')->filter()->unique()->values();
-
-        // Group submissions by quest
-        $questSubmissions = [];
-        foreach ($quests as $quest) {
-            foreach ($quest->submissions as $submission) {
-                $questSubmissions[$quest->quest_id][] = [
-                    'id' => $submission->submission_id,
-                    'user' => $submission->user->first_name . ' ' . $submission->user->last_name,
-                    'status' => $submission->status,
-                    'proof_link' => $submission->proof_link,
-                    'proof_image' => $submission->proof_image,
-                ];
-            }
+        if ($request->ajax()) {
+            return view("admin.partials.quest_collection_table", compact('quests'));
         }
 
-        return view('admin.adminQuests', compact('quests', 'categories', 'questSubmissions'));
+        $categories = $quests->pluck('category')->filter()->unique()->values();
+
+        return view('admin.adminQuests', compact('quests', 'categories'));
     }
 
 

@@ -246,80 +246,9 @@
                     <!-- Quest Collection Main Table -->
                     <div id="collectionTable" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] ">
                         <!-- Quest Collection Table -->
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
-                                <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left font-semibold w-16">#</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Quest Title</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Description</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Category</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Points</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Start Date</th>
-                                        <th class="px-4 py-3 text-left font-semibold">End Date</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Status</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($quests->where('status', '!=', 'archived') as $index => $quest)
-                                        <tr data-quest-id="{{ $quest->quest_id }}"
-                                            class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
-                                            <td class="px-4 py-3">{{ $loop->iteration }}</td>
-                                            <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $quest->title }}</td>
-                                            <td class="px-4 py-3 text-[#6A8A52]">{{ Str::limit($quest->description, 50) }}
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <span
-                                                    class="px-2 py-1 rounded-full text-xs font-medium bg-[#F0F7E6] text-[#4F6B3F]">
-                                                    {{ $quest->category }}
-                                                </span>
-                                            </td>
-                                            <td class="px-4 py-3 font-semibold text-[#C37A49]">{{ $quest->points_reward }}
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                {{ \Carbon\Carbon::parse($quest->start_date)->format('m/d/Y') }}</td>
-                                            <td class="px-4 py-3">
-                                                {{ \Carbon\Carbon::parse($quest->end_date)->format('m/d/Y') }}</td>
-                                            <td class="px-4 py-3">
-                                                <select
-                                                    class="status-dropdown border border-[#7A8C4F] rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] 
-                                        {{ $quest->status === 'active'
-                                            ? 'text-green-600'
-                                            : ($quest->status === 'ending_soon'
-                                                ? 'text-orange-600'
-                                                : 'text-gray-600') }}"
-                                                    data-quest-id="{{ $quest->quest_id }}">
-                                                    <option value="active"
-                                                        {{ $quest->status === 'active' ? 'selected' : '' }}>Active</option>
-                                                    <option value="ending_soon"
-                                                        {{ $quest->status === 'ending_soon' ? 'selected' : '' }}>Ending
-                                                        Soon</option>
-                                                    <option value="closed"
-                                                        {{ $quest->status === 'closed' ? 'selected' : '' }}>Closed</option>
-                                                </select>
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <div class="flex gap-2">
-                                                    <button class="btn-action btn-edit compact"
-                                                        data-quest='@json($quest)' title="Edit Quest">
-                                                        <i class="fas fa-edit"></i>
-                                                        <span class="hidden sm:inline">Edit</span>
-                                                    </button>
-                                                    <button class="btn-action btn-archive compact"
-                                                        data-quest-id="{{ $quest->quest_id }}" title="Archive Quest">
-                                                        <i class="fas fa-archive"></i>
-                                                        <span class="hidden sm:inline">Archive</span>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="mt-4">
-                                {{ $quests->links('vendor.pagination.tailwind') }}
-                            </div>
+                        <div class="overflow-x-auto" id="table-data">
+
+                            @include("admin.partials.quest_collection_table")
                         </div>
                     </div>
                     <!-- Archived Quests Main Table -->
@@ -438,8 +367,7 @@
                     }
                 }
             </style>
-
-            <!-- JS for dynamic quest table switching -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
                     const questListItems = document.querySelectorAll('#questList li');
@@ -725,6 +653,27 @@
                         }
                     });
                 });
+                $(document).on('click', '.pagination a', function(e) {
+                    e.preventDefault();
+
+                    var url = $(this).attr('href');
+                    fetchData(url)
+                    console.log('Pagination clicked:', url);
+                });
+
+                function fetchData(url) {
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        dataType: "html",
+                        success: function(response) {
+                            $("#table-data").html(response);
+                        },
+                        error: function(err) {
+                            console.error('Pagination AJAX error:', err);
+                        }
+                    });
+                }
             </script>
             @include('modal.createQuestModal')
         @endsection
