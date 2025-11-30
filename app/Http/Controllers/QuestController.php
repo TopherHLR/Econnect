@@ -23,34 +23,38 @@ class QuestController extends Controller
         $archivedQuests = Quest::with('submissions.user')
             ->where('status', 'archived')
             ->orderBy('end_date', 'desc')
-            ->get();
+            ->paginate(5); // or 5, 15 — whatever you prefer
 
         $questsList = Quest::with('submissions.user')
             ->orderBy('start_date', 'desc')
             ->get();
 
         $categories = $quests->pluck('category')->filter()->unique()->values();
-
         // ————————————————————————
         // HANDLE AJAX REQUESTS SMARTLY
         // ————————————————————————
         if ($request->ajax()) {
-            // 1. Participants table pagination (individual quest)
+            // 1. Individual quest participants
             if ($request->has('quest_id')) {
                 $questId = $request->get('quest_id');
                 $quest = Quest::findOrFail($questId);
 
                 $paginatedSubmissions = $quest->submissions()
                     ->with('user', 'verifier')
-                    ->orderBy('date_submitted', 'desc')  // ← THIS WAS THE ONLY BUG
-                    ->paginate(1);
+                    ->orderBy('date_submitted', 'desc')
+                    ->paginate(5);
 
                 $quest->setRelation('submissions', $paginatedSubmissions);
 
                 return view('admin.partials.quest_participants_table', compact('quest'));
             }
 
-            // 2. Quest Collection table pagination (default case)
+            // 2. Archived Quests Pagination
+            if ($request->has('archived')) {
+                return view('admin.partials.quest_archive_table', compact('archivedQuests'));
+            }
+
+            // 3. Default: Quest Collection
             return view('admin.partials.quest_collection_table', compact('quests'))->render();
         }
 

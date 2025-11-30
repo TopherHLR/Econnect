@@ -254,71 +254,32 @@
                             @include('admin.partials.quest_collection_table')
                         </div>
                     </div>
+
                     <!-- Archived Quests Main Table -->
                     <div id="archiveMain" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
-                                <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left font-semibold w-16">#</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Quest Title</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Description</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Category</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Points</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Start Date</th>
-                                        <th class="px-4 py-3 text-left font-semibold">End Date</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Status</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Recover</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($archivedQuests as $index => $quest)
-                                        <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
-                                            <td class="px-4 py-3">{{ $loop->iteration }}</td>
-                                            <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $quest->title }}</td>
-                                            <td class="px-4 py-3 text-[#6A8A52]">{{ Str::limit($quest->description, 50) }}
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <span
-                                                    class="px-2 py-1 rounded-full text-xs font-medium bg-[#F0F7E6] text-[#4F6B3F]">
-                                                    {{ $quest->category }}
-                                                </span>
-                                            </td>
-                                            <td class="px-4 py-3 font-semibold text-[#C37A49]">{{ $quest->points_reward }}
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                {{ \Carbon\Carbon::parse($quest->start_date)->format('m/d/Y') }}</td>
-                                            <td class="px-4 py-3">
-                                                {{ \Carbon\Carbon::parse($quest->end_date)->format('m/d/Y') }}</td>
-                                            <td class="px-4 py-3">
-                                                <span
-                                                    class="text-gray-600 font-medium">{{ ucfirst($quest->status) }}</span>
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <div class="flex gap-2">
-                                                    <form action="{{ route('quests.recover', $quest->quest_id) }}"
-                                                        method="POST" onsubmit="return confirm('Recover this quest?')">
-                                                        @csrf
-                                                        <button type="submit"
-                                                            class="text-green-600 hover:text-green-800 font-semibold text-sm">
-                                                            Recover
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                        <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between mb-6">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-archive text-[#7F8A4F] text-lg"></i>
+                                <h2 class="text-xl font-bold text-[#4F6B3F] font-serif">
+                                    Archived Quests <span class="text-[#6A8A52]">({{ $archivedQuests->total() }})</span>
+                                </h2>
+                            </div>
 
-                                    @if ($archivedQuests->where('status', 'archived')->count() === 0)
-                                        <tr>
-                                            <td colspan="9" class="text-center py-4 text-[#6A8A52] text-sm">
-                                                <i class="fa-solid fa-inbox mb-2 text-2xl opacity-50"></i>
-                                                <div>No archived quests</div>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
+                            <div class="relative flex-1 min-w-[250px] max-w-md">
+                                <input type="text" placeholder="Search archived quests..." id="archive-search"
+                                    class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full 
+                       focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#3B3B3B] font-sans">
+                                <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F] text-sm"></i>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <!-- This div will be replaced entirely on pagination -->
+                            <div id="archive-table-container">
+                                @include('admin.partials.quest_archive_table', [
+                                    'archivedQuests' => $archivedQuests,
+                                ])
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -604,7 +565,6 @@
         // ——————————————————————————————————————
         // COLLECTION TABLE PAGINATION (Laravel default links)
         // ——————————————————————————————————————
-        // Collection table pagination (only trigger on collection table links)
         $(document).on('click', '#collectionTable .pagination a', function(e) {
             e.preventDefault();
             const url = $(this).attr('href');
@@ -613,19 +573,36 @@
                 $('#table-data').html(data); // this is your collection table container
             });
         });
-        // Pagination inside individual quest tables
+        // ——————————————————————————————————————
+        // QUEST PARTICIPANTS PAGINATION
+        // ——————————————————————————————————————
+        // ——————————————————————————————————————
+        // QUEST PARTICIPANTS PAGINATION (Individual Quests ONLY)
+        // ——————————————————————————————————————
         $(document).on('click', '#questTables .pagination a', function(e) {
             e.preventDefault();
-            const url = this.href;
-            const questId = $(this).closest('[id^="questTable-"]').attr('id').split('-')[1];
 
-            // CORRECT
-            $.get(url.replace('adminQuests', 'adminQuests') + '&quest_id=' + questId, function(data) {
+            // Find the closest quest table container
+            const $questContainer = $(this).closest('[id^="questTable-"]');
+
+            // If we're not inside a questTable- (e.g. in archived or collection), ignore
+            if ($questContainer.length === 0) {
+                return;
+            }
+
+            const questId = $questContainer.attr('id').split('-')[1];
+            const url = this.href;
+
+            $.get(url + (url.includes('?') ? '&' : '?') + 'quest_id=' + questId, function(data) {
                 $('#questTable-' + questId + ' #table-data-participants').html(data);
+            }).fail(function() {
+                showMessage('Failed to load participants', 'error');
             });
         });
 
-        // Optional: Toast helper (if you don't have one already)
+        // ——————————————————————————————————————
+        // TOAST MESSAGE
+        // ——————————————————————————————————————
         function showMessage(message, type = 'success') {
             // You can replace this with Toast, SweetAlert, or your own system
             const bg = type === 'success' ? 'bg-green-500' : 'bg-red-500';
@@ -704,6 +681,42 @@
             $('body').append(div);
             setTimeout(() => div.fadeOut(() => div.remove()), 3000);
         }
+        // ——————————————————————————————————————
+        // ARCHIVED QUESTS PAGINATION — 
+        // ——————————————————————————————————————
+        $(document).on('click', '#archiveMain .pagination a', function(e) {
+            e.preventDefault();
+            const url = $(this).attr('href') + (this.href.includes('?') ? '&' : '?') + 'archived=1';
+
+            $.get(url, function(data) {
+                $('#archive-table-container').html(data);
+            }).fail(function() {
+                showMessage('Failed to load archived quests', 'error');
+            });
+        });
+
+        // ——————————————————————————————————————
+        // ARCHIVED SEARCH
+        // ——————————————————————————————————————
+        $(document).on('keyup', '#archive-search', function() {
+            const term = $(this).val().toLowerCase();
+            $('#archive-table-body tr').each(function() {
+                const text = $(this).text().toLowerCase();
+                $(this).toggle(text.includes(term));
+            });
+
+            // Optional: show "no results" if all hidden
+            const visible = $('#archive-table-body tr:visible').length;
+            if (visible === 0 && term) {
+                if ($('#archive-table-body .no-results-custom').length === 0) {
+                    $('#archive-table-body').append(
+                        '<tr class="no-results-custom"><td colspan="9" class="text-center py-8 text-[#6A8A52]">No matching archived quests</td></tr>'
+                    );
+                }
+            } else {
+                $('#archive-table-body .no-results-custom').remove();
+            }
+        });
     </script>
     @include('modal.createQuestModal')
 @endsection
