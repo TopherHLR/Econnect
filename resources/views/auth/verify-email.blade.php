@@ -49,7 +49,13 @@
             @endif
 
             <!-- ✉️ Verification Form -->
-            <form method="POST" action="{{ route('verify.email.submit') }}" class="space-y-5">
+            <form 
+                method="POST" 
+                action="{{ route('verify.email.submit') }}" 
+                class="space-y-5" 
+                x-data="{ loading: false }" 
+                @submit="loading = true"
+            >
                 @csrf
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -70,11 +76,15 @@
 
                 <button 
                     type="submit"
-                    class="w-full bg-[#5a6b3e] hover:bg-[#4a5b33] text-white font-semibold py-2 rounded-full transition duration-200 shadow-sm"
+                    class="w-full bg-[#5a6b3e] hover:bg-[#4a5b33] text-white font-semibold py-2 rounded-full transition duration-200 shadow-sm relative"
+                    x-bind:disabled="loading"
+                    @click="if(loading) { $event.preventDefault(); alert('Please wait, verifying your email...'); }"
                 >
-                    Verify & Create Account
+                    <span x-show="!loading">Verify & Create Account</span>
+                    <span x-show="loading">Please wait, verifying your email...</span>
                 </button>
             </form>
+
 
             <!-- 🌱 Footer -->
             <p class="text-center text-xs text-gray-500 mt-6">
