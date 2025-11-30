@@ -178,14 +178,17 @@
 
             modalSubmissionId.value = submissionId;
 
+            // NEW STATUS LOGIC
+            const hasProof = proofLink || proofImage;
+            const displayStatus = (status === 'pending' && hasProof) ? 'Submitted' : status;
+
             // Build modal content
             let html = `
             <p><strong>User:</strong> ${user}</p>
-            <p><strong>Status:</strong> ${status}</p>
+            <p><strong>Status:</strong> ${displayStatus}</p>
             ${proofLink ? `<p><strong>Proof Link:</strong> <a href="${proofLink}" target="_blank">${proofLink}</a></p>` : ''}
             ${proofImage ? `<p><strong>Proof Image:</strong><br><img src="/storage/${proofImage}" class="max-w-full rounded mt-2" /></p>` : ''}
         `;
-
             if (status.toLowerCase().trim() === 'pending') {
                 html += `
                 <input type="hidden" name="verified_by" value="{{ auth()->user()->user_id }}">
