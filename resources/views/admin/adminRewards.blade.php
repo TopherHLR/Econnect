@@ -88,7 +88,7 @@
                                 <i class="fa-solid fa-gift text-[#7F8A4F] text-lg"></i>
                                 <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans">
                                     Reward Collection <span
-                                        class="text-[#6A8A52]">({{ $vouchers->where('is_active', true)->count() }})</span>
+                                        class="text-[#6A8A52]">({{ $vouchersList->where('is_active', true)->count() }})</span>
                                 </h2>
                             </div>
                         </div>
@@ -110,7 +110,7 @@
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-ticket text-[#7F8A4F] text-lg"></i>
                                 <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans">
-                                    Vouchers Redeemed <span class="text-[#6A8A52]">({{ $redeemed->count() }})</span>
+                                    Vouchers Redeemed <span class="text-[#6A8A52]">({{ $redeemedList->count() }})</span>
                                 </h2>
                             </div>
                         </div>
@@ -130,51 +130,18 @@
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-archive text-[#7F8A4F] text-lg"></i>
                                 <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans">
-                                    Archived Vouchers <span class="text-[#6A8A52]">({{ $archived->count() }})</span>
+                                    Archived Vouchers <span class="text-[#6A8A52]">({{ $archivedList->count() }})</span>
                                 </h2>
                             </div>
                         </div>
 
                         <!-- Archived Vouchers Table -->
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
-                                <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left font-semibold">Reward Name</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Points Cost</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Discount</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Expiry</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Status</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($archived as $voucher)
-                                        <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
-                                            <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $voucher->title }}</td>
-                                            <td class="px-4 py-3 font-semibold text-[#C37A49]">
-                                                {{ $voucher->required_points }}</td>
-                                            <td class="px-4 py-3 text-[#6A8A52]">{{ $voucher->discount_value }}%</td>
-                                            <td class="px-4 py-3">{{ $voucher->expiry_date->format('M d, Y') }}</td>
-                                            <td class="px-4 py-3">
-                                                <span
-                                                    class="px-2 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700">Archived</span>
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <form action="{{ route('rewards.recover', $voucher->voucher_id) }}"
-                                                    method="POST">
-                                                    @csrf @method('PUT')
-                                                    <button class="btn-action btn-leaf compact" title="Recover Voucher">
-                                                        <i class="fas fa-undo"></i>
-                                                        <span class="hidden sm:inline">Recover</span>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div id="archiveTablePagi">
+                            <div class="overflow-x-auto" id="table-data-archive">
+                                @include('admin.partials.archive_table')    
+                            </div>
                         </div>
+
                     </div>
 
                     <!-- 📱 QR Scanner Section -->
@@ -248,6 +215,7 @@
         $(document).ready(function() {
             const $catalogContainer = $('#table-data-rewards');
             const $redeemedContainer = $('#table-data-redemeed');
+            const $archiveContainer = $('#table-data-archive');
 
             // Tab switching + load correct content via AJAX
             $('aside [data-section]').on('click', function() {
@@ -284,6 +252,14 @@
                     type: 'redeemed'
                 }, function(data) {
                     $redeemedContainer.html(data);
+                });
+            });
+            $(document).on('click', '#archiveTablePagi .pagination a', function(e) {
+                e.preventDefault();
+                $.get(this.href, {
+                    type: 'archived'
+                }, function(data) {
+                    $archiveContainer.html(data);
                 });
             });
 
@@ -335,7 +311,6 @@
                 activateReward(key, firstTab);
             }
         });
-
     </script>
 
     @include('modal.addVoucherModal')

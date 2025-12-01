@@ -21,7 +21,7 @@ class VoucherController extends Controller
             ->orderBy('voucher_id', 'DESC')
             ->paginate(4);
 
-        $archived = Voucher::where('is_active', 0)->get();
+        $archived = Voucher::where('is_active', 0)->paginate(5);
 
         // Redeemed vouchers – also paginated so we can use Laravel links()
         $redeemed = UserVoucher::with(['user', 'voucher'])
@@ -36,6 +36,15 @@ class VoucherController extends Controller
             })
             ->paginate(5); // you can change per-page value
 
+         $vouchersList = Voucher::where('is_active', true)
+            ->get();
+
+        $archivedList = Voucher::where('is_active', 0)->get();
+
+        // Redeemed vouchers – also paginated so we can use Laravel links()
+        $redeemedList = UserVoucher::with(['user', 'voucher'])
+            ->get(); // you can change per-page value
+
         // AJAX handling
         if ($request->ajax()) {
             $type = $request->get('type'); // "catalog" or "redeemed"
@@ -43,12 +52,15 @@ class VoucherController extends Controller
             if ($type === 'redeemed') {
                 return view('admin.partials.redemeed_table', compact('redeemed'))->render();
             }
+            if ($type === 'archived') {
+                return view('admin.partials.archive_table', compact('archived'))->render();
+            }
 
             // default = catalog
             return view('admin.partials.rewards_table', compact('vouchers'))->render();
         }
 
-        return view('admin.adminRewards', compact('vouchers', 'redeemed', 'archived'));
+        return view('admin.adminRewards', compact('vouchers', 'redeemed', 'archived','vouchersList', 'redeemedList', 'archivedList'));
     }
     public function store(Request $request)
     {
