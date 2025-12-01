@@ -39,7 +39,7 @@
                     <span class="font-semibold text-[#4b3f2f]" id="userCurrentPoints">{{ $currentPoints }} points</span>
                 </p>
                 <p class="text-xs text-[#6b665e]">
-                    After redemption, you'll have:
+                    <span id="afterRedemptionText">After redemption, you'll have:</span>
                     <span class="font-semibold text-[#4b3f2f]" id="afterRedemptionPoints">-</span>
                 </p>
 
@@ -150,9 +150,21 @@
         document.getElementById('modalStatus').textContent = voucher.is_active ? 'Active' : 'Inactive';
 
         // Show user points
-        const userPoints = {{ $totalPoints }};
+        const userPoints = {{ $currentPoints }};
         const afterRedemptionEl = document.getElementById('afterRedemptionPoints');
         afterRedemptionEl.textContent = userPoints - voucher.required_points;
+
+        // Change message if user does NOT have enough points
+        const afterRedemptionText = document.getElementById('afterRedemptionText');
+
+        if (userPoints < voucher.required_points) {
+            afterRedemptionText.textContent = "You don't have enough eco points for this voucher";
+            afterRedemptionPoints.classList.add("hidden"); // hide number
+        } else {
+            afterRedemptionText.textContent = "After redemption, you'll have:";
+            afterRedemptionPoints.classList.remove("hidden"); // show number
+        }
+
 
         // Enable/disable redeem button
         const redeemButton = document.getElementById('redeemButton');
@@ -221,8 +233,6 @@
         // Show modal
         document.getElementById('voucherUsageModal').classList.remove('hidden');
     }
-
-
 
     function closeVoucherUsageModal() {
         document.getElementById('voucherUsageModal').classList.add('hidden');
