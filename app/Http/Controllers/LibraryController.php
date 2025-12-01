@@ -356,17 +356,17 @@ class LibraryController extends Controller
         $action = EcoAction::findOrFail($id);
         return response()->json($action);
     }
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
         $ecoTopics = EcoLibrary::where('type', 'Topic')
             ->where('archive', 0)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(2);
 
         $archivedTopics = EcoLibrary::where('type', 'Topic')
             ->where('archive', 1)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(1);
 
         $ecoActions = EcoAction::where('archive', 0)
             ->orderBy('created_at', 'desc')
@@ -374,6 +374,16 @@ class LibraryController extends Controller
         $archivedActions = EcoAction::where('archive', 1)
             ->orderBy('created_at', 'desc')
             ->get();
+
+          if ($request->ajax()) {
+            $type = $request->get('type'); // "catalog" or "redeemed"
+
+            if ($type === 'topicsArchive') {
+                return view('admin.partials.topics_archive_table', compact('archivedTopics'))->render();
+            }
+            // default = catalog
+            return view('admin.partials.topics_table', compact('ecoTopics'))->render();
+        }
 
         return view('admin.adminLifestyle', compact('ecoTopics', 'archivedTopics', 'ecoActions' , 'archivedActions'));
     }
