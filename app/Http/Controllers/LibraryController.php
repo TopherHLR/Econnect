@@ -359,16 +359,25 @@ class LibraryController extends Controller
     public function adminIndex()
     {
         $ecoTopics = EcoLibrary::where('type', 'Topic')
-            ->where('archive', 0) // ✅ only not archived
+            ->where('archive', 0)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $ecoActions = EcoAction::where('archive', 0) // ✅ only not archived
+        $archivedTopics = EcoLibrary::where('type', 'Topic')
+            ->where('archive', 1)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('admin.adminLifestyle', compact('ecoTopics', 'ecoActions'));
+        $ecoActions = EcoAction::where('archive', 0)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $archivedActions = EcoAction::where('archive', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.adminLifestyle', compact('ecoTopics', 'archivedTopics', 'ecoActions' , 'archivedActions'));
     }
+
 
     
 }
