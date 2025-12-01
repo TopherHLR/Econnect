@@ -19,19 +19,30 @@ class UserRewardsController extends Controller
 
         $user = Auth::user();
 
-        // ✅ Available vouchers (active only)
-        $availableVouchers = Voucher::withCount('userVouchers') // count all redemptions
+        // 🔄 Auto-expire vouchers that passed the expiry date
+        Voucher::where('is_active', 1)
+            ->whereDate('expiry_date', '<', now())
+            ->update([
+                'is_active' => 0,
+                'status' => 'expired' // remove this if you do not have a column named "status"
+            ]);
+
+        // 🔽 After auto-expiring, fetch updated data
+
+        // Available vouchers (active only)
+        $availableVouchers = Voucher::withCount('userVouchers')
                                     ->where('is_active', 1)
                                     ->get();
 
-        // ✅ User's vouchers
+        // User's vouchers
         $myVouchers = UserVoucher::with('voucher')
                         ->where('user_id', $user->user_id)
                         ->get();
 
-        // ✅ Optionally, get the most popular voucher(s)
+        // Most popular vouchers
         $popularVouchers = $availableVouchers->sortByDesc('user_vouchers_count');
-        // POINTS LOGIC (unchanged)
+
+        // Points logic
         $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
             ->where('points_change', '>', 0)
             ->where('voided', false)
