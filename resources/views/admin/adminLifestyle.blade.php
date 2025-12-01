@@ -82,62 +82,86 @@
                     </div>
                 </div>
 
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @forelse($ecoTopics as $topic)
-                        <div
-                            class="bg-[#FCF9EF] border border-[#D8E2CA] rounded-2xl shadow-sm p-5 hover:shadow-md transition-all duration-200 group">
-                            <div class="flex items-start gap-4 mb-4">
-                                <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('images/default.jpg') }}"
-                                    alt="{{ $topic->title }}"
-                                    class="w-16 h-16 object-cover rounded-xl border border-[#C8D9B5] flex-shrink-0">
+                <table class="min-w-full bg-white border border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
+                    <thead class="bg-[#FCF9EF] border-b border-[#D8E2CA]">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase tracking-wider">
+                                Image</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase tracking-wider">
+                                Topic</th>
+                            <th class="px-6 py-4 text-right text-xs font-medium text-[#6A8A52] uppercase tracking-wider">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#E6EAD7]">
+                        @forelse($ecoTopics as $topic)
+                            <tr class="hover:bg-[#FAF8ED] transition-colors duration-200 group">
+                                <!-- Image -->
+                                <td class="px-6 py-5 whitespace-nowrap">
+                                    <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('images/default.jpg') }}"
+                                        alt="{{ $topic->title }}"
+                                        class="w-16 h-16 object-cover rounded-xl border border-[#C8D9B5]">
+                                </td>
 
-                                <div class="flex-1 min-w-0">
+                                <!-- Title + Description -->
+                                <td class="px-6 py-5">
                                     <h3 class="font-semibold text-[#4F6B3F] text-base leading-tight mb-1">
-                                        {{ $topic->title }}</h3>
-                                    <p class="text-xs text-[#6A8A52] line-clamp-2">{{ $topic->description }}</p>
-                                </div>
-                            </div>
+                                        {{ $topic->title }}
+                                    </h3>
+                                    <p class="text-sm text-[#6A8A52] line-clamp-2">
+                                        {{ $topic->description }}
+                                    </p>
+                                </td>
 
-                            <div class="flex justify-end gap-2 pt-3 border-t border-[#E6EAD7]">
-                                <!-- View Topic -->
-                                <a href="{{ url('/libraries/' . $topic->id) }}" class="btn-action btn-view compact"
-                                    title="View Topic">
-                                    <i class="fa-solid fa-eye"></i>
-                                    <span class="hidden xs:inline">View</span>
-                                </a>
+                                <!-- Actions -->
+                                <td class="px-6 py-5 text-right whitespace-nowrap">
+                                    <div class="flex justify-end gap-2">
 
-                                <!-- Edit Topic -->
-                                <a href="javascript:void(0)" class="btn-action btn-edit-eco compact"
-                                    data-topic='@json($topic, JSON_HEX_APOS | JSON_HEX_QUOT)'
-                                    data-image="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : '' }}"
-                                    title="Edit Topic">
-                                    <i class="fa-solid fa-pen"></i>
-                                    <span class="hidden xs:inline">Edit</span>
-                                </a>
+                                        <!-- View Topic -->
+                                        <a href="{{ url('/libraries/' . $topic->id) }}" class="btn-action btn-view compact"
+                                            title="View Topic">
+                                            <i class="fa-solid fa-eye"></i>
+                                            <span class="hidden xs:inline">View</span>
+                                        </a>
 
+                                        <!-- Edit Topic -->
+                                        <a href="javascript:void(0)" class="btn-action btn-edit-eco compact"
+                                            data-topic='@json($topic, JSON_HEX_APOS | JSON_HEX_QUOT)'
+                                            data-image="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : '' }}"
+                                            title="Edit Topic">
+                                            <i class="fa-solid fa-pen"></i>
+                                            <span class="hidden xs:inline">Edit</span>
+                                        </a>
 
-
-                                <!-- Delete Topic -->
-                                <form method="POST" action="{{ url('/admin/libraries/' . $topic->id) }}" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        onclick="return confirm('Are you sure you want to delete this topic?')"
-                                        class="btn-action btn-archive compact" title="Delete Topic">
-                                        <i class="fa-solid fa-trash"></i>
-                                        <span class="hidden xs:inline">Delete</span>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="col-span-full text-center py-12">
-                            <i class="fa-solid fa-book-open text-4xl text-[#D8E2CA] mb-3"></i>
-                            <p class="text-[#6A8A52] text-lg font-medium">No topics found</p>
-                            <p class="text-sm text-[#7A8C4F] mt-1">Create your first eco topic to get started</p>
-                        </div>
-                    @endforelse
-                </div>
+                                        <!-- Delete Topic -->
+                                        <form method="POST" action="{{ url('/admin/libraries/' . $topic->id) }}"
+                                            class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                onclick="return confirm('Are you sure you want to delete this topic?')"
+                                                class="btn-action btn-archive compact" title="Delete Topic">
+                                                <i class="fa-solid fa-trash"></i>
+                                                <span class="hidden xs:inline">Delete</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-16">
+                                    <div class="py-8">
+                                        <i class="fa-solid fa-book-open text-5xl text-[#D8E2CA] mb-4"></i>
+                                        <p class="text-[#6A8A52] text-lg font-medium">No topics found</p>
+                                        <p class="text-sm text-[#7A8C4F] mt-1">Create your first eco topic to get started
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
 
             <!-- 🌱 ECO ACTIONS GRID -->
@@ -152,63 +176,90 @@
                     </div>
                 </div>
 
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @forelse($ecoActions as $action)
-                        <div
-                            class="bg-[#FCF9EF] border border-[#D8E2CA] rounded-2xl shadow-sm p-5 hover:shadow-md transition-all duration-200 group">
-                            <div class="flex items-start gap-4 mb-4">
-                                <img src="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : '' }}"
-                                    alt="Eco Action" alt="{{ $action->title }}"
-                                    class="w-16 h-16 object-cover rounded-xl border border-[#C8D9B5] flex-shrink-0">
-                                <div class="flex-1 min-w-0">
+                <table class="min-w-full bg-white border border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
+                    <thead class="bg-[#FCF9EF] border-b border-[#D8E2CA]">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase tracking-wider">
+                                Image
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase tracking-wider">
+                                Action
+                            </th>
+                            <th class="px-6 py-4 text-right text-xs font-medium text-[#6A8A52] uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#E6EAD7]">
+
+                        @forelse($ecoActions as $action)
+                            <tr class="hover:bg-[#FAF8ED] transition-colors duration-200 group">
+                                <!-- Image -->
+                                <td class="px-6 py-5 whitespace-nowrap">
+                                    <img src="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : asset('images/default-action.jpg') }}"
+                                        alt="{{ $action->title }}"
+                                        class="w-16 h-16 object-cover rounded-xl border border-[#C8D9B5]">
+                                </td>
+
+                                <!-- Title + Description -->
+                                <td class="px-6 py-5">
                                     <h3 class="font-semibold text-[#4F6B3F] text-base leading-tight mb-1">
-                                        {{ $action->title }}</h3>
-                                    <p class="text-xs text-[#6A8A52] line-clamp-2">{{ $action->description }}</p>
-                                </div>
-                            </div>
+                                        {{ $action->title }}
+                                    </h3>
+                                    <p class="text-sm text-[#6A8A52] line-clamp-2">
+                                        {{ $action->description }}
+                                    </p>
+                                </td>
 
-                            <div class="flex justify-end gap-2 pt-3 border-t border-[#E6EAD7]">
-                                <!-- View Button -->
-                                <a href="{{ url('/actions/' . $action->id) }}" class="btn-action btn-view compact"
-                                    title="View Action">
-                                    <i class="fa-solid fa-eye"></i>
-                                    <span class="hidden xs:inline">View</span>
-                                </a>
+                                <!-- Action Buttons (View | Edit | Delete) -->
+                                <td class="px-6 py-5 text-right whitespace-nowrap">
+                                    <div class="flex justify-end gap-2">
 
-                                <!-- Edit Button -->
-                                <!-- Edit Action -->
-                                <!-- Example Edit Button -->
-                                <a href="javascript:void(0)" class="btn-action btn-edit-eco-action"
-                                    data-action='@json($action, JSON_HEX_APOS | JSON_HEX_QUOT)'
-                                    data-image="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : '' }}"
-                                    title="Edit Action">
-                                    <i class="fa-solid fa-pen"></i> Edit
-                                </a>
+                                        <!-- View -->
+                                        <a href="{{ url('/actions/' . $action->id) }}"
+                                            class="btn-action btn-view compact" title="View Action">
+                                            <i class="fa-solid fa-eye"></i>
+                                            <span class="hidden xs:inline">View</span>
+                                        </a>
 
+                                        <!-- Edit (dengan data JSON tetap utuh) -->
+                                        <a href="javascript:void(0)" class="btn-action btn-edit-eco-action compact"
+                                            data-action='@json($action, JSON_HEX_APOS | JSON_HEX_QUOT)'
+                                            data-image="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : '' }}"
+                                            title="Edit Action">
+                                            <i class="fa-solid fa-pen"></i>
+                                            <span class="hidden xs:inline">Edit</span>
+                                        </a>
 
-
-
-                                <!-- Delete Button -->
-                                <form method="POST" action="{{ url('/admin/actions/' . $action->id) }}" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        onclick="return confirm('Are you sure you want to delete this action?')"
-                                        class="btn-action btn-archive compact" title="Delete Action">
-                                        <i class="fa-solid fa-trash"></i>
-                                        <span class="hidden xs:inline">Delete</span>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="col-span-full text-center py-12">
-                            <i class="fa-solid fa-seedling text-4xl text-[#D8E2CA] mb-3"></i>
-                            <p class="text-[#6A8A52] text-lg font-medium">No actions found</p>
-                            <p class="text-sm text-[#7A8C4F] mt-1">Create your first eco action to get started</p>
-                        </div>
-                    @endforelse
-                </div>
+                                        <!-- Delete -->
+                                        <form method="POST" action="{{ url('/admin/actions/' . $action->id) }}"
+                                            class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                onclick="return confirm('Are you sure you want to delete this action?')"
+                                                class="btn-action btn-archive compact" title="Delete Action">
+                                                <i class="fa-solid fa-trash"></i>
+                                                <span class="hidden xs:inline">Delete</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-16">
+                                    <div class="py-8">
+                                        <i class="fa-solid fa-seedling text-5xl text-[#D8E2CA] mb-4"></i>
+                                        <p class="text-[#6A8A52] text-lg font-medium">No actions found</p>
+                                        <p class="text-sm text-[#7A8C4F] mt-1">Create your first eco action to get started
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
