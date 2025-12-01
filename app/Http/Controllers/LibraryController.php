@@ -361,7 +361,7 @@ class LibraryController extends Controller
         $ecoTopics = EcoLibrary::where('type', 'Topic')
             ->where('archive', 0)
             ->orderBy('created_at', 'desc')
-            ->paginate(2);
+            ->paginate(5);
 
         $archivedTopics = EcoLibrary::where('type', 'Topic')
             ->where('archive', 1)
@@ -370,22 +370,54 @@ class LibraryController extends Controller
 
         $ecoActions = EcoAction::where('archive', 0)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(1);
         $archivedActions = EcoAction::where('archive', 1)
             ->orderBy('created_at', 'desc')
+            ->paginate(1);
+
+        $ecoTopicsList = EcoLibrary::where('type', 'Topic')
+            ->where('archive', 0)
             ->get();
+
+        $archivedTopicsList = EcoLibrary::where('type', 'Topic')
+            ->where('archive', 1)
+            ->get();
+
+        $ecoActionsList = EcoAction::where('archive', 0)
+            ->get();
+        $archivedActionsList = EcoAction::where('archive', 1)
+            ->get();
+
 
           if ($request->ajax()) {
             $type = $request->get('type'); // "catalog" or "redeemed"
 
-            if ($type === 'topicsArchive') {
-                return view('admin.partials.topics_archive_table', compact('archivedTopics'))->render();
+            if ($type === 'archived-topics') {
+                return view('admin.partials.topics_archive_table', [
+                    'archivedTopics' => $archivedTopics
+                ])->render();
+
             }
-            // default = catalog
-            return view('admin.partials.topics_table', compact('ecoTopics'))->render();
+            if ($type === 'actions') {
+                return view('admin.partials.actions_table', [
+                    'ecoActions' => $ecoActions
+                ])->render();
+
+            }
+            if ($type === 'archived-actions') {
+                return view('admin.partials.actions_archive_table', [
+                    'archivedActions' => $archivedActions
+                ])->render();
+
+            }
+            
+            return view('admin.partials.topics_table', [
+                'ecoTopics' => $ecoTopics
+            ])->render();
+
         }
 
-        return view('admin.adminLifestyle', compact('ecoTopics', 'archivedTopics', 'ecoActions' , 'archivedActions'));
+        return view('admin.adminLifestyle', compact('ecoTopics', 'archivedTopics', 'ecoActions' , 'archivedActions','ecoTopicsList', 'archivedTopicsList', 'ecoActionsList' , 'archivedActionsList'));
     }
 
 

@@ -3,6 +3,8 @@
 @section('title', 'Eco Library')
 
 @section('content')
+    @include('modal.ecoTopics_ecoActionModal')
+    @include('modal.viewLifestyleModal')
     <div class="space-y-6">
         <!-- Header with Stats -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -13,11 +15,11 @@
 
             <div class="flex flex-wrap gap-3">
                 <div class="bg-[#F0F7E6] rounded-xl px-4 py-3 border border-[#D8E2CA]">
-                    <div class="text-2xl font-bold text-[#4F6B3F]">{{ $ecoTopics->count() }}</div>
+                    <div class="text-2xl font-bold text-[#4F6B3F]">{{ $ecoTopicsList->count() }}</div>
                     <div class="text-sm text-[#6A8A52]">Eco Topics</div>
                 </div>
                 <div class="bg-[#F0F7E6] rounded-xl px-4 py-3 border border-[#D8E2CA]">
-                    <div class="text-2xl font-bold text-[#4F6B3F]">{{ $ecoActions->count() }}</div>
+                    <div class="text-2xl font-bold text-[#4F6B3F]">{{ $ecoActionsList->count() }}</div>
                     <div class="text-sm text-[#6A8A52]">Eco Actions</div>
                 </div>
             </div>
@@ -36,7 +38,7 @@
                                 <span>Eco Topics</span>
                             </div>
                             <span
-                                class="text-xs text-[#6A8A52] bg-[#E0E9D6] px-2 py-0.5 rounded-full">{{ $ecoTopics->count() }}</span>
+                                class="text-xs text-[#6A8A52] bg-[#E0E9D6] px-2 py-0.5 rounded-full">{{ $ecoTopicsList->count() }}</span>
                         </button>
 
                         <button data-section="actions"
@@ -46,7 +48,7 @@
                                 <span>Eco Actions</span>
                             </div>
                             <span
-                                class="text-xs text-[#6A8A52] bg-[#E0E9D6] px-2 py-0.5 rounded-full">{{ $ecoActions->count() }}</span>
+                                class="text-xs text-[#6A8A52] bg-[#E0E9D6] px-2 py-0.5 rounded-full">{{ $ecoActionsList->count() }}</span>
                         </button>
 
                         <button data-section="archived-topics"
@@ -56,7 +58,7 @@
                                 <span>Archived Topics</span>
                             </div>
                             <span
-                                class="text-xs text-[#6A8A52] bg-[#E0E9D6] px-2 py-0.5 rounded-full">{{ $archivedTopics->count() }}</span>
+                                class="text-xs text-[#6A8A52] bg-[#E0E9D6] px-2 py-0.5 rounded-full">{{ $archivedTopicsList->count() }}</span>
                         </button>
 
                         <button data-section="archived-actions"
@@ -66,7 +68,7 @@
                                 <span>Archived Actions</span>
                             </div>
                             <span
-                                class="text-xs text-[#6A8A52] bg-[#E0E9D6] px-2 py-0.5 rounded-full">{{ $archivedActions->count() }}</span>
+                                class="text-xs text-[#6A8A52] bg-[#E0E9D6] px-2 py-0.5 rounded-full">{{ $archivedActionsList->count() }}</span>
                         </button>
                     </div>
                 </aside>
@@ -96,7 +98,7 @@
                     <div class="flex items-center gap-3 mb-6">
                         <i class="fa-solid fa-book text-[#7F8A4F] text-xl"></i>
                         <h2 class="text-xl font-semibold text-[#4F6B3F]">Eco Topics <span
-                                class="text-[#6A8A52]">({{ $ecoTopics->count() }})</span></h2>
+                                class="text-[#6A8A52]">({{ $ecoTopicsList->count() }})</span></h2>
                     </div>
                     <div id="topicsTablePagi">
                         <div class="overflow-x-auto" id="table-data-topics">
@@ -110,58 +112,12 @@
                     <div class="flex items-center gap-3 mb-6">
                         <i class="fa-solid fa-seedling text-[#7F8A4F] text-xl"></i>
                         <h2 class="text-xl font-semibold text-[#4F6B3F]">Eco Actions <span
-                                class="text-[#6A8A52]">({{ $ecoActions->count() }})</span></h2>
+                                class="text-[#6A8A52]">({{ $ecoActionsList->count() }})</span></h2>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full">
-                            <thead class="bg-[#FCF9EF]">
-                                <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Image</th>
-                                    <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Action</th>
-                                    <th class="px-6 py-4 text-right text-xs font-medium text-[#6A8A52] uppercase">Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-[#E6EAD7]">
-                                @forelse($ecoActions as $action)
-                                    <tr class="hover:bg-[#FAF8ED] group">
-                                        <td class="px-6 py-5">
-                                            <img src="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : asset('images/default-action.jpg') }}"
-                                                alt="{{ $action->title }}" class="w-16 h-16 object-cover rounded-xl border">
-                                        </td>
-                                        <td class="px-6 py-5">
-                                            <h3 class="font-semibold text-[#4F6B3F]">{{ $action->title }}</h3>
-                                            <p class="text-sm text-[#6A8A52] line-clamp-2">{{ $action->description }}</p>
-                                        </td>
-                                        <td class="px-6 py-5 text-right">
-                                            <div class="flex justify-end gap-2">
-                                                <button onclick='openViewModal({{ $action->toJson() }}, "action")'
-                                                    class="btn-action btn-view compact">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </button>
-                                                <button class="btn-action btn-edit-eco-action compact"
-                                                    data-action='@json($action)'
-                                                    data-image="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : '' }}">
-                                                    <i class="fa-solid fa-pen"></i>
-                                                </button>
-                                                <form method="POST" action="{{ route('admin.actions.archive', $action) }}"
-                                                    class="inline">
-                                                    @csrf @method('PATCH')
-                                                    <button type="submit" onclick="return confirm('Archive this action?')"
-                                                        class="btn-action btn-archive compact">
-                                                        <i class="fa-solid fa-box-archive"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="3" class="text-center py-16 text-[#6A8A52]">No actions found</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                    <div id="actionsTablePagi">
+                        <div class="overflow-x-auto" id="table-data-actions">
+                            @include('admin.partials.actions_table')
+                        </div>
                     </div>
                 </div>
 
@@ -170,7 +126,7 @@
                     <div class="flex items-center gap-3 mb-6">
                         <i class="fa-solid fa-box-archive text-[#7F8A4F] text-xl"></i>
                         <h2 class="text-xl font-semibold text-[#4F6B3F]">Archived Topics <span
-                                class="text-[#6A8A52]">({{ $archivedTopics->count() }})</span></h2>
+                                class="text-[#6A8A52]">({{ $archivedTopicsList->count() }})</span></h2>
                     </div>
                     <div id="topicsArchiveTablePagi">
                         <div class="overflow-x-auto" id="table-data-topics-archive">
@@ -185,50 +141,12 @@
                     <div class="flex items-center gap-3 mb-6">
                         <i class="fa-solid fa-box-archive text-[#7F8A4F] text-xl"></i>
                         <h2 class="text-xl font-semibold text-[#4F6B3F]">Archived Actions <span
-                                class="text-[#6A8A52]">({{ $archivedActions->count() }})</span></h2>
+                                class="text-[#6A8A52]">({{ $archivedActionsList->count() }})</span></h2>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full">
-                            <thead class="bg-[#FCF9EF]">
-                                <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Image</th>
-                                    <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Action
-                                    </th>
-                                    <th class="px-6 py-4 text-right text-xs font-medium text-[#6A8A52] uppercase">Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-[#E6EAD7]">
-                                @forelse($archivedActions as $action)
-                                    <tr class="hover:bg-[#FAF8ED]">
-                                        <td class="px-6 py-5">
-                                            <img src="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : asset('images/default-action.jpg') }}"
-                                                alt="{{ $action->title }}"
-                                                class="w-16 h-16 object-cover rounded-xl border">
-                                        </td>
-                                        <td class="px-6 py-5">
-                                            <h3 class="font-semibold text-[#4F6B3F]">{{ $action->title }}</h3>
-                                            <p class="text-sm text-[#6A8A52] line-clamp-2">{{ $action->description }}</p>
-                                        </td>
-                                        <td class="px-6 py-5 text-right">
-                                            <form method="POST" action="{{ route('admin.actions.restore', $action) }}"
-                                                class="inline">
-                                                @csrf @method('PATCH')
-                                                <button type="submit" onclick="return confirm('Restore this action?')"
-                                                    class="btn-action btn-view compact">
-                                                    <i class="fa-solid fa-box-open"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="3" class="text-center py-16 text-[#6A8A52]">No archived actions
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                    <div id="actionsArchiveTablePagi">
+                        <div class="overflow-x-auto" id="table-data-actions-archive">
+                            @include('admin.partials.actions_archive_table')
+                        </div>
                     </div>
                 </div>
             </main>
@@ -324,6 +242,27 @@
                     type: 'archived-topics'
                 }, function(data) {
                     $('#table-data-topics-archive').html(data);
+                    performSearch();
+                });
+            });
+
+            // Actions
+            $(document).on('click', '#actionsTablePagi .pagination a', function(e) {
+                e.preventDefault();
+                $.get(this.href, {
+                    type: 'actions'
+                }, function(data) {
+                    $('#table-data-actions').html(data);
+                    performSearch();
+                });
+            });
+            // Actions
+            $(document).on('click', '#actionsArchiveTablePagi .pagination a', function(e) {
+                e.preventDefault();
+                $.get(this.href, {
+                    type: 'archived-actions'
+                }, function(data) {
+                    $('#table-data-actions-archive').html(data);
                     performSearch();
                 });
             });
