@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\User;
 use App\Models\Quest;
 use App\Models\QuestSubmission;
@@ -259,9 +260,7 @@ class AdminController extends Controller
 
     }
 
-
-
-    public function index()
+    public function index(Request $request)
     {
         $users = User::with([
             'savedLibraries.ecoLibrary',
@@ -269,8 +268,8 @@ class AdminController extends Controller
             'pointsHistory',
             'userVouchers.voucher',
             'feedbacks'
-        ])->get();
-
+        ])->paginate(2);
+        
         // Log the QR code for each user
         foreach ($users as $user) {
             Log::info('User QR Code', [
@@ -279,9 +278,12 @@ class AdminController extends Controller
                 'qr_code' => $user->qr_code
             ]);
         }
-
+        if ($request->ajax()) {
+            return view('admin.partials.users_table', compact('users'))->render();
+        }
         return view('admin.adminUsers', compact('users'));
     }
+
     public function setInactive(User $user)
     {
         \Log::info('User ID received:', ['id' => $user->id ?? 'none']);

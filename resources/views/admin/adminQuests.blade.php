@@ -547,10 +547,7 @@
             });
         });
         // ——————————————————————————————————————
-        // QUEST PARTICIPANTS PAGINATION
-        // ——————————————————————————————————————
-        // ——————————————————————————————————————
-        // QUEST PARTICIPANTS PAGINATION (Individual Quests ONLY)
+        // QUEST PARTICIPANTS PAGINATION 
         // ——————————————————————————————————————
         $(document).on('click', '#questTables .pagination a', function(e) {
             e.preventDefault();
@@ -644,16 +641,6 @@
                 }
             });
         });
-
-        // Simple toast function (you can replace with SweetAlert/Toastify if you want)
-        function showMessage(message, type = 'success') {
-            const bg = type === 'success' ? 'bg-green-600' : 'bg-red-600';
-            const div = $(
-                `<div class="${bg} text-white px-6 py-3 rounded-lg shadow-lg fixed top-5 right-5 z-50 animate-pulse">${message}</div>`
-            );
-            $('body').append(div);
-            setTimeout(() => div.fadeOut(() => div.remove()), 3000);
-        }
         // ——————————————————————————————————————
         // ARCHIVED QUESTS PAGINATION — 
         // ——————————————————————————————————————
