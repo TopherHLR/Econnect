@@ -19,15 +19,31 @@ class UserRewardsController extends Controller
 
         $user = Auth::user();
 
-        // 🔄 Auto-expire vouchers that passed the expiry date
-        Voucher::where('is_active', 1)
-            ->whereDate('expiry_date', '<', now())
-            ->update([
-                'is_active' => 0,
-                'status' => 'expired' // remove this if you do not have a column named "status"
-            ]);
+        // ============================
+        // ✅ AUTO-EXPIRE VOUCHERS
+        // ============================
+        $today = now()->startOfDay();
 
-        // 🔽 After auto-expiring, fetch updated data
+        // 1) Expire vouchers where expiry_date already passed
+        $expiredVouchers = Voucher::where('expiry_date', '<', $today)
+            ->where('is_active', 1)
+            ->get();
+
+        foreach ($expiredVouchers as $voucher) {
+            // Mark voucher as inactive
+            $voucher->is_active = 0;
+            $voucher->save();
+
+            // Mark ALL redeemed user vouchers as expired
+            UserVoucher::where('voucher_id', $voucher->voucher_id)
+                ->whereIn('status', ['active', 'used'])
+                ->update([
+                    'status' => 'expired'
+                ]);
+        }
+        // ============================
+
+        // 🟩 Continue with your original logic
 
         // Available vouchers (active only)
         $availableVouchers = Voucher::withCount('userVouchers')
@@ -39,10 +55,10 @@ class UserRewardsController extends Controller
                         ->where('user_id', $user->user_id)
                         ->get();
 
-        // Most popular vouchers
+        // Popular vouchers
         $popularVouchers = $availableVouchers->sortByDesc('user_vouchers_count');
 
-        // Points logic
+        // POINTS
         $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
             ->where('points_change', '>', 0)
             ->where('voided', false)
@@ -65,6 +81,7 @@ class UserRewardsController extends Controller
             'currentPoints'
         ));
     }
+
 
 
     public function redeemVoucher(Request $request, $voucherId)

@@ -120,35 +120,57 @@
 
             <div class="space-y-4 flex-1">
                 @foreach ($myVouchers as $uv)
-                    @php $used = $uv->status === 'used'; @endphp
-                    <div onclick="{{ $used ? '' : "openVoucherUsageModal('{$uv->voucher_code}')" }}"
+                    @php
+                        $used = $uv->status === 'used';
+                        $expired = $uv->status === 'expired';
+
+                        // Both behave like "used"
+                        $notActive = $used || $expired;
+                    @endphp
+
+                    <div @unless ($notActive) onclick="openVoucherUsageModal('{{ $uv->voucher_code }}')" @endunless
                         class="rounded-xl p-4 shadow-md transform transition
-                    {{ $used ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-lg hover:scale-[1.02] cursor-pointer' }}">
+            {{ $notActive
+                ? 'bg-gray-300 cursor-not-allowed opacity-70'
+                : 'bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-lg hover:scale-[1.02] cursor-pointer' }}">
+
                         <div class="flex justify-between items-start mb-2">
-                            <span class="font-bold text-lg {{ $used ? 'text-gray-700' : '' }}">
+                            <span class="font-bold text-lg {{ $notActive ? 'text-gray-700' : '' }}">
                                 {{ $uv->voucher->title }}
                             </span>
 
+                            {{-- EXPIRATION BADGE (special color for expired) --}}
                             <span
-                                class="rounded-full px-2 py-1 text-xs font-semibold 
-                            {{ $used ? 'bg-gray-400 text-gray-700' : 'bg-white/20' }}">
+                                class="rounded-full px-2 py-1 text-xs font-semibold
+                    @if ($expired) bg-red-300 text-red-800
+                    @elseif ($used)
+                        bg-gray-400 text-gray-700
+                    @else
+                        bg-white/20 @endif">
                                 {{ ucfirst($uv->status) }}
                             </span>
                         </div>
 
-                        <p class="text-sm mb-3 {{ $used ? 'text-gray-600' : 'text-white/90' }}">
+                        <p class="text-sm mb-3 {{ $notActive ? 'text-gray-600' : 'text-white/90' }}">
                             {{ $uv->voucher->description }}
                         </p>
 
                         <div class="flex justify-between items-center text-xs">
-                            <span>Expires: {{ \Carbon\Carbon::parse($uv->voucher->expiry_date)->format('M d, Y') }}</span>
-                            <span class="rounded px-2 py-1 {{ $used ? 'bg-gray-200 text-gray-700' : 'bg-white/20' }}">
+                            <span class="{{ $notActive ? 'text-gray-700' : '' }}">
+                                Expires: {{ \Carbon\Carbon::parse($uv->voucher->expiry_date)->format('M d, Y') }}
+                            </span>
+
+                            <span
+                                class="rounded px-2 py-1
+                    {{ $notActive ? 'bg-gray-200 text-gray-700' : 'bg-white/20' }}">
                                 Tap to use
                             </span>
                         </div>
+
                     </div>
                 @endforeach
             </div>
+
         </div>
 
     </div>
