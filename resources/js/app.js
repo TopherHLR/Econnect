@@ -71,37 +71,46 @@ window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
 
-    if (scrollY > windowHeight * 0.3) {
-        // Move & scale plant
-        plant.style.transform = 'translateY(400px) scale(2)';
+   if (scrollY > windowHeight * 0.3) {
+    // Move & scale plant
+    const scaleFactor = window.innerWidth > 768 ? 2 : 1.5;
+    const moveY = window.innerHeight * 0.4;
+    plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
 
-        // Move text
-        textDiv.style.top = '550px';
-        textEl.textContent = 'We all yearn to make a difference...';
-        textEl.style.fontSize = window.innerWidth > 768 ? '2rem' : '2.5rem';
-        textEl.style.opacity = '0.9';
+    // Move text proportionally
+    textDiv.style.top = `${window.innerHeight * 0.5}px`; // 50% of viewport height
+    textEl.textContent = 'We all yearn to make a difference...';
+    textEl.style.fontSize = window.innerWidth > 768 ? '2.25rem' : '1.5rem';
+    textEl.style.opacity = '0.9';
 
-        // Show progress bar
-        progressBar.style.opacity = '1';
+    // Show progress bar
+    progressBar.style.opacity = '1';
 
-        // 🔥 If user is guest → STOP
-        if (window.isGuest) return;
+    // Stop for guests
+    if (window.isGuest) return;
 
-        // 🌿 Authenticated → update dynamic plant image
-        plantImg.src = `${plantBasePath}/${stage}.svg`;
+    // Authenticated → update plant image
+    plantImg.src = `${plantBasePath}/${stage}.svg`;
 
-    } else {
-        // Reset plant
-        plant.style.transform = 'translateY(0px) scale(1.5)';
-        textDiv.style.top = '0px';
-        textEl.textContent = 'Even in small ways';
-        textEl.style.fontSize = window.innerWidth > 768 ? '3rem' : '1.8rem';
-        textEl.style.opacity = '1';
-        progressBar.style.opacity = '0';
+    }else {
+    // Reset plant
+    plant.style.transform = 'translateY(0px) scale(1)';
 
-        // Reset plant image to initial
-        plantImg.src = `${plantBasePath}/5.svg`;
-    }
+    // Set reset plant-text position (adjust 'px' as needed)
+    textDiv.style.top = '378px';
+    textEl.textContent = 'Even in small ways,';
+
+    // Set font size to match Tailwind 4xl
+    // Tailwind 4xl ≈ 2.25rem (36px)
+    textEl.style.fontSize = window.innerWidth > 768 ? '2rem' : '1.5rem';
+
+    textEl.style.opacity = '1';
+    progressBar.style.opacity = '0';
+
+    // Reset plant image to initial
+    plantImg.src = `${plantBasePath}/soil-fade.svg`;
+}
+
 });
 
 

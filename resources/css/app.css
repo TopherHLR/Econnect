@@ -352,7 +352,8 @@
     transform: translateX(-50%);
     display: flex;
     justify-content: space-between;
-    width: 114vw;
+    width: 100%;
+
     max-width: 2300px;
     z-index: 40;
     padding: 0 9rem;
@@ -383,7 +384,35 @@
     align-items: center;
     justify-content: flex-end;
     z-index: 30;
+    /* Clear floating animation */
+    animation: cloudFloat 10s ease-in-out infinite;
 }
+
+/* Different timing for natural cloud movement */
+.eco-actions {
+    animation-delay: 0s;
+}
+
+.eco-topics {
+    animation-delay: 0.8s;
+}
+
+/* Obvious but smooth floating motion */
+@keyframes cloudFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    25% {
+        transform: translateY(-10px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    75% {
+        transform: translateY(-10px);
+    }
+}
+
 
 .eco-widget-btn {
     position: absolute;

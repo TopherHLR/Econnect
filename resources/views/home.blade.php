@@ -13,10 +13,6 @@
             class="absolute top-0 right-0 w-[600px] z-[30] animate-sway-right
                                      max-lg:w-[350px] max-md:top-[30px]" />
 
-        <!-- 🏔️ Mountains -->
-        <img src="{{ Vite::asset('resources/images/viewport1/terrains.png') }}" alt="Terrains"
-            class="absolute top-[190px] bottom-0 left-0 w-screen h-auto z-[3]" />
-
         <!-- 🌍 Globe (enlarged) -->
         <img src="{{ Vite::asset('resources/images/viewport1/earth-blue.png') }}" alt="Globe"
             class="absolute top-90 left-1/2 -translate-x-1/2 w-[1500px] z-[4]
@@ -28,18 +24,6 @@
         </div>
 
 
-        <!-- ☁️ Clouds (top-most layer) -->
-        <img src="{{ Vite::asset('resources/images/viewport1/realistic-cloud.png') }}" alt="cloud"
-            class="absolute top-[100px] left-0 w-[1000px] opacity-90 z-[20]
-                                     animate-[cloud1_60s_linear_infinite]
-                                     max-md:top-[0px] max-md:w-[700px]
-                                     max-sm:top-[-50px] max-sm:w-[500px]" />
-
-        <img src="{{ Vite::asset('resources/images/viewport1/realistic-cloud2.png') }}" alt="cloud"
-            class="absolute top-[100px] right-0 w-[1000px] opacity-90 z-[20]
-                                     animate-[cloud2_60s_linear_infinite]
-                                     max-md:top-[0px] max-md:w-[700px]
-                                     max-sm:top-[50px] max-sm:w-[500px]" />
         <!-- 🌏 Centered Text (top-most) -->
         <div
             class="absolute top-[20%] left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full max-w-[90vw] md:max-w-[70vw] lg:max-w-[50vw]">
@@ -53,7 +37,7 @@
             <!-- Subtext with word-by-word glow -->
             <div class="subtext-container">
                 <p
-                    class="italic text-2xl md:text-4xl font-serif font-medium text-[#5C7919] leading-snug drop-shadow-[0_2px_2px_rgba(255,255,255,0.6)] ">
+                    class="italic text-2xl md:text-2xl font-sans-serif font-medium text-[#5C7919] leading-snug drop-shadow-[0_2px_2px_rgba(255,255,255,0.6)] ">
                     <span class="glow-word word-1">because</span>
                     <span class="glow-word word-2">you</span>
                     <span class="glow-word word-3">care</span>
@@ -269,28 +253,30 @@
 
 
         <div id="plant-container"
-            class="relative w-[250px] -top-210 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
+            class="relative w-[450px]  -top-225 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
 
             <!-- 🍂 Fallen Leaves Container -->
             <div id="fallen-leaves" class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden"></div>
 
             <!-- 🌿 Text Above Plant -->
             <div id="plant-text"
-                class="absolute top-0 left-1/2 z-70 -translate-x-1/2 w-max text-center transition-all duration-700 ease-out">
+                class="absolute top-96 left-1/2 z-70 -translate-x-1/2 w-max text-center transition-all duration-700 ease-out">
                 <h1
-                    class="italic text-3xl md:text-5xl font-serif font-semibold text-[#625237] leading-snug whitespace-nowrap">
-                    Even in small ways
+                    class=" md:text-3xl font-serif font-semibold text-[#625237] leading-snug whitespace-nowrap">
+                    Even in small ways,
                 </h1>
             </div>
 
-            <!-- 🌾 Glow Background -->
-            <div class="absolute top-20 flex items-center justify-center">
+                <!-- 🌾 Glow Background -->
+            <div class="absolute top-0 flex items-center justify-center">
+                <!-- Outer glow -->
                 <div
-                    class="w-[400px] h-[550px] rounded-full bg-gradient-to-b 
-                            from-yellow-200/60 via-yellow-100/30 to-transparent 
-                            blur-3xl scale-110">
+                    class="w-[500px] h-[650px] rounded-full bg-gradient-to-b 
+                        from-yellow-200/80 via-yellow-100/50 to-transparent 
+                        blur-3xl scale-125">
                 </div>
-                <div class="absolute top-15 w-[250px] h-[350px] rounded-full bg-white/50 blur-2xl"></div>
+                <!-- Inner soft white glow -->
+                <div class="absolute top-0 w-[300px] h-[400px] rounded-full bg-white/60 blur-2xl"></div>
             </div>
 
             <!-- 🌟 Hint Message -->
@@ -300,7 +286,7 @@
 
             @auth
 
-                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="Plant"
+                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/soil-fade.svg') }}" alt="Plant"
                     class="z-20 w-full transition-all duration-700">
 
                 <!-- 🌾 Horizontal Progress Bar -->
@@ -328,10 +314,11 @@
             @endauth
 
             @guest
-                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="Plant"
+                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/soil-fade.svg') }}" alt="Plant"
                     class="z-20 w-full transition-all duration-700">
 
-                <div id="growth-bar" class="absolute bottom-[-80px] flex flex-col items-center opacity-100">
+                <div id="growth-bar" class="absolute bottom-[-80px] flex flex-col items-center opacity-0 transition-opacity duration-700">
+
                     <p class="text-[#5C7919] text-lg md:text-2xl font-serif italic mb-3 opacity-80">
                         Your personal growth tree
                     </p>
