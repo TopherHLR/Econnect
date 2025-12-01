@@ -260,7 +260,7 @@
 
             <!-- 🌿 Text Above Plant -->
             <div id="plant-text"
-                class="absolute top-95 left-1/2 z-70 -translate-x-1/2 w-max text-center transition-all duration-700 ease-out">
+                class="absolute top-96 left-1/2 z-70 -translate-x-1/2 w-max text-center transition-all duration-700 ease-out">
                 <h1
                     class=" md:text-3xl font-serif font-semibold text-[#625237] leading-snug whitespace-nowrap">
                     Even in small ways,

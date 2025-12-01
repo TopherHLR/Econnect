@@ -97,7 +97,7 @@ window.addEventListener('scroll', () => {
     plant.style.transform = 'translateY(0px) scale(1)';
 
     // Set reset plant-text position (adjust 'px' as needed)
-    textDiv.style.top = '365px';
+    textDiv.style.top = '378px';
     textEl.textContent = 'Even in small ways,';
 
     // Set font size to match Tailwind 4xl
