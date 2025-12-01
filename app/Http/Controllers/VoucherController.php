@@ -14,15 +14,19 @@ class VoucherController extends Controller
     /**
      * Show Rewards Page
      */
-    public function index()
+    public function index(Request $request)
     {
-        $vouchers = Voucher::orderBy('voucher_id', 'DESC')->get();
+        $vouchers = Voucher::orderBy('voucher_id', 'DESC')
+        ->where('is_active', true)
+        ->paginate(4);
         $archived = Voucher::where('is_active', 0)->get();
 
         $redeemed = UserVoucher::with(['user', 'voucher'])
             ->orderBy('redemption_id', 'DESC')
             ->get();
-
+        if ($request->ajax()) {
+            return view('admin.partials.rewards_table', compact('vouchers'))->render();
+        }
         return view('admin.adminRewards', compact('vouchers', 'redeemed','archived'));
     }
 
