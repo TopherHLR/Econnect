@@ -11,29 +11,6 @@ use Illuminate\Support\Facades\Log; // Optional for simple logging
 
 class ActionController extends Controller
 {
-    /**
-     * Display all active eco actions for users.
-     */
-    public function index()
-    {
-        $actions = EcoAction::where('is_active', true)
-            ->orderBy('category')
-            ->get();
-
-        return view('actions.index', compact('actions'));
-    }
-
-    /**
-     * Display all eco actions (admin view).
-     */
-    public function adminIndex()
-    {
-        $actions = EcoAction::orderBy('created_by')
-            ->orderBy('category')
-            ->get();
-
-        return view('admin.actions.index', compact('actions'));
-    }
 
     /**
      * Show a single eco action’s details.
@@ -57,8 +34,6 @@ class ActionController extends Controller
                 'description' => 'required|string',
                 'category' => 'nullable|string|max:100',
                 'type' => 'nullable|string|max:100',
-                'points_value' => 'required|integer|min:1',
-                'is_active' => 'boolean',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
@@ -75,8 +50,6 @@ class ActionController extends Controller
                 'description' => $request->description,
                 'category' => $request->category ?? 'General',
                 'type' => $request->type ?? 'General',
-                'points_value' => $request->points_value,
-                'is_active' => $request->is_active ?? true,
                 'image' => $imageName,
                 'created_by' => Auth::id(),
                 'created_at' => now(),
@@ -110,13 +83,11 @@ class ActionController extends Controller
             'title'        => 'required|string|max:255',
             'description'  => 'required|string',
             'category'     => 'nullable|string|max:100',
-            'points_value' => 'required|integer|min:1',
-            'is_active'    => 'boolean',
             'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $action->update($request->only([
-            'title', 'description', 'category', 'type', 'points_value', 'is_active'
+            'title', 'description', 'category', 'type'
         ]));
 
         // IMAGE UPDATE — follow the same pattern as EcoTopic
@@ -139,17 +110,28 @@ class ActionController extends Controller
             ->with('success', 'Eco Action updated successfully!');
     }
 
-    /**
-     * Delete an eco action (admin only).
-     */
-    public function destroy($id)
+    // Archive an action
+    public function archive($id)
     {
         $action = EcoAction::findOrFail($id);
-        $action->delete();
 
-        return response()->json(['message' => 'Eco Action deleted successfully.']);
+        $action->update([
+            'archive' => true,
+            'archived_by' => Auth::id(),
+            'archived_at' => now(),
+        ]);
+
+        return back()->with('success', 'Eco Action archived successfully.');
     }
 
+    // Restore archived action
+    public function restore($id)
+    {
+        $action = EcoAction::findOrFail($id);
+        $action->update(['archive' => false]);
+
+        return back()->with('success', 'Eco Action restored.');
+    }
     /**
      * User logs completion of an eco action.
      */
@@ -173,12 +155,10 @@ class ActionController extends Controller
             'user_id' => $user->user_id,
             'action_id' => $id,
             'log_date' => now(),
-            'points_earned' => $action->points_value,
         ]);
 
         return response()->json([
             'message' => 'Eco Action completed successfully!',
-            'points_earned' => $action->points_value,
             'log' => $log
         ]);
     }

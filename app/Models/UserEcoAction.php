@@ -29,13 +29,11 @@ class UserEcoAction extends Model
         'user_id',
         'action_id',
         'log_date',
-        'points_earned',
     ];
 
     // Type casting for easier handling
     protected $casts = [
         'log_date' => 'date',
-        'points_earned' => 'integer',
     ];
 
     /**

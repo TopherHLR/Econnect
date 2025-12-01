@@ -153,10 +153,20 @@ Route::post('/libraries/store', [LibraryController::class, 'store'])->name('libr
 Route::middleware(['auth'])->group(function () {
     Route::post('/admin/libraries', [LibraryController::class, 'store']);
     Route::put('/admin/libraries/{id}', [LibraryController::class, 'update']);
-    Route::delete('/admin/libraries/{id}', [LibraryController::class, 'destroy']);
 });
+// Eco Topics
+Route::patch('/admin/libraries/{id}/archive', [LibraryController::class, 'archive'])
+    ->name('admin.libraries.archive');
 
+// Eco Actions
+Route::patch('/admin/actions/{id}/archive', [ActionController::class, 'archive'])
+    ->name('admin.actions.archive');
 
+// Optional: restore routes
+Route::patch('/admin/libraries/{id}/restore', [LibraryController::class, 'restore'])
+    ->name('admin.libraries.restore');
+Route::patch('/admin/actions/{id}/restore', [ActionController::class, 'restore'])
+    ->name('admin.actions.restore');
 
 //---------------------------------------------------- ADMIN CONTROLLERS (ADMIN HOME + QUEST MANAGEMENT) -------------------------------------------------
 

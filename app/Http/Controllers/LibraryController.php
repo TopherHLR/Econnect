@@ -155,7 +155,6 @@ class LibraryController extends Controller
                 'user_id' => $user->user_id,
                 'action_id' => $id,
                 'log_date' => now(),
-                'points_earned' => $item->points_value ?? 1,
             ]);
         } else {
             return redirect()->back()->with('error', 'Invalid item type');
@@ -211,7 +210,6 @@ class LibraryController extends Controller
             'user_id' => $user->user_id,
             'action_id' => $id,
             'log_date' => now(),
-            'points_earned' => $item->points_value ?? 1,
         ]);
 
         return redirect()->back()->with('success', 'Action marked as done');
@@ -316,14 +314,28 @@ class LibraryController extends Controller
             ->with('success', 'Eco Topic updated successfully!');
     }
 
-    public function destroy($id)
+    // Archive a topic (soft "delete")
+    public function archive($id)
     {
-        $library = EcoLibrary::findOrFail($id);
-        $library->delete();
+        $topic = EcoLibrary::findOrFail($id);
+        
+        $topic->update([
+            'archive' => true,
+            'archived_by' => Auth::id(), // optional: track who archived
+            'archived_at' => now(),
+        ]);
 
-        return response()->json(['message' => 'Library deleted successfully']);
+        return back()->with('success', 'Eco Topic archived successfully.');
     }
 
+    // Optional: Restore archived topic
+    public function restore($id)
+    {
+        $topic = EcoLibrary::findOrFail($id);
+        $topic->update(['archive' => false]);
+
+        return back()->with('success', 'Eco Topic restored.');
+    }
     public function showTopics()
     {
         $ecoLibraries = EcoLibrary::where('type', 'Topic')->orderBy('created_at', 'desc')->get();
@@ -347,13 +359,25 @@ class LibraryController extends Controller
     public function adminIndex()
     {
         $ecoTopics = EcoLibrary::where('type', 'Topic')
+            ->where('archive', 0)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $ecoActions = EcoAction::orderBy('created_at', 'desc')
+        $archivedTopics = EcoLibrary::where('type', 'Topic')
+            ->where('archive', 1)
+            ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('admin.adminLifestyle', compact('ecoTopics', 'ecoActions'));
+        $ecoActions = EcoAction::where('archive', 0)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $archivedActions = EcoAction::where('archive', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.adminLifestyle', compact('ecoTopics', 'archivedTopics', 'ecoActions' , 'archivedActions'));
     }
+
+
     
 }

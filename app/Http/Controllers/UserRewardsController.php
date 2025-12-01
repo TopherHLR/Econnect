@@ -19,19 +19,46 @@ class UserRewardsController extends Controller
 
         $user = Auth::user();
 
-        // ✅ Available vouchers (active only)
-        $availableVouchers = Voucher::withCount('userVouchers') // count all redemptions
+        // ============================
+        // ✅ AUTO-EXPIRE VOUCHERS
+        // ============================
+        $today = now()->startOfDay();
+
+        // 1) Expire vouchers where expiry_date already passed
+        $expiredVouchers = Voucher::where('expiry_date', '<', $today)
+            ->where('is_active', 1)
+            ->get();
+
+        foreach ($expiredVouchers as $voucher) {
+            // Mark voucher as inactive
+            $voucher->is_active = 0;
+            $voucher->save();
+
+            // Mark ALL redeemed user vouchers as expired
+            UserVoucher::where('voucher_id', $voucher->voucher_id)
+                ->whereIn('status', ['active', 'used'])
+                ->update([
+                    'status' => 'expired'
+                ]);
+        }
+        // ============================
+
+        // 🟩 Continue with your original logic
+
+        // Available vouchers (active only)
+        $availableVouchers = Voucher::withCount('userVouchers')
                                     ->where('is_active', 1)
                                     ->get();
 
-        // ✅ User's vouchers
+        // User's vouchers
         $myVouchers = UserVoucher::with('voucher')
                         ->where('user_id', $user->user_id)
                         ->get();
 
-        // ✅ Optionally, get the most popular voucher(s)
+        // Popular vouchers
         $popularVouchers = $availableVouchers->sortByDesc('user_vouchers_count');
-        // POINTS LOGIC (unchanged)
+
+        // POINTS
         $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
             ->where('points_change', '>', 0)
             ->where('voided', false)
@@ -54,6 +81,7 @@ class UserRewardsController extends Controller
             'currentPoints'
         ));
     }
+
 
 
     public function redeemVoucher(Request $request, $voucherId)

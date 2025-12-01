@@ -30,19 +30,22 @@ class EcoLibrary extends Model
         'category',
         'type',
         'source_link',
-        'image',        // ✅ new
+        'image',
         'created_by',
         'created_at',
+        'archive', // ✅ added
     ];
 
     // Type casting
     protected $casts = [
         'created_at' => 'datetime',
+        'archive' => 'boolean', // ✅ cast archive as boolean
     ];
 
     // Default attributes
     protected $attributes = [
         'type' => 'Tip',
+        'archive' => false, // ✅ default to false
     ];
 
     /**

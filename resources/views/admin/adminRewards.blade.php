@@ -3,6 +3,7 @@
 @section('title', 'Rewards')
 
 @section('content')
+
     <div class="space-y-6">
         <!-- Header Section with Quick Actions -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -87,75 +88,19 @@
                                 <i class="fa-solid fa-gift text-[#7F8A4F] text-lg"></i>
                                 <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans">
                                     Reward Collection <span
-                                        class="text-[#6A8A52]">({{ $vouchers->where('is_active', true)->count() }})</span>
+                                        class="text-[#6A8A52]">({{ $vouchersList->where('is_active', true)->count() }})</span>
                                 </h2>
                             </div>
                         </div>
 
                         <!-- Reward Catalog Table -->
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
-                                <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left font-semibold">Reward Name</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Points Cost</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Discount</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Expiry</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Status</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($vouchers as $voucher)
-                                        @if ($voucher->is_active)
-                                            <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
-                                                <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $voucher->title }}</td>
-                                                <td class="px-4 py-3 font-semibold text-[#C37A49]">
-                                                    {{ $voucher->required_points }}</td>
-                                                <td class="px-4 py-3 text-[#6A8A52]">
-                                                    {{ Str::contains($voucher->discount_value, '%') ? $voucher->discount_value : $voucher->discount_value . '%' }}
-                                                </td>
+                        <div id="rewardsTablePagi">
+                            <div class="overflow-x-auto" id="table-data-rewards">
+                                @include('admin.partials.rewards_table')
 
-                                                <td class="px-4 py-3">{{ $voucher->expiry_date->format('M d, Y') }}</td>
-                                                <td class="px-4 py-3">
-                                                    <span
-                                                        class="px-2 py-1 rounded-full text-xs font-medium bg-[#F0F7E6] text-[#4F6B3F]">
-                                                        Active
-                                                    </span>
-                                                </td>
-                                                <td class="px-4 py-3">
-                                                    <div class="flex gap-2">
-                                                        <button class="btn-action btn-edit compact"
-                                                            onclick='openEditVoucherModal({
-                                                                voucher_id: {{ $voucher->voucher_id }},
-                                                                title: "{{ $voucher->title }}",
-                                                                description: "{{ $voucher->description }}",
-                                                                required_points: {{ $voucher->required_points }},
-                                                                discount_value: "{{ $voucher->discount_value }}",
-                                                                is_active: {{ $voucher->is_active ? 1 : 0 }},
-                                                                expiry_date: "{{ $voucher->expiry_date->format('Y-m-d') }}"
-                                                            })'
-                                                            title="Edit Voucher">
-                                                            <i class="fas fa-edit"></i>
-                                                            <span class="hidden sm:inline">Edit</span>
-                                                        </button>
-                                                        <form action="{{ route('rewards.delete', $voucher->voucher_id) }}"
-                                                            method="POST">
-                                                            @csrf @method('DELETE')
-                                                            <button class="btn-action btn-archive compact"
-                                                                title="Archive Voucher">
-                                                                <i class="fas fa-archive"></i>
-                                                                <span class="hidden sm:inline">Archive</span>
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            </div>
                         </div>
+
                     </div>
 
                     <!-- 🎟️ Vouchers Redeemed -->
@@ -165,69 +110,16 @@
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-ticket text-[#7F8A4F] text-lg"></i>
                                 <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans">
-                                    Vouchers Redeemed <span class="text-[#6A8A52]">({{ $redeemed->count() }})</span>
+                                    Vouchers Redeemed <span class="text-[#6A8A52]">({{ $redeemedList->count() }})</span>
                                 </h2>
                             </div>
                         </div>
 
                         <!-- Redeemed Vouchers Table -->
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
-                                <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left font-semibold">User</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Reward</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Redeem Date</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Points Used</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Status</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($redeemed as $r)
-                                        <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
-                                            <td class="px-4 py-3">{{ $r->user->first_name }} {{ $r->user->last_name }}
-                                            </td>
-                                            <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $r->voucher->title }}</td>
-                                            <td class="px-4 py-3">
-                                                {{ $r->redeemed_date ? $r->redeemed_date->format('m/d/Y') : 'Not Redeemed' }}
-                                            </td>
-
-                                            <td class="px-4 py-3 font-semibold text-[#C37A49]">
-                                                {{ $r->redeem_points_cost }}</td>
-                                            <td class="px-4 py-3">
-                                                @if ($r->status === 'active')
-                                                    <span
-                                                        class="px-2 py-1 rounded-full text-xs font-medium bg-[#FEF3C7] text-[#D97706]">Pending</span>
-                                                @else
-                                                    <span
-                                                        class="px-2 py-1 rounded-full text-xs font-medium bg-[#F0F7E6] text-[#4F6B3F]">Used</span>
-                                                @endif
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <form action="{{ route('userVoucher.updateStatus', $r->redemption_id) }}"
-                                                    method="POST">
-                                                    @csrf @method('PUT')
-                                                    <div class="flex gap-2 items-center">
-                                                        <select name="status"
-                                                            class="border border-[#7A8C4F] rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
-                                                            <option value="active"
-                                                                {{ $r->status === 'active' ? 'selected' : '' }}>Pending
-                                                            </option>
-                                                            <option value="used"
-                                                                {{ $r->status === 'used' ? 'selected' : '' }}>Used</option>
-                                                        </select>
-                                                        <button class="btn-action btn-edit compact" title="Save Status">
-                                                            <i class="fas fa-save"></i>
-                                                            <span class="hidden sm:inline">Save</span>
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div id="redeemedTablePagi">
+                            <div class="overflow-x-auto" id="table-data-redemeed">
+                                @include('admin.partials.redemeed_table')
+                            </div>
                         </div>
                     </div>
 
@@ -238,51 +130,18 @@
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-archive text-[#7F8A4F] text-lg"></i>
                                 <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans">
-                                    Archived Vouchers <span class="text-[#6A8A52]">({{ $archived->count() }})</span>
+                                    Archived Vouchers <span class="text-[#6A8A52]">({{ $archivedList->count() }})</span>
                                 </h2>
                             </div>
                         </div>
 
                         <!-- Archived Vouchers Table -->
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
-                                <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left font-semibold">Reward Name</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Points Cost</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Discount</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Expiry</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Status</th>
-                                        <th class="px-4 py-3 text-left font-semibold">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($archived as $voucher)
-                                        <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
-                                            <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $voucher->title }}</td>
-                                            <td class="px-4 py-3 font-semibold text-[#C37A49]">
-                                                {{ $voucher->required_points }}</td>
-                                            <td class="px-4 py-3 text-[#6A8A52]">{{ $voucher->discount_value }}%</td>
-                                            <td class="px-4 py-3">{{ $voucher->expiry_date->format('M d, Y') }}</td>
-                                            <td class="px-4 py-3">
-                                                <span
-                                                    class="px-2 py-1 rounded-full text-xs font-medium bg-gray-200 text-gray-700">Archived</span>
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <form action="{{ route('rewards.recover', $voucher->voucher_id) }}"
-                                                    method="POST">
-                                                    @csrf @method('PUT')
-                                                    <button class="btn-action btn-leaf compact" title="Recover Voucher">
-                                                        <i class="fas fa-undo"></i>
-                                                        <span class="hidden sm:inline">Recover</span>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div id="archiveTablePagi">
+                            <div class="overflow-x-auto" id="table-data-archive">
+                                @include('admin.partials.archive_table')    
+                            </div>
                         </div>
+
                     </div>
 
                     <!-- 📱 QR Scanner Section -->
@@ -303,35 +162,7 @@
         </div>
     </div>
 
-    <style>
-        /* Tab Styling */
-        .tab-eco {
-            @apply px-4 py-3 rounded-xl text-[#4F6B3F] hover:bg-[#E9F0E1] transition-all duration-200 cursor-pointer;
-        }
-
-        .tab-eco.bg-\[\#E9F0E1\] {
-            @apply bg-[#E9F0E1] font-semibold;
-        }
-
-        /* Compact Action Buttons */
-        .btn-action.compact {
-            @apply px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200;
-        }
-
-        .btn-edit {
-            @apply bg-[#EFF6FF] text-[#1E40AF] hover:bg-[#DBEAFE];
-        }
-
-        .btn-archive {
-            @apply bg-[#FEF2F2] text-[#DC2626] hover:bg-[#FECACA];
-        }
-
-        .btn-leaf {
-            @apply bg-[#F0F7E6] text-[#4F6B3F] hover:bg-[#E9F0E1];
-        }
-    </style>
-
-    <!-- 📜 Section Toggle Script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchInputs = document.querySelectorAll('.table-search');
@@ -381,23 +212,59 @@
             });
         });
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const buttons = document.querySelectorAll('aside [data-section]');
-            const tables = {
-                catalog: document.getElementById('catalogTable'),
-                redeemed: document.getElementById('redeemedTable'),
-                archived: document.getElementById('archivedTable'),
-                scan: document.getElementById('scanSection')
-            };
+        $(document).ready(function() {
+            const $catalogContainer = $('#table-data-rewards');
+            const $redeemedContainer = $('#table-data-redemeed');
+            const $archiveContainer = $('#table-data-archive');
 
+            // Tab switching + load correct content via AJAX
+            $('aside [data-section]').on('click', function() {
+                const section = $(this).data('section');
 
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const section = btn.dataset.section;
-                    Object.values(tables).forEach(el => el.classList.add('hidden'));
-                    if (tables[section]) tables[section].classList.remove('hidden');
+                // Update active tab
+                $('aside .tab-eco').removeClass('tab-eco-active');
+                $(this).addClass('tab-eco-active');
+
+                // Hide all sections
+                $('#catalogTable, #redeemedTable, #archivedTable, #scanSection').addClass('hidden');
+
+                // Show selected
+                if (section === 'catalog') $('#catalogTable').removeClass('hidden');
+                if (section === 'redeemed') $('#redeemedTable').removeClass('hidden');
+                if (section === 'archived') $('#archivedTable').removeClass('hidden');
+                if (section === 'scan') $('#scanSection').removeClass('hidden');
+            });
+
+            // Pagination for Catalog
+            $(document).on('click', '#rewardsTablePagi .pagination a', function(e) {
+                e.preventDefault();
+                $.get(this.href, {
+                    type: 'catalog'
+                }, function(data) {
+                    $catalogContainer.html(data);
                 });
             });
+
+            // Pagination for Redeemed
+            $(document).on('click', '#redeemedTablePagi .pagination a', function(e) {
+                e.preventDefault();
+                $.get(this.href, {
+                    type: 'redeemed'
+                }, function(data) {
+                    $redeemedContainer.html(data);
+                });
+            });
+            $(document).on('click', '#archiveTablePagi .pagination a', function(e) {
+                e.preventDefault();
+                $.get(this.href, {
+                    type: 'archived'
+                }, function(data) {
+                    $archiveContainer.html(data);
+                });
+            });
+
+            // Optional: trigger catalog as default on load
+            $('[data-section="catalog"]').addClass('tab-eco-active');
         });
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -446,6 +313,5 @@
         });
     </script>
 
-@include('modal.addVoucherModal')
+    @include('modal.addVoucherModal')
 @endsection
-

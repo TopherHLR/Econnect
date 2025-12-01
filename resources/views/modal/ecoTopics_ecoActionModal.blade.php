@@ -167,21 +167,6 @@
                     placeholder="e.g. Recycling, Energy Saving, Community">
             </div>
 
-            <!-- Points Value -->
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Points Value</label>
-                <input type="number" name="points_value" min="1" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
-                    placeholder="Enter points earned (e.g. 5)">
-            </div>
-
-            <!-- Active Toggle -->
-            <div class="flex items-center gap-2">
-                <input type="checkbox" name="is_active" value="1" checked
-                    class="w-4 h-4 text-[#8B6E4A] border-[#8B6E4A]/40 rounded focus:ring-[#8B6E4A]">
-                <label class="text-[#4F6B3F] font-medium">Set as Active</label>
-            </div>
-
             <!-- Image Upload -->
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Image (optional)</label>
@@ -239,20 +224,6 @@
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Category (optional)</label>
                 <input type="text" name="category" class="w-full rounded-lg border p-2">
-            </div>
-
-            <!-- Points Value -->
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Points Value</label>
-                <input type="number" name="points_value" min="1" required
-                    class="w-full rounded-lg border p-2">
-            </div>
-
-            <!-- Active Toggle -->
-            <div class="flex items-center gap-2">
-                <input type="checkbox" name="is_active" value="1"
-                    class="w-4 h-4 text-[#8B6E4A] border-[#8B6E4A]/40 rounded">
-                <label class="text-[#4F6B3F] font-medium">Set as Active</label>
             </div>
 
             <!-- Current Image Preview -->
@@ -399,8 +370,6 @@
             form.querySelector("input[name='title']").value = action.title || '';
             form.querySelector("textarea[name='description']").value = action.description || '';
             form.querySelector("input[name='category']").value = action.category || '';
-            form.querySelector("input[name='points_value']").value = action.points_value || '';
-            form.querySelector("input[name='is_active']").checked = !!action.is_active;
 
             const previewWrapper = document.getElementById('editActionPreviewWrapper');
             const previewImage = document.getElementById('editActionPreviewImage');
