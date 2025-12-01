@@ -2,16 +2,23 @@
 
 @section('content')
     <section class="relative overflow-hidden min-h-screen flex items-center justify-center viewport1BG">
+ <div class="overlay"></div>
+<!-- Left Branch -->
+<img
+    src="{{ Vite::asset('resources/images/viewport1/branch-leftt.svg') }}"
+    alt="Left branch"
+    class="opacity-100 absolute top-[12%] right-0 z-[30] animate-sway-left"
+    style="width: 66vh; left: -6%;"
+/>
 
-        <!-- 🌿 Left Branch -->
-        <img src="{{ Vite::asset('resources/images/viewport1/branch-left.svg') }}" alt="Left branch"
-            class="absolute top-[-40px] left-[-80px] w-[700px] z-[30] animate-sway-left
-                                     max-lg:w-[350px] max-md:top-[40px] max-md:left-[-40px]" />
+<!-- Right Branch -->
+<img
+    src="{{ Vite::asset('resources/images/viewport1/branch-right_.svg') }}"
+    alt="Right branch"
+    class="opacity-100 absolute top-[10%] z-[30] animate-sway-right"
+    style="width: 87vh; right: -4%;"
+/>
 
-        <!-- 🌿 Right Branch -->
-        <img src="{{ Vite::asset('resources/images/viewport1/branch-right.svg') }}" alt="Right branch"
-            class="absolute top-0 right-0 w-[600px] z-[30] animate-sway-right
-                                     max-lg:w-[350px] max-md:top-[30px]" />
 
         <!-- 🌍 Globe (enlarged) -->
         <img src="{{ Vite::asset('resources/images/viewport1/earth-blue.png') }}" alt="Globe"
@@ -26,10 +33,10 @@
 
         <!-- 🌏 Centered Text (top-most) -->
         <div
-            class="absolute top-[20%] left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full max-w-[90vw] md:max-w-[70vw] lg:max-w-[50vw]">
+            class="absolute top-[17%] left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full max-w-[90vw] md:max-w-[70vw] lg:max-w-[50vw]">
             <!-- Main Title -->
             <h1
-                class="italic text-4xl md:text-7xl font-serif font-semibold text-[#5C7919] leading-tight drop-shadow-[0_2px_3px_rgba(255,255,255,0.8)]">
+                class="italic text-4xl md:text-8xl font-serif font-semibold text-[#758848] leading-tight drop-shadow-[0_2px_3px_rgba(255,255,255,0.8)]">
                 <span class="word-emphasis youre">You're</span>
                 <span class="word-emphasis here">here</span>
             </h1>
@@ -37,7 +44,7 @@
             <!-- Subtext with word-by-word glow -->
             <div class="subtext-container">
                 <p
-                    class="italic text-2xl md:text-2xl font-sans-serif font-medium text-[#5C7919] leading-snug drop-shadow-[0_2px_2px_rgba(255,255,255,0.6)] ">
+                    class="italic text-3xl md:text-2xl font-sans-serif font-bold text-[#758848] leading-snug drop-shadow-[0_2px_2px_rgba(255,255,255,0.6)] ">
                     <span class="glow-word word-1">because</span>
                     <span class="glow-word word-2">you</span>
                     <span class="glow-word word-3">care</span>
@@ -253,19 +260,25 @@
 
 
         <div id="plant-container"
-            class="relative w-[450px]  -top-225 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
+            class="relative w-[600px]  -top-210 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
 
             <!-- 🍂 Fallen Leaves Container -->
             <div id="fallen-leaves" class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden"></div>
 
             <!-- 🌿 Text Above Plant -->
-            <div id="plant-text"
-                class="absolute top-96 left-1/2 z-70 -translate-x-1/2 w-max text-center transition-all duration-700 ease-out">
-                <h1
-                    class=" md:text-3xl font-serif font-semibold text-[#625237] leading-snug whitespace-nowrap">
-                    Even in small ways,
-                </h1>
-            </div>
+<div id="plant-text"
+    class="absolute top-[24rem] left-1/2 z-70 -translate-x-1/2 w-max text-center transition-all duration-700 ease-out"
+    style="text-shadow: 
+    0 0 10px rgba(255, 255, 200, 1),
+    0 0 20px rgba(255, 255, 200, 0.95),
+    0 0 30px rgba(255, 255, 180, 0.85),
+    0 0 40px rgba(255, 255, 180, 0.7),
+    0 0 50px rgba(255, 255, 180, 0.5);">
+    <h1 class="md:text-3xl font-serif font-semibold text-[#625237] leading-snug whitespace-nowrap">
+        Even in small ways,
+    </h1>
+</div>
+
 
                 <!-- 🌾 Glow Background -->
             <div class="absolute top-0 flex items-center justify-center">
@@ -286,12 +299,14 @@
 
             @auth
 
-                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/soil-fade.svg') }}" alt="Plant"
+                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="Plant"
                     class="z-20 w-full transition-all duration-700">
 
                 <!-- 🌾 Horizontal Progress Bar -->
-                <div id="growth-bar"
-                    class="absolute opacity-0 bottom-[-80px] flex flex-col items-center transition-opacity duration-700 ease-out">
+<!-- 🌾 Horizontal Progress Bar -->
+<div id="growth-bar"
+     class="absolute opacity-0 flex flex-col items-center transition-opacity duration-700 ease-out"
+     style="bottom: 50px;"> <!-- Adjust bottom to move closer to top if needed -->
 
                     <p class="text-[#5C7919] text-lg md:text-2xl font-serif italic mb-3 opacity-80">
                         Your personal growth tree
@@ -314,10 +329,12 @@
             @endauth
 
             @guest
-                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/soil-fade.svg') }}" alt="Plant"
+                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="Plant"
                     class="z-20 w-full transition-all duration-700">
 
-                <div id="growth-bar" class="absolute bottom-[-80px] flex flex-col items-center opacity-0 transition-opacity duration-700">
+               <div id="growth-bar"
+     class="absolute opacity-0 transition-opacity duration-700 ease-out">
+
 
                     <p class="text-[#5C7919] text-lg md:text-2xl font-serif italic mb-3 opacity-80">
                         Your personal growth tree

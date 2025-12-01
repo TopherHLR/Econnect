@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 //======================================================================================= VIEWPORT2 ======================================================================================
-
 window.addEventListener('scroll', () => {
     const plant = document.getElementById('plant-container');
     const plantImg = document.getElementById('plant-image');
@@ -71,47 +70,69 @@ window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
 
-   if (scrollY > windowHeight * 0.3) {
-    // Move & scale plant
-    const scaleFactor = window.innerWidth > 768 ? 2 : 1.5;
-    const moveY = window.innerHeight * 0.4;
-    plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
+    if (scrollY > windowHeight * 0.3) {
 
-    // Move text proportionally
-    textDiv.style.top = `${window.innerHeight * 0.5}px`; // 50% of viewport height
-    textEl.textContent = 'We all yearn to make a difference...';
-    textEl.style.fontSize = window.innerWidth > 768 ? '2.25rem' : '1.5rem';
-    textEl.style.opacity = '0.9';
+        // Move & scale plant
+        const scaleFactor = window.innerWidth > 768 ? 2 : 1.5;
+        const moveY = window.innerHeight * 0.6;
+        plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
 
-    // Show progress bar
-    progressBar.style.opacity = '1';
+        // Move text lower (farther from plant)
+        textDiv.style.top = `${window.innerHeight * 0.45}px`; // increased from 0.385
+        textEl.textContent = 'We all yearn to make a difference...';
+        textEl.style.fontSize = window.innerWidth > 768 ? '0.8rem' : '0.45rem';
+        textEl.style.opacity = '1';
 
-    // Stop for guests
-    if (window.isGuest) return;
+        // Fade text after 5 sec
+        clearTimeout(window.fadeTimeout);
+        window.fadeTimeout = setTimeout(() => {
+            textEl.style.transition = 'opacity 1.2s ease';
+            textEl.style.opacity = '0';
+        }, 5000);
 
-    // Authenticated → update plant image
-    plantImg.src = `${plantBasePath}/${stage}.svg`;
+        // Progress bar slightly lower under text
+        progressBar.style.opacity = '1';
+        progressBar.style.transform =
+            window.innerWidth > 768
+                ? 'scale(0.7) translateY(-15%)'  // moved lower
+                : 'scale(0.55) translateY(-18%)'; // moved lower for mobile
 
-    }else {
-    // Reset plant
-    plant.style.transform = 'translateY(0px) scale(1)';
+        // Stop for guests
+        if (window.isGuest) return;
 
-    // Set reset plant-text position (adjust 'px' as needed)
-    textDiv.style.top = '378px';
-    textEl.textContent = 'Even in small ways,';
+        // Update plant image
+        plantImg.src = `${plantBasePath}/${stage}.svg`;
 
-    // Set font size to match Tailwind 4xl
-    // Tailwind 4xl ≈ 2.25rem (36px)
-    textEl.style.fontSize = window.innerWidth > 768 ? '2rem' : '1.5rem';
+    } else {
 
-    textEl.style.opacity = '1';
-    progressBar.style.opacity = '0';
+        // Reset plant
+        plant.style.transform = 'translateY(0px) scale(1)';
 
-    // Reset plant image to initial
-    plantImg.src = `${plantBasePath}/soil-fade.svg`;
-}
+        // Reset text
+        textDiv.style.top = '24rem';
+        textEl.textContent = 'Even in small ways,';
+        textEl.style.fontSize = window.innerWidth > 768 ? '2rem' : '1.5rem';
+        textEl.style.color = '#625237';
+        textEl.style.textShadow = `
+            0 0 10px rgba(255, 255, 200, 1),
+            0 0 20px rgba(255, 255, 200, 0.95),
+            0 0 30px rgba(255, 255, 180, 0.85),
+            0 0 40px rgba(255, 255, 180, 0.7),
+            0 0 50px rgba(255, 255, 180, 0.5)
+        `;
+        textEl.style.opacity = '1';
 
+        // Reset progress bar
+        progressBar.style.opacity = '0';
+        progressBar.style.transform = 'scale(1) translateY(0)';
+
+        // Reset plant image
+        plantImg.src = `${plantBasePath}/5.svg`;
+
+        clearTimeout(window.fadeTimeout);
+    }
 });
+
 
 
 

@@ -229,17 +229,22 @@
     0% { transform: translateX(100%); }
     100% { transform: translateX(-120vw); }
 }
-
 .viewport1BG {
-    position: relative;
-    background-color: #E0E9D6;
-    min-height: 100vh;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative;
+  background-color: #E0E9D6;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }
+
+.viewport1BG .overlay {
+  position: absolute;
+  inset: 0;
+  background: url('/resources/images/viewport1/wood-texture.png') center/cover no-repeat;
+  opacity: 0.2;        /* adjust */
+  pointer-events: none;
+}
+
 
 /* Mobile adjustments */
 @media (max-width: 1024px) {
@@ -306,28 +311,64 @@
   animation: sway-top 4s ease-in-out infinite;
 }
 
+#plant-image {
+    -webkit-mask-image: linear-gradient(to bottom, 
+        rgba(0,0,0,1) 75%, 
+        rgba(0,0,0,0) 100%
+    );
+    mask-image: linear-gradient(to bottom, 
+        rgba(0,0,0,1) 75%, 
+        rgba(0,0,0,0) 100%
+    );
+
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+
 /* =========================================================== BRANCH SWAY ANIMATIONS ================================================================== */
-
-@keyframes sway-left {
-  0%, 100% { transform: rotate(0deg); }
-  25%      { transform: rotate(-2deg); }
-  75%      { transform: rotate(2deg); }
-}
-
-@keyframes sway-right {
-  0%, 100% { transform: rotate(0deg); }
-  25%      { transform: rotate(2deg); }
-  75%      { transform: rotate(-2deg); }
-}
-
+/* 🌿 LEFT BRANCH — rooted bottom-left */
 .animate-sway-left {
-  transform-origin: left center;
-  animation: sway-left 8s ease-in-out infinite;
+  transform-origin: 0% 100%;
+  animation:
+    branch-sway-left 7s ease-in-out infinite,
+    branch-tilt-left 7s ease-in-out infinite;
+  animation-composition: add;
 }
 
+/* 🌿 RIGHT BRANCH — rooted bottom-right */
 .animate-sway-right {
-  transform-origin: right center;
-  animation: sway-right 8s ease-in-out infinite;
+  transform-origin: 100% 100%;
+  animation:
+    branch-sway-right 7s ease-in-out infinite,
+    branch-tilt-right 7s ease-in-out infinite;
+  animation-composition: add;
+}
+
+/* ———————————————————————— */
+/* MAIN UPPER MOTION — big, slow sway */
+/* ———————————————————————— */
+@keyframes branch-sway-left {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(4deg); }   /* big smooth sway */
+}
+
+@keyframes branch-sway-right {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(-4deg); }  /* big smooth sway */
+}
+
+/* ———————————————————————— */
+/* SUBTLE EXTRA TILT (keeps it natural) */
+/* ———————————————————————— */
+@keyframes branch-tilt-left {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(1.5deg); }
+}
+
+@keyframes branch-tilt-right {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(-1.5deg); }
 }
 
 /* =========================================================== FOG LAYER FIX (CRITICAL) ================================================================== */
@@ -347,17 +388,16 @@
 /* =========================================================== ECO WIDGETS ================================================================== */
 .eco-widgets-container { 
     position: absolute;
-    bottom: 1rem;
+    bottom: 13rem;            /* moved up slightly from bottom: 1rem → 2rem */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-
-    max-width: 2300px;
+    justify-content: center;  /* center widgets with less space between them */
+    width: auto;              /* adjust to fit content rather than full width */
+    max-width: 72rem;
     z-index: 40;
-    padding: 0 9rem;
-    gap: 40rem;
+    padding: 0 2rem;         /* reduce padding for closer placement */
+    gap: 22rem;                /* smaller gap between widgets */
 }
 
 @media (max-width: 768px) {
@@ -416,36 +456,36 @@
 
 .eco-widget-btn {
     position: absolute;
-    top: 2rem;
+    top: 3.5rem;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #5C7919;
+    background-color: #6b5338;
     color: #ffffff;
-    padding: 0.6rem 1.5rem;
+    padding: 0.3rem 1.2rem;
     border-radius: 9999px;
     font-style: italic;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.2rem;
     border: none;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
     width: max-content;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Crimson Text', serif;
 }
 
 .eco-widget-text {
     color: #625237;
-    font-family: 'Crimson Text', serif;
-    font-size: 2rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
     font-weight: 600;
     margin-bottom: 0.2rem;
 }
 
 .eco-widget-link {
     margin-top: 0rem;
-    color: #5C7919;
+    color: #63522c;
     font-size: 0.875rem;
     text-decoration: underline;
     transition: color 0.3s ease;
@@ -454,7 +494,7 @@
 }
 
 .eco-widget-link:hover {
-    color: #4A6614;
+    color: #342912;
 }
 
 .eco-widget-text,
