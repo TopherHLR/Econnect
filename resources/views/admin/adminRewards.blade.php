@@ -116,68 +116,9 @@
                         </div>
 
                         <!-- Redeemed Vouchers Table -->
-                        <div>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full text-sm text-[#4F3B2C] font-sans">
-                                    <thead class="bg-[#E9ECDF] text-[#4F6B3F]">
-                                        <tr>
-                                            <th class="px-4 py-3 text-left font-semibold">User</th>
-                                            <th class="px-4 py-3 text-left font-semibold">Reward</th>
-                                            <th class="px-4 py-3 text-left font-semibold">Redeem Date</th>
-                                            <th class="px-4 py-3 text-left font-semibold">Points Used</th>
-                                            <th class="px-4 py-3 text-left font-semibold">Status</th>
-                                            <th class="px-4 py-3 text-left font-semibold">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($redeemed as $r)
-                                            <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
-                                                <td class="px-4 py-3">{{ $r->user->first_name }}
-                                                    {{ $r->user->last_name }}
-                                                </td>
-                                                <td class="px-4 py-3 font-medium text-[#4F6B3F]">{{ $r->voucher->title }}
-                                                </td>
-                                                <td class="px-4 py-3">
-                                                    {{ $r->redeemed_date ? $r->redeemed_date->format('m/d/Y') : 'Not Redeemed' }}
-                                                </td>
-
-                                                <td class="px-4 py-3 font-semibold text-[#C37A49]">
-                                                    {{ $r->redeem_points_cost }}</td>
-                                                <td class="px-4 py-3">
-                                                    @if ($r->status === 'active')
-                                                        <span
-                                                            class="px-2 py-1 rounded-full text-xs font-medium bg-[#FEF3C7] text-[#D97706]">Pending</span>
-                                                    @else
-                                                        <span
-                                                            class="px-2 py-1 rounded-full text-xs font-medium bg-[#F0F7E6] text-[#4F6B3F]">Used</span>
-                                                    @endif
-                                                </td>
-                                                <td class="px-4 py-3">
-                                                    <form
-                                                        action="{{ route('userVoucher.updateStatus', $r->redemption_id) }}"
-                                                        method="POST">
-                                                        @csrf @method('PUT')
-                                                        <div class="flex gap-2 items-center">
-                                                            <select name="status"
-                                                                class="border border-[#7A8C4F] rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
-                                                                <option value="active"
-                                                                    {{ $r->status === 'active' ? 'selected' : '' }}>Pending
-                                                                </option>
-                                                                <option value="used"
-                                                                    {{ $r->status === 'used' ? 'selected' : '' }}>Used
-                                                                </option>
-                                                            </select>
-                                                            <button class="btn-action btn-edit compact" title="Save Status">
-                                                                <i class="fas fa-save"></i>
-                                                                <span class="hidden sm:inline">Save</span>
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                        <div id="redeemedTablePagi">
+                            <div class="overflow-x-auto" id="table-data-redemeed">
+                                @include('admin.partials.redemeed_table')
                             </div>
                         </div>
                     </div>
@@ -304,23 +245,50 @@
             });
         });
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const buttons = document.querySelectorAll('aside [data-section]');
-            const tables = {
-                catalog: document.getElementById('catalogTable'),
-                redeemed: document.getElementById('redeemedTable'),
-                archived: document.getElementById('archivedTable'),
-                scan: document.getElementById('scanSection')
-            };
+        $(document).ready(function() {
+            const $catalogContainer = $('#table-data-rewards');
+            const $redeemedContainer = $('#table-data-redemeed');
 
+            // Tab switching + load correct content via AJAX
+            $('aside [data-section]').on('click', function() {
+                const section = $(this).data('section');
 
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const section = btn.dataset.section;
-                    Object.values(tables).forEach(el => el.classList.add('hidden'));
-                    if (tables[section]) tables[section].classList.remove('hidden');
+                // Update active tab
+                $('aside .tab-eco').removeClass('tab-eco-active');
+                $(this).addClass('tab-eco-active');
+
+                // Hide all sections
+                $('#catalogTable, #redeemedTable, #archivedTable, #scanSection').addClass('hidden');
+
+                // Show selected
+                if (section === 'catalog') $('#catalogTable').removeClass('hidden');
+                if (section === 'redeemed') $('#redeemedTable').removeClass('hidden');
+                if (section === 'archived') $('#archivedTable').removeClass('hidden');
+                if (section === 'scan') $('#scanSection').removeClass('hidden');
+            });
+
+            // Pagination for Catalog
+            $(document).on('click', '#rewardsTablePagi .pagination a', function(e) {
+                e.preventDefault();
+                $.get(this.href, {
+                    type: 'catalog'
+                }, function(data) {
+                    $catalogContainer.html(data);
                 });
             });
+
+            // Pagination for Redeemed
+            $(document).on('click', '#redeemedTablePagi .pagination a', function(e) {
+                e.preventDefault();
+                $.get(this.href, {
+                    type: 'redeemed'
+                }, function(data) {
+                    $redeemedContainer.html(data);
+                });
+            });
+
+            // Optional: trigger catalog as default on load
+            $('[data-section="catalog"]').addClass('tab-eco-active');
         });
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -367,14 +335,7 @@
                 activateReward(key, firstTab);
             }
         });
-        $(document).on('click', '#rewardsTablePagi .pagination a', function(e) {
-            e.preventDefault();
-            const url = $(this).attr('href');
 
-            $.get(url, function(data) {
-                $('#table-data-rewards').html(data); // this is your collection table container
-            });
-        });
     </script>
 
     @include('modal.addVoucherModal')
