@@ -130,9 +130,9 @@
 
                     <div @unless ($notActive) onclick="openVoucherUsageModal('{{ $uv->voucher_code }}')" @endunless
                         class="rounded-xl p-4 shadow-md transform transition
-            {{ $notActive
-                ? 'bg-gray-300 cursor-not-allowed opacity-70'
-                : 'bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-lg hover:scale-[1.02] cursor-pointer' }}">
+                        {{ $notActive
+                            ? 'bg-gray-300 cursor-not-allowed opacity-70'
+                            : 'bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-lg hover:scale-[1.02] cursor-pointer' }}">
 
                         <div class="flex justify-between items-start mb-2">
                             <span class="font-bold text-lg {{ $notActive ? 'text-gray-700' : '' }}">
@@ -142,10 +142,10 @@
                             {{-- EXPIRATION BADGE (special color for expired) --}}
                             <span
                                 class="rounded-full px-2 py-1 text-xs font-semibold
-                    @if ($expired) bg-red-300 text-red-800
-                    @elseif ($used)
-                        bg-gray-400 text-gray-700
-                    @else
+                                @if ($expired) bg-red-300 text-red-800
+                                @elseif ($used)
+                                    bg-gray-400 text-gray-700
+                                @else
                         bg-white/20 @endif">
                                 {{ ucfirst($uv->status) }}
                             </span>
@@ -160,11 +160,12 @@
                                 Expires: {{ \Carbon\Carbon::parse($uv->voucher->expiry_date)->format('M d, Y') }}
                             </span>
 
-                            <span
-                                class="rounded px-2 py-1
-                    {{ $notActive ? 'bg-gray-200 text-gray-700' : 'bg-white/20' }}">
-                                Tap to use
-                            </span>
+                            {{-- "Tap to use" only shown when voucher is active & not expired & not used --}}
+                            @if (!$expired && !$used && !$notActive)
+                                <span class="rounded px-2 py-1 bg-white/20">
+                                    Tap to use
+                                </span>
+                            @endif
                         </div>
 
                     </div>

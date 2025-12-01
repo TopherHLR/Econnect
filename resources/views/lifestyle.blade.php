@@ -70,18 +70,17 @@
                     </div>
 
                     <!-- Scrollable Eco Content -->
-                  <div id="ecoContent" class="space-y-4 w-full overflow-y-auto overflow-x-visible pr-2 custom-scroll max-h-[65vh]">
+                    <div id="ecoContent"
+                        class="space-y-4 w-full overflow-y-auto overflow-x-visible pr-2 custom-scroll max-h-[65vh]">
 
 
                         @foreach ($ecoTopics as $topic)
-                       <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
-
-
-
+                            <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
                                 data-type="ecoTopic" data-id="{{ $topic->library_id }}"
                                 data-category="{{ $topic->category }}">
-                                <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
+                                <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('storage/default.png') }}"
                                     alt="{{ $topic->title }}" class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+
                                 <div class="flex-1 min-w-0">
                                     <h3 class="font-semibold text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
                                         onclick="openEcoModal('ecoTopic', {{ $topic->library_id }})">{{ $topic->title }}
@@ -202,9 +201,10 @@
 
                          data-id="{{ $topic->library_id }}"
                          data-category="{{ $topic->category }}">
-                        <img src="{{ $topic->image ? Vite::asset('resources/images/eco-library/' . $topic->image) : Vite::asset('resources/images/default.png') }}"
-                             alt="{{ $topic->title }}"
-                             class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                        <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('storage/default.png') }}"
+                            alt="{{ $topic->title }}"
+                            class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+
                         <div class="flex-1 min-w-0">
                             <h3 class="font-semibold text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
                                 onclick="openEcoModal('ecoTopic', {{ $topic->library_id }})">{{ $topic->title }}</h3>
@@ -233,9 +233,12 @@
                         data-id="{{ $saved->id }}"
                         data-category="{{ $saved->category }}">
                         <div class="flex items-center">
-                            <img src="{{ $saved->image ? Vite::asset('resources/images/eco-library/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
+                            <img src="{{ $saved->image
+                                ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image)
+                                : asset('storage/default.png') }}"
                                 alt="{{ $saved->title }}"
                                 class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
+
                             <div class="flex-1 min-w-0">
                                 <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
                                     onclick="openEcoModal('{{ $saved->type }}', {{ $saved->id }})">
@@ -255,21 +258,20 @@
                     </div>
                     @endif
                 @endforeach`;
-            } else {
-                slider.style.transform = 'translateX(100%)';
-                actionsBtn.style.color = '#7A8C4F';
-                topicsBtn.style.color = '#FCF9EF';
-                sidebarTitle.textContent = 'Saved Eco-actions';
-                content.innerHTML = `@foreach ($ecoActions as $action)
-                <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
+                } else {
+                    slider.style.transform = 'translateX(100%)';
+                    actionsBtn.style.color = '#7A8C4F';
+                    topicsBtn.style.color = '#FCF9EF';
+                    sidebarTitle.textContent = 'Saved Eco-actions';
 
-
-                         data-type="ecoAction"
-                         data-id="{{ $action->action_id }}"
-                         data-category="{{ $action->category }}">
-                        <img src="{{ $action->image ? Vite::asset('resources/images/eco-actions/' . $action->image) : Vite::asset('resources/images/default.png') }}"
-                             alt="{{ $action->title }}"
-                             class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                    content.innerHTML = `@foreach ($ecoActions as $action)
+                    <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
+                        data-type="ecoAction"
+                        data-id="{{ $action->action_id }}"
+                        data-category="{{ $action->category }}">
+                        <img src="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : asset('storage/default.png') }}"
+                            alt="{{ $action->title }}"
+                            class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
                         <div class="flex-1 min-w-0">
                             <h3 class="font-semibold text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
                                 onclick="openEcoModal('ecoAction', {{ $action->action_id }})">{{ $action->title }}</h3>
@@ -282,46 +284,47 @@
                             <input type="hidden" name="type" value="ecoAction">
                             <button type="submit" class="save-btn text-gray-400 hover:text-yellow-500 flex-shrink-0">
                                 <svg class="w-5 h-5 {{ Auth::user() && Auth::user()->savedEcoActions()->where('action_id', $action->action_id)->exists() ? 'text-yellow-500 fill-current' : 'text-gray-400' }}"
-                                     viewBox="0 0 24 24"
-                                     {{ Auth::user() && Auth::user()->savedEcoActions()->where('action_id', $action->action_id)->exists() ? 'fill="currentColor"' : 'fill="none" stroke="currentColor"' }}>
+                                    viewBox="0 0 24 24"
+                                    {{ Auth::user() && Auth::user()->savedEcoActions()->where('action_id', $action->action_id)->exists() ? 'fill="currentColor"' : 'fill="none" stroke="currentColor"' }}>
                                     <path {{ Auth::user() && Auth::user()->savedEcoActions()->where('action_id', $action->action_id)->exists() ? '' : 'stroke-linecap="round" stroke-linejoin="round" stroke-width="2"' }}
-                                          d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                        d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                                 </svg>
                             </button>
                         </form>
                     </div>
-                @endforeach`;
-                savedList.innerHTML = `@foreach ($savedTopics as $saved)
-                    @if ($saved->type === 'ecoAction')
-                    <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
-                        data-type="{{ $saved->type }}"
-                        data-id="{{ $saved->id }}"
-                        data-category="{{ $saved->category }}">
-                        <div class="flex items-center">
-                            <img src="{{ $saved->image ? Vite::asset('resources/images/eco-actions/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
-                                alt="{{ $saved->title }}"
-                                class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
-                            <div class="flex-1 min-w-0">
-                                <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
-                                    onclick="openEcoModal('{{ $saved->type }}', {{ $saved->id }})">
-                                    {{ $saved->title }}
-                                </h4>
-                            </div>
-                        </div>
-                        <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-                    @endif
-                @endforeach`;
+                    @endforeach`;
 
-            }
+                    savedList.innerHTML = `@foreach ($savedTopics as $saved)
+                        @if ($saved->type === 'ecoAction')
+                        <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
+                            data-type="{{ $saved->type }}"
+                            data-id="{{ $saved->id }}"
+                            data-category="{{ $saved->category }}">
+                            <div class="flex items-center">
+                                <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
+                                    alt="{{ $saved->title }}"
+                                    class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                        onclick="openEcoModal('{{ $saved->type }}', {{ $saved->id }})">
+                                        {{ $saved->title }}
+                                    </h4>
+                                </div>
+                            </div>
+                            <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                        @endif
+                    @endforeach`;
+                }
+
 
             applyCategoryFilter();
         }

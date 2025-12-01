@@ -23,33 +23,24 @@ class EcoAction extends Model
 
     // No timestamps specified in the schema
     public $timestamps = false;
-    // If your table doesn’t have updated_at
     public const UPDATED_AT = null;
 
     protected $fillable = [
         'title',
         'description',
         'category',
-        'type', // ✅ Add this
-        'is_active',
-        'points_value',
-        'image',        // ✅ new
+        'type',
+        'image',
         'created_by',
-        'created_at'
+        'created_at',
+        'archive', // ✅ added
     ];
 
-    // Casts for automatic type conversion
+    // Type casting
     protected $casts = [
-        'is_active' => 'boolean',
-        'points_value' => 'integer',
+        'created_at' => 'datetime',
+        'archive' => 'boolean', // ✅ cast archive as boolean
     ];
-
-    // Default values
-    protected $attributes = [
-        'is_active' => 1,
-        'points_value' => 1,
-    ];
-
 
     /**
      * Relationship: each action is created by a user (admin or seller)
