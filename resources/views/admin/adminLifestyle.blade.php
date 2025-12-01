@@ -41,9 +41,12 @@
 
                     <!-- Search -->
                     <div class="relative flex-1 min-w-[250px]">
-                        <input type="text" placeholder="Search..." id="searchInput"
-                            class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm">
-                        <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F]"></i>
+                        <input type="text" placeholder="Search topics or actions..." id="searchInput"
+                            class="bg-[#E0E9D6] w-full pl-4 pr-12 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm">
+                        <button type="button" id="clearSearch"
+                            class="hidden absolute right-3 top-2.5 text-[#7A8C4F] hover:text-[#4F6B3F]">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -156,8 +159,7 @@
                                         <p class="text-sm text-[#6A8A52] line-clamp-2">{{ $topic->description }}</p>
                                     </td>
                                     <td class="px-6 py-5 text-right">
-                                        <form method="POST"
-                                            action="{{ route('admin.libraries.restore', $topic) }}"
+                                        <form method="POST" action="{{ route('admin.libraries.restore', $topic) }}"
                                             class="inline">
                                             @csrf
                                             @method('PATCH')
@@ -410,5 +412,135 @@
             const urlTab = new URLSearchParams(window.location.search).get('tab');
             switchTab(urlTab === 'actions' ? 'actions' : 'topics');
         });
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+
+            // Cache rows for performance
+            const topicRows = Array.from(document.querySelectorAll('#ecoTopicsSection table tbody tr'));
+            const archivedTopicRows = Array.from(document.querySelectorAll('#archivedTopicsTable tbody tr'));
+            const actionRows = Array.from(document.querySelectorAll('#activeActionsTable tbody tr'));
+            const archivedActionRows = Array.from(document.querySelectorAll('#archivedActionsTable tbody tr'));
+
+            // Combine all rows for current view
+            const getCurrentRows = () => {
+                const isTopicsActive = !document.getElementById('ecoTopicsSection').classList.contains(
+                    'hidden');
+                const showingArchivedTopics = isTopicsActive && !document.getElementById('archivedTopicsTable')
+                    .classList.contains('hidden');
+                const showingArchivedActions = !isTopicsActive && !document.getElementById(
+                    'archivedActionsTable').classList.contains('hidden');
+
+                if (isTopicsActive) {
+                    return showingArchivedTopics ? archivedTopicRows : topicRows;
+                } else {
+                    return showingArchivedActions ? archivedActionRows : actionRows;
+                }
+            };
+
+            // Search function
+            const performSearch = () => {
+                const query = searchInput.value.trim().toLowerCase();
+                const rows = getCurrentRows();
+
+                let visibleCount = 0;
+
+                rows.forEach(row => {
+                    const title = row.querySelector('h3')?.textContent.toLowerCase() || '';
+                    const description = row.querySelector('p')?.textContent.toLowerCase() || '';
+
+                    const matches = title.includes(query) || description.includes(query);
+
+                    if (matches) {
+                        row.style.display = '';
+                        visibleCount++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show "No results" message if nothing matches
+                const noResultsRow = rows.find(row => row.querySelector('td')?.colSpan === 3 && row.textContent
+                    .includes('No '));
+                const tableBody = rows.length > 0 ? rows[0].parentElement : null;
+
+                if (tableBody && visibleCount === 0 && query !== '') {
+                    let noResultsMessage = tableBody.querySelector('tr.no-results-message');
+                    if (!noResultsMessage) {
+                        noResultsMessage = document.createElement('tr');
+                        noResultsMessage.className = 'no-results-message';
+                        noResultsMessage.innerHTML = `
+                        <td colspan="3" class="text-center py-16 text-[#6A8A52] italic">
+                            No items found matching "<strong>${query}</strong>"
+                        </td>
+                    `;
+                        tableBody.appendChild(noResultsMessage);
+                    }
+                    noResultsMessage.style.display = '';
+                } else if (tableBody) {
+                    const noResultsMessage = tableBody.querySelector('tr.no-results-message');
+                    if (noResultsMessage) noResultsMessage.style.display = 'none';
+                }
+            };
+
+            // Trigger search on input
+            searchInput.addEventListener('input', performSearch);
+
+            // Re-run search when switching tabs or toggling archived
+            const observer = new MutationObserver(() => {
+                if (searchInput.value.trim() !== '') {
+                    performSearch();
+                }
+            });
+
+            // Watch for tab switches and archived toggles
+            observer.observe(document.getElementById('ecoTopicsSection'), {
+                attributes: true,
+                childList: true,
+                subtree: true
+            });
+            observer.observe(document.getElementById('ecoActionsSection'), {
+                attributes: true,
+                childList: true,
+                subtree: true
+            });
+
+            // Also re-trigger on manual toggle clicks (backup)
+            document.getElementById('toggleArchivedTopics')?.addEventListener('click', () => {
+                setTimeout(performSearch, 100); // small delay to ensure DOM updated
+            });
+            document.getElementById('toggleArchivedActions')?.addEventListener('click', () => {
+                setTimeout(performSearch, 100);
+            });
+
+            // Optional: Clear search when switching tabs
+            document.getElementById('topicsBtn').addEventListener('click', () => {
+                if (searchInput.value) {
+                    setTimeout(() => {
+                        searchInput.value = '';
+                        performSearch();
+                    }, 150);
+                }
+            });
+            document.getElementById('actionsBtn').addEventListener('click', () => {
+                if (searchInput.value) {
+                    setTimeout(() => {
+                        searchInput.value = '';
+                        performSearch();
+                    }, 150);
+                }
+            });
+        });
+        const clearBtn = document.getElementById('clearSearch');
+        if (clearBtn && searchInput) {
+            searchInput.addEventListener('input', () => {
+                clearBtn.classList.toggle('hidden', searchInput.value === '');
+            });
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchInput.focus();
+                performSearch();
+                clearBtn.classList.add('hidden');
+            });
+        }
     </script>
 @endsection
