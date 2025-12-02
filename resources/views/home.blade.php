@@ -570,7 +570,7 @@
                         @if (auth()->user()->user_type === 'verified_user')
                  <!-- ====================== VERIFIED USER: FULL PROGRESS INFO ====================== -->
                     <p id="growth-label"
-                        class="text-[#6b665e] text-xs md:text-lg font-medium tracking-wide text-center
+                        class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
                             bg-gradient-to-r from-[#d6cbb7]/80 to-transparent px-4 py-2 rounded-full
                             border border-[#cbbfa8]/80 shadow-sm
                             group-hover:bg-gradient-to-r group-hover:from-[#d6cbb7] group-hover:to-[#cbbfa8]/40
@@ -584,7 +584,7 @@
                     @else
                     <!-- ====================== AUTHENTICATED BUT NOT VERIFIED: RESTRICTED MESSAGE ====================== -->
                     <p id="growth-label"
-                        class="text-[#6b665e] text-xs md:text-sm font-medium tracking-wide text-center
+                        class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
                             bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-full
                             border border-[#cbbfa8] shadow-sm">
                         Please verify your account to grow your tree and earn points
@@ -593,7 +593,7 @@
                     @else
                     <!-- ====================== GUEST: LOGIN PROMPT ====================== -->
                     <p id="growth-label"
-                        class="text-[#6b665e] text-xs md:text-sm font-medium tracking-wide text-center
+                        class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
                             bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-full
                             border border-[#cbbfa8] shadow-sm">
                         Please log in to see your personalized growth tree
@@ -699,7 +699,7 @@
                     </div>
 
                     <p id="growth-label"
-                        class="text-[#6b665e] text-xs md:text-sm font-medium tracking-wide text-center
+                        class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
                   bg-gradient-to-r from-[#d6cbb7]/30 to-transparent px-4 py-2 rounded-full
                   border border-[#cbbfa8]/30 shadow-sm">
                         Please log in to see your personalized growth tree
@@ -1488,7 +1488,7 @@
                             // But if server says we're good → show full info
                             growthLabel.innerHTML = `
                                 Stage ${data.stage} / 10 — ${data.progressPointsReal} / ${data.growthMax} points
-                                <span class="block text-[10px] text-[#9f8f6a]/70 font-normal mt-1">
+                                <span class="block text-[20px] text-[#9f8f6a]/70 font-normal mt-1">
                                     ${data.stages_remaining} stage${data.stages_remaining === 1 ? '' : 's'} remaining
                                 </span>
                             `;
