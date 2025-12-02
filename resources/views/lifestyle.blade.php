@@ -39,13 +39,15 @@
                                     ->unique()
                                     ->sort();
                             @endphp
-                            <form method="GET" action="{{ route('lifestyle') }}" class="flex items-center gap-2 flex-1">
+                            <!-- Search + Category (LIVE SEARCH VERSION) -->
+                            <div class="flex items-center gap-2 flex-1">
                                 <div class="relative w-full max-w-70">
-                                    <input type="text" name="search" placeholder="Search"
+                                    <input type="text" id="liveSearchInput" placeholder="Search topics & actions..."
                                         value="{{ request('search') }}"
-                                        class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2 border border-[#7A8C4F] rounded-full focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm">
-                                    <svg class="absolute right-3 top-2.5 w-4 h-4 text-gray-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2 border border-[#7A8C4F] rounded-full focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm"
+                                        autocomplete="off">
+                                    <svg class="absolute right-3 top-2.5 w-4 h-4 text-gray-400 pointer-events-none"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
@@ -53,7 +55,7 @@
 
                                 <select name="category" id="categoryDropdown"
                                     class="text-sm text-gray-600 bg-[#FCFFF6] border border-[#7A8C4F] rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
-                                    <option value="">All Categories ▾</option>
+                                    <option value="">All Categories</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category }}"
                                             {{ request('category') == $category ? 'selected' : '' }}>
@@ -61,10 +63,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-
-                                <button type="submit" class="hidden">Search</button>
-                                <!-- optional if you want enter to submit -->
-                            </form>
+                            </div>
 
                         </div>
                     </div>
@@ -72,8 +71,6 @@
                     <!-- Scrollable Eco Content -->
                     <div id="ecoContent"
                         class="space-y-4 w-full overflow-y-auto overflow-x-visible pr-2 custom-scroll max-h-[65vh]">
-
-
                         @foreach ($ecoTopics as $topic)
                             <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
                                 data-type="ecoTopic" data-id="{{ $topic->library_id }}"
@@ -194,7 +191,8 @@
                 slider.style.transform = 'translateX(0)';
                 topicsBtn.style.color = '#7A8C4F';
                 actionsBtn.style.color = '#FCF9EF';
-                sidebarTitle.textContent = 'Saved Eco-topics';
+                // Safe version – only runs if user is logged in
+                if (sidebarTitle) sidebarTitle.textContent = 'Saved Eco-topics';
                 content.innerHTML = `@foreach ($ecoTopics as $topic)
                   <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
 
@@ -258,13 +256,14 @@
                     </div>
                     @endif
                 @endforeach`;
-                } else {
-                    slider.style.transform = 'translateX(100%)';
-                    actionsBtn.style.color = '#7A8C4F';
-                    topicsBtn.style.color = '#FCF9EF';
-                    sidebarTitle.textContent = 'Saved Eco-actions';
+            } else {
+                slider.style.transform = 'translateX(100%)';
+                actionsBtn.style.color = '#7A8C4F';
+                topicsBtn.style.color = '#FCF9EF';
+                // Safe version – only runs if sidebar exists
+                if (sidebarTitle) sidebarTitle.textContent = 'Saved Eco-actions';
 
-                    content.innerHTML = `@foreach ($ecoActions as $action)
+                content.innerHTML = `@foreach ($ecoActions as $action)
                     <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
                         data-type="ecoAction"
                         data-id="{{ $action->action_id }}"
@@ -294,7 +293,7 @@
                     </div>
                     @endforeach`;
 
-                    savedList.innerHTML = `@foreach ($savedTopics as $saved)
+                savedList.innerHTML = `@foreach ($savedTopics as $saved)
                         @if ($saved->type === 'ecoAction')
                         <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
                             data-type="{{ $saved->type }}"
@@ -323,22 +322,81 @@
                         </div>
                         @endif
                     @endforeach`;
-                }
+            }
 
 
             applyCategoryFilter();
         }
         // ✅ Activate tab based on URL query
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const tab = params.get('tab');
+        // Live Search + Category Filter (Instant Results)
+        let searchTimeout;
 
-            if (tab === 'actions' || tab === 'topics') {
-                switchTab(tab); // call your existing function
-            } else {
-                switchTab('topics'); // default
-            }
+        document.getElementById('liveSearchInput').addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                performLiveSearch();
+            }, 300); // Wait 300ms after user stops typing
         });
+
+        document.getElementById('categoryDropdown').addEventListener('change', function() {
+            currentCategory = this.value;
+            performLiveSearch(); // Also trigger search when category changes
+        });
+
+        // Main live search function
+        function performLiveSearch() {
+            const query = document.getElementById('liveSearchInput').value.trim().toLowerCase();
+            currentCategory = document.getElementById('categoryDropdown').value;
+
+            const cards = document.querySelectorAll('#ecoContent .eco-card');
+            const savedItems = document.querySelectorAll('#savedList .saved-item');
+
+            let visibleCount = 0;
+
+            // Filter main content cards
+            cards.forEach(card => {
+                const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+                const description = card.querySelector('p')?.textContent.toLowerCase() || '';
+                const category = card.dataset.category || '';
+
+                const matchesSearch = title.includes(query) || description.includes(query);
+                const matchesCategory = currentCategory === '' || category === currentCategory;
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Filter saved items (only if sidebar exists)
+            if (savedItems.length > 0) {
+                savedItems.forEach(item => {
+                    const title = item.querySelector('h4')?.textContent.toLowerCase() || '';
+                    const category = item.dataset.category || '';
+
+                    const matchesSearch = title.includes(query);
+                    const matchesCategory = currentCategory === '' || category === currentCategory;
+
+                    item.style.display = (matchesSearch && matchesCategory) ? 'flex' : 'none';
+                });
+            }
+
+            // Optional: Show "No results" message
+            const noResults = document.getElementById('noResultsMessage');
+            if (visibleCount === 0 && cards.length > 0) {
+                if (!noResults) {
+                    const msg = document.createElement('div');
+                    msg.id = 'noResultsMessage';
+                    msg.className = 'text-center text-gray-500 py-8 text-sm italic';
+                    msg.textContent = 'No results found. Try different keywords or category.';
+                    document.getElementById('ecoContent').appendChild(msg);
+                }
+            } else if (noResults) {
+                noResults.remove();
+            }
+        }
         // 🌱 Category dropdown change
         document.getElementById('categoryDropdown').addEventListener('change', function() {
             currentCategory = this.value;
