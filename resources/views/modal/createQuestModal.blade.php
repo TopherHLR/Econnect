@@ -273,26 +273,28 @@
         const formData = new FormData(questForm);
         const action = questForm.action;
 
+        // ALWAYS send as POST – Laravel will read _method if it exists
         fetch(action, {
-                method: 'POST',
+                method: 'POST', // ← always POST
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    // DO NOT set Content-Type → browser sets correct multipart boundary
                 },
                 body: formData
             })
             .then(async response => {
                 if (!response.ok) {
-                    const data = await response.json();
-                    throw data;
+                    const err = await response.json();
+                    throw err;
                 }
                 return response.json();
             })
             .then(data => {
                 closeQuestModal();
-                showMessage(data.message, 'success');
+                showMessage(data.message || 'Quest saved!', 'success');
 
-                // Update table row (your existing logic)
+                // Update table row
                 const row = document.querySelector(
                     `#collectionTable tr[data-quest-id="${data.quest.quest_id}"]`);
                 if (row) {
@@ -305,32 +307,36 @@
                     row.querySelector('td:nth-child(8) select').value = data.quest.status;
                 }
 
-                // 🔥 NEW: Update Active Quests sidebar
+                // Update sidebar if not archived
                 if (data.quest.status !== 'archived') {
                     const questList = document.getElementById('questList');
-
-                    // Create new <li>
-                    const li = document.createElement('li');
-                    li.dataset.quest = data.quest.quest_id;
-                    li.classList.add('tab-eco', 'cursor-pointer');
+                    let li = questList.querySelector(`li[data-quest="${data.quest.quest_id}"]`);
+                    if (!li) {
+                        li = document.createElement('li');
+                        li.dataset.quest = data.quest.quest_id;
+                        li.classList.add('tab-eco', 'cursor-pointer');
+                        const hr = questList.querySelector('hr');
+                        questList.insertBefore(li, hr);
+                    }
                     li.textContent = data.quest.title;
+                }
 
-                    // Append to top of Active Quests (before the <hr>)
-                    const hr = questList.querySelector('hr');
-                    questList.insertBefore(li, hr);
+                // Only reload on create if you didn't append the row yourself
+                if (!document.querySelector(`tr[data-quest-id="${data.quest.quest_id}"]`)) {
+                    location.reload();
                 }
             })
-
             .catch(error => {
+                console.error('Quest save error:', error);
+                let msg = 'Failed to save quest.';
                 if (error.errors) {
-                    const messages = Object.values(error.errors).flat().join("\n");
-                    showMessage(messages, 'error');
-                } else {
-                    showMessage('Something went wrong.', 'error');
+                    msg = Object.values(error.errors).flat().join('<br>');
+                } else if (error.message) {
+                    msg = error.message;
                 }
+                showMessage(msg, 'error');
             });
     });
-
 
     function showMessage(message, type = 'success') {
         const toast = document.createElement('div');

@@ -3,6 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
+@include('modal.userModal')
     <div class="space-y-6">
         <!-- Header Section with ALL Quick Actions -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
