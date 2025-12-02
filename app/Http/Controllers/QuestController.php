@@ -206,6 +206,8 @@ class QuestController extends Controller
         ]);
 
         // Update submission status
+        // THIS IS THE MISSING LINE → Save who changed the status!
+        $submission->verified_by = auth()->user()->user_id;
         $submission->status = $newStatus;
         $submission->save();
 

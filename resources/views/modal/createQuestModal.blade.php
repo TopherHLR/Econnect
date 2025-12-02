@@ -105,28 +105,30 @@
         </form>
     </div>
 </div>
-
-
 <!-- Submission Modal -->
 <div id="submissionModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl border border-[#8B6E4A]/40 w-full max-w-lg p-6">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-semibold text-[#4E3A2E]">Submission Details</h2>
-            <button type="button" onclick="closeSubmissionModal()" class="text-gray-600 hover:text-gray-900">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
+    <div class="bg-white rounded-2xl shadow-2xl border border-[#8B6E4A]/40 w-full max-w-lg p-6 relative">
+        <button type="button" onclick="closeSubmissionModal()"
+            class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+            <i class="fa-solid fa-xmark text-2xl"></i>
+        </button>
+
+        <h2 class="text-xl font-semibold text-[#4E3A2E] mb-4">Submission Details</h2>
+
+        <div id="modalContent" class="space-y-4">
+            <p class="text-gray-500">Click a participant to see submission details.</p>
         </div>
 
-        <!-- Form for verify/reject -->
-        <form id="submissionForm" method="POST" action="{{ route('submissions.process') }}">
-            @csrf
-            <input type="hidden" name="submission_id" id="modalSubmissionId">
-            <input type="hidden" name="action" id="modalAction">
-
-            <div id="modalContent" class="space-y-3">
-                <p class="text-gray-500">Click a participant to see submission details.</p>
-            </div>
-        </form>
+        <div id="modalActions" class="mt-6 flex justify-end gap-3 hidden">
+            <button id="btnReject"
+                class="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-lg font-medium transition">
+                Reject
+            </button>
+            <button id="btnVerify"
+                class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg font-medium transition">
+                Verify & Award Points
+            </button>
+        </div>
     </div>
 </div>
 <script>
@@ -160,59 +162,145 @@
         if (e.target === questModal) closeQuestModal();
     });
 
+    // ——————————————————————————————————————
+    // SUBMISSION MODAL – FINAL CLEAN VERSION (AJAX + WORKS EVERYWHERE)
+    // ——————————————————————————————————————
     const submissionModal = document.getElementById('submissionModal');
     const modalContent = document.getElementById('modalContent');
-    const modalSubmissionId = document.getElementById('modalSubmissionId');
-    const modalAction = document.getElementById('modalAction');
-
-    document.querySelectorAll('.participant-name').forEach(nameCell => {
-        nameCell.addEventListener('click', (e) => {
-            e.stopPropagation(); // prevent row-level clicks if any
-            const row = nameCell.closest('tr');
-
-            const submissionId = row.dataset.submissionId;
-            const user = row.dataset.user;
-            const status = row.dataset.status;
-            const proofLink = row.dataset.proofLink;
-            const proofImage = row.dataset.proofImage;
-
-            modalSubmissionId.value = submissionId;
-
-            // NEW STATUS LOGIC
-            const hasProof = proofLink || proofImage;
-            const displayStatus = (status === 'pending' && hasProof) ? 'Submitted' : status;
-
-            // Build modal content
-            let html = `
-            <p><strong>User:</strong> ${user}</p>
-            <p><strong>Status:</strong> ${displayStatus}</p>
-            ${proofLink ? `<p><strong>Proof Link:</strong> <a href="${proofLink}" target="_blank">${proofLink}</a></p>` : ''}
-            ${proofImage ? `<p><strong>Proof Image:</strong><br><img src="/storage/${proofImage}" class="max-w-full rounded mt-2" /></p>` : ''}
-        `;
-            if (status.toLowerCase().trim() === 'pending') {
-                html += `
-                <input type="hidden" name="verified_by" value="{{ auth()->user()->user_id }}">
-                <div class="flex justify-end gap-3 mt-4">
-                    <button type="submit" onclick="setAction('reject')"
-                        class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Reject</button>
-                    <button type="submit" onclick="setAction('verify')"
-                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Verify</button>
-                </div>
-            `;
-            }
-
-            modalContent.innerHTML = html;
-            submissionModal.classList.remove('hidden');
-        });
-    });
-
+    const modalActions = document.getElementById('modalActions');
+    let currentSubmissionId = null;
 
     function closeSubmissionModal() {
         submissionModal.classList.add('hidden');
+        modalContent.innerHTML = '<p class="text-gray-500">Click a participant to see submission details.</p>';
+        modalActions.classList.add('hidden');
+        currentSubmissionId = null;
     }
 
-    function setAction(action) {
-        modalAction.value = action;
+    // Close on backdrop click
+    submissionModal.addEventListener('click', e => {
+        if (e.target === submissionModal) closeSubmissionModal();
+    });
+
+    // OPEN MODAL – Event Delegation (works on AJAX-loaded rows too!)
+    document.addEventListener('click', function(e) {
+        const nameCell = e.target.closest('.participant-name');
+        if (!nameCell) return;
+
+        const row = nameCell.closest('tr');
+        if (!row) return;
+
+        const submissionId = row.dataset.submissionId;
+        const user = row.dataset.user || 'Unknown User';
+        const status = row.dataset.status || 'pending';
+        const proofLink = row.dataset.proofLink;
+        const proofImage = row.dataset.proofImage;
+
+        currentSubmissionId = submissionId;
+
+        // Build content
+        let html = `
+        <div class="space-y-4">
+            <p><strong>User:</strong> ${user}</p>
+            <p><strong>Status:</strong> 
+                <span class="px-3 py-1 rounded text-sm font-medium
+                    ${status === 'completed' ? 'bg-green-100 text-green-700' :
+                      status === 'rejected' ? 'bg-red-100 text-red-700' :
+                      'bg-amber-100 text-amber-700'}">
+                    ${status.charAt(0).toUpperCase() + status.slice(1)}
+                </span>
+            </p>
+            ${proofLink ? `<p><strong>Proof Link:</strong> <a href="${proofLink}" target="_blank" class="text-blue-600 underline hover:text-blue-800">${proofLink}</a></p>` : ''}
+            ${proofImage ? `<p><strong>Proof Image:</strong><br><img src="/storage/${proofImage}" class="max-w-full rounded-lg border mt-3" alt="Proof"></p>` : ''}
+            ${!proofLink && !proofImage ? '<p class="text-amber-600 italic">No proof submitted yet.</p>' : ''}
+        </div>
+    `;
+
+        modalContent.innerHTML = html;
+
+        // Show action buttons only if pending
+        if (status === 'pending') {
+            modalActions.classList.remove('hidden');
+        } else {
+            modalActions.classList.add('hidden');
+            modalContent.innerHTML +=
+                `<div class="text-center mt-6 text-gray-500 text-sm font-medium">Already processed</div>`;
+        }
+
+        submissionModal.classList.remove('hidden');
+    });
+
+    // VERIFY & REJECT BUTTONS
+    document.getElementById('btnVerify').addEventListener('click', () => processSubmission('completed'));
+    document.getElementById('btnReject').addEventListener('click', () => processSubmission('rejected'));
+
+    function processSubmission(newStatus) {
+        if (!currentSubmissionId) return;
+
+        const btnVerify = document.getElementById('btnVerify');
+        const btnReject = document.getElementById('btnReject');
+        const origVerify = btnVerify.textContent;
+        const origReject = btnReject.textContent;
+
+        btnVerify.disabled = true;
+        btnReject.disabled = true;
+        btnVerify.textContent = 'Processing...';
+        btnReject.textContent = 'Processing...';
+
+        fetch(`/submissions/${currentSubmissionId}/update-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: newStatus
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage(newStatus === 'completed' ? 'Verified & points awarded!' : 'Rejected', 'success');
+                    closeSubmissionModal();
+
+                    // Update table row instantly
+                    const row = document.querySelector(`tr[data-submission-id="${currentSubmissionId}"]`);
+                    if (row) {
+                        row.dataset.status = newStatus;
+
+                        // Update dropdown
+                        const select = row.querySelector('.submission-status');
+                        if (select) {
+                            select.dataset.currentStatus = newStatus;
+                            const hasProof = !!row.dataset.proofLink || !!row.dataset.proofImage;
+                            select.innerHTML = `
+                        <option value="pending" ${newStatus === 'pending' && !hasProof ? 'selected' : ''}>Pending</option>
+                        ${newStatus === 'pending' && hasProof ? '<option value="pending" selected class="font-medium text-amber-700">Submitted (Has Proof)</option>' : ''}
+                        <option value="completed" ${newStatus === 'completed' ? 'selected' : ''} class="font-medium text-green-700">Completed</option>
+                        <option value="rejected" ${newStatus === 'rejected' ? 'selected' : ''} class="font-medium text-red-700">Rejected</option>
+                    `;
+                        }
+
+                        // Update "Checked By"
+                        const checkedCell = row.cells[3];
+                        const action = newStatus === 'completed' ? 'Verified' : 'Rejected';
+                        const color = newStatus === 'completed' ? 'text-green-600' : 'text-red-600';
+                        checkedCell.innerHTML =
+                            `<span class="${color} font-medium">${action} by {{ auth()->user()->first_name }}</span>`;
+                    }
+                } else throw new Error('Failed');
+            })
+            .catch(err => {
+                console.error(err);
+                showMessage('Action failed', 'error');
+            })
+            .finally(() => {
+                btnVerify.disabled = false;
+                btnReject.disabled = false;
+                btnVerify.textContent = origVerify;
+                btnReject.textContent = origReject;
+            });
     }
     const questForm = document.getElementById('questForm');
     // JS: Prefill form for editing

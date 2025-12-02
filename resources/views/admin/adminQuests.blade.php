@@ -3,7 +3,7 @@
 @section('title', 'Quests')
 
 @section('content')
-
+    @include('modal.userQuestModal')
     <div class="space-y-6">
         <!-- Header Section with Quick Actions -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -159,10 +159,10 @@
                                     </div>
 
                                     <!-- Filter Dropdowns -->
+
                                     <div class="flex gap-2 shrink-0">
                                         <select
-                                            class="bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3 
-                                       focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] font-sans whitespace-nowrap">
+                                            class="status-filter bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] font-sans whitespace-nowrap">
                                             <option value="">All Status</option>
                                             <option value="pending">Pending</option>
                                             <option value="completed">Completed</option>
@@ -170,12 +170,14 @@
                                         </select>
 
                                         <select
-                                            class="bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3 
-                                       focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] font-sans whitespace-nowrap">
-                                            <option value="">Sort By</option>
-                                            <option value="name">Name</option>
-                                            <option value="date">Date</option>
-                                            <option value="status">Status</option>
+                                            class="sort-by bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] font-sans whitespace-nowrap">
+                                            <option value="name-asc">Name (A to Z)</option>
+                                            <option value="name-desc">Name (Z to A)</option>
+                                            <option value="date-desc" selected>Date (Newest First)</option>
+                                            <option value="date-asc">Date (Oldest First)</option>
+                                            <option value="status-pending">Status: Pending First</option>
+                                            <option value="status-completed">Status: Completed First</option>
+                                            <option value="status-rejected">Status: Rejected First</option>
                                         </select>
                                     </div>
                                 </div>
@@ -500,39 +502,91 @@
         // ——————————————————————————————————————
         // SUBMISSION STATUS UPDATE (AJAX)
         // ——————————————————————————————————————
-        document.querySelectorAll('.submission-status').forEach(select => {
-            select.addEventListener('change', async function() {
-                const submissionId = this.dataset.submissionId;
-                const newStatus = this.value;
+        // ——————————————————————————————————————
+        // FINAL STATUS CHANGE – WORKS WITH YOUR ROUTE & CONTROLLER
+        // ——————————————————————————————————————
+        document.addEventListener('change', function(e) {
+            if (!e.target.matches('.submission-status')) return;
 
-                try {
-                    const res = await fetch(`/submissions/${submissionId}/update-status`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .content
-                        },
-                        body: JSON.stringify({
-                            status: newStatus
-                        })
-                    });
+            const select = e.target;
+            const submissionId = select.dataset.submissionId;
+            const newStatus = select.value;
+            const oldStatus = select.dataset.currentStatus || 'pending';
+            const row = select.closest('tr');
 
-                    const data = await res.json();
+            // Prevent double submission
+            if (select.disabled) return;
+            select.disabled = true;
+            select.classList.add('opacity-60', 'cursor-not-allowed');
+
+            fetch(`/submissions/${submissionId}/update-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Server error');
+                    return response.json();
+                })
+                .then(data => {
                     if (data.success) {
-                        showMessage(`Status updated to "${newStatus}"`, 'success');
-                    } else {
-                        showMessage('Update failed', 'error');
-                        this.value = this.dataset.previousValue || 'pending';
-                    }
-                } catch (err) {
-                    console.error(err);
-                    showMessage('Network error', 'error');
-                }
-            });
+                        showMessage('Status updated successfully!', 'success');
 
-            // Store initial value for rollback on error
-            select.dataset.previousValue = select.value;
+                        // Update current status
+                        select.dataset.currentStatus = newStatus;
+                        row.dataset.status = newStatus;
+
+                        // Update "Checked By" column
+                        const checkedCell = row.cells[3]; // 4th column
+                        if (newStatus === 'completed' || newStatus === 'rejected') {
+                            const action = newStatus === 'completed' ? 'Verified' : 'Rejected';
+                            const color = newStatus === 'completed' ? 'text-green-600' : 'text-red-600';
+                            checkedCell.innerHTML = `
+                    <span class="${color} font-medium">
+                        ${action} by {{ auth()->user()->first_name }}
+                    </span>`;
+                        } else {
+                            checkedCell.innerHTML = '<span class="text-gray-500">Not processed</span>';
+                        }
+
+                        // Rebuild the <select> options correctly
+                        const hasProof = !!row.dataset.proofLink || !!row.dataset.proofImage;
+
+                        select.innerHTML = `
+                            <option value="pending" ${newStatus === 'pending' && !hasProof ? 'selected' : ''}>
+                                Pending
+                            </option>
+                            ${newStatus === 'pending' && hasProof ? `
+                                                                    <option value="pending" selected class="font-medium text-amber-700">
+                                                                        Submitted (Has Proof)
+                                                                    </option>` : ''}
+                            <option value="completed" ${newStatus === 'completed' ? 'selected' : ''} class="font-medium text-green-700">
+                                Completed
+                            </option>
+                            <option value="rejected" ${newStatus === 'rejected' ? 'selected' : ''} class="font-medium text-red-700">
+                                Rejected
+                            </option>
+                        `;
+                    } else {
+                        throw new Error(data.message || 'Update failed');
+                    }
+                })
+                .catch(err => {
+                    console.error('Status update failed:', err);
+                    showMessage('Failed to update status', 'error');
+                    select.value = oldStatus; // revert selection
+                })
+                .finally(() => {
+                    select.disabled = false;
+                    select.classList.remove('opacity-60', 'cursor-not-allowed');
+                });
         });
 
         // ——————————————————————————————————————
@@ -676,6 +730,205 @@
             } else {
                 $('#archive-table-body .no-results-custom').remove();
             }
+        });
+        // ——————————————————————————————————————
+        // INSTANT SEARCH + FILTER + SORT (FIXED VERSION — WORKS ON ALL QUESTS!)
+        // ——————————————————————————————————————
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('%c[Quest Participants] Instant filter/sort script loaded',
+                'color: #4F6B3F; font-weight: bold');
+
+            const applyFiltersAndSorting = (tableContainer) => {
+                console.log('%cApplying filters & sorting to container:', 'color: #7A8C4F', tableContainer.id);
+
+                const tbody = tableContainer.querySelector('tbody');
+                if (!tbody) {
+                    console.warn('No <tbody> found in container', tableContainer.id);
+                    return;
+                }
+
+                const questId = tableContainer.id.split('-')[1];
+                const header = document.getElementById('questHeader-' + questId);
+                if (!header) {
+                    console.warn('Header not found for quest ID:', questId);
+                    return;
+                }
+
+                const searchInput = header.querySelector('.table-search');
+                const statusFilter = header.querySelector('.status-filter');
+                const sortBy = header.querySelector('.sort-by');
+
+                console.log('Found controls →', {
+                    searchInput: !!searchInput,
+                    statusFilter: !!statusFilter,
+                    sortBy: !!sortBy
+                });
+
+                // No results row
+                let noResults = tbody.querySelector('.no-results');
+                if (!noResults) {
+                    noResults = document.createElement('tr');
+                    noResults.className = 'no-results';
+                    noResults.innerHTML = `<td colspan="4" class="text-center py-16 text-[#6A8A52]">
+                    <i class="fa-solid fa-inbox text-4xl opacity-30 mb-4 block"></i>
+                    <div>No participants found</div>
+                </td>`;
+                    tbody.appendChild(noResults);
+                }
+
+                const update = () => {
+                    const term = (searchInput?.value || '').toLowerCase().trim();
+                    const statusVal = statusFilter?.value || '';
+                    const sortVal = sortBy?.value || 'date-desc';
+
+                    console.groupCollapsed(
+                        `%cUpdate triggered → term:"${term}" | filter:${statusVal} | sort:${sortVal}`,
+                        'color: #4F6B3F');
+
+                    const rows = Array.from(tbody.querySelectorAll('tr:not(.no-results)'));
+                    console.log(`Found ${rows.length} participant rows`);
+
+                    // Debug each row's important data attributes
+                    rows.forEach((row, i) => {
+                        if (i < 5 || rows.length <= 10) { // log first 5 or all if few
+                            console.log(`Row ${i+1}:`, {
+                                name: row.querySelector('.participant-name')?.textContent
+                                    .trim(),
+                                status: row.dataset.status,
+                                submittedAt: row.dataset.submittedAt
+                            });
+                        }
+                    });
+
+                    const filteredAndSorted = rows
+                        .filter(row => {
+                            const name = (row.querySelector('.participant-name')?.textContent || '')
+                                .toLowerCase();
+                            const status = row.dataset.status || 'pending';
+                            const matchSearch = name.includes(term);
+                            const matchFilter = !statusVal || status === statusVal;
+                            console.log(
+                                `Filter check → name:"${name}" status:"${status}" → search:${matchSearch} filter:${matchFilter}`
+                            );
+                            return matchSearch && matchFilter;
+                        })
+                        .sort((a, b) => {
+                            const nameA = (a.querySelector('.participant-name')?.textContent || '')
+                                .trim();
+                            const nameB = (b.querySelector('.participant-name')?.textContent || '')
+                                .trim();
+                            const statusA = a.dataset.status || 'pending';
+                            const statusB = b.dataset.status || 'pending';
+                            const dateA = new Date(a.dataset.submittedAt || '1970-01-01');
+                            const dateB = new Date(b.dataset.submittedAt || '1970-01-01');
+
+                            let result = 0;
+
+                            switch (sortVal) {
+                                case 'name-asc':
+                                    result = nameA.localeCompare(nameB);
+                                    console.log('Sorting name A→Z', nameA, 'vs', nameB, '→', result);
+                                    break;
+                                case 'name-desc':
+                                    result = nameB.localeCompare(nameA);
+                                    break;
+                                case 'date-desc':
+                                    result = dateB - dateA;
+                                    break;
+                                case 'date-asc':
+                                    result = dateA - dateB;
+                                    break;
+                                case 'status-pending':
+                                    result = statusA === statusB ? (dateB - dateA) : (statusA ===
+                                        'pending' ? -1 : 1);
+                                    console.log('Sorting Pending First →', statusA, 'vs', statusB, '→',
+                                        result);
+                                    break;
+                                case 'status-completed':
+                                    result = statusA === statusB ? (dateB - dateA) : (statusA ===
+                                        'completed' ? -1 : 1);
+                                    break;
+                                case 'status-rejected':
+                                    result = statusA === statusB ? (dateB - dateA) : (statusA ===
+                                        'rejected' ? -1 : 1);
+                                    break;
+                                default:
+                                    console.warn('Unknown sort value:', sortVal);
+                                    result = 0;
+                            }
+                            return result;
+                        });
+
+                    console.log(`After filter+sort → ${filteredAndSorted.length} rows remain`);
+
+                    // Apply visibility
+                    rows.forEach(r => r.style.display = 'none');
+
+                    // This is the magic: moving rows reorders them visually
+                    filteredAndSorted.forEach(row => {
+                        tbody.appendChild(row);
+                        row.style.display = '';
+                    });
+
+                    noResults.style.display = filteredAndSorted.length === 0 ? '' : 'none';
+
+                    console.log(`Successfully reordered and displayed ${filteredAndSorted.length} rows`);
+                    console.groupEnd();
+                };
+
+                // Attach listeners safely
+                [searchInput, statusFilter, sortBy].forEach(el => {
+                    if (el) {
+                        el.removeEventListener('input', update);
+                        el.removeEventListener('change', update);
+                        el.addEventListener('input', update);
+                        el.addEventListener('change', update);
+                        console.log('Listener attached to', el);
+                    }
+                });
+
+                // First run
+                update();
+            };
+
+            // Apply to already loaded tables
+            const initialContainers = document.querySelectorAll('[id^="questTable-"]');
+            console.log(`Found ${initialContainers.length} quest tables on page load`);
+            initialContainers.forEach(applyFiltersAndSorting);
+
+            // Re-apply after AJAX load (your existing fetch override)
+            const originalFetch = window.fetch;
+            window.fetch = function(...args) {
+                return originalFetch.apply(this, args).then(response => {
+                    response.clone().text().then(text => {
+                        if (text.includes('participant-name')) {
+                            console.log('%cAJAX participant table loaded – re-applying filters',
+                                'color: #D97706');
+                            setTimeout(() => {
+                                document.querySelectorAll('[id^="questTable-"]')
+                                    .forEach(container => {
+                                        if (container.querySelector(
+                                                '.participant-name')) {
+                                            applyFiltersAndSorting(container);
+                                        }
+                                    });
+                            }, 100);
+                        }
+                    });
+                    return response;
+                });
+            };
+
+            // Also catch jQuery pagination loads
+            $(document).ajaxComplete(function(event, xhr, settings) {
+                if (settings.url && settings.url.includes('quest_id=')) {
+                    console.log('%cPagination AJAX completed – re-applying filters', 'color: #7A8C4F');
+                    setTimeout(() => {
+                        document.querySelectorAll('[id^="questTable-"]').forEach(
+                            applyFiltersAndSorting);
+                    }, 100);
+                }
+            });
         });
     </script>
     @include('modal.createQuestModal')
