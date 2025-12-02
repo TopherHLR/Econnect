@@ -273,25 +273,32 @@
         const formData = new FormData(questForm);
         const action = questForm.action;
 
+        // Detect if this is an update (has _method hidden field)
+        const isUpdate = questForm.querySelector('input[name="_method"]');
+        const httpMethod = isUpdate ? 'PUT' : 'POST';
+
         fetch(action, {
-                method: 'POST',
+                method: httpMethod, // ← Use real PUT when editing
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    // Do NOT set Content-Type – let browser set it with boundary for FormData
                 },
                 body: formData
             })
             .then(async response => {
                 if (!response.ok) {
-                    const data = await response.json();
-                    throw data;
+                    const err = await response.json();
+                    throw err.errors ? err : {
+                        message: 'Server error',
+                        details: err
+                    };
                 }
                 return response.json();
             })
             .then(data => {
                 closeQuestModal();
                 showMessage(data.message, 'success');
-
                 // Update table row (your existing logic)
                 const row = document.querySelector(
                     `#collectionTable tr[data-quest-id="${data.quest.quest_id}"]`);
@@ -319,14 +326,20 @@
                     const hr = questList.querySelector('hr');
                     questList.insertBefore(li, hr);
                 }
+                // If it was a new quest, optionally refresh page or re-fetch quests list
+                if (!isUpdate) {
+                    location.reload(); // or better: append to table + sidebar
+                }
             })
-
             .catch(error => {
+                console.error('Quest save error:', error);
                 if (error.errors) {
-                    const messages = Object.values(error.errors).flat().join("\n");
-                    showMessage(messages, 'error');
+                    const msgs = Object.values(error.errors).flat().join('<br>');
+                    showMessage(msgs, 'error');
+                } else if (error.message) {
+                    showMessage(error.message, 'error');
                 } else {
-                    showMessage('Something went wrong.', 'error');
+                    showMessage('Failed to save quest. Check console.', 'error');
                 }
             });
     });
