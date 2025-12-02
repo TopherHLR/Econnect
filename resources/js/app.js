@@ -126,7 +126,7 @@ window.addEventListener('scroll', () => {
         if (window.isGuest) return;
 
         // Update plant image
-        plantImg.src = `${plantBasePath}/${stage}.svg`;
+        plantImg.src = `${plantBasePath}/${stage}.gif`;
 
     } else {
         // Reset plant
@@ -151,7 +151,7 @@ window.addEventListener('scroll', () => {
         progressBar.style.transform = 'scale(1) translateY(0)';
 
         // Reset plant image
-        plantImg.src = `${plantBasePath}/5.svg`;
+        plantImg.src = `${plantBasePath}/5.gif`;
 
         // Clear all timers
         clearTimeout(window.fadeInTimeout);

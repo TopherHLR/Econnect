@@ -339,7 +339,7 @@
                     <div id="plant-particle-container" class="absolute inset-0 z-30 pointer-events-none"></div>
 
                     <!-- Main plant image -->
-                    <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="Plant"
+                    <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.gif') }}" alt="Plant"
                         class="z-20 w-full transition-all duration-700 select-none
                     drop-shadow-[0_0_25px_rgba(92,121,25,0.3)]
                     hover:drop-shadow-[0_0_40px_rgba(159,143,106,0.6)]
@@ -554,7 +554,7 @@
 
             @guest
 
-                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.svg') }}" alt="Plant"
+                <img id="plant-image" src="{{ Vite::asset('resources/images/tree/5.gif') }}" alt="Plant"
                     class="z-20 w-full transition-all duration-700 select-none drop-shadow-[0_0_25px_rgba(159,143,106,0.4)] 
                 hover:drop-shadow-[0_0_35px_rgba(159,143,106,0.6)] hover:scale-[1.02] transition-all duration-300">
 
