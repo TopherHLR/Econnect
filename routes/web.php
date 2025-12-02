@@ -16,7 +16,8 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\UserRewardsController;
 use App\Http\Controllers\TreeController;
-
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 //---------------------------------------------------- AUTH -------------------------------------------------
 //---------------------------------------------------- AUTHENTICATION (LOGIN / REGISTER / VERIFY) -------------------------------------------------
 
@@ -267,4 +268,18 @@ Route::get('/leaderboard', [App\Http\Controllers\LeaderboardController::class, '
 Route::post('/tree/tap', [TreeController::class, 'tapTree']);
 
 Route::post('/submissions/{submission}/update-status', [QuestController::class, 'updateStatusQuestAdmin']);
+
+
+//---------------------------------------------------- FORGOT PASS -------------------------------------------------
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
+        ->name('password.request');
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
+        ->name('password.email');
+
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+        ->name('password.reset');
+
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
+        ->name('password.update');
 

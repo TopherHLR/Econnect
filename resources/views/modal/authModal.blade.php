@@ -96,7 +96,10 @@
                             class="text-[13px] py-1 px-2 border border-gray-300 rounded focus:ring-green-600 focus:border-green-600 outline-none w-full" />
                     </div>
 
-                    <a href="#" class="forgot text-xs">Forgot your password?</a>
+                    <a href="{{ route('password.request') }}" class="forgot text-xs text-green-700 hover:underline">
+                        Forgot your password?
+                    </a>
+
                     <!-- Submit Button -->
                     <button type="submit"
                         class="mt-2 text-sm py-2 px-4 rounded-full bg-[#b36b35] hover:bg-[#a55f2d] text-white font-semibold transition relative"
