@@ -428,7 +428,7 @@
                         <!-- Outer beige-yellow glow -->
                         <div
                             class="absolute inset-0 bg-gradient-to-r 
-                from-[#f8f5e6]/40 via-[#f5f1dc]/35 to-[#f2ecce]/30 
+                from-[#f8f5e6]/80 via-[#f5f1dc]/80 to-[#f2ecce]/80 
                 blur-[18px] md:blur-[24px] -z-10 w-[130%] -left-[15%]
                 opacity-80">
                         </div>
@@ -535,7 +535,7 @@
                                     bg-gradient-to-br from-[#bfae7c] to-[#9f8f6a]
                                     shadow-[0_0_4px_1px_rgba(159,143,106,0.4)]
                                 @else
-                                    bg-gradient-to-br from-[#cbbfa8]/40 to-[#9f8f6a]/30
+                                    bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30
                                     border border-[#cbbfa8]/50 @endif
                                 group-hover/marker:scale-150 
                                 group-hover/marker:shadow-[0_0_10px_3px_rgba(159,143,106,0.8)]">
@@ -568,38 +568,38 @@
                     <!-- Enhanced progress label -->
                     @auth
                         @if (auth()->user()->user_type === 'verified_user')
-                            <!-- ====================== VERIFIED USER: FULL PROGRESS INFO ====================== -->
-                            <p id="growth-label"
-                                class="text-[#6b665e] text-xs md:text-sm font-medium tracking-wide text-center
-              bg-gradient-to-r from-[#d6cbb7]/30 to-transparent px-4 py-2 rounded-full
-              border border-[#cbbfa8]/30 shadow-sm
-              group-hover:bg-gradient-to-r group-hover:from-[#d6cbb7]/40 group-hover:to-[#cbbfa8]/20
-              group-hover:border-[#cbbfa8]/40 transition-all duration-300">
-                                Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }}
-                                points
-                                <span class="block text-[10px] text-[#9f8f6a]/70 font-normal mt-1">
-                                    {{ $treeStages - $stage }} stages remaining
-                                </span>
-                            </p>
-                        @else
-                            <!-- ====================== AUTHENTICATED BUT NOT VERIFIED: RESTRICTED MESSAGE ====================== -->
-                            <p id="growth-label"
-                                class="text-[#6b665e] text-xs md:text-sm font-medium tracking-wide text-center
-              bg-gradient-to-r from-[#d6cbb7]/30 to-transparent px-4 py-2 rounded-full
-              border border-[#cbbfa8]/30 shadow-sm">
-                                Please verify your account to grow your tree and earn points
-                            </p>
-                        @endif
+                 <!-- ====================== VERIFIED USER: FULL PROGRESS INFO ====================== -->
+                    <p id="growth-label"
+                        class="text-[#6b665e] text-xs md:text-lg font-medium tracking-wide text-center
+                            bg-gradient-to-r from-[#d6cbb7]/80 to-transparent px-4 py-2 rounded-full
+                            border border-[#cbbfa8]/80 shadow-sm
+                            group-hover:bg-gradient-to-r group-hover:from-[#d6cbb7] group-hover:to-[#cbbfa8]/40
+                            group-hover:border-[#cbbfa8] transition-all duration-300">
+                        Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }}
+                        points
+                        <span class="block text-lg text-[#9f8f6a]/90 font-normal mt-1">
+                            {{ $treeStages - $stage }} stages remaining
+                        </span>
+                    </p>
                     @else
-                        <!-- ====================== GUEST: LOGIN PROMPT ====================== -->
-                        <p id="growth-label"
-                            class="text-[#6b665e] text-xs md:text-sm font-medium tracking-wide text-center
-          bg-gradient-to-r from-[#d6cbb7]/30 to-transparent px-4 py-2 rounded-full
-          border border-[#cbbfa8]/30 shadow-sm">
-                            Please log in to see your personalized growth tree
-                        </p>
+                    <!-- ====================== AUTHENTICATED BUT NOT VERIFIED: RESTRICTED MESSAGE ====================== -->
+                    <p id="growth-label"
+                        class="text-[#6b665e] text-xs md:text-sm font-medium tracking-wide text-center
+                            bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-full
+                            border border-[#cbbfa8] shadow-sm">
+                        Please verify your account to grow your tree and earn points
+                    </p>
+                    @endif
+                    @else
+                    <!-- ====================== GUEST: LOGIN PROMPT ====================== -->
+                    <p id="growth-label"
+                        class="text-[#6b665e] text-xs md:text-sm font-medium tracking-wide text-center
+                            bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-full
+                            border border-[#cbbfa8] shadow-sm">
+                        Please log in to see your personalized growth tree
+                    </p>
                     @endauth
-                </div>
+                    </div>
 
             @endauth
 
@@ -620,7 +620,7 @@
                         <!-- Outer beige-yellow glow -->
                         <div
                             class="absolute inset-0 bg-gradient-to-r 
-                                    from-[#f8f5e6]/40 via-[#f5f1dc]/35 to-[#f2ecce]/30 
+                                    from-[#f8f5e6]/80 via-[#f5f1dc]/35 to-[#f2ecce]/30 
                                     blur-[18px] md:blur-[24px] -z-10 w-[130%] -left-[15%]
                                     opacity-80">
                         </div>
@@ -671,8 +671,8 @@
                         <!-- Progress bar container -->
                         <div
                             class="relative w-[260px] sm:w-[320px] md:w-[480px] lg:w-[520px]
-                        h-[14px] md:h-[16px] rounded-full bg-[#d6cbb7]/40 overflow-hidden 
-                        shadow-inner border border-[#cbbfa8]/40 shadow-lg shadow-[#9f8f6a]/25">
+                        h-[14px] md:h-[16px] rounded-full bg-[#d6cbb7]/80 overflow-hidden 
+                        shadow-inner border border-[#cbbfa8]/80 shadow-lg shadow-[#9f8f6a]/25">
 
                             <!-- Progress fill with enhanced glow -->
                             <div id="growth-fill"
@@ -1524,7 +1524,7 @@
                                 } else {
                                     dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
                                         '') +
-                                        ' bg-gradient-to-br from-[#cbbfa8]/40 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
+                                        ' bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
                                     if (label) label.textContent = 'Stage ' + stageNum;
                                     if (label) label.className = label.className.replace(/text-[^ ]*/g,
                                         'text-[#cbbfa8]/70');
@@ -1565,8 +1565,8 @@
                 // Create message badge
                 const badge = document.createElement('div');
                 // Line ~515-525
-                badge.className = `progress-message-badge absolute -top-10 left-1/2 -translate-x-1/2 
-                   px-3 py-2 rounded-lg shadow-lg text-xs font-medium whitespace-nowrap
+                badge.className = `progress-message-badge absolute -top-20 left-2/3 -translate-x-1/2 
+                   px-3 py-2 rounded-lg shadow-lg text-lg font-medium whitespace-nowrap
                    z-50 animate-bounce pointer-events-none
                    ${type === 'warning' ? 
                      'bg-gradient-to-r from-[#8B7355]/90 to-[#6B5840]/90 text-[#F5F1E6]' : 

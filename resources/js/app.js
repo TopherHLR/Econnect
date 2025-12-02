@@ -78,7 +78,7 @@ window.addEventListener('scroll', () => {
 
         // Move & scale plant
         const scaleFactor = window.innerWidth > 768 ? 1.3 : 0.9;
-        const moveY = window.innerHeight * 0.6;
+        const moveY = window.innerHeight * 0.8;
         plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
 
         // Set text content & style
