@@ -240,8 +240,8 @@
 .viewport1BG .overlay {
   position: absolute;
   inset: 0;
-  background: url('/resources/images/viewport1/wood-texture.png') center/cover no-repeat;
-  opacity: 0.2;        /* adjust */
+  background: url('/resources/images/viewport1/cloud-texture.png') center/cover no-repeat;
+  opacity: 0.150;        /* adjust */
   pointer-events: none;
 }
 

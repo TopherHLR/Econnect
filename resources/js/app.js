@@ -70,32 +70,57 @@ window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
 
+    // Initialize state flags if undefined
+    if (window.textShown === undefined) window.textShown = false;
+    if (window.textFadedOut === undefined) window.textFadedOut = false;
+
     if (scrollY > windowHeight * 0.3) {
 
         // Move & scale plant
-        const scaleFactor = window.innerWidth > 768 ? 2 : 1.5;
+        const scaleFactor = window.innerWidth > 768 ? 1.3 : 0.9;
         const moveY = window.innerHeight * 0.6;
         plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
 
-        // Move text lower (farther from plant)
-        textDiv.style.top = `${window.innerHeight * 0.45}px`; // increased from 0.385
+        // Set text content & style
+        textDiv.style.top = `${window.innerHeight * 0.5}px`;
         textEl.textContent = 'We all yearn to make a difference...';
-        textEl.style.fontSize = window.innerWidth > 768 ? '0.8rem' : '0.45rem';
+        textEl.style.fontSize = window.innerWidth > 768 ? '1.5rem' : '1rem';
+        textEl.style.color = '#7a5d2bff';
+
+if (!window.textShown) {
+    window.textShown = true;
+    window.textFadedOut = false;
+
+    clearTimeout(window.fadeInTimeout);
+    clearTimeout(window.fadeOutTimeout);
+
+    // Start instantly hidden, with NO transition yet
+    textEl.style.transition = 'none';
+    textEl.style.opacity = '0';
+
+    // DELAY before fading in
+    window.fadeInTimeout = setTimeout(() => {
+
+        textEl.style.transition = 'opacity 2s ease';
         textEl.style.opacity = '1';
 
-        // Fade text after 5 sec
-        clearTimeout(window.fadeTimeout);
-        window.fadeTimeout = setTimeout(() => {
-            textEl.style.transition = 'opacity 1.2s ease';
+        // Fade out after being fully visible
+        window.fadeOutTimeout = setTimeout(() => {
+            textEl.style.transition = 'opacity 1.4s ease';
             textEl.style.opacity = '0';
-        }, 5000);
+            window.textFadedOut = true;
+        }, 5000); // Keep text visible for 5 seconds
+
+    }, 1800); // Delay before fade-in (1.8 seconds)
+}
+
 
         // Progress bar slightly lower under text
         progressBar.style.opacity = '1';
         progressBar.style.transform =
             window.innerWidth > 768
-                ? 'scale(0.7) translateY(-15%)'  // moved lower
-                : 'scale(0.55) translateY(-18%)'; // moved lower for mobile
+                ? 'scale(0.7) translateY(-15%)'
+                : 'scale(0.55) translateY(-18%)';
 
         // Stop for guests
         if (window.isGuest) return;
@@ -104,7 +129,6 @@ window.addEventListener('scroll', () => {
         plantImg.src = `${plantBasePath}/${stage}.svg`;
 
     } else {
-
         // Reset plant
         plant.style.transform = 'translateY(0px) scale(1)';
 
@@ -112,7 +136,7 @@ window.addEventListener('scroll', () => {
         textDiv.style.top = '24rem';
         textEl.textContent = 'Even in small ways,';
         textEl.style.fontSize = window.innerWidth > 768 ? '2rem' : '1.5rem';
-        textEl.style.color = '#625237';
+        textEl.style.color = '#7a5d2bff';
         textEl.style.textShadow = `
             0 0 10px rgba(255, 255, 200, 1),
             0 0 20px rgba(255, 255, 200, 0.95),
@@ -129,7 +153,13 @@ window.addEventListener('scroll', () => {
         // Reset plant image
         plantImg.src = `${plantBasePath}/5.svg`;
 
-        clearTimeout(window.fadeTimeout);
+        // Clear all timers
+        clearTimeout(window.fadeInTimeout);
+        clearTimeout(window.fadeOutTimeout);
+
+        // Reset flags to allow fade-in on next scroll past threshold
+        window.textShown = false;
+        window.textFadedOut = false;
     }
 });
 

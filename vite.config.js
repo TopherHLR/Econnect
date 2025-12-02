@@ -27,3 +27,24 @@ export default defineConfig({
   //   },
   // },
 })
+
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      keyframes: {
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' }
+        },
+        pulse: {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.7 }
+        }
+      },
+      animation: {
+        shimmer: 'shimmer 2s infinite',
+        pulse: 'pulse 1s ease-in-out'
+      }
+    }
+  }
+}
