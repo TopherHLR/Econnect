@@ -87,32 +87,32 @@ window.addEventListener('scroll', () => {
         textEl.style.fontSize = window.innerWidth > 768 ? '1.5rem' : '1rem';
         textEl.style.color = '#7a5d2bff';
 
-if (!window.textShown) {
-    window.textShown = true;
-    window.textFadedOut = false;
+        if (!window.textShown) {
+            window.textShown = true;
+            window.textFadedOut = false;
 
-    clearTimeout(window.fadeInTimeout);
-    clearTimeout(window.fadeOutTimeout);
+            clearTimeout(window.fadeInTimeout);
+            clearTimeout(window.fadeOutTimeout);
 
-    // Start instantly hidden, with NO transition yet
-    textEl.style.transition = 'none';
-    textEl.style.opacity = '0';
-
-    // DELAY before fading in
-    window.fadeInTimeout = setTimeout(() => {
-
-        textEl.style.transition = 'opacity 2s ease';
-        textEl.style.opacity = '1';
-
-        // Fade out after being fully visible
-        window.fadeOutTimeout = setTimeout(() => {
-            textEl.style.transition = 'opacity 1.4s ease';
+            // Start instantly hidden, with NO transition yet
+            textEl.style.transition = 'none';
             textEl.style.opacity = '0';
-            window.textFadedOut = true;
-        }, 5000); // Keep text visible for 5 seconds
 
-    }, 1800); // Delay before fade-in (1.8 seconds)
-}
+            // DELAY before fading in
+            window.fadeInTimeout = setTimeout(() => {
+
+                textEl.style.transition = 'opacity 2s ease';
+                textEl.style.opacity = '1';
+
+                // Fade out after being fully visible
+                window.fadeOutTimeout = setTimeout(() => {
+                    textEl.style.transition = 'opacity 1.4s ease';
+                    textEl.style.opacity = '0';
+                    window.textFadedOut = true;
+                }, 5000); // Keep text visible for 5 seconds
+
+            }, 1800); // Delay before fade-in (1.8 seconds)
+        }
 
 
         // Progress bar slightly lower under text

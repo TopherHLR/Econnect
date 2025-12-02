@@ -215,13 +215,11 @@ class QuestController extends Controller
             'submissionId' => $submission->submission_id,
             'newStatus' => $submission->status,
         ]);
-
-        // Fetch existing quest points history
-        $pointsRecord = UserPointsHistory::where('activity_type', 'Quest')
+        // Universal fetch — works for Quest AND TreeTap submissions
+        $pointsRecord = UserPointsHistory::where('user_id', $submission->user_id)
             ->where('source_id', $submission->submission_id)
-            ->where('user_id', $submission->user_id)
+            ->whereIn('activity_type', ['Quest', 'Tree Tap'])
             ->first();
-
 
         /*
         |--------------------------------------------------------------------------

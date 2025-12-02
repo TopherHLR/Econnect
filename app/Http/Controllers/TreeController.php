@@ -71,16 +71,21 @@ class TreeController extends Controller
             $message = 'Current tap progress: 0';
 
             if ($dailyQuest) {
-                $smallQuestSubmission = \App\Models\QuestSubmission::firstOrCreate(
-                    [
+                // Check if a submission already exists for this user today
+                $smallQuestSubmission = \App\Models\QuestSubmission::where('user_id', $user->user_id)
+                    ->where('quest_id', $dailyQuest->quest_id)
+                    ->whereDate('date_submitted', $today)
+                    ->first();
+
+                if (!$smallQuestSubmission) {
+                    // Only create if it doesn't exist for today
+                    $smallQuestSubmission = \App\Models\QuestSubmission::create([
                         'user_id' => $user->user_id,
-                        'quest_id' => $dailyQuest->quest_id
-                    ],
-                    [
+                        'quest_id' => $dailyQuest->quest_id,
                         'status' => 'pending',
                         'date_submitted' => now(),
-                    ]
-                );
+                    ]);
+                }
 
                 // Reset tap_progress if it was already >=100 but still pending
                 if ($smallQuestSubmission->status === 'pending' && ($smallQuestSubmission->tap_progress ?? 0) >= 100) {
@@ -111,10 +116,47 @@ class TreeController extends Controller
                 }
             }
 
+
             // Total points earned today
             $progressPoints = \App\Models\UserPointsHistory::where('user_id', $user->user_id)
                 ->whereDate('created_at', $today)
                 ->sum('points_change');
+
+            $progressPointsReal = UserPointsHistory::where('user_id', $user->user_id)
+                ->where('points_change', '>', 0)
+                ->where('voided', false)
+                ->sum('points_change');
+
+                // Tree stages
+            $treeStages = 10;
+
+            // Define points required per stage
+            $stageThresholds = [50, 100, 200, 300, 450, 550, 700,850,1000,1500];
+
+            // Determine current stage
+            $stage = 1;
+            foreach ($stageThresholds as $index => $threshold) {
+                if ($progressPointsReal < $threshold) {
+                    break;
+                }
+                $stage = $index + 2; // Stage shifts up by 1
+            }
+
+            // Current stage's next target (growth max)
+            $growthMax = $stageThresholds[$stage - 1] ?? end($stageThresholds);
+            $stagesRemaining = $treeStages - $stage;
+
+            // Previous threshold for this stage
+            $prevThreshold = $stage > 1
+                ? $stageThresholds[$stage - 2]
+                : 0;
+
+             // Compute percentage within the stage
+            $growthPercent = ($growthMax - $prevThreshold) > 0
+                ? (($progressPoints - $prevThreshold) / ($growthMax - $prevThreshold)) * 100
+                : 0;
+
+            $growthPercentReal = min(100, max(0, $growthPercent));
 
             return response()->json([
                 'message' => $message,
@@ -123,6 +165,11 @@ class TreeController extends Controller
                 'quest_status' => $smallQuestSubmission?->status ?? null,
                 'tap_progress' => $smallQuestSubmission?->tap_progress ?? $tapCount,
                 'progressPoints' => $progressPoints,
+                'progressPointsReal' => $progressPointsReal,
+                'stage'             => $stage,
+                'growthMax'         => $growthMax,
+                'growthPercentReal'     => $growthPercentReal,
+                'stages_remaining'  => $stagesRemaining,
             ]);
 
         } catch (\Throwable $e) {
