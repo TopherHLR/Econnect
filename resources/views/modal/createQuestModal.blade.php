@@ -33,25 +33,36 @@
             <!-- Category -->
             <div x-data="{ custom: false }">
                 <label class="block text-[#4F6B3F] font-medium mb-1">Category</label>
-                <select x-show="!custom" name="category" x-on:change="custom = ($event.target.value === '__custom')"
+
+                <select id="categorySelect" x-show="!custom" name="category"
+                    x-on:change="
+            custom = ($event.target.value === '__custom');
+            if (!custom) applyCategoryPoints($event.target.value);
+        "
                     class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+
                     <option value="">Select Category</option>
-                    @foreach ($categories as $cat)
-                        <option value="{{ $cat }}">{{ $cat }}</option>
-                    @endforeach
+                    <option value="Small Quest">Small Quest</option>
+                    <option value="Medium Quest">Medium Quest</option>
+                    <option value="Big Quest">Big Quest</option>
+
                     <option value="__custom">➕ Add new category...</option>
                 </select>
+
+                <!-- Custom Category Input -->
                 <div x-show="custom" x-transition>
                     <input type="text" name="custom_category"
                         class="mt-2 w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
                         placeholder="Type new category..." x-ref="customInput"
                         x-on:shown="setTimeout(() => $refs.customInput.focus(), 10)">
+
                     <button type="button" x-on:click="custom = false"
                         class="mt-2 text-sm text-[#4F6B3F] underline hover:text-[#6A8A52]">
                         ← Back to select dropdown
                     </button>
                 </div>
             </div>
+
 
             <!-- Points Reward -->
             <div>
@@ -233,7 +244,23 @@
     // VERIFY & REJECT BUTTONS
     document.getElementById('btnVerify').addEventListener('click', () => processSubmission('completed'));
     document.getElementById('btnReject').addEventListener('click', () => processSubmission('rejected'));
+    
+    function applyCategoryPoints(category) {
+        const pointsReward = document.querySelector('input[name="points_reward"]');
+        const requiredPoints = document.querySelector('input[name="required_points"]');
 
+        // Default values for each category
+        const preset = {
+            "Small Quest": { reward: 10, required: 0 },
+            "Medium Quest": { reward: 25, required: 10 },
+            "Big Quest": { reward: 50, required: 20 }
+        };
+
+        if (preset[category]) {
+            pointsReward.value = preset[category].reward;
+            requiredPoints.value = preset[category].required;
+        }
+    }
     function processSubmission(newStatus) {
         if (!currentSubmissionId) return;
 
