@@ -82,10 +82,10 @@ window.addEventListener('scroll', () => {
         plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
 
         // Set text content & style
-        textDiv.style.top = `${window.innerHeight * 0.5}px`;
+        textDiv.style.top = `${window.innerHeight * 0.520}px`;
         textEl.textContent = 'We all yearn to make a difference...';
         textEl.style.fontSize = window.innerWidth > 768 ? '1.5rem' : '1rem';
-        textEl.style.color = '#7a5d2bff';
+        textEl.style.color = '#5e471dff';
 
         if (!window.textShown) {
             window.textShown = true;
@@ -133,7 +133,7 @@ window.addEventListener('scroll', () => {
         plant.style.transform = 'translateY(0px) scale(1)';
 
         // Reset text
-        textDiv.style.top = '24rem';
+        textDiv.style.top = '25rem';
         textEl.textContent = 'Even in small ways,';
         textEl.style.fontSize = window.innerWidth > 768 ? '2rem' : '1.5rem';
         textEl.style.color = '#7a5d2bff';

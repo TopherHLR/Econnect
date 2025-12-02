@@ -115,149 +115,199 @@
         </script>
     @endauth
 
-    <section class="relative -top-75 min-h-[200vh] flex items-center justify-center viewport2BG">
+<section style="position: relative; top: -75px; min-height: 200vh; display: flex; align-items: center; justify-content: center;" class="viewport2BG">
 
-        @auth
-            @if (auth()->user()->user_type === 'verified_user')
-                <!-- 🌿 LEFT MODAL PANEL -->
-                <div
-                    class="absolute left-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
-                    <!-- Title + View More Link -->
-                    <div class="flex justify-between items-center mb-3">
-                        <h2 class="text-xl font-bold text-green-900">Available Quests</h2>
+    @auth
+        @if (auth()->user()->user_type === 'verified_user')
+            <!-- 🌿 LEFT MODAL PANEL -->
+            <div style="position: absolute; left: 5rem; top: 20%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
+                <!-- Title + View More Link -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                    <h2 style="font-size: 1.5rem; font-weight: 700; color: #4F6B3F; font-family: 'Nunito Sans', sans-serif;">Available Quests</h2>
 
-                        @if ($pendingSubmissions->count() > 0)
-                            <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
-                                View More →
-                            </a>
-                        @endif
+                    @if ($pendingSubmissions->count() > 0)
+                        <a href="/quests" style="font-size: 0.875rem; color: #7A8C4F; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.25rem; font-weight: 500;">
+                            View More <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-top: 0.125rem;"></i>
+                        </a>
+                    @endif
+                </div>
+
+                @if ($availableQuests->isEmpty())
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 14rem; text-align: center;">
+                        <div style="font-size: 2.5rem; color: rgba(122, 140, 79, 0.3); margin-bottom: 0.75rem;">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <p style="color: rgba(90, 74, 54, 0.7); font-size: 0.875rem; font-style: italic;">No available quests at the moment 🌱</p>
                     </div>
-
-                    @if ($availableQuests->isEmpty())
-                        <p class="text-gray-500 text-sm italic">No available quests at the moment 🌱</p>
-                    @else
-                        <div class="space-y-3">
-                            @foreach ($availableQuests->take(2) as $quest)
-                                <div class="p-4 bg-white/80 shadow rounded-xl border border-green-100">
-                                    <h3 class="font-semibold text-green-800">{{ $quest->title }}</h3>
-
-                                    <p class="text-xs text-gray-600 mt-1">
-                                        Reward:
-                                        <span class="font-bold text-green-700">{{ $quest->points_reward }} points</span>
-                                    </p>
-
-                                    <span
-                                        onclick="openActiveQuestModal({
+                @else
+                    <div style="display: flex; flex-direction: column; gap: 1rem; max-height: 240px; overflow-y: auto;">
+                        @foreach ($availableQuests->take(2) as $quest)
+                            <div style="position: relative; display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 1rem; cursor: pointer; transition: all 0.3s ease-out; background: rgba(255, 255, 255, 0.9); border: 1.5px solid rgba(224, 233, 214, 0.5); box-shadow: 0 2px 8px rgba(122, 140, 79, 0.04), 0 1px 3px rgba(195, 122, 73, 0.02); transform: translateY(0);"
+                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 16px rgba(122, 140, 79, 0.08), 0 2px 6px rgba(195, 122, 73, 0.04)'; this.style.borderColor='rgba(122, 140, 79, 0.3)';"
+                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(122, 140, 79, 0.04), 0 1px 3px rgba(195, 122, 73, 0.02)'; this.style.borderColor='rgba(224, 233, 214, 0.5)';">
+                                <div style="margin-top: 0.25rem; color: #7A8C4F;">
+                                    <i class="fas fa-tasks" style="font-size: 1.125rem;"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h3 style="font-weight: 600; color: #4F6B3F; font-size: 1rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $quest->title }}</h3>
+                                    <p style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.8); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0.5rem;">{{ $quest->description }}</p>
+                                    
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.75rem;">
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <span style="font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(122, 140, 79, 0.1); color: #4F6B3F;">
+                                                <i class="fas fa-star" style="font-size: 0.75rem; margin-right: 0.25rem;"></i> {{ $quest->points_reward }} pts
+                                            </span>
+                                            <span style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.6);">
+                                                <i class="far fa-calendar" style="margin-right: 0.25rem;"></i> {{ \Carbon\Carbon::parse($quest->end_date)->format('M d') }}
+                                            </span>
+                                        </div>
+                                        <span onclick="openActiveQuestModal({
                                             id: {{ $quest->quest_id }},
-                                            title: '{{ $quest->title }}',
-                                            description: '{{ $quest->description }}',
+                                            title: '{{ addslashes($quest->title) }}',
+                                            description: '{{ addslashes($quest->description) }}',
                                             category: '{{ $quest->category }}',
                                             points_reward: {{ $quest->points_reward }},
                                             status: '{{ $quest->status }}',
                                             start_date: '{{ $quest->start_date }}',
                                             end_date: '{{ $quest->end_date }}'
                                         })"
-                                        class="text-xs text-blue-700 underline mt-2 block cursor-pointer">
-                                        View Quest →
-                                    </span>
+                                        style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.75rem; padding: 0.375rem 0.75rem; border-radius: 9999px; cursor: pointer; transition: all 0.3s ease-out; background: rgba(224, 229, 216, 0.95); color: #4F3B2C; box-shadow: inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12);"
+                                        onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='-2px -2px 4px rgba(255, 255, 255, 0.65), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
+                                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12)'; this.style.filter='brightness(1)';">
+                                            View Quest <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-left: 0.25rem;"></i>
+                                        </span>
+                                    </div>
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            <!-- 🌿 RIGHT MODAL PANEL -->
+            <div style="position: absolute; right: 5rem; top: 20%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
+                <!-- Title + View More Link -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                    <h2 style="font-size: 1.5rem; font-weight: 700; color: #8B5A3C; font-family: 'Nunito Sans', sans-serif;">Pending Submissions</h2>
+
+                    @if ($pendingSubmissions->count() > 0)
+                        <a href="/quests" style="font-size: 0.875rem; color: #C37A49; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.25rem; font-weight: 500;">
+                            View More <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-top: 0.125rem;"></i>
+                        </a>
                     @endif
                 </div>
 
-                <!-- 🌿 RIGHT MODAL PANEL -->
-                <div
-                    class="absolute right-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
-                    <!-- Title + View More Link -->
-                    <div class="flex justify-between items-center mb-3">
-                        <h2 class="text-xl font-bold text-green-900">Pending Submissions</h2>
-
-                        @if ($pendingSubmissions->count() > 0)
-                            <a href="/quests" class="text-xs text-green-700 underline hover:text-green-900">
-                                View More →
-                            </a>
-                        @endif
+                @if ($pendingSubmissions->isEmpty())
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 14rem; text-align: center;">
+                        <div style="font-size: 2.5rem; color: rgba(195, 122, 73, 0.3); margin-bottom: 0.75rem;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <p style="color: rgba(90, 74, 54, 0.7); font-size: 0.875rem; font-style: italic;">No pending tasks ✨</p>
                     </div>
-
-                    @if ($pendingSubmissions->isEmpty())
-                        <p class="text-gray-500 text-sm italic">No pending tasks </p>
-                    @else
-                        <div class="space-y-3">
-                            @foreach ($pendingSubmissions->take(2) as $sub)
-                                <div class="p-4 bg-white/80 shadow rounded-xl border border-green-100">
-                                    <h3 class="font-semibold text-green-800">{{ $sub->quest->title }}</h3>
-
-                                    <p class="text-xs text-gray-600 mt-1">
-                                        Status:
-                                        <span class="font-medium text-orange-600">{{ ucfirst($sub->status) }}</span>
-                                    </p>
-
-                                    @php
-                                        $submissionData = [
-                                            'submission_id' => $sub->submission_id,
-                                            'questTitle' => $sub->quest->title,
-                                            'questDescription' => $sub->quest->description,
-                                        ];
-                                    @endphp
-
-                                    <span onclick='openAcceptedQuestModal(@json($submissionData))'
-                                        class="text-xs text-blue-700 underline mt-2 block cursor-pointer">
-                                        Continue →
-                                    </span>
+                @else
+                    <div style="display: flex; flex-direction: column; gap: 1rem; max-height: 240px; overflow-y: auto;">
+                        @foreach ($pendingSubmissions->take(2) as $sub)
+                            <div style="position: relative; display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 1rem; cursor: pointer; transition: all 0.3s ease-out; background: rgba(255, 255, 255, 0.9); border: 1.5px solid rgba(240, 230, 222, 0.5); box-shadow: 0 2px 8px rgba(195, 122, 73, 0.04), 0 1px 3px rgba(122, 140, 79, 0.02); transform: translateY(0);"
+                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 16px rgba(195, 122, 73, 0.08), 0 2px 6px rgba(122, 140, 79, 0.04)'; this.style.borderColor='rgba(195, 122, 73, 0.3)';"
+                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(195, 122, 73, 0.04), 0 1px 3px rgba(122, 140, 79, 0.02)'; this.style.borderColor='rgba(240, 230, 222, 0.5)';">
+                                <div style="margin-top: 0.25rem; color: #C37A49;">
+                                    <i class="fas fa-hourglass-half" style="font-size: 1.125rem;"></i>
                                 </div>
-                            @endforeach
+                                <div style="flex: 1;">
+                                    <h3 style="font-weight: 600; color: #8B5A3C; font-size: 1rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $sub->quest->title }}</h3>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                        <span style="font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(195, 122, 73, 0.1); color: #8B5A3C;">
+                                            <i class="fas fa-clock" style="font-size: 0.75rem; margin-right: 0.25rem;"></i> {{ ucfirst($sub->status) }}
+                                        </span>
+                                        @if($sub->submitted_at)
+                                        <span style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.6);">
+                                            <i class="far fa-calendar-check" style="margin-right: 0.25rem;"></i> {{ \Carbon\Carbon::parse($sub->submitted_at)->format('M d') }}
+                                        </span>
+                                        @endif
+                                    </div>
+
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem;">
+                                        <span style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.7);">
+                                            <i class="fas fa-exclamation-circle" style="color: #C37A49; margin-right: 0.25rem;"></i> Awaiting review
+                                        </span>
+                                        @php
+                                            $submissionData = [
+                                                'submission_id' => $sub->submission_id,
+                                                'questTitle' => $sub->quest->title,
+                                                'questDescription' => $sub->quest->description,
+                                            ];
+                                        @endphp
+                                        <span onclick='openAcceptedQuestModal(@json($submissionData))'
+                                              style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.75rem; padding: 0.375rem 0.75rem; border-radius: 9999px; cursor: pointer; transition: all 0.3s ease-out; background: rgba(224, 229, 216, 0.95); color: #4F6B3F; box-shadow: inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12);"
+                                              onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='-2px -2px 4px rgba(255, 255, 255, 0.65), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
+                                              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12)'; this.style.filter='brightness(1)';">
+                                            Continue <i class="fas fa-external-link-alt" style="font-size: 0.75rem; margin-left: 0.25rem;"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        @else
+            <!-- 🌿 LEFT MODAL PANEL LOCKED -->
+            <div style="position: absolute; left: 5rem; top: 20%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
+                <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                    <!-- 🔒 Overlay Lock -->
+                    <div style="background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(248,250,237,0.5) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); border-radius: 1rem; padding: 2rem; box-shadow: 0 12px 40px rgba(122,140,79,0.2); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;">
+                        <div style="font-size: 3rem; color: #7A8C4F; margin-bottom: 1rem; text-shadow: 0 4px 8px rgba(122,140,79,0.2);">
+                            <i class="fas fa-lock"></i>
                         </div>
-                    @endif
-                </div>
-            @else
-                <!-- 🌿 LEFT MODAL PANEL LOCKED -->
-                <div
-                    class="absolute left-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
-                    <div class="flex justify-center items-center h-full">
-                        <!-- 🔒 Overlay Lock -->
-                        <div
-                            class="bg-white/50 backdrop-blur-md border border-white/30 rounded-2xl p-6 shadow-lg flex flex-col items-center text-center w-full">
-                            <div class="text-6xl text-green-800 mb-4"><i class="fas fa-lock"></i></div>
-                            <h2 class="text-2xl font-semibold text-green-900 mb-2">Access Restricted</h2>
-                            <p class="text-green-800 text-sm">
-                                Only verified users can access Available Quests. Become a customer and scan your Account QR at
-                                your first in-store purchase.
-                            </p>
+                        <h2 style="font-size: 1.25rem; font-weight: 700; color: #4F6B3F; margin-bottom: 0.75rem; font-family: 'Nunito Sans', sans-serif;">Access Restricted</h2>
+                        <p style="color: #5A4A36; font-size: 0.875rem; line-height: 1.5; max-width: 20rem; margin-bottom: 1.25rem;">
+                            Only verified users can access Available Quests. Become a customer and scan your Account QR at your first in-store purchase.
+                        </p>
+                        <div style="margin-top: 1.25rem;">
+                            <button style="position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 600; cursor: pointer; border-radius: 9999px; user-select: none; transition: all 0.3s ease-out; padding: 0.5rem 1rem; font-size: 0.875rem; min-width: 10rem; text-align: center; background: rgba(122, 140, 79, 0.92); color: white; box-shadow: inset 2px 2px 4px rgba(70, 85, 45, 0.35), inset -2px -2px 4px rgba(200, 220, 170, 0.4), 0 2px 6px rgba(122, 140, 79, 0.25);"
+                                    onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(140, 160, 130, 0.12), -2px -2px 4px rgba(255, 255, 255, 0.7), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(70, 85, 45, 0.35), inset -2px -2px 4px rgba(200, 220, 170, 0.4), 0 2px 6px rgba(122, 140, 79, 0.25)'; this.style.filter='brightness(1)';">
+                                <i class="fas fa-store" style="transition: transform 0.3s ease-out;"></i> Visit Store
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
-                <div
-                    class="absolute right-20 top-[20%] w-[420px] h-[300px] bg-white/40 backdrop-blur-md border border-white/30 shadow-xl p-5 rounded-3xl z-10">
-                    <div class="flex justify-center items-center h-full">
-                        <!-- 🔒 Overlay Lock -->
-                        <div
-                            class="bg-white/50 backdrop-blur-md border border-white/30 rounded-2xl p-6 shadow-lg flex flex-col items-center text-center w-full">
-                            <div class="text-6xl text-green-800 mb-4"><i class="fas fa-lock"></i></div>
-                            <h2 class="text-2xl font-semibold text-green-900 mb-2">Access Restricted</h2>
-                            <p class="text-green-800 text-sm">
-                                Only verified users can access Pending Submissions. Become a customer and scan your Account QR
-                                at your first in-store purchase.
-                            </p>
+            <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
+            <div style="position: absolute; right: 5rem; top: 20%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
+                <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                    <!-- 🔒 Overlay Lock -->
+                    <div style="background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(250,248,242,0.5) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); border-radius: 1rem; padding: 2rem; box-shadow: 0 12px 40px rgba(195,122,73,0.2); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;">
+                        <div style="font-size: 3rem; color: #C37A49; margin-bottom: 1rem; text-shadow: 0 4px 8px rgba(195,122,73,0.2);">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h2 style="font-size: 1.25rem; font-weight: 700; color: #8B5A3C; margin-bottom: 0.75rem; font-family: 'Nunito Sans', sans-serif;">Access Restricted</h2>
+                        <p style="color: #5A4A36; font-size: 0.875rem; line-height: 1.5; max-width: 20rem; margin-bottom: 1.25rem;">
+                            Only verified users can access Pending Submissions. Become a customer and scan your Account QR at your first in-store purchase.
+                        </p>
+                        <div style="margin-top: 1.25rem;">
+                            <button style="position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 600; cursor: pointer; border-radius: 9999px; user-select: none; transition: all 0.3s ease-out; padding: 0.5rem 1rem; font-size: 0.875rem; min-width: 10rem; text-align: center; background: rgba(195, 122, 73, 0.92); color: white; box-shadow: inset 2px 2px 4px rgba(120, 80, 50, 0.3), inset -2px -2px 4px rgba(255, 200, 170, 0.5), 0 2px 6px rgba(195, 122, 73, 0.2);"
+                                    onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(140, 160, 130, 0.12), -2px -2px 4px rgba(255, 255, 255, 0.7), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(120, 80, 50, 0.3), inset -2px -2px 4px rgba(255, 200, 170, 0.5), 0 2px 6px rgba(195, 122, 73, 0.2)'; this.style.filter='brightness(1)';">
+                                <i class="fas fa-qrcode" style="transition: transform 0.3s ease-out;"></i> Scan QR
+                            </button>
                         </div>
                     </div>
                 </div>
-            @endif
+            </div>
+        @endif
+    @endauth
 
 
-        @endauth
+<div id="plant-container"
+    class="relative w-[600px] -top-270 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
 
-
-
-        <div id="plant-container"
-            class="relative w-[600px] -top-210 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
-
-            <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
-            <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
-            <div id="fallen-leaves" class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
-                style="
+<!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
+<!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
+<div id="fallen-leaves" 
+     class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
+     style="
         mask-image: 
             /* Top soft fade */
             linear-gradient(
@@ -289,20 +339,22 @@
                 transparent 100%
             );
      ">
-            </div>
-            <!-- Rest of your HTML remains the same... -->
+</div>
+    <!-- Rest of your HTML remains the same... -->
 
-            <div id="plant-text" class="absolute top-[24rem] left-1/2 z-70 -translate-x-1/2 w-max text-center"
-                style="text-shadow: 
+    <div id="plant-text"
+        class="absolute top-[25rem] left-1/2 z-70 -translate-x-1/2 w-max text-center"
+        style="text-shadow: 
             0 0 10px rgba(255, 255, 200, 1),
             0 0 20px rgba(255, 255, 200, 0.95),
             0 0 30px rgba(255, 255, 180, 0.85),
             0 0 40px rgba(255, 255, 180, 0.7),
             0 0 50px rgba(255, 255, 180, 0.5);">
-                <h1 class="md:text-3xl font-serif font-semibold text-[#7a5d2bff] leading-snug whitespace-nowrap">
-                    Even in small ways,
-                </h1>
-            </div>
+        <h1 class="md:text-3xl font-serif font-semibold text-[#5e471dff] leading-snug whitespace-nowrap">
+            Even in small ways,
+        </h1>
+    </div>
+
 
             <!-- 🌾 Glow Background -->
             <div class="absolute top-0 flex items-center justify-center">
