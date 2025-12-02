@@ -115,26 +115,105 @@
 
 
     <script>
+        // Updated Helper function to parse and split description
+        function parseQuestDescription(raw) {
+            if (!raw) return {
+                clean: 'No description available',
+                extras: []
+            };
+
+            // 1. Fix escaped newlines (Laravel sometimes sends literal \n)
+            let text = raw.replace(/\\n/g, '\n');
+
+            // 2. Force line breaks before the keywords even if they are glued
+            text = text
+                .replace(/Medium\/Channel:/gi, '\nMedium/Channel:')
+                .replace(/Strict Guidelines:/gi, '\nStrict Guidelines:')
+                .replace(/Verification Proof Required:/gi, '\nVerification Proof Required:');
+
+            const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+
+            const cleanLines = [];
+            const extras = [];
+
+            let insideGuidelines = false;
+
+            lines.forEach(line => {
+                const lower = line.toLowerCase();
+
+                // — Medium/Channel —
+                if (lower.startsWith('medium/channel:')) {
+                    const value = line.substring('medium/channel:'.length).trim();
+                    extras.push(`<strong>Medium/Channel:</strong> ${value}`);
+                    return;
+                }
+
+                // — Verification Proof Required —
+                if (lower.startsWith('verification proof required:')) {
+                    const value = line.substring('verification proof required:'.length).trim();
+                    extras.push(`<strong>Verification Proof Required:</strong> ${value}`);
+                    return;
+                }
+
+                // — Strict Guidelines header —
+                if (lower.startsWith('strict guidelines:')) {
+                    extras.push('<strong>Strict Guidelines:</strong>');
+                    insideGuidelines = true;
+                    // if there is text right after the colon, treat it as first bullet
+                    const valueAfterColon = line.substring('strict guidelines:'.length).trim();
+                    if (valueAfterColon) {
+                        extras.push(`• ${valueAfterColon.replace(/\.:$/, '.').trim()}`);
+                    }
+                    return;
+                }
+
+                // — Guideline bullets (they usually end with . or .: and start with capital letter) —
+                if (insideGuidelines && (line.match(/^[A-Z]/) || line.endsWith('.') || line.endsWith('.:'))) {
+                    const bullet = line.replace(/\.:$/, '.').trim();
+                    extras.push(`• ${bullet}`);
+                    return;
+                }
+
+                // — If we exited guidelines (very rare) —
+                if (insideGuidelines && !line.match(/^[A-Z].*[.:]$/)) {
+                    insideGuidelines = false;
+                }
+
+                // — Everything else = main description —
+                cleanLines.push(line);
+            });
+
+            const clean = cleanLines.join(' ').trim() || 'No description provided';
+
+            return {
+                clean,
+                extras
+            };
+        }
+        // =====
         const activeModal = document.getElementById('activeQuestModal');
 
+        // ==================== Active Quest Modal ====================
         function openActiveQuestModal(quest) {
-            document.getElementById('modalQuestTitle').textContent = quest.title;
-            document.getElementById('modalQuestDescription').textContent = quest.description;
-            document.getElementById('modalQuestCategory').textContent = quest.category;
-            document.getElementById('modalQuestPoints').textContent = quest.points_reward;
-            document.getElementById('modalQuestStatus').textContent = quest.status;
+            const {
+                clean,
+                extras
+            } = parseQuestDescription(quest.description);
 
+            document.getElementById('modalQuestTitle').textContent = quest.title;
+            document.getElementById('modalQuestDescription').innerHTML = clean +
+                (extras.length > 0 ? '<br><br>' + extras.join('<br>') : '');
+            document.getElementById('modalQuestCategory').textContent = quest.category || 'General';
+            document.getElementById('modalQuestPoints').textContent = quest.points_reward;
+            document.getElementById('modalQuestStatus').textContent = quest.status || 'Active';
             document.getElementById('modalQuestStart').textContent =
                 quest.start_date ? new Date(quest.start_date).toLocaleDateString() : 'N/A';
-
             document.getElementById('modalQuestEnd').textContent =
                 quest.end_date ? new Date(quest.end_date).toLocaleDateString() : 'N/A';
-
             document.getElementById('modalQuestId').value = quest.id;
 
-            activeModal.classList.remove('hidden');
+            document.getElementById('activeQuestModal').classList.remove('hidden');
         }
-
 
         function closeActiveQuestModal() {
             activeModal.classList.add('hidden');
@@ -162,29 +241,31 @@
 
         const acceptedModal = document.getElementById('acceptedQuestModal');
 
+        // ==================== Accepted Quest Modal ====================
         function openAcceptedQuestModal(quest) {
-            const modal = document.getElementById('acceptedQuestModal');
-            const titleEl = document.getElementById('modalAcceptedQuestTitle');
-            const descEl = document.getElementById('modalAcceptedQuestDescription');
-            const submissionIdEl = document.getElementById('modalSubmissionId');
+            const {
+                clean,
+                extras
+            } = parseQuestDescription(quest.questDescription || quest.description);
+
+            document.getElementById('modalAcceptedQuestTitle').textContent = quest.questTitle || quest.title;
+            document.getElementById('modalAcceptedQuestDescription').innerHTML = clean +
+                (extras.length > 0 ? '<br><br>' + extras.join('<br>') : '');
+
+            document.getElementById('modalSubmissionId').value = quest.submissionId || quest.submission_id;
+
             const proofFields = document.getElementById('proofFields');
-            const submitButton = modal.querySelector('button[type="submit"]'); // grab the submit button
+            const submitButton = document.querySelector('#acceptedQuestModal button[type="submit"]');
 
-            // Fill modal content
-            titleEl.textContent = quest.questTitle || quest.title;
-            descEl.textContent = quest.questDescription || quest.description;
-            submissionIdEl.value = quest.submissionId || quest.submission_id;
-
-            // Hide proof fields and submit button if Daily Eco Action
             if ((quest.questTitle || quest.title) === 'Daily Eco Action') {
                 proofFields.style.display = 'none';
                 submitButton.style.display = 'none';
             } else {
                 proofFields.style.display = 'block';
-                submitButton.style.display = 'inline-flex'; // restore original display
+                submitButton.style.display = 'inline-flex';
             }
 
-            modal.classList.remove('hidden');
+            document.getElementById('acceptedQuestModal').classList.remove('hidden');
         }
 
 
@@ -198,7 +279,8 @@
                 // Create the toast div dynamically
                 const toast = document.createElement('div');
                 toast.id = 'error-toast';
-                toast.className = `fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]
+                toast.className =
+                    `fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]
                     font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000`;
                 toast.textContent = '❌ Please provide at least one proof: a link or an image.';
 
@@ -239,26 +321,29 @@
         });
         const viewQuestModal = document.getElementById('viewQuestModal');
 
+        // ==================== View Quest Modal (Completed/Rejected) ====================
         function openViewQuestModal(submission) {
-            document.getElementById('viewQuestTitle').textContent = submission.questTitle;
-            document.getElementById('viewQuestDescription').textContent = submission.questDescription;
-            document.getElementById('viewQuestStatus').textContent = submission.status;
-            document.getElementById('viewQuestPoints').textContent = submission.pointsReward;
+            const {
+                clean,
+                extras
+            } = parseQuestDescription(submission.questDescription || submission.description);
 
-            // Show completed/rejected date
+            document.getElementById('viewQuestTitle').textContent = submission.questTitle || submission.title;
+            document.getElementById('viewQuestDescription').innerHTML = clean +
+                (extras.length > 0 ? '<br><br>' + extras.join('<br>') : '');
+            document.getElementById('viewQuestStatus').textContent = submission.status;
+            document.getElementById('viewQuestPoints').textContent = submission.pointsReward || '0';
             document.getElementById('viewQuestDate').textContent = submission.date || 'N/A';
 
-            // Change header color based on status
             const header = document.getElementById('viewQuestHeader');
-            if (submission.status === 'completed') {
-                header.classList.remove('bg-red-600');
+            header.classList.remove('bg-red-600', 'bg-green-700');
+            if (submission.status === 'completed' || submission.status === 'Completed') {
                 header.classList.add('bg-green-700');
-            } else if (submission.status === 'rejected') {
-                header.classList.remove('bg-green-700');
+            } else if (submission.status === 'rejected' || submission.status === 'Rejected') {
                 header.classList.add('bg-red-600');
             }
 
-            viewQuestModal.classList.remove('hidden');
+            document.getElementById('viewQuestModal').classList.remove('hidden');
         }
 
         function closeViewQuestModal() {
