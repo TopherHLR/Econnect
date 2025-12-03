@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\UserPointsHistory;
-use App\Models\QuestSubmission;
 use App\Models\Quest;
-use App\Models\UserEcoAction;
+use App\Models\QuestSubmission;
 use App\Models\User;
-use App\Models\UserLibrary;
-use Illuminate\Support\Facades\Password; // ← add this
-use App\Models\UserVoucher;
+use App\Models\UserEcoAction;
+use App\Models\UserPointsHistory;
 use App\Models\Voucher;
-use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Http\Request; // ← add this
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class AccountController extends Controller
 {
@@ -58,7 +55,8 @@ class AccountController extends Controller
 
         return compact('user', 'progressPoints', 'currentPoints', 'earnedBadges', 'badgeLevel', 'completedQuests');
     }
-        // Update profile
+
+    // Update profile
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
@@ -67,10 +65,10 @@ class AccountController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->user_id . ',user_id',
+            'email' => 'required|email|max:255|unique:users,email,'.$user->user_id.',user_id',
         ]);
 
-        $user->update($request->only('first_name','middle_name','last_name','email'));
+        $user->update($request->only('first_name', 'middle_name', 'last_name', 'email'));
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
@@ -81,9 +79,9 @@ class AccountController extends Controller
         $user = Auth::user();
         Password::sendResetLink(['email' => $user->email]);
 
-        return redirect()->back()->with('success', 'Password reset email sent to ' . $user->email);
+        return redirect()->back()->with('success', 'Password reset email sent to '.$user->email);
     }
-    
+
     public function changePassword(Request $request)
     {
         $user = Auth::user();
@@ -93,7 +91,7 @@ class AccountController extends Controller
             'new_password' => 'required|min:8|confirmed',
         ]);
 
-        if (!Hash::check($request->current_password, $user->password)) {
+        if (! Hash::check($request->current_password, $user->password)) {
             return back()->withErrors(['current_password' => 'Current password is incorrect.']);
         }
 
@@ -120,7 +118,7 @@ class AccountController extends Controller
         $todayActions = QuestSubmission::where('user_id', $user->user_id)
             ->where('status', 'completed')
             ->whereDate('date_completed', today())
-            ->whereHas('quest', fn($q) => $q->where('title', 'Daily Eco Taps'))
+            ->whereHas('quest', fn ($q) => $q->where('title', 'Daily Eco Taps'))
             ->count();
 
         $treePercent = min($todayActions * 20, 100);
@@ -142,15 +140,14 @@ class AccountController extends Controller
             ->get();
 
         // ---------- RECENT HISTORY WITH VOUCHER FIX ----------
-            $recentHistory = UserPointsHistory::where('user_id', $user->user_id)
-                ->with([
-                    'questSubmission.quest',
-                    'source.voucher'   // <-- add this!
-                ])
-                ->latest()
-                ->limit(10)
-                ->get()
-
+        $recentHistory = UserPointsHistory::where('user_id', $user->user_id)
+            ->with([
+                'questSubmission.quest',
+                'source.voucher',   // <-- add this!
+            ])
+            ->latest()
+            ->limit(10)
+            ->get()
             ->map(function ($row) {
                 // Compute display reason for Blade template
                 if ($row->activity_type === 'Voucher Redemption') {
@@ -168,15 +165,15 @@ class AccountController extends Controller
                             $row->display_reason = "Voucher Redemption | {$voucherTitle} ";
                         }
                     } else {
-                        $row->display_reason = "Voucher Redemption ";
+                        $row->display_reason = 'Voucher Redemption ';
                     }
                 } elseif ($row->activity_type === 'Quest' && $row->questSubmission) {
                     $questTitle = $row->questSubmission->quest
                         ? $row->questSubmission->quest->title
                         : 'Unknown Quest';
-                    $row->display_reason = 'Quest #' . $row->questSubmission->quest_id
-                        . ' | ' . $questTitle
-                        . ' - ' . ucfirst($row->questSubmission->status);
+                    $row->display_reason = 'Quest #'.$row->questSubmission->quest_id
+                        .' | '.$questTitle
+                        .' - '.ucfirst($row->questSubmission->status);
                 } else {
                     $row->display_reason = 'Activity';
                 }
@@ -203,7 +200,7 @@ class AccountController extends Controller
             $completed = QuestSubmission::where('user_id', $user->user_id)
                 ->where('status', 'completed')
                 ->whereDate('date_completed', $dateToCheck)
-                ->whereHas('quest', fn($q) => $q->where('title', 'Daily Eco Taps'))
+                ->whereHas('quest', fn ($q) => $q->where('title', 'Daily Eco Taps'))
                 ->exists();
 
             if ($completed) {
@@ -223,6 +220,7 @@ class AccountController extends Controller
                 $ecoPoints = $u->pointsHistory->where('points_change', '>', 0)->sum('points_change');
                 $questsCompleted = $u->questSubmissions->where('status', 'completed')->count();
                 $u->progressPoints = $ecoPoints + ($questsCompleted * 10);
+
                 return $u;
             })
             ->sortByDesc('progressPoints')
@@ -238,7 +236,9 @@ class AccountController extends Controller
         $stageThresholds = [50, 100, 200, 300, 450, 550, 700];
         $stage = 1;
         foreach ($stageThresholds as $index => $threshold) {
-            if ($progressPoints < $threshold) break;
+            if ($progressPoints < $threshold) {
+                break;
+            }
             $stage = $index + 2;
         }
         $growthMax = $stageThresholds[$stage - 1] ?? end($stageThresholds);
@@ -248,17 +248,16 @@ class AccountController extends Controller
             : 0;
         $growthPercent = min(100, max(0, $growthPercent));
 
-        // TREE STAGES
+        // Tree badges
         $treeStages = [
-            0     => ['name' => 'Seed', 'icon' => '🌱'],
-            50    => ['name' => 'Sprout', 'icon' => '🌿'],
-            100   => ['name' => 'Seedling', 'icon' => '🍃'],
-            200   => ['name' => 'Sapling', 'icon' => '🌳'],
-            300  => ['name' => 'Young Tree', 'icon' => '🌲'],
-            450  => ['name' => 'Growing Tree', 'icon' => '🎋'],
-            550  => ['name' => 'Strong Tree', 'icon' => '🌴'],
-            700  => ['name' => 'Mature Tree', 'icon' => '🌳'],
-
+            0 => ['name' => 'Seed', 'icon' => '🌱'],
+            50 => ['name' => 'Sprout', 'icon' => '🌿'],
+            100 => ['name' => 'Seedling', 'icon' => '🍃'],
+            200 => ['name' => 'Sapling', 'icon' => '🌳'],
+            300 => ['name' => 'Young Tree', 'icon' => '🌲'],
+            450 => ['name' => 'Growing Tree', 'icon' => '🎋'],
+            550 => ['name' => 'Strong Tree', 'icon' => '🌴'],
+            700 => ['name' => 'Mature Tree', 'icon' => '🌳'],
         ];
         $treeBadges = [];
         foreach ($treeStages as $points => $stage) {
@@ -272,10 +271,10 @@ class AccountController extends Controller
             ];
         }
 
-        // QUEST BADGES
+        // Quest badges
         $questMilestones = [
-            1  => ['name' => 'Eco-Novice', 'icon' => '🌱'],
-            5  => ['name' => 'Eco-Explorer', 'icon' => '🌿'],
+            1 => ['name' => 'Eco-Novice', 'icon' => '🌱'],
+            5 => ['name' => 'Eco-Explorer', 'icon' => '🌿'],
             15 => ['name' => 'Eco-Enthusiast', 'icon' => '🍃'],
             30 => ['name' => 'Eco-Advocate', 'icon' => '🌎'],
             50 => ['name' => 'Eco-Guardian', 'icon' => '🛡️'],
@@ -295,11 +294,57 @@ class AccountController extends Controller
             ];
         }
 
-        $badges = array_merge($treeBadges, $questBadges);
+        // Additional custom badges based on controller data
+        $customBadges = [];
+
+        // Daily Streak badges
+        if ($currentStreak >= 7) {
+            $customBadges[] = [
+                'type' => 'streak',
+                'name' => 'Consistency Champion',
+                'icon' => 'heart_of_the_ecosystem.svg',
+                'required' => 7,
+                'unlocked' => true,
+                'unlocked_at' => now()->toDateString(),
+            ];
+        }
+        if ($currentStreak >= 30) {
+            $customBadges[] = [
+                'type' => 'streak',
+                'name' => 'Eco Legend',
+                'icon' => 'elite_milestone_badge.svg',
+                'required' => 30,
+                'unlocked' => true,
+                'unlocked_at' => now()->toDateString(),
+            ];
+        }
+
+        // Eco Actions badges
+        if ($ecoActions >= 10) {
+            $customBadges[] = [
+                'type' => 'action',
+                'name' => 'Action Starter',
+                'icon' => 'grove_tender.svg',
+                'required' => 10,
+                'unlocked' => true,
+                'unlocked_at' => now()->toDateString(),
+            ];
+        }
+        if ($ecoActions >= 50) {
+            $customBadges[] = [
+                'type' => 'action',
+                'name' => 'Eco Warrior',
+                'icon' => 'ripple_maker.svg',
+                'required' => 50,
+                'unlocked' => true,
+                'unlocked_at' => now()->toDateString(),
+            ];
+        }
+
+        // Merge all badges
+        $badges = array_merge($treeBadges, $questBadges, $customBadges);
         $unlockedCount = collect($badges)->where('unlocked', true)->count();
         $totalBadges = count($badges);
-
-        
 
         return view('account.myprogress', compact(
             'ecoPoints',
@@ -320,9 +365,6 @@ class AccountController extends Controller
             'growthMax'
         ));
     }
-
-
-
 
     // --- Rewards Page ---
     public function rewards()
