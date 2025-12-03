@@ -85,7 +85,7 @@ window.addEventListener('scroll', () => {
         textDiv.style.top = `${window.innerHeight * 0.520}px`;
         textEl.textContent = 'We all yearn to make a difference...';
         textEl.style.fontSize = window.innerWidth > 768 ? '1.5rem' : '1rem';
-        textEl.style.color = '#5e471dff';
+        textEl.style.color = '#3a5a0c';
 
         if (!window.textShown) {
             window.textShown = true;
@@ -101,7 +101,7 @@ window.addEventListener('scroll', () => {
             // DELAY before fading in
             window.fadeInTimeout = setTimeout(() => {
 
-                textEl.style.transition = 'opacity 2s ease';
+                textEl.style.transition = 'opacity 3s ease';
                 textEl.style.opacity = '1';
 
                 // Fade out after being fully visible
@@ -111,7 +111,7 @@ window.addEventListener('scroll', () => {
                     window.textFadedOut = true;
                 }, 5000); // Keep text visible for 5 seconds
 
-            }, 1800); // Delay before fade-in (1.8 seconds)
+            }, 1400); // Delay before fade-in (1.8 seconds)
         }
 
 
