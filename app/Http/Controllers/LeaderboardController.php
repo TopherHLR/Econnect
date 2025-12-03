@@ -1,24 +1,33 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\UserPointsHistory;
-use App\Models\QuestSubmission;
-use App\Models\UserEcoAction;
 
 class LeaderboardController extends Controller
 {
     public function index()
     {
         // ---------- Top by Progress Points ----------
-        $topByPoints = User::with(['pointsHistory', 'questSubmissions'])
+        $topByPoints = User::with('questSubmissions')
             ->where('user_type', '!=', 'admin')
             ->get()
             ->map(function ($user) {
-                $ecoPoints = $user->pointsHistory->where('points_change', '>', 0)->sum('points_change');
-                $questsCompleted = $user->questSubmissions->where('status', 'completed')->count();
 
-                $user->progressPoints = $ecoPoints + ($questsCompleted * 10); // adjust formula
+                // ✔️ Same logic used in your original code
+                $progressPoints = UserPointsHistory::where('user_id', $user->user_id)
+                    ->where('points_change', '>', 0)
+                    ->where('voided', false)
+                    ->sum('points_change');
+
+                $questsCompleted = $user->questSubmissions
+                    ->where('status', 'completed')
+                    ->count();
+
+                // Your formula
+                $user->progressPoints = $progressPoints;
+
                 return $user;
             })
             ->sortByDesc('progressPoints')
@@ -31,6 +40,7 @@ class LeaderboardController extends Controller
             ->get()
             ->map(function ($user) {
                 $user->questsCompleted = $user->questSubmissions->where('status', 'completed')->count();
+
                 return $user;
             })
             ->sortByDesc('questsCompleted')
@@ -38,24 +48,128 @@ class LeaderboardController extends Controller
             ->take(10);
 
         // ---------- Top by Daily Eco Actions ----------
-        $topDailyActions = User::where('user_type', '!=', 'admin')
-            ->withCount(['questSubmissions as dailyEcoActions' => function ($query) {
+        $topDailyTaps = User::where('user_type', '!=', 'admin')
+            ->withCount(['questSubmissions as dailyEcoTaps' => function ($query) {
                 $query->where('status', 'completed')
-                    ->whereHas('quest', fn($q) => $q->where('title', 'Daily Eco Action'));
+                    ->whereHas('quest', fn ($q) => $q->where('title', 'Daily Eco Taps'));
             }])
-            ->orderByDesc('dailyEcoActions')
+            ->orderByDesc('dailyEcoTaps')
             ->take(10)
             ->get();
 
+        $currentUser = auth()->user();
 
+        // Current user's progress points (same logic as leaderboard)
+        $myPoints = \App\Models\UserPointsHistory::where('user_id', $currentUser->user_id)
+            ->where('points_change', '>', 0)
+            ->where('voided', false)
+            ->sum('points_change');
+
+        $myQuests = $currentUser->questSubmissions()->where('status', 'completed')->count();
+
+        $myDailyTaps = $currentUser
+            ->questSubmissions()
+            ->where('status', 'completed')
+            ->whereHas('quest', fn ($q) => $q->where('title', 'Daily Eco Taps'))
+            ->count();
+
+        // Ranks calculation
+        $rankPoints =
+            \App\Models\User::where('user_type', '!=', 'admin')
+                ->get()
+                ->map(
+                    fn ($u) => [
+                        'id' => $u->user_id,
+                        'points' => \App\Models\UserPointsHistory::where('user_id', $u->user_id)
+                            ->where('points_change', '>', 0)
+                            ->where('voided', false)
+                            ->sum('points_change'),
+                    ],
+                )
+                ->sortByDesc('points')
+                ->pluck('id')
+                ->search($currentUser->user_id) + 1;
+
+        $rankQuests =
+            \App\Models\User::where('user_type', '!=', 'admin')
+                ->get()
+                ->map(
+                    fn ($u) => [
+                        'id' => $u->user_id,
+                        'quests' => $u->questSubmissions()->where('status', 'completed')->count(),
+                    ],
+                )
+                ->sortByDesc('quests')
+                ->pluck('id')
+                ->search($currentUser->user_id) + 1;
+
+        $rankTaps =
+            \App\Models\User::where('user_type', '!=', 'admin')
+                ->withCount([
+                    'questSubmissions as taps' => fn ($q) => $q
+                        ->where('status', 'completed')
+                        ->whereHas('quest', fn ($qq) => $qq->where('title', 'Daily Eco Taps')),
+                ])
+                ->orderByDesc('taps')
+                ->get()
+                ->pluck('user_id')
+                ->search($currentUser->user_id) + 1;
+
+        // Tree Stage Logic
+        $thresholds = [50, 100, 200, 300, 450, 550, 700];
+        $stage = 1;
+        foreach ($thresholds as $i => $t) {
+            if ($myPoints < $t) {
+                break;
+            }
+            $stage = $i + 2;
+        }
+        $currentThreshold = $thresholds[$stage - 2] ?? 0;
+        $nextThreshold = $thresholds[$stage - 1] ?? end($thresholds);
+        $progress =
+            $nextThreshold > $currentThreshold
+                ? (($myPoints - $currentThreshold) / ($nextThreshold - $currentThreshold)) * 100
+                : 100;
+
+        // In your LeaderboardController@index()
+        $treeStageSvgs = [
+            1 => null,
+            2 => 'sprout.svg',
+            3 => 'seedling.svg',
+            4 => 'young_tree.svg',        // or whatever you named it
+            5 => 'sapling.svg',
+            6 => 'young_tree.svg',
+            7 => 'growing_tree.svg',
+
+        ];
+
+        $treeNames = [
+            1 => 'Seed',
+            2 => 'Sprout',
+            3 => 'Seedling',
+            4 => 'Young Sapling',
+            5 => 'Sapling',
+            6 => 'Young Tree',
+            7 => 'Growing Tree',
+
+        ];
 
         return view('leaderboard', compact(
+            'treeStageSvgs',
+            'treeNames',
+            'stage',
+            'nextThreshold',
+            'myPoints',
+            'rankPoints',
+            'myDailyTaps',
+            'rankTaps',
+            'rankQuests',
+            'myQuests',
+            'progress',
             'topByPoints',
             'topByQuests',
-            'topDailyActions',
+            'topDailyTaps',
 
         ));
     }
-
 }
-

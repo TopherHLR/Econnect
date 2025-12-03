@@ -974,3 +974,11 @@
     opacity: 0;
     transform: translateY(-50%) translateX(5px);
 }
+
+@keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+}
+.animate-bounce-slow {
+    animation: bounce-slow 2.8s ease-in-out infinite;
+}

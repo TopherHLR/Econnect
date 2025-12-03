@@ -235,7 +235,7 @@ class AccountController extends Controller
             ->where('voided', false)
             ->sum('points_change');
 
-        $stageThresholds = [50, 100, 200, 300, 450, 550, 700, 850, 1000, 1500];
+        $stageThresholds = [50, 100, 200, 300, 450, 550, 700];
         $stage = 1;
         foreach ($stageThresholds as $index => $threshold) {
             if ($progressPoints < $threshold) break;
@@ -258,9 +258,7 @@ class AccountController extends Controller
             450  => ['name' => 'Growing Tree', 'icon' => '🎋'],
             550  => ['name' => 'Strong Tree', 'icon' => '🌴'],
             700  => ['name' => 'Mature Tree', 'icon' => '🌳'],
-            850 => ['name' => 'Flowering Tree', 'icon' => '🌸'],
-            1000 => ['name' => 'Ancient Tree', 'icon' => '🌺'],
-            1500 => ['name' => 'Ancient Tree', 'icon' => '🌺'],
+
         ];
         $treeBadges = [];
         foreach ($treeStages as $points => $stage) {
