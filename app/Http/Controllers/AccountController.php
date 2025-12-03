@@ -299,21 +299,7 @@ class AccountController extends Controller
         $unlockedCount = collect($badges)->where('unlocked', true)->count();
         $totalBadges = count($badges);
 
-        $progressCards = [
-            [
-                'title' => 'Tree Growth',
-                'percent' => $treePercent,
-                'color' => '#4F6B3F',
-                'desc' => 'Grow your virtual tree!',
-            ],
-            [
-                'title' => 'Quests Completed',
-                'percent' => $questsPercent,
-                'color' => '#7CA86C',
-                'desc' => "$completedQuestsByUser quests completed!",
-            ],
-        ];
-
+        
 
         return view('account.myprogress', compact(
             'ecoPoints',
@@ -331,8 +317,7 @@ class AccountController extends Controller
             'unlockedCount',
             'totalBadges',
             'growthPercent',
-            'growthMax',
-            'progressCards',  // <-- add this
+            'growthMax'
         ));
     }
 
