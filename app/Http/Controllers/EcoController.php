@@ -112,10 +112,10 @@ class EcoController extends Controller
         }
 
         // Tree stages
-        $treeStages = 10;
+        $treeStages = 7;
 
         // Define points required per stage
-        $stageThresholds = [50, 100, 200, 300, 450, 550, 700,850,1000,1500];
+        $stageThresholds = [50, 100, 200, 300, 450, 550, 700];
 
         // Determine current stage
         $stage = 1;
@@ -134,12 +134,8 @@ class EcoController extends Controller
             ? $stageThresholds[$stage - 2]
             : 0;
 
-        // Compute percentage within the stage
-        $growthPercent = ($growthMax - $prevThreshold) > 0
-            ? (($progressPoints - $prevThreshold) / ($growthMax - $prevThreshold)) * 100
-            : 0;
-
-        $growthPercent = min(100, max(0, $growthPercent));
+        $growthPercent = min(100, ($progressPoints / $growthMax) * 100); // percentage
+  
 
         // ⭐ FETCH FEEDBACK (merging FeedbackController logic)
         $feedback = \App\Models\Feedback::with('user')

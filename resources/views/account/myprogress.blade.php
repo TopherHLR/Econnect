@@ -21,14 +21,14 @@
             <h1 class="text-3xl font-bold text-[#4F6B3F] flex items-center">
                 Your Eco-Journey So Far <span class="ml-3 text-2xl"></span>
             </h1>
-            <p class="text-[#6B665E] mt-2 text-lg">Track your growth, achievements, and daily impact.</p>
+
         </div>
 
 
         <div class="flex flex-col md:items-end space-y-3 w-full md:w-auto">
             <div
                 class="bg-gradient-to-r from-[#F2E8D5] to-[#F8F2E6] text-[#4F6B3F] rounded-full px-5 py-2 font-semibold shadow-md border border-[#E8DBC7]">
-                Rank: Eco Defender
+                <p class="text-[#6B665E] text-lg">Track your growth, achievements, and daily impact.</p>
             </div>
         </div>
     </div>
@@ -108,27 +108,40 @@
         </div>
 
         <p class="text-[#4B3F2F] mb-4 text-center md:text-left">
-            You've been consistent for {{ $currentStreak ?? 0 }} days! Keep going
+            Track your daily eco actions and consistency.
         </p>
 
         <div class="flex items-center justify-center md:justify-start space-x-3 flex-wrap gap-3">
             @php
-                // Display the dates for the current streak
-                $streakDates = [];
-                for ($i = 0; $i < $currentStreak; $i++) {
-                    $streakDates[] = now()->subDays($i)->format('M d'); // e.g., Nov 25
+                use App\Models\QuestSubmission; // <-- import the model
+                use Carbon\Carbon;
+                // Display the last 10 days for visual context
+                $daysToShow = 10;
+                $recentDays = [];
+                for ($i = 0; $i < $daysToShow; $i++) {
+                    $recentDays[] = now()->subDays($i)->format('M d'); // e.g., Dec 03
                 }
-                $streakDates = array_reverse($streakDates); // oldest first
+                $recentDays = array_reverse($recentDays);
+
+                // Get all completed Daily Eco Taps dates
+                $completedDates = QuestSubmission::where('user_id', auth()->id())
+                    ->where('status', 'completed')
+                    ->whereHas('quest', fn($q) => $q->where('title', 'Daily Eco Taps'))
+                    ->pluck('date_completed')
+                    ->map(fn($d) => \Carbon\Carbon::parse($d)->format('M d'))
+                    ->toArray();
             @endphp
 
-            @foreach ($streakDates as $date)
+            @foreach ($recentDays as $date)
                 <div
-                    class="rounded-full bg-gradient-to-br from-[#4F6B3F] to-[#5A7A47] w-14 h-14 flex justify-center items-center text-white text-sm font-semibold shadow-md">
+                    class="rounded-full w-14 h-14 flex justify-center items-center text-white text-sm font-semibold shadow-md
+                {{ in_array($date, $completedDates) ? 'bg-gradient-to-br from-[#4F6B3F] to-[#5A7A47]' : 'bg-gray-300 text-gray-700' }}">
                     {{ $date }}
                 </div>
             @endforeach
         </div>
     </div>
+
 
     <!-- Recent Submissions -->
     <div class="bg-gradient-to-br from-[#FCFFF6] to-[#FDFCF8] rounded-2xl shadow-md p-6 mb-8 border border-[#ECF4E7]">
@@ -177,15 +190,22 @@
                         <!-- Badge icon -->
                         <div class="w-30 h-30 flex items-center justify-center mb-4">
                             @php
+
+
                                 $badgeIcons = [
-                                    'Eco-Novice' => 'seedling.svg',
+                                    'Seed' => 'seed.svg',
                                     'Sprout' => 'sprout.svg',
+                                    'Seedling' => 'seedling.svg',
+                                    'Sapling' => 'sapling.svg',
+                                    'Young Tree' => 'young_tree.svg',
+                                    'Growing Tree' => 'growing_tree.svg',
+                                    'Elite Milestone' => 'elite_milestone_badge.svg',
+                                    'Orange Earth Milestone' => 'orange_earth_milestone_badge.svg',
                                     'Eco-Explorer' => 'eco_green_milestone.svg',
                                     'Eco-Enthusiast' => 'grove_tender.svg',
                                     'Eco-Advocate' => 'ripple_maker.svg',
                                     'Eco-Guardian' => 'eco_guardian.svg',
-                                    'Strong Tree' => 'elite_milestone_badge.svg',
-                                    'Flowering Tree' => 'orange_earth_milestone_badge.svg',
+
                                     'Heart of the Ecosystem' => 'heart_of_the_ecosystem.svg',
                                 ];
                                 $iconPath = $badgeIcons[$badge['name']] ?? null;

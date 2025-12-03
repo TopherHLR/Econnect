@@ -84,15 +84,6 @@
                     <span x-show="loading">Please wait, verifying your email...</span>
                 </button>
             </form>
-
-
-            <!-- 🌱 Footer -->
-            <p class="text-center text-xs text-gray-500 mt-6">
-                Didn’t receive the code? 
-                <a href="{{ route('register') }}" class="text-[#5a6b3e] hover:underline font-medium">
-                    Try registering again
-                </a>
-            </p>
         </div>
     </div>
 
