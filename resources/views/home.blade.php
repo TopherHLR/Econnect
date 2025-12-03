@@ -115,7 +115,7 @@
         </script>
     @endauth
 
-<section style="position: relative; top: -75px; min-height: 150vh; display: flex; align-items: center; justify-content: center;" class="viewport2BG">
+<section style="position: relative; top: -75px; min-height: 110vh; display: flex; align-items: center; justify-content: center;" class="viewport2BG">
 
     @auth
         @if (auth()->user()->user_type === 'verified_user')
@@ -301,7 +301,7 @@
 
 
 <div id="plant-container"
-    class="relative w-[600px] -top-215 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
+    class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
 
 <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
 <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
@@ -698,216 +698,525 @@
     </section>
 
 
-    <section class="relative text-center py-20 px-6 overflow-hidden mb-[96px]">
-        <!-- Left Cloud -->
-        <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Left"
-            class="absolute left-[-160px] top-10 w-[500px] opacity-90">
+ <section class="relative text-center py-27 px-6 overflow-hidden mb-[96px]">
+    <!-- Pattern background layer (behind everything) -->
+    <div class="absolute inset-0 bg-[url('/resources/images/viewport1/patter.png')] bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none 
+                filter hue-rotate-30 saturate-200 brightness-75 z-0"></div>
+    
+    <!-- Left Cloud (in front of pattern) -->
+    <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Left"
+         class="absolute left-[-160px] top-[-70px] w-[50rem] opacity-90 z-10">
 
-        <!-- Right Cloud -->
-        <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Right"
-            class="absolute right-[-160px] top-10 w-[500px] opacity-90 scale-x-[-1]">
+    <!-- Right Cloud (in front of pattern) -->
+    <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Right"
+         class="absolute right-[-160px] top-[-70px] w-[50rem] opacity-90 z-10">
 
-        <!-- Content -->
-        <div class="relative flex flex-col items-center justify-center space-y-10 z-10">
-            <h2 class="text-white italic font-semibold text-3xl md:text-4xl drop-shadow-md">
-                Just like <span class="font-bold">ECOnnect</span>
-            </h2>
+    <!-- Content -->
+    <div class="relative flex flex-col items-center justify-center space-y-10 z-20 -mt-20 md:-mt-23">
+        <h2 class="text-white font-serif italic font-bold text-5xl md:text-6xl lg:text-7xl 
+                  drop-shadow-[0_4px_8px_rgba(111,78,55,0.65),0_8px_24px_rgba(89,63,44,0.55),0_0_35px_rgba(255,252,225,0.25)]
+                   tracking-wider leading-snug text-center px-4 relative z-30">
+            Just like <span class="text-[#fff8b0] drop-shadow-[0_0_20px_rgba(255,248,176,0.6)]">Eco Brew</span>
+        </h2>
+        
 
-            <!-- Arrow -->
-            <div class="flex justify-center">
-                <img src="{{ Vite::asset('resources/images/viewport1/arrowdown.png') }}" alt="Arrow Down"
-                    class="w-[100px] h-auto">
-            </div>
+<!-- Eco Brew Logo - Circular & Emotional -->
+<div class="flex justify-center">
+    <div class="relative group mt-10">
+        <!-- Soft outer glow with nature colors -->
+        <div class="absolute inset-0 bg-gradient-to-br from-[#e8f5e9]/30 via-[#c8e6c9]/20 to-[#a5d6a7]/10 blur-lg rounded-full -z-10 
+                    group-hover:from-[#f1f8e9]/40 group-hover:via-[#dcedc8]/30 group-hover:to-[#c5e1a5]/20 
+                    transition-all duration-500"></div>
+        
+        <!-- Natural leaf pattern overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-[#81c784]/5 via-transparent to-[#4caf50]/5 
+                    rounded-full -z-10 mix-blend-overlay"></div>
+        
+        <!-- Main circular logo container -->
+        <div class="relative overflow-hidden rounded-full border-2 border-[#c8e6c9]/40 
+                    shadow-inner shadow-[#e8f5e9]/30 
+                    group-hover:border-[#a5d6a7]/60 group-hover:shadow-[#f1f8e9]/40
+                    transition-all duration-300">
+            
+            <!-- Logo image with circular crop -->
+            <img src="{{ Vite::asset('resources/images/logo/ecobrew.jpg') }}" alt="Eco Brew Logo"
+                 class="w-[140px] md:w-[400px] h-[170px] md:h-[400px] object-cover 
+                        transition-all duration-500 ease-out
+                        group-hover:scale-105 group-hover:brightness-110
+                        filter saturate-110">
+            
+            <!-- Subtle shine effect -->
+            <div class="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent 
+                        opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        </div>
+        
+        <!-- Floating leaf accent -->
+        <div class="absolute -top-2 -right-2 opacity-70 group-hover:opacity-100 
+                    transition-opacity duration-300">
+            <svg class="w-8 h-8 text-[#81c784]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/>
+            </svg>
+        </div>
+        
+        <!-- Soft shadow with earthy tones -->
+        <div class="absolute inset-0 -z-20 rounded-full 
+                    drop-shadow-[0_0_30px_rgba(129,199,132,0.2),
+                                0_0_60px_rgba(76,175,80,0.15),
+                                0_4px_20px_rgba(90,74,54,0.1)]"></div>
+    </div>
+</div>
 
             <!-- Text Box -->
-            <div
-                class="bg-[#6b3f26] text-white text-base md:text-lg px-6 py-3 rounded-xl max-w-md leading-relaxed shadow-md">
-                ECOnnect shares simple ways to live more sustainably—at no cost.
-            </div>
+ <div class="bg-gradient-to-r from-[#6b4f37]/80 to-[#3a2a1c]/80 
+                text-amber-50 text-lg md:text-2xl px-8 py-3 rounded-2xl max-w-4xl 
+                leading-relaxed shadow-[0_8px_32px_rgba(111,78,55,0.3)]
+                border border-amber-900/30 backdrop-blur-sm
+                font-sans-serif italic text-center
+                drop-shadow-[0_4px_6px_rgba(0,0,0,0.25)] mt-35">
+        Ecobrew shares simple ways to live more sustainably—at no cost.
         </div>
     </section>
 
-    <section class="py-20 px-8 overflow-hidden relative">
+  <section class="py-20 px-8 overflow-hidden relative">
+         
 
-
-        <!-- 🌿 Cards -->
-        <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
-
-            <!-- 🌱 Card 1 -->
-            <div
-                class="bg-gradient-to-r from-[#E3F2D3] to-[#F7FBEE] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px]">
-                <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute more</h3>
-                    <p class="text-gray-700 mt-2 text-[20px]">EcoBrew shares simple ways to live more sustainably—at no
-                        cost.</p>
-                    <div class="flex justify-end">
-                        <a href="/leaderboard" class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                            Explore Leaderboards
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 🌿 Card 2 -->
-            <div
-                class="bg-gradient-to-r from-[#F7FBEE] to-[#E3F2D3] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] ml-[160px] mr-[160px] min-h-[300px]">
-                <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
-                    <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
-                    <!-- 🔽 Button moved to left side -->
-                    <div class="flex justify-start">
-                        <a href="/quests" class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                            Explore quests
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ☕ Card 3 -->
-            <div
-                class="bg-gradient-to-r from-[#E3F2D3] to-[#F7FBEE] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px]">
-                <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]"> Be inspired by ECOnnect</h3>
-                    <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
-                    <div class="flex justify-end">
-                        <a href="/about" class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                            Explore About Us
-                        </a>
-                    </div>
-                </div>
-            </div>
-
+        <!-- Background overlay image with exact opacity and pointer-events -->
+   <div class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat"></div>
+       <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
         </div>
-    </section>
 
+      <!-- 🌫️ Soft Fog Layer -->
+<div class="absolute top-[-3rem] left-0 w-full h-[150px] 
+            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"></div>
+    <!-- 🌿 Cards -->
+    <!-- 🌿 Cards -->
+    <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
 
+      <!-- 🌱 Card 1 (Picture on LEFT) -->
+<div class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+    <!-- Left side image -->
+    <div class="w-64 h-64 mr-8 flex-shrink-0">
+        <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}" 
+             alt="People collaborating on sustainability"
+             class="w-full h-full object-cover rounded-2xl shadow-md">
+    </div>
+    
+    <!-- Content on right -->
+    <div class="flex-1">
+        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute more</h3>
+        <p class="text-gray-700 mt-1text-[20px]">EcoBrew shares simple ways to live more sustainably—at no cost.</p>
+        <div class="flex justify-end">
+            <a href="/leaderboard" class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                Explore Leaderboards
+            </a>
+        </div>
+    </div>
+</div>
 
-    <section class="relative py-48 px-8 bg-center bg-cover overflow-hidden"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/cc23b421-0654-477b-86a8-4b6462a55a94.png') }}');">
+<!-- 🌿 Card 2 (Picture on RIGHT) -->
+<div class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[160px] mr-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+    <!-- Content on left -->
+    <div class="flex-1">
+        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
+        <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
+        <div class="flex justify-start">
+            <a href="/quests" class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                Explore quests
+            </a>
+        </div>
+    </div>
+    
+    <!-- Right side image -->
+    <div class="w-64 h-64 ml-8 flex-shrink-0">
+        <img src="{{ Vite::asset('resources/images/viewport1/quest.jpg') }}" 
+             alt="Eco quests and challenges"
+             class="w-full h-full object-cover rounded-2xl shadow-md">
+    </div>
+</div>
 
-        <!-- 🌿 Left Leaf Cluster Top (moved lower) -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (15).png') }}"
-            class="absolute left-93 bottom-27 w-48 md:w-64 opacity-90 pointer-events-none select-none" alt="Leaf cluster">
+<!-- ☕ Card 3 (Picture on LEFT) -->
+<div class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+    <!-- Left side image -->
+    <div class="w-64 h-64 mr-8 flex-shrink-0">
+        <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}" 
+             alt="Sustainable café inspiration"
+             class="w-full h-full object-cover rounded-2xl shadow-md">
+    </div>
+    
+    <!-- Content on right -->
+    <div class="flex-1">
+        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Be inspired by ECOnnect</h3>
+        <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
+        <div class="flex justify-end">
+            <a href="/about" class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                Explore About Us
+            </a>
+        </div>
+    </div>
+</div>
+</section><section         <!-- Background overlay image with exact opacity and pointer-events -->
+   <div class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat"></div>
+       <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
+        </div>
 
-        <!-- 🌿 Right Leaf Cluster Top -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (16).png') }}"
-            class="absolute right-90 bottom-70 w-52 md:w-72 opacity-90 pointer-events-none select-none"
-            alt="Leaf cluster">
+      <!-- 🌫️ Soft Fog Layer -->
+<div class="absolute top-[-3rem] left-0 w-full h-[150px] 
+            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"
+   class="relative py-30 px-8 overflow-hidden" style="background: linear-gradient(to bottom, #FAF8F3, #F5F2EB)"></div>
+   
+    <!-- Soft organic pattern background -->
+    <div class="absolute inset-0 bg-[url('/resources/images/viewport1/patter.png')] bg-cover bg-center bg-no-repeat opacity-5 pointer-events-none z-0" 
+         style="filter: hue-rotate(60deg) saturate(0.8) brightness(1.1)"></div>
 
-        <!-- 🌿 Left Leaf Cluster Bottom -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (18).png') }}"
-            class="absolute left-[-100px] top-50 w-56 md:w-72 opacity-90 pointer-events-none select-none"
-            alt="Leaf cluster">
+    <!-- Subtle nature accents -->
+    <div class="absolute top-10 left-5 w-32 h-32 opacity-10 z-[1]">
+        <i class="fa-solid fa-leaf text-8xl" style="color: #8A9A7B"></i>
+    </div>
+    <div class="absolute bottom-10 right-5 w-28 h-28 opacity-10 z-[1]">
+        <i class="fa-solid fa-seedling text-7xl" style="color: #6B7D5A"></i>
+    </div>
 
-        <!-- 🌿 Right Leaf Cluster Bottom -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (19).png') }}"
-            class="absolute right-[-100px] top-50 w-60 md:w-80 opacity-90 pointer-events-none select-none"
-            alt="Leaf cluster">
+    <div class="relative z-10 max-w-7xl mx-auto text-center">
 
-        <div class="relative z-10 max-w-6xl mx-auto text-center">
-
-            <h3 class="text-[#4A6613] italic font-semibold text-2xl md:text-3xl mb-12">
-                What our community <br> is saying:
+        <!-- Section header -->
+        <div class="mb-14">
+            <div class="inline-flex items-center gap-3 mb-4">
+                <div class="w-12 h-0.5" style="background-color: #C8D5BB"></div>
+                <i class="fa-solid fa-heart text-2xl" style="color: #9BAF8D"></i>
+                <div class="w-12 h-0.5" style="background-color: #C8D5BB"></div>
+            </div>
+            <h3 class="font-serif italic font-medium text-4xl md:text-5xl mb-3" style="color: #5A6B4A">
+                Voices from Our Community
             </h3>
+            <p class="text-lg max-w-2xl mx-auto font-light" style="color: rgba(91, 107, 74, 0.7)">
+                Hear what mindful souls are saying about their sustainable journey
+            </p>
+        </div>
 
-            <!-- ⭐ ADD FEEDBACK FORM -->
-            @auth
-                <form action="{{ route('feedback.store') }}" method="POST"
-                    class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-10 max-w-xl mx-auto text-left">
-                    @csrf
+        <!-- ⭐ ADD FEEDBACK FORM -->
+        @auth
+            <form action="{{ route('feedback.store') }}" method="POST"
+                class="rounded-3xl shadow-sm p-8 mb-16 max-w-2xl mx-auto text-center border transition-shadow duration-500 backdrop-blur-sm"
+                style="background: rgba(255, 255, 255, 0.8); border-color: rgba(200, 213, 187, 0.8)">
+                @csrf
 
-                    <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-comment-dots text-[#4A6613]"></i>
-                        Share Your Feedback
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <i class="fa-solid fa-pen-nib text-2xl" style="color: #6B7D5A"></i>
+                    <h4 class="font-medium text-2xl" style="color: #5A6B4A">
+                        Share Your Thoughts
                     </h4>
+                </div>
 
-                    <textarea name="content" required rows="3"
-                        class="w-full p-4 border rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#4A6613]"
-                        placeholder="Write your feedback here..."></textarea>
+                <textarea name="content" required rows="3"
+                    class="w-full p-5 border rounded-2xl focus:outline-none transition-all duration-300 resize-none"
+                    style="background: rgba(255, 255, 255, 0.95); border-color: #D4DECD;"
+                    placeholder="What positive change has sustainability brought to your life? 🌱"
+                    x-data="{ charCount: 0 }"
+                    x-on:input="charCount = $event.target.value.length"
+                    maxlength="280"></textarea>
+                
+                <div class="text-right text-sm mt-2" x-show="charCount > 0" style="color: rgba(107, 125, 90, 0.6)">
+                    <span x-text="charCount"></span>/280
+                </div>
 
-                    <label class="block mt-4 mb-2 font-semibold text-[#4A6613]">Rating:</label>
-
-
-                    <div class="flex gap-2 mb-4" x-data="{ rating: 0 }">
+                <div class="my-8">
+                    <label class="block font-medium text-lg mb-4" style="color: #6B7D5A">
+                        How would you rate your experience?
+                    </label>
+                    <div class="flex justify-center gap-2 mb-4" x-data="{ rating: 0 }">
                         @for ($i = 1; $i <= 5; $i++)
-                            <label class="cursor-pointer">
+                            <label class="cursor-pointer group">
                                 <input type="radio" name="rating" value="{{ $i }}" class="hidden"
                                     x-model="rating" required>
-                                <i class="fa-solid fa-star text-2xl"
-                                    :class="rating >= {{ $i }} ? 'text-yellow-500' : 'text-gray-300'"
-                                    @click="rating = {{ $i }}"></i>
+                                <div class="relative">
+                                    <i class="fa-solid fa-star text-3xl transition-all duration-300 group-hover:scale-110"
+                                        :class="rating >= {{ $i }} ? 'text-[#FBBF24]' : 'text-[#D4DECD]'"
+                                        :style="rating < {{ $i }} ? 'color: #D4DECD' : ''"></i>
+                                </div>
                             </label>
                         @endfor
                     </div>
+                </div>
 
+                <button type="submit" 
+                    class="group text-white px-10 py-3 rounded-full text-lg font-medium transition-all duration-400 shadow-sm hover:shadow"
+                    style="background: linear-gradient(to right, #6B7D5A, #8A9A7B)">
+                    <i class="fa-solid fa-paper-plane mr-3 group-hover:rotate-12 transition-transform"></i>
+                    Share Feedback
+                </button>
+            </form>
+        @else
+            <div class="rounded-2xl p-8 mb-16 max-w-xl mx-auto border shadow-sm backdrop-blur-sm"
+                 style="background: rgba(255, 255, 255, 0.8); border-color: rgba(200, 213, 187, 0.8)">
+                <i class="fa-solid fa-leaf-circle text-5xl mb-4" style="color: #9BAF8D"></i>
+                <p class="font-medium text-xl mb-3" style="color: #6B7D5A">
+                    Join our community conversation
+                </p>
+                <p class="mb-6 font-light" style="color: rgba(107, 125, 90, 0.7)">
+                    Sign in to share your sustainable journey with others
+                </p>
+                <a href="{{ route('login') }}" 
+                   class="inline-flex items-center gap-2 text-white px-8 py-3 rounded-full transition-colors shadow-sm"
+                   style="background-color: #8A9A7B">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    Sign in to contribute
+                </a>
+            </div>
+        @endauth
 
-                    <button type="submit" class="bg-[#4A6613] text-white px-6 py-2 rounded-xl hover:bg-[#3a5010] transition">
-                        Submit Feedback
-                    </button>
-                </form>
-            @else
-                <p class="text-red-600 font-semibold mb-10">You must be logged in to submit feedback.</p>
-            @endauth
+        <!-- FEEDBACK CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            @foreach ($feedback as $item)
+                <div class="group rounded-3xl p-6 text-left relative border transition-all duration-300 hover:shadow-lg cursor-default overflow-hidden backdrop-blur-sm"
+                     style="background: rgba(255, 255, 255, 0.8); border-color: rgba(200, 213, 187, 0.8)">
+                    
+                    <!-- Soft top accent -->
+                    <div class="absolute top-0 left-0 right-0 h-1"
+                         style="background: linear-gradient(to right, rgba(200, 213, 187, 0.6), rgba(155, 175, 141, 0.5), rgba(200, 213, 187, 0.6))"></div>
+                    
+                    <!-- Soft floating avatar -->
+                    <div class="absolute -top-5 right-6">
+                        <div class="relative">
+                            <div class="w-12 h-12 rounded-full border-2 border-white shadow-sm flex items-center justify-center"
+                                 style="background: linear-gradient(to bottom right, #F8F9F7, #F0F1EA)">
+                                <i class="fa-solid fa-leaf text-lg" style="color: #8A9A7B"></i>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- FEEDBACK CARDS -->
-            <div class="flex flex-col md:flex-row justify-center gap-6 flex-wrap">
-
-                @foreach ($feedback as $item)
-                    <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 w-full md:w-1/4 text-left relative">
-
-                        <!-- Quotation Mark -->
-                        <i class="fa-solid fa-quote-left text-4xl text-[#4A6613] absolute top-3 left-3 opacity-70"></i>
-
-                        <!-- User Avatar -->
-                        <i class="fa-solid fa-user-circle text-4xl text-[#4A6613] absolute top-3 right-3 opacity-70"></i>
-
-                        <!-- User Name -->
-                        <p class="font-semibold text-[#4A6613] mt-14">
-                            {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
+                    <!-- User info -->
+                    <div class="mb-4">
+                        <p class="font-medium text-lg" style="color: #6B7D5A">
+                            {{ $item->user->first_name ?? 'Community Member' }}
                         </p>
-
-                        <!-- Feedback Content -->
-                        <p class="text-[#4E3A2E] italic mb-2">
-                            “{{ $item->content }}”
+                        <p class="text-sm flex items-center gap-2 mt-1 font-light" style="color: rgba(107, 125, 90, 0.6)">
+                            <i class="fa-solid fa-calendar-day text-xs"></i>
+                            {{ $item->created_at->format('M d, Y') }}
                         </p>
+                    </div>
 
-                        <!-- ⭐ Dynamic Star Rating -->
-                        <div class="absolute bottom-3 left-3 flex">
+                    <!-- Feedback content with soft quotation -->
+                    <div class="relative">
+                        <i class="fa-solid fa-quote-left text-2xl absolute -top-1 -left-1" style="color: rgba(212, 222, 205, 0.5)"></i>
+                        <p class="italic leading-relaxed pl-5 mb-5 min-h-[100px] text-sm md:text-base" style="color: rgba(90, 107, 74, 0.9)">
+                            "{{ $item->content }}"
+                        </p>
+                        <i class="fa-solid fa-quote-right text-2xl absolute bottom-0 right-2" style="color: rgba(212, 222, 205, 0.5)"></i>
+                    </div>
+
+                    <!-- Soft star rating -->
+                    <div class="flex items-center justify-between pt-5" style="border-top: 1px solid rgba(200, 213, 187, 0.5)">
+                        <div class="flex gap-0.5">
                             @for ($i = 1; $i <= 5; $i++)
-                                <i
-                                    class="fa-solid fa-star {{ $i <= $item->rating ? 'text-yellow-500' : 'text-gray-300' }} text-xl"></i>
+                                <i class="fa-solid fa-star text-lg {{ $i <= $item->rating ? 'text-[#FBBF24]' : 'text-[#D4DECD]' }}"></i>
                             @endfor
                         </div>
-
-                        <!-- Decorative icon -->
-                        <i
-                            class="fa-solid fa-quote-right text-3xl text-[#4A6613] absolute bottom-3 right-5 opacity-60"></i>
+                        
+                        <!-- Soft impact indicator -->
+                        <div class="flex items-center gap-2 text-sm font-light" style="color: rgba(107, 125, 90, 0.7)">
+                            <div class="flex items-center">
+                                @php
+                                    $ecoLevel = match($item->rating) {
+                                        5 => 'Inspiring',
+                                        4 => 'Heartwarming',
+                                        3 => 'Thoughtful',
+                                        default => 'Nice'
+                                    };
+                                    $ecoIcon = match($item->rating) {
+                                        5 => 'fa-sparkles',
+                                        4 => 'fa-heart',
+                                        3 => 'fa-lightbulb',
+                                        default => 'fa-smile'
+                                    };
+                                @endphp
+                                <i class="fa-solid {{ $ecoIcon }} mr-1 text-xs"></i>
+                                {{ $ecoLevel }}
+                            </div>
+                        </div>
                     </div>
-                @endforeach
 
-            </div>
-
-
+                    <!-- Very subtle hover effect -->
+                    <div class="absolute inset-0 -z-10 transition-all duration-500"
+                         style="background: linear-gradient(to bottom right, rgba(248, 249, 247, 0), rgba(240, 241, 234, 0), rgba(248, 249, 247, 0))"></div>
+                </div>
+            @endforeach
         </div>
 
+        <!-- Empty state -->
+        @if($feedback->isEmpty())
+        <div class="rounded-3xl p-10 text-center border shadow-sm backdrop-blur-sm"
+             style="background: rgba(255, 255, 255, 0.8); border-color: rgba(200, 213, 187, 0.8)">
+            <i class="fa-solid fa-comments text-5xl mb-5" style="color: #C8D5BB"></i>
+            <h4 class="text-xl font-medium mb-2" style="color: #6B7D5A">Be the first to share!</h4>
+            <p class="text-sm max-w-md mx-auto font-light" style="color: rgba(107, 125, 90, 0.7)">
+                Your sustainable story could inspire others to embrace mindful living.
+            </p>
+        </div>
+        @endif
 
-    </section>
-
-    <section class="relative text-center py-32 px-6 bg-center bg-repeat"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}'); background-blend-mode: soft-light;">
-
-        <div class="max-w-3xl mx-auto">
-            <!-- 🌎 Call to Action -->
-            <h3 class="text-[#5C3B23] italic font-semibold text-xl md:text-5xl mb-8">
-                Your first eco-quest awaits!
-            </h3>
-
-            <a href="/"
-                class="bg-gradient-to-r from-[#8B5E3C] to-[#5C3B23] text-white font-semibold py-3 px-8 rounded-full shadow-md hover:opacity-90 transition">
-                Start Your Journey
+        <!-- View more button -->
+        @if($feedback->count() >= 6)
+        <div class="mt-10">
+            <a href="{{ route('feedback.index') }}" 
+               class="inline-flex items-center gap-2 font-medium text-sm border px-6 py-3 rounded-full transition-all duration-300 group"
+               style="color: #8A9A7B; border-color: #C8D5BB">
+                <span>View all stories</span>
+                <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
             </a>
         </div>
-    </section>
+        @endif
+
+    </div>
+
+</section>
+ <section class="relative text-center py-32 px-6 overflow-hidden">
+            <!-- Background overlay image with exact opacity and pointer-events -->
+   <div class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat"></div>
+       <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
+        </div>
+
+      <!-- 🌫️ Soft Fog Layer -->
+<div class="absolute top-[-3rem] left-0 w-full h-[150px] 
+            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"></div>
+   
+    <!-- Soft gradient background (different from above) -->
+    <div class="absolute inset-0" 
+         style="background: radial-gradient(circle at 50% 50%, #F1EEE6, #E8E4DA)"></div>
+    
+    <!-- Subtle water/wave pattern overlay -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none"
+         style="background-image: url('data:image/svg+xml,<svg width="100" height="20" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M0,10 C20,5 40,15 60,10 C80,5 100,15 100,10 L100,20 L0,20 Z" fill="%236B7D5A"/></svg></div>
+    
+    <!-- Floating eco elements -->
+    <div class="absolute top-20 left-10 w-16 h-16 opacity-10 animate-float">
+        <i class="fa-solid fa-droplet text-5xl" style="color: #8A9A7B"></i>
+    </div>
+    <div class="absolute bottom-20 right-12 w-20 h-20 opacity-10 animate-float" style="animation-delay: 1s">
+        <i class="fa-solid fa-wind text-6xl" style="color: #9BAF8D"></i>
+    </div>
+    
+    <!-- Subtle background image with very low opacity -->
+    <div class="absolute inset-0 bg-center bg-contain bg-no-repeat opacity-5 mix-blend-soft-light"
+        style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}');"></div>
+
+    <div class="relative z-10 max-w-3xl mx-auto">
+        
+        <!-- Nature-inspired divider -->
+        <div class="flex justify-center mb-10">
+            <div class="relative">
+                <div class="w-32 h-1 rounded-full" style="background: linear-gradient(to right, transparent, #C8D5BB, transparent)"></div>
+                <div class="absolute -top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center"
+                     style="background: #F1EEE6; border: 2px solid #C8D5BB">
+                    <i class="fa-solid fa-leaf text-sm" style="color: #8A9A7B"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earthy call to action -->
+        <div class="mb-12">
+            <p class="text-sm font-light tracking-wider uppercase mb-4" style="color: #8A9A7B; letter-spacing: 0.2em">
+                Begin Your Path
+            </p>
+            <h3 class="font-serif text-4xl md:text-6xl font-light mb-6 leading-tight" style="color: #5A6B4A">
+                Ready to make<br>
+                <span class="italic font-medium">gentle waves</span> of change?
+            </h3>
+            <p class="text-lg max-w-xl mx-auto font-light mb-10" style="color: rgba(90, 107, 74, 0.8); line-height: 1.8">
+                Join our community of mindful individuals taking small, 
+                meaningful steps toward a more sustainable future.
+            </p>
+        </div>
+
+        <!-- Soft pill-shaped CTA button -->
+        <a href="/"
+            class="group relative inline-flex items-center justify-center gap-3 text-lg font-medium py-5 px-12 rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 mb-10">
+            <!-- Button background with gradient -->
+            <div class="absolute inset-0 rounded-full" 
+                 style="background: linear-gradient(to right, #8A9A7B, #9BAF8D)"></div>
+            
+            <!-- Button hover effect overlay -->
+            <div class="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            
+            <!-- Button content -->
+            <span class="relative text-white">
+                <i class="fa-solid fa-seedling mr-3 group-hover:rotate-180 transition-transform duration-700"></i>
+                Start Your First Quest
+            </span>
+            
+            <!-- Subtle glow effect -->
+            <div class="absolute -inset-1 rounded-full blur opacity-0 group-hover:opacity-30 transition-opacity duration-500"
+                 style="background: #8A9A7B"></div>
+        </a>
+
+        <!-- Alternative paths in soft cards -->
+        <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            <a href="/quests" 
+               class="group p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1"
+               style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(200, 213, 187, 0.4); backdrop-filter: blur(10px)">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto"
+                     style="background: rgba(139, 154, 123, 0.1); border: 1px solid rgba(139, 154, 123, 0.3)">
+                    <i class="fa-solid fa-mountain-sun text-xl" style="color: #8A9A7B"></i>
+                </div>
+                <h4 class="font-medium mb-2" style="color: #5A6B4A">Explore Quests</h4>
+                <p class="text-sm font-light" style="color: rgba(90, 107, 74, 0.7)">Daily challenges for positive impact</p>
+            </a>
+            
+            <a href="/leaderboard" 
+               class="group p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1"
+               style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(200, 213, 187, 0.4); backdrop-filter: blur(10px)">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto"
+                     style="background: rgba(155, 175, 141, 0.1); border: 1px solid rgba(155, 175, 141, 0.3)">
+                    <i class="fa-solid fa-users text-xl" style="color: #9BAF8D"></i>
+                </div>
+                <h4 class="font-medium mb-2" style="color: #5A6B4A">Meet Community</h4>
+                <p class="text-sm font-light" style="color: rgba(90, 107, 74, 0.7)">Connect with like-minded individuals</p>
+            </a>
+            
+            <a href="/about" 
+               class="group p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1"
+               style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(200, 213, 187, 0.4); backdrop-filter: blur(10px)">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto"
+                     style="background: rgba(107, 125, 90, 0.1); border: 1px solid rgba(107, 125, 90, 0.3)">
+                    <i class="fa-solid fa-book-open text-xl" style="color: #6B7D5A"></i>
+                </div>
+                <h4 class="font-medium mb-2" style="color: #5A6B4A">Learn More</h4>
+                <p class="text-sm font-light" style="color: rgba(90, 107, 74, 0.7)">Discover our sustainability mission</p>
+            </a>
+        </div>
+
+        <!-- Final inspirational note -->
+        <div class="mt-16 pt-10">
+            <div class="max-w-md mx-auto p-6 rounded-2xl" 
+                 style="background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(200, 213, 187, 0.3)">
+                <i class="fa-solid fa-quote-left text-2xl mb-4 block" style="color: #fbf6bfff"></i>
+                <p class="text-lg font-light italic mb-2" style="color: #6B7D5A">
+                    "Sustainability isn't about perfection—it's about progress, one gentle step at a time."
+                </p>
+                <p class="text-sm font-light mt-4" style="color: rgba(90, 107, 74, 0.6)">
+                    Welcome to a community that celebrates every small victory.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+</style>
     <script>
         window.isGuest = @guest true
         @else
