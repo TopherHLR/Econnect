@@ -856,18 +856,12 @@
         </div>
     </div>
 </div>
-</section><section         <!-- Background overlay image with exact opacity and pointer-events -->
-   <div class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat"></div>
+</section><section>
        <!-- 🌫️ Soft Fog Layer -->
         <div
             class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
         </div>
 
-      <!-- 🌫️ Soft Fog Layer -->
-<div class="absolute top-[-3rem] left-0 w-full h-[150px] 
-            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"
-   class="relative py-30 px-8 overflow-hidden" style="background: linear-gradient(to bottom, #FAF8F3, #F5F2EB)"></div>
-   
     <!-- Soft organic pattern background -->
     <div class="absolute inset-0 bg-[url('/resources/images/viewport1/patter.png')] bg-cover bg-center bg-no-repeat opacity-5 pointer-events-none z-0" 
          style="filter: hue-rotate(60deg) saturate(0.8) brightness(1.1)"></div>
