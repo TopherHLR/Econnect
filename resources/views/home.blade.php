@@ -19,7 +19,7 @@
 
         <!-- 🌫️ Soft Fog Layer -->
         <div
-            class="absolute bottom-0 left-0 w-full h-[200px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
+            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
         </div>
 
 
@@ -115,12 +115,12 @@
         </script>
     @endauth
 
-<section style="position: relative; top: -75px; min-height: 200vh; display: flex; align-items: center; justify-content: center;" class="viewport2BG">
+<section style="position: relative; top: -75px; min-height: 150vh; display: flex; align-items: center; justify-content: center;" class="viewport2BG">
 
     @auth
         @if (auth()->user()->user_type === 'verified_user')
             <!-- 🌿 LEFT MODAL PANEL -->
-            <div style="position: absolute; left: 5rem; top: 20%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
+            <div style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                 <!-- Title + View More Link -->
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
                     <h2 style="font-size: 1.5rem; font-weight: 700; color: #4F6B3F; font-family: 'Nunito Sans', sans-serif;">Available Quests</h2>
@@ -185,7 +185,7 @@
             </div>
 
             <!-- 🌿 RIGHT MODAL PANEL -->
-            <div style="position: absolute; right: 5rem; top: 20%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
+            <div style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                 <!-- Title + View More Link -->
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
                     <h2 style="font-size: 1.5rem; font-weight: 700; color: #8B5A3C; font-family: 'Nunito Sans', sans-serif;">Pending Submissions</h2>
@@ -252,7 +252,7 @@
             </div>
         @else
             <!-- 🌿 LEFT MODAL PANEL LOCKED -->
-            <div style="position: absolute; left: 5rem; top: 20%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
+            <div style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                 <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                     <!-- 🔒 Overlay Lock -->
                     <div style="background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(248,250,237,0.5) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); border-radius: 1rem; padding: 2rem; box-shadow: 0 12px 40px rgba(122,140,79,0.2); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;">
@@ -275,7 +275,7 @@
             </div>
 
             <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
-            <div style="position: absolute; right: 5rem; top: 20%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
+            <div style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                 <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                     <!-- 🔒 Overlay Lock -->
                     <div style="background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(250,248,242,0.5) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); border-radius: 1rem; padding: 2rem; box-shadow: 0 12px 40px rgba(195,122,73,0.2); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;">
@@ -301,7 +301,7 @@
 
 
 <div id="plant-container"
-    class="relative w-[600px] -top-270 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
+    class="relative w-[600px] -top-215 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
 
 <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
 <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
@@ -357,7 +357,7 @@
 
 
             <!-- 🌾 Glow Background -->
-            <div class="absolute top-0 flex items-center justify-center">
+          <div class="absolute top-1/4 flex items-center justify-center"> <!-- 25% from top -->
                 <!-- Outer glow -->
                 <div
                     class="w-[500px] h-[650px] rounded-full bg-gradient-to-b 
@@ -425,45 +425,39 @@
 
                     <!-- Enhanced glow container with bright center -->
                     <div class="relative top-0">
-                        <!-- Outer beige-yellow glow -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
-                from-[#f8f5e6]/80 via-[#f5f1dc]/80 to-[#f2ecce]/80 
-                blur-[18px] md:blur-[24px] -z-10 w-[130%] -left-[15%]
-                opacity-80">
-                        </div>
+ <!-- Outer golden glow -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r 
+                            from-[#fffacd]/60 via-[#fff8b0]/80 to-[#fff695]/80 
+                            blur-[10px] md:blur-[15px] -z-10 w-[130%] -left-[15%]
+                            opacity-80">
+                </div>
 
+                <!-- Middle bright yellow layer -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r 
+                            from-[#fffee0]/70 via-[#fffdc2]/65 to-[#fffb9d]/60 
+                            blur-[6px] md:blur-[10px] -z-10 w-[115%] -left-[7.5%]
+                            opacity-90 mix-blend-overlay">
+                </div>
 
-                        <!-- Middle warm white layer (yellow-beige) -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
-                from-[#fffaf0]/70 via-[#fff8e6]/65 to-[#fff5dd]/60 
-                blur-[12px] md:blur-[18px] -z-10 w-[115%] -left-[7.5%]
-                opacity-90 mix-blend-overlay">
-                        </div>
+                <!-- Center intense yellow core -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r 
+                            from-[#ffffe0] via-[#ffffb5] to-[#ffff8f] 
+                            blur-[3px] md:blur-[5px] -z-10 w-[105%] -left-[2.5%]
+                            opacity-70 mix-blend-screen">
+                </div>
 
-                        <!-- Warm yellow-beige center core -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
-                from-[#fffef9] via-[#fffdf5] to-[#fffcf0] 
-                blur-[6px] md:blur-[10px] -z-10 w-[105%] -left-[2.5%]
-                opacity-70 mix-blend-screen">
-                        </div>
-
-                        <!-- Subtle warm shimmer effect -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
-                from-transparent via-[#fffef9]/25 to-transparent 
-                blur-[3px] -z-10 w-[102%] -left-[1%]
-                opacity-100 mix-blend-lighten">
-                        </div>
-
+                <!-- Subtle yellow shimmer effect -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r 
+                            from-transparent via-[#ffffd0]/30 to-transparent 
+                            blur-[2px] -z-10 w-[102%] -left-[1%]
+                            opacity-100 mix-blend-lighten">
+                </div>
                         <p
-                            class="text-[#5C7919] text-base md:text-2xl font-sans-serif italic tracking-wide text-center
-               drop-shadow-[0_0_15px_rgba(255,255,255,0.8),
-                           0_0_25px_rgba(248,245,230,0.5),
-                           0_0_35px_rgba(242,236,206,0.3)]
-               relative font-medium">
+                            class="text-[#553722ff] text-base md:text-3xl font-serif italic tracking-wide text-center relative font-medium">
                             Your personal growth tree
                         </p>
                     </div>
@@ -492,10 +486,10 @@
                     shadow-[0_0_20px_5px_rgba(159,143,106,0.5)]
                     group-hover:shadow-[0_0_25px_8px_rgba(159,143,106,0.6)]
                     before:absolute before:inset-0 
-                    before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent
+                    before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent
                     before:translate-x-[-100%] before:animate-shimmer
                     after:absolute after:right-0 after:top-0 after:h-full 
-                    after:w-[3px] after:bg-white/70 after:blur-[2px] relative
+                    after:w-[3px] after:bg-white/90 after:blur-[2px] relative
                     hover:scale-y-110 transition-transform duration-300"
                                 style="width: {{ $growthPercent }}%;">
 
@@ -565,39 +559,38 @@
                         </div>
                     </div>
 
-                    <!-- Enhanced progress label -->
                     @auth
                         @if (auth()->user()->user_type === 'verified_user')
-                 <!-- ====================== VERIFIED USER: FULL PROGRESS INFO ====================== -->
-                    <p id="growth-label"
-                        class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
-                            bg-gradient-to-r from-[#d6cbb7]/80 to-transparent px-4 py-2 rounded-full
-                            border border-[#cbbfa8]/80 shadow-sm
-                            group-hover:bg-gradient-to-r group-hover:from-[#d6cbb7] group-hover:to-[#cbbfa8]/40
-                            group-hover:border-[#cbbfa8] transition-all duration-300">
-                        Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }}
-                        points
-                        <span class="block text-lg text-[#9f8f6a]/90 font-normal mt-1">
-                            {{ $treeStages - $stage }} stages remaining
-                        </span>
-                    </p>
+                            <!-- ====================== VERIFIED USER: FULL PROGRESS INFO ====================== -->
+                            <p id="growth-label"
+                                class="text-[#5e471dff] text-lg md:text-lg font-medium tracking-wide text-center
+                                    bg-gradient-to-r from-[#fffacd] via-[#f0edcaff] to-[#ebe7c0ff]
+                                    px-4 py-2 rounded-[1.4rem] border border-[#fff695]/60 shadow-sm
+                                    shadow-[0_0_15px_rgba(255,246,149,0.3)]
+                                    group-hover:bg-gradient-to-r group-hover:from-[#fffee0] group-hover:to-[#fff695]/80
+                                    group-hover:border-[#fff695] transition-all duration-300">
+                                Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }} points
+                                <span class="block text-lg text-[#885b2eff]/90 font-normal mt-1">
+                                    {{ $treeStages - $stage }} stages remaining
+                                </span>
+                            </p>
+                        @else
+                            <!-- ====================== AUTHENTICATED BUT NOT VERIFIED: RESTRICTED MESSAGE ====================== -->
+                            <p id="growth-label"
+                                class="text-[#594422ff] text-lg md:text-lg font-medium tracking-wide text-center
+                                    bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-[1.3rem]
+                                    border border-[#cbbfa8] shadow-sm">
+                                Please verify your account to grow your tree and earn points
+                            </p>
+                        @endif
                     @else
-                    <!-- ====================== AUTHENTICATED BUT NOT VERIFIED: RESTRICTED MESSAGE ====================== -->
-                    <p id="growth-label"
-                        class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
-                            bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-full
-                            border border-[#cbbfa8] shadow-sm">
-                        Please verify your account to grow your tree and earn points
-                    </p>
-                    @endif
-                    @else
-                    <!-- ====================== GUEST: LOGIN PROMPT ====================== -->
-                    <p id="growth-label"
-                        class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
-                            bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-full
-                            border border-[#cbbfa8] shadow-sm">
-                        Please log in to see your personalized growth tree
-                    </p>
+                        <!-- ====================== GUEST: LOGIN PROMPT ====================== -->
+                        <p id="growth-label"
+                            class="text-[#594422ff] text-lg md:text-lg font-medium tracking-wide text-center
+                                bg-gradient-to-r from-[#0048ffff] to-transparent px-4 py-2 rounded-[1.3rem]
+                                border border-[#cbbfa8] shadow-sm">
+                            Please log in to see your personalized growth tree
+                        </p>
                     @endauth
                     </div>
 
@@ -617,45 +610,40 @@
 
                     <!-- Enhanced glow container with bright center -->
                     <div class="relative top-0">
-                        <!-- Outer beige-yellow glow -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
-                                    from-[#f8f5e6]/80 via-[#f5f1dc]/35 to-[#f2ecce]/30 
-                                    blur-[18px] md:blur-[24px] -z-10 w-[130%] -left-[15%]
-                                    opacity-80">
-                        </div>
+ <!-- Outer golden glow -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r 
+                            from-[#fffacd]/60 via-[#fff8b0]/80 to-[#fff695]/80 
+                            blur-[10px] md:blur-[15px] -z-10 w-[130%] -left-[15%]
+                            opacity-80">
+                </div>
 
+                <!-- Middle bright yellow layer -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r 
+                            from-[#fffee0]/70 via-[#fffdc2]/65 to-[#fffb9d]/60 
+                            blur-[6px] md:blur-[10px] -z-10 w-[115%] -left-[7.5%]
+                            opacity-90 mix-blend-overlay">
+                </div>
 
-                        <!-- Middle warm white layer (yellow-beige) -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
-                                from-[#fffaf0]/70 via-[#fff8e6]/65 to-[#fff5dd]/60 
-                                blur-[12px] md:blur-[18px] -z-10 w-[115%] -left-[7.5%]
-                                opacity-90 mix-blend-overlay">
-                        </div>
+                <!-- Center intense yellow core -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r 
+                            from-[#ffffe0] via-[#ffffb5] to-[#ffff8f] 
+                            blur-[3px] md:blur-[5px] -z-10 w-[105%] -left-[2.5%]
+                            opacity-70 mix-blend-screen">
+                </div>
 
-                        <!-- Warm yellow-beige center core -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
-                                from-[#fffef9] via-[#fffdf5] to-[#fffcf0] 
-                                blur-[6px] md:blur-[10px] -z-10 w-[105%] -left-[2.5%]
-                                opacity-70 mix-blend-screen">
-                        </div>
-
-                        <!-- Subtle warm shimmer effect -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
-                                from-transparent via-[#fffef9]/25 to-transparent 
-                                blur-[3px] -z-10 w-[102%] -left-[1%]
-                                opacity-100 mix-blend-lighten">
-                        </div>
+                <!-- Subtle yellow shimmer effect -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r 
+                            from-transparent via-[#ffffd0]/30 to-transparent 
+                            blur-[2px] -z-10 w-[102%] -left-[1%]
+                            opacity-100 mix-blend-lighten">
+                </div>
 
                         <p
-                            class="text-[#5C7919] text-base md:text-2xl font-sans-serif italic tracking-wide text-center
-                                drop-shadow-[0_0_15px_rgba(255,255,255,0.8),
-                                            0_0_25px_rgba(248,245,230,0.5),
-                                            0_0_35px_rgba(242,236,206,0.3)]
-                                relative font-medium">
+                            class="text-[#553722ff] text-base md:text-2xl font-sans-serif italic tracking-wide text-center relative font-medium">
                             Your personal growth tree
                         </p>
                     </div>
@@ -1449,224 +1437,444 @@
             // They should work with the enhanced click handler
 
             // Update the sendTaps function to show messages in the progress label area:
-            function sendTaps(tapCount) {
-                fetch("{{ url('/tree/tap') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            taps: tapCount
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log("Tree tap response:", data);
+function sendTaps(tapCount) {
+    fetch("{{ url('/tree/tap') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                taps: tapCount
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log("Tree tap response:", data);
 
-                        const growthFill = document.getElementById('growth-fill');
-                        const growthLabel = document.getElementById('growth-label');
-                        const growthBar = document.getElementById('growth-bar');
-
-                        // 1. Update Progress Bar Fill
-                        if (data.growthPercent !== undefined && growthFill) {
-                            const oldPercent = parseFloat(growthFill.style.width) || 0;
-                            const newPercent = parseFloat(data.growthPercentReal);
-
-                            growthFill.style.width = `${newPercent}%`;
-
-                            // Level-up celebration when crossing a stage
-                            const segment = 100 / 10; // 10 stages
-                            if (Math.floor(oldPercent / segment) < Math.floor(newPercent / segment)) {
-                                createLevelUpEffect();
-                            }
-                        }
-
-                        // 2. Update Growth Label (only for verified users)
-                        if (growthLabel && data.stage !== undefined) {
-                            // Non-verified users see restricted message (handled in Blade)
-                            // But if server says we're good → show full info
-                            growthLabel.innerHTML = `
-                                Stage ${data.stage} / 10 — ${data.progressPointsReal} / ${data.growthMax} points
-                                <span class="block text-[20px] text-[#9f8f6a]/70 font-normal mt-1">
-                                    ${data.stages_remaining} stage${data.stages_remaining === 1 ? '' : 's'} remaining
-                                </span>
-                            `;
-                        }
-
-                        // 3. Update Stage Markers (current stage glows)
-                        const markerContainer = growthBar?.querySelector('.absolute.inset-0.flex');
-                        if (markerContainer && data.stage !== undefined) {
-                            const markers = markerContainer.querySelectorAll('.group\\/marker');
-                            markers.forEach((markerEl, index) => {
-                                const stageNum = index + 1;
-                                const dot = markerEl.querySelector('div[class*="w-["]');
-                                const label = markerEl.querySelector('span');
-
-                                const isCurrent = stageNum === data.stage;
-                                const isPast = stageNum < data.stage;
-
-                                // Update dot
-                                if (isCurrent) {
-                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                        '') +
-                                        ' bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a] shadow-[0_0_8px_2px_rgba(159,143,106,0.6)] ring-2 ring-white/50';
-                                    if (label) label.textContent = 'Stage ' + stageNum;
-                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                                        'text-[#5C7919] font-bold');
-                                } else if (isPast) {
-                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                        '') +
-                                        ' bg-gradient-to-br from-[#bfae7c] to-[#9f8f6a] shadow-[0_0_4px_1px_rgba(159,143,106,0.4)]';
-                                    if (label) label.textContent = 'Stage ' + stageNum;
-                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                                        'text-[#9f8f6a]');
-                                } else {
-                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                        '') +
-                                        ' bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
-                                    if (label) label.textContent = 'Stage ' + stageNum;
-                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                                        'text-[#cbbfa8]/70');
-                                }
-                            });
-                        }
-
-                        // 4. Quest Progress Message
-                        if (data.tap_progress !== undefined) {
-                            if (data.quest_completed || data.tap_progress >= 100) {
-                                showProgressBarMessage("Quest Already completed! +5 points awarded", "success");
-                            } else if (data.has_quest && data.tap_progress > 0) {
-                                showProgressBarMessage(`Keep tapping — ${data.tap_progress}/100 taps`, "info");
-                            }
-                        }
-
-                        // 5. Optional: Show toast message from server
-                        if (data.message && !data.message.includes("progress")) {
-                            showIntegratedMessage(data.message, growthLabel);
-                        }
-                    })
-                    .catch(err => {
-                        console.error("Tap failed:", err);
-                        showProgressBarMessage("Connection lost. Try again!", "warning");
-                    });
+            // ========== ADD THIS: Handle "Only verified users" message ==========
+            if (data.message === 'Only verified users') {
+                showToastMessage(
+                    '🌿 Only verified users can grow their tree',
+                    'verification',
+                    'Verify your account to nurture your eco-tree and earn points'
+                );
+                return; // Stop further processing
             }
+            // ========== END ADDED SECTION ==========
 
+            const growthFill = document.getElementById('growth-fill');
+            const growthLabel = document.getElementById('growth-label');
+            const growthBar = document.getElementById('growth-bar');
 
-            // New function for integrated messages
-            function showProgressBarMessage(msg, type = "info") {
-                const growthBar = document.getElementById('growth-bar');
-                if (!growthBar) return;
+            // 1. Update Progress Bar Fill
+            if (data.growthPercent !== undefined && growthFill) {
+                const oldPercent = parseFloat(growthFill.style.width) || 0;
+                const newPercent = parseFloat(data.growthPercentReal);
 
-                // Remove any existing message badges
-                const existingBadge = growthBar.querySelector('.progress-message-badge');
-                if (existingBadge) existingBadge.remove();
+                growthFill.style.width = `${newPercent}%`;
 
-                // Create message badge
-                const badge = document.createElement('div');
-                // Line ~515-525
-                badge.className = `progress-message-badge absolute -top-20 left-2/3 -translate-x-1/2 
-                   px-3 py-2 rounded-lg shadow-lg text-lg font-medium whitespace-nowrap
-                   z-50 animate-bounce pointer-events-none
-                   ${type === 'warning' ? 
-                     'bg-gradient-to-r from-[#8B7355]/90 to-[#6B5840]/90 text-[#F5F1E6]' : 
-                     'bg-gradient-to-r from-[#7A6B5A]/90 to-[#5C4E3F]/90 text-[#F5F1E6]'}`;
-
-                badge.innerHTML = `
-                    ${msg}
-                    <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 
-                                border-[6px] border-transparent border-t-${type === 'warning' ? '[#8B7355]/90' : '[#7A6B5A]/90'}"></div>
-                `;
-
-                growthBar.appendChild(badge);
-
-                // Auto-remove after 3 seconds
-                setTimeout(() => {
-                    badge.style.transition = 'all 0.5s ease-out';
-                    badge.style.opacity = '0';
-                    badge.style.transform = 'translateX(-50%) translateY(-10px)';
-                    setTimeout(() => badge.remove(), 500);
-                }, 3000);
-            }
-
-            function showIntegratedMessage(msg, targetElement) {
-                if (!targetElement) return;
-
-                // Save original content
-                const originalContent = targetElement.innerHTML;
-                const originalClasses = targetElement.className;
-
-                // Update with message
-                targetElement.innerHTML = `
-                <div class="flex items-center gap-2 animate-pulse">
-                    <span class="text-sm font-medium">${msg}</span>
-                </div>
-            `;
-
-                // Add visual styling
-
-                targetElement.className = originalClasses +
-                    ' bg-gradient-to-r from-[#E8E2D5]/80 to-[#D8D1C1]/80 ' +
-                    'border border-[#B8A992]/50 shadow-sm text-[#5C4E3F]';
-
-                // Restore after 3 seconds
-                setTimeout(() => {
-                    targetElement.innerHTML = originalContent;
-                    targetElement.className = originalClasses;
-                }, 3000);
-            }
-
-            function createLevelUpEffect() {
-                // Create level up particles
-                for (let i = 0; i < 15; i++) {
-                    setTimeout(() => {
-                        const particle = document.createElement('div');
-                        particle.className =
-                            'absolute w-3 h-3 bg-gradient-to-br from-[#5C7919] to-[#9f8f6a] rounded-full pointer-events-none z-50';
-
-                        const bar = document.querySelector('#growth-bar');
-                        if (!bar) return;
-
-                        const rect = bar.getBoundingClientRect();
-                        const x = rect.left + Math.random() * rect.width;
-                        const y = rect.top;
-
-                        particle.style.left = `${x}px`;
-                        particle.style.top = `${y}px`;
-
-                        document.body.appendChild(particle);
-
-                        particle.animate([{
-                                transform: 'translateY(0) scale(1)',
-                                opacity: 1
-                            },
-                            {
-                                transform: `translateY(-${100 + Math.random() * 100}px) scale(0)`,
-                                opacity: 0
-                            }
-                        ], {
-                            duration: 1000 + Math.random() * 500,
-                            easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)'
-                        });
-
-                        setTimeout(() => particle.remove(), 1500);
-                    }, i * 50);
+                // Level-up celebration when crossing a stage
+                const segment = 100 / 10; // 10 stages
+                if (Math.floor(oldPercent / segment) < Math.floor(newPercent / segment)) {
+                    createLevelUpEffect();
                 }
             }
 
-            function showMessage(msg) {
-                const tapMessage = document.getElementById('tap-message');
-                if (!tapMessage) return;
-
-                tapMessage.textContent = msg;
-                tapMessage.classList.remove('opacity-0', 'translate-y-2');
-                tapMessage.classList.add('opacity-100', 'translate-y-0');
-
-                setTimeout(() => {
-                    tapMessage.classList.remove('opacity-100', 'translate-y-0');
-                    tapMessage.classList.add('opacity-0', 'translate-y-2');
-                }, 3000);
+            // 2. Update Growth Label (only for verified users)
+            if (growthLabel && data.stage !== undefined) {
+                // Non-verified users see restricted message (handled in Blade)
+                // But if server says we're good → show full info
+                growthLabel.innerHTML = `
+                    Stage ${data.stage} / 10 — ${data.progressPointsReal} / ${data.growthMax} points
+                    <span class="block text-[20px] text-[#9f8f6a]/70 font-normal mt-1">
+                        ${data.stages_remaining} stage${data.stages_remaining === 1 ? '' : 's'} remaining
+                    </span>
+                `;
             }
+
+            // 3. Update Stage Markers (current stage glows)
+            const markerContainer = growthBar?.querySelector('.absolute.inset-0.flex');
+            if (markerContainer && data.stage !== undefined) {
+                const markers = markerContainer.querySelectorAll('.group\\/marker');
+                markers.forEach((markerEl, index) => {
+                    const stageNum = index + 1;
+                    const dot = markerEl.querySelector('div[class*="w-["]');
+                    const label = markerEl.querySelector('span');
+
+                    const isCurrent = stageNum === data.stage;
+                    const isPast = stageNum < data.stage;
+
+                    // Update dot
+                    if (isCurrent) {
+                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                '') +
+                            ' bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a] shadow-[0_0_8px_2px_rgba(159,143,106,0.6)] ring-2 ring-white/50';
+                        if (label) label.textContent = 'Stage ' + stageNum;
+                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                            'text-[#5C7919] font-bold');
+                    } else if (isPast) {
+                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                '') +
+                            ' bg-gradient-to-br from-[#bfae7c] to-[#9f8f6a] shadow-[0_0_4px_1px_rgba(159,143,106,0.4)]';
+                        if (label) label.textContent = 'Stage ' + stageNum;
+                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                            'text-[#9f8f6a]');
+                    } else {
+                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                '') +
+                            ' bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
+                        if (label) label.textContent = 'Stage ' + stageNum;
+                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                            'text-[#cbbfa8]/70');
+                    }
+                });
+            }
+
+            // 4. Quest Progress Message
+            if (data.tap_progress !== undefined) {
+                if (data.quest_completed || data.tap_progress >= 100) {
+                    showProgressBarMessage("Quest Already completed! +5 points awarded", "success");
+                } else if (data.has_quest && data.tap_progress > 0) {
+                    showProgressBarMessage(`Keep tapping — ${data.tap_progress}/100 taps`, "info");
+                }
+            }
+
+            // 5. Optional: Show toast message from server
+            if (data.message && !data.message.includes("progress")) {
+                // Use new consistent toast instead of showIntegratedMessage
+                showToastMessage(data.message, 'info');
+            }
+        })
+        .catch(err => {
+            console.error("Tap failed:", err);
+            showToastMessage("Connection lost. Try again!", "error");
+        });
+}
+// ========== ADD THIS NEW FUNCTION ==========
+function showToastMessage(message, type = 'info', subtitle = '') {
+    // Remove existing toast if present
+    const existingToast = document.getElementById('dynamic-toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // Create toast element with your consistent styling
+    const toast = document.createElement('div');
+    toast.id = 'dynamic-toast';
+    
+    // Base styling matching your feedback toast
+    let baseClasses = 'fixed top-6 left-1/2 -translate-x-1/2 font-sans-serif font-bold italic text-lg shadow-md px-6 py-3 rounded-full z-[99999] transition-opacity duration-1000 ease-in-out opacity-100 backdrop-blur-sm';
+    
+    // Type-specific styling
+    let typeClasses = '';
+    let icon = '';
+    
+    switch(type) {
+        case 'verification':
+            typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
+            icon = '🌿';
+            break;
+        case 'success':
+            typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
+            icon = '🌱';
+            break;
+        case 'error':
+        case 'warning':
+            typeClasses = 'bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]';
+            icon = '❌';
+            break;
+        case 'info':
+        default:
+            typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
+            icon = '💡';
+    }
+    
+    toast.className = `${baseClasses} ${typeClasses}`;
+    
+    // Create content with optional subtitle
+    let content = `${icon} ${message}`;
+    if (subtitle) {
+        content += `<div class="text-sm font-normal not-italic mt-1 opacity-80">${subtitle}</div>`;
+    }
+    
+    toast.innerHTML = content;
+    
+    // Add to body - ensure it's visible
+    document.body.appendChild(toast);
+    
+    // Force reflow to trigger animation
+    toast.getBoundingClientRect();
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 1000);
+    }, 5000);
+}
+
+// ========== UPDATE sendTaps() FUNCTION ==========
+function sendTaps(tapCount) {
+    fetch("{{ url('/tree/tap') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                taps: tapCount
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log("Tree tap response:", data);
+
+            // ========== HANDLE ALL NON-VERIFIED USER CASES ==========
+            // Check for "Only verified users" message OR if user is guest/unverified
+            const isGuest = window.isGuest === true;
+            const isUnverified = data.message && (
+                data.message.includes('Only verified users') || 
+                data.message.includes('verification') ||
+                data.message.includes('verify')
+            );
+            
+            if (isGuest || isUnverified || data.message === 'Only verified users') {
+                // Determine message based on user status
+                let message = '🌿 Only verified users can grow their tree';
+                let subtitle = 'Verify your account to nurture your eco-tree and earn points';
+                
+                if (isGuest) {
+                    message = '🌱 Welcome to our growing community';
+                    subtitle = 'Please log in to start nurturing your personal eco-tree';
+                }
+                
+                showToastMessage(message, 'verification', subtitle);
+                return; // Stop further processing
+            }
+            // ========== END NON-VERIFIED HANDLING ==========
+
+            const growthFill = document.getElementById('growth-fill');
+            const growthLabel = document.getElementById('growth-label');
+            const growthBar = document.getElementById('growth-bar');
+
+            // 1. Update Progress Bar Fill
+            if (data.growthPercent !== undefined && growthFill) {
+                const oldPercent = parseFloat(growthFill.style.width) || 0;
+                const newPercent = parseFloat(data.growthPercentReal);
+
+                growthFill.style.width = `${newPercent}%`;
+
+                // Level-up celebration when crossing a stage
+                const segment = 100 / 10; // 10 stages
+                if (Math.floor(oldPercent / segment) < Math.floor(newPercent / segment)) {
+                    createLevelUpEffect();
+                }
+            }
+
+            // 2. Update Growth Label (only for verified users)
+            if (growthLabel && data.stage !== undefined) {
+                // Non-verified users see restricted message (handled in Blade)
+                // But if server says we're good → show full info
+                growthLabel.innerHTML = `
+                    Stage ${data.stage} / 10 — ${data.progressPointsReal} / ${data.growthMax} points
+                    <span class="block text-[20px] text-[#9f8f6a]/70 font-normal mt-1">
+                        ${data.stages_remaining} stage${data.stages_remaining === 1 ? '' : 's'} remaining
+                    </span>
+                `;
+            }
+
+            // 3. Update Stage Markers (current stage glows)
+            const markerContainer = growthBar?.querySelector('.absolute.inset-0.flex');
+            if (markerContainer && data.stage !== undefined) {
+                const markers = markerContainer.querySelectorAll('.group\\/marker');
+                markers.forEach((markerEl, index) => {
+                    const stageNum = index + 1;
+                    const dot = markerEl.querySelector('div[class*="w-["]');
+                    const label = markerEl.querySelector('span');
+
+                    const isCurrent = stageNum === data.stage;
+                    const isPast = stageNum < data.stage;
+
+                    // Update dot
+                    if (isCurrent) {
+                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                '') +
+                            ' bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a] shadow-[0_0_8px_2px_rgba(159,143,106,0.6)] ring-2 ring-white/50';
+                        if (label) label.textContent = 'Stage ' + stageNum;
+                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                            'text-[#5C7919] font-bold');
+                    } else if (isPast) {
+                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                '') +
+                            ' bg-gradient-to-br from-[#bfae7c] to-[#9f8f6a] shadow-[0_0_4px_1px_rgba(159,143,106,0.4)]';
+                        if (label) label.textContent = 'Stage ' + stageNum;
+                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                            'text-[#9f8f6a]');
+                    } else {
+                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                '') +
+                            ' bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
+                        if (label) label.textContent = 'Stage ' + stageNum;
+                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                            'text-[#cbbfa8]/70');
+                    }
+                });
+            }
+
+            // 4. Quest Progress Message
+            if (data.tap_progress !== undefined) {
+                if (data.quest_completed || data.tap_progress >= 100) {
+                    showProgressBarMessage("Quest Already completed! +5 points awarded", "success");
+                } else if (data.has_quest && data.tap_progress > 0) {
+                    showProgressBarMessage(`Keep tapping — ${data.tap_progress}/100 taps`, "info");
+                }
+            }
+
+            // 5. Optional: Show toast message from server
+            if (data.message && !data.message.includes("progress")) {
+                // Use new consistent toast instead of showIntegratedMessage
+                showToastMessage(data.message, 'info');
+            }
+        })
+        .catch(err => {
+            console.error("Tap failed:", err);
+            showToastMessage("Connection lost. Try again!", "error");
+        });
+}
+
+// ========== UPDATE showProgressBarMessage to use consistent styling ==========
+function showProgressBarMessage(msg, type = "info") {
+    // Instead of the badge, use the consistent toast
+    const toastType = type === 'warning' ? 'error' : 
+                      type === 'success' ? 'success' : 'info';
+    
+    showToastMessage(msg, toastType);
+}
+
+// ========== UPDATE showIntegratedMessage to use consistent styling ==========
+function showIntegratedMessage(msg, targetElement) {
+    // Use toast instead of modifying the element
+    showToastMessage(msg, 'info');
+    
+    // Optionally keep the original functionality for backward compatibility
+    if (!targetElement) return;
+
+    // Save original content
+    const originalContent = targetElement.innerHTML;
+    const originalClasses = targetElement.className;
+
+    // Update with message (simpler version)
+    targetElement.innerHTML = `
+        <div class="flex items-center gap-2 animate-pulse">
+            <span class="text-sm font-medium">${msg}</span>
+        </div>
+    `;
+
+    targetElement.className = originalClasses +
+        ' bg-gradient-to-r from-[#E8E2D5]/80 to-[#D8D1C1]/80 ' +
+        'border border-[#B8A992]/50 shadow-sm text-[#5C4E3F]';
+
+    // Restore after 3 seconds
+    setTimeout(() => {
+        targetElement.innerHTML = originalContent;
+        targetElement.className = originalClasses;
+    }, 3000);
+}
+// ========== UPDATE showProgressBarMessage to use consistent styling ==========
+function showProgressBarMessage(msg, type = "info") {
+    // Instead of the badge, use the consistent toast
+    const toastType = type === 'warning' ? 'error' : 
+                      type === 'success' ? 'success' : 'info';
+    
+    showToastMessage(msg, toastType);
+}
+
+// ========== UPDATE showIntegratedMessage to use consistent styling ==========
+function showIntegratedMessage(msg, targetElement) {
+    // Use toast instead of modifying the element
+    showToastMessage(msg, 'info');
+    
+    // Optionally keep the original functionality for backward compatibility
+    if (!targetElement) return;
+
+    // Save original content
+    const originalContent = targetElement.innerHTML;
+    const originalClasses = targetElement.className;
+
+    // Update with message (simpler version)
+    targetElement.innerHTML = `
+        <div class="flex items-center gap-2 animate-pulse">
+            <span class="text-sm font-medium">${msg}</span>
+        </div>
+    `;
+
+    targetElement.className = originalClasses +
+        ' bg-gradient-to-r from-[#E8E2D5]/80 to-[#D8D1C1]/80 ' +
+        'border border-[#B8A992]/50 shadow-sm text-[#5C4E3F]';
+
+    // Restore after 3 seconds
+    setTimeout(() => {
+        targetElement.innerHTML = originalContent;
+        targetElement.className = originalClasses;
+    }, 3000);
+}
+
+// ========== KEEP THE REST OF YOUR FUNCTIONS AS IS ==========
+function createLevelUpEffect() {
+    // Create level up particles
+    for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+            const particle = document.createElement('div');
+            particle.className =
+                'absolute w-3 h-3 bg-gradient-to-br from-[#5C7919] to-[#9f8f6a] rounded-full pointer-events-none z-50';
+
+            const bar = document.querySelector('#growth-bar');
+            if (!bar) return;
+
+            const rect = bar.getBoundingClientRect();
+            const x = rect.left + Math.random() * rect.width;
+            const y = rect.top;
+
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+
+            document.body.appendChild(particle);
+
+            particle.animate([{
+                    transform: 'translateY(0) scale(1)',
+                    opacity: 1
+                },
+                {
+                    transform: `translateY(-${100 + Math.random() * 100}px) scale(0)`,
+                    opacity: 0
+                }
+            ], {
+                duration: 1000 + Math.random() * 500,
+                easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)'
+            });
+
+            setTimeout(() => particle.remove(), 1500);
+        }, i * 50);
+    }
+}
+
+function showMessage(msg) {
+    const tapMessage = document.getElementById('tap-message');
+    if (!tapMessage) return;
+
+    tapMessage.textContent = msg;
+    tapMessage.classList.remove('opacity-0', 'translate-y-2');
+    tapMessage.classList.add('opacity-100', 'translate-y-0');
+
+    setTimeout(() => {
+        tapMessage.classList.remove('opacity-100', 'translate-y-0');
+        tapMessage.classList.add('opacity-0', 'translate-y-2');
+    }, 3000);
+}
         });
     </script>
 @endsection

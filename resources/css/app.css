@@ -283,36 +283,43 @@
     background-repeat: no-repeat;
     background-position: center top;
     background-size: cover;
-    min-height: 200vh;
+    min-height: 150vh;
     width: 100%;
     z-index: 10;
     margin-top: 0;
 }
 
+/* Single large overlay image */
+.viewport2BG::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/resources/images/viewport1/patter.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.5; /* Adjust opacity as needed */
+    mix-blend-mode: multiply; /* Different blending mode */
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Adjust for different screen sizes */
 @media (max-width: 1024px) {
-    .viewport2BG {
-        background-position: center top;
-        background-size: contain;
-        top: -400px;
+    .viewport2BG::before {
+        opacity: 0.08;
+        background-size: cover;
     }
 }
 
 @media (max-width: 640px) {
-    .viewport2BG {
-        background-size: 180%;
-        background-position: center top;
-        top: -600px;
+    .viewport2BG::before {
+        opacity: 0.06;
     }
 }
-
-@media (max-width: 420px) {
-    .viewport2BG {
-        background-size: 200%;
-        background-position: center top;
-        top: -700px;
-    }
-}
-
 /* =========================================================== SMALL PLANT ================================================================== */
 
 @keyframes sway-top {
