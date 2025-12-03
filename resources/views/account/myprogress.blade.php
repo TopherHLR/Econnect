@@ -179,80 +179,82 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-8 gap-2">
 
-            @foreach ($badges as $badge)
-                <div class="relative flex flex-col items-center group">
+            @if (auth()->user()->user_type === 'verified_user')
+                @foreach ($badges as $badge)
+                    <div class="relative flex flex-col items-center group">
 
-                    <!-- Badge card with white background -->
-                    <div
-                        class="flex flex-col items-center bg-white rounded-2xl p-4 shadow border border-[#F2E8D5]
-                    {{ $badge['unlocked'] ? 'hover:scale-105 transition duration-300' : 'opacity-60' }}">
+                        <!-- Badge card with white background -->
+                        <div
+                            class="flex flex-col items-center bg-white rounded-2xl p-4 shadow border border-[#F2E8D5]
+                {{ $badge['unlocked'] ? 'hover:scale-105 transition duration-300' : 'opacity-60' }}">
 
-                        <!-- Badge icon -->
-                        <div class="w-30 h-30 flex items-center justify-center mb-4">
-                            @php
+                            <!-- Badge icon -->
+                            <div class="w-30 h-30 flex items-center justify-center mb-4">
+                                @php
+                                    $badgeIcons = [
+                                        'Seed' => 'seed.svg',
+                                        'Sprout' => 'sprout.svg',
+                                        'Seedling' => 'seedling.svg',
+                                        'Sapling' => 'sapling.svg',
+                                        'Young Tree' => 'young_tree.svg',
+                                        'Growing Tree' => 'growing_tree.svg',
+                                        'Elite Milestone' => 'elite_milestone_badge.svg',
+                                        'Orange Earth Milestone' => 'orange_earth_milestone_badge.svg',
+                                        'Eco-Explorer' => 'eco_green_milestone.svg',
+                                        'Eco-Enthusiast' => 'grove_tender.svg',
+                                        'Eco-Advocate' => 'ripple_maker.svg',
+                                        'Eco-Guardian' => 'eco_guardian.svg',
+                                        'Heart of the Ecosystem' => 'heart_of_the_ecosystem.svg',
+                                    ];
+                                    $iconPath = $badgeIcons[$badge['name']] ?? null;
+                                @endphp
 
-
-                                $badgeIcons = [
-                                    'Seed' => 'seed.svg',
-                                    'Sprout' => 'sprout.svg',
-                                    'Seedling' => 'seedling.svg',
-                                    'Sapling' => 'sapling.svg',
-                                    'Young Tree' => 'young_tree.svg',
-                                    'Growing Tree' => 'growing_tree.svg',
-                                    'Elite Milestone' => 'elite_milestone_badge.svg',
-                                    'Orange Earth Milestone' => 'orange_earth_milestone_badge.svg',
-                                    'Eco-Explorer' => 'eco_green_milestone.svg',
-                                    'Eco-Enthusiast' => 'grove_tender.svg',
-                                    'Eco-Advocate' => 'ripple_maker.svg',
-                                    'Eco-Guardian' => 'eco_guardian.svg',
-
-                                    'Heart of the Ecosystem' => 'heart_of_the_ecosystem.svg',
-                                ];
-                                $iconPath = $badgeIcons[$badge['name']] ?? null;
-                            @endphp
-
-                            @if ($badge['unlocked'])
-                                @if ($iconPath)
-                                    <img src="{{ Vite::asset('resources/images/badges/' . $iconPath) }}"
-                                        alt="{{ $badge['name'] }}" class="w-36 h-36">
+                                @if ($badge['unlocked'])
+                                    @if ($iconPath)
+                                        <img src="{{ Vite::asset('resources/images/badges/' . $iconPath) }}"
+                                            alt="{{ $badge['name'] }}" class="w-36 h-36">
+                                    @else
+                                        <span class="text-5xl">{{ $badge['icon'] }}</span>
+                                    @endif
                                 @else
-                                    <span class="text-5xl">{{ $badge['icon'] }}</span>
+                                    <span class="text-5xl">🔒</span>
                                 @endif
+                            </div>
+
+                            <!-- Badge name -->
+                            <p
+                                class="text-base font-semibold {{ $badge['unlocked'] ? 'text-[#4B3F2F]' : 'text-gray-400' }} text-center">
+                                {{ $badge['name'] }}
+                            </p>
+
+                            <!-- Badge status -->
+                            <p
+                                class="text-sm mt-1 {{ $badge['unlocked'] ? 'text-gray-500' : 'text-gray-400' }} text-center">
+                                {{ $badge['unlocked'] ? 'Unlocked' : 'Locked' }}
+                            </p>
+                        </div>
+
+                        <!-- Tooltip -->
+                        <div
+                            class="absolute bottom-full mb-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-3 text-sm text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                            @if ($badge['type'] === 'quest')
+                                Completed {{ $badge['required'] }} {{ Str::plural('quest', $badge['required']) }} to
+                                unlock this badge.
+                            @elseif ($badge['type'] === 'tree')
+                                Reach {{ $badge['required_points'] }} points to achieve this tree stage.
+                            @endif
+                            @if ($badge['unlocked'])
+                                <div class="text-green-600 font-semibold mt-1">Unlocked on {{ $badge['unlocked_at'] }}
+                                </div>
                             @else
-                                <span class="text-5xl">🔒</span>
+                                <div class="text-gray-400 mt-1">Keep going to unlock!</div>
                             @endif
                         </div>
 
-                        <!-- Badge name -->
-                        <p
-                            class="text-base font-semibold {{ $badge['unlocked'] ? 'text-[#4B3F2F]' : 'text-gray-400' }} text-center">
-                            {{ $badge['name'] }}
-                        </p>
-
-                        <!-- Badge status -->
-                        <p class="text-sm mt-1 {{ $badge['unlocked'] ? 'text-gray-500' : 'text-gray-400' }} text-center">
-                            {{ $badge['unlocked'] ? 'Unlocked' : 'Locked' }}
-                        </p>
                     </div>
+                @endforeach
+            @endif
 
-                    <!-- Tooltip -->
-                    <div
-                        class="absolute bottom-full mb-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-3 text-sm text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
-                        @if ($badge['type'] === 'quest')
-                            Completed {{ $badge['required'] }} {{ Str::plural('quest', $badge['required']) }} to unlock
-                            this badge.
-                        @elseif ($badge['type'] === 'tree')
-                            Reach {{ $badge['required_points'] }} points to achieve this tree stage.
-                        @endif
-                        @if ($badge['unlocked'])
-                            <div class="text-green-600 font-semibold mt-1">Unlocked on {{ $badge['unlocked_at'] }}</div>
-                        @else
-                            <div class="text-gray-400 mt-1">Keep going to unlock!</div>
-                        @endif
-                    </div>
-
-                </div>
-            @endforeach
 
         </div>
     </div>
