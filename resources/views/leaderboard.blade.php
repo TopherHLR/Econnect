@@ -9,10 +9,10 @@
 
                 {{-- Sidebar Wrapper --}}
                 <div id="sidebarLeader"
-                    class="fixed inset-y-0 left-0 w-80 bg-[#FAF7EE] rounded-3xl shadow-xl p-6
+                    class="fixed inset-y-0 left-0 w-80 bg-[#FAF7EE] rounded-3xl shadow-xl p-8
                        transform transition-transform duration-300 ease-in-out
                        -translate-x-full lg:translate-x-0 lg:static lg:inset-auto lg:w-auto
-                       lg:col-span-3 lg:py-8 py-25 md:col-span-3 sm:col-span-12" style="z-index: 1200;">
+                       lg:col-span-3 lg:py-8 py-15 md:col-span-3 sm:col-span-12" style="z-index: 1200;">
 
                     <h2 class="text-2xl font-bold text-[#4F6B3F] text-center mb-6">Your Growth</h2>
 
@@ -113,7 +113,7 @@
 
             <!-- RIGHT SIDE – Full width for guests -->
             <div
-                class="{{ auth()->check() ? 'lg:col-span-9' : 'lg:col-span-12' }} lg:mt-0 mt-5 bg-[#F9F6EB] rounded-3xl p-6 shadow-md text-[#4F6B3F]">
+                class="{{ auth()->check() ? 'lg:col-span-9' : 'lg:col-span-12' }} lg:mt-0 mt-5 bg-[#F9F6EB] rounded-3xl p-8 shadow-md text-[#4F6B3F]">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 gap-4">
                     {{-- Toggle Button (mobile & tablet) --}}
                     <button id="sidebar-toggleLeader"
