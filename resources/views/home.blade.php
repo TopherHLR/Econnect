@@ -737,13 +737,13 @@
             <div
                 class="bg-gradient-to-r from-[#E3F2D3] to-[#F7FBEE] rounded-3xl p-8 shadow-md flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px]">
                 <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover eco-friendly habits</h3>
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute more</h3>
                     <p class="text-gray-700 mt-2 text-[20px]">EcoBrew shares simple ways to live more sustainably—at no
                         cost.</p>
                     <div class="flex justify-end">
-                        <button class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                            Explore eco-library
-                        </button>
+                        <a href="/leaderboard" class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            Explore Leaderboards
+                        </a>
                     </div>
                 </div>
             </div>
@@ -756,9 +756,9 @@
                     <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
                     <!-- 🔽 Button moved to left side -->
                     <div class="flex justify-start">
-                        <button class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                        <a href="/quests" class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
                             Explore quests
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -770,9 +770,9 @@
                     <h3 class="text-[#4A6613] italic font-semibold text-[40px]"> Be inspired by ECOnnect</h3>
                     <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
                     <div class="flex justify-end">
-                        <button class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                            Explore eco-library
-                        </button>
+                        <a href="/about" class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            Explore About Us
+                        </a>
                     </div>
                 </div>
             </div>
@@ -780,88 +780,7 @@
         </div>
     </section>
 
-    <section class="py-20 px-8 bg-center bg-repeat"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}'); background-blend-mode: soft-light;">
 
-        <div class="relative z-10 max-w-5xl mx-auto text-center">
-            <h2 class="text-[#4A6613] italic text-2xl md:text-3xl font-semibold mb-4">
-                <br><br>Simple, interactive, and real — designed <br> to help you live better for the planet.
-                <br><br><br><br><br>
-            </h2>
-
-            <!-- Step Cards -->
-            <h3 class="text-[#4A6613] italic font-semibold text-xl mt-10 mb-8">Choose your first step today</h3>
-
-            <div class="flex flex-col md:flex-row justify-center gap-6 mb-8">
-                <!-- Card 1 -->
-                <div class="bg-[#F8F4E7] rounded-2xl shadow-md w-full md:w-1/4 text-left overflow-hidden">
-                    <!-- Header -->
-                    <div class="bg-[#A16A44] text-white text-center font-semibold py-3 text-lg rounded-t-2xl">
-                        Use a Reusable Bag
-                    </div>
-                    <!-- Body -->
-                    <div class="p-6 relative">
-                        <p class="text-[#4A6613] text-sm leading-relaxed mb-2">
-                            <strong>STEP 1:</strong> Place an eco bag in your pocket or bag.
-                        </p>
-                        <p class="text-[#4A6613] text-sm leading-relaxed">
-                            <strong>STEP 2:</strong> Apply it when purchasing food <br>or groceries.
-                        </p>
-                        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (5).png') }}"
-                            alt="Bag Icon" class="absolute bottom-4 right-4 w-[40px] opacity-90">
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-[#F8F4E7] rounded-2xl shadow-md w-full md:w-1/4 text-left overflow-hidden">
-                    <!-- Header -->
-                    <div class="bg-[#A16A44] text-white text-center font-semibold py-3 text-lg rounded-t-2xl">
-                        Turn Off Unused Lights
-                    </div>
-                    <!-- Body -->
-                    <div class="p-6 relative">
-                        <p class="text-[#4A6613] text-sm leading-relaxed mb-2">
-                            <strong>STEP 1:</strong> Check all the rooms before you leave.
-                        </p>
-                        <p class="text-[#4A6613] text-sm leading-relaxed">
-                            <strong>STEP 2:</strong> Turn off lights and remove <br>charger plugs.
-                        </p>
-                        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (5).png') }}"
-                            alt="Light Icon" class="absolute bottom-4 right-4 w-[40px] opacity-90">
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-[#F8F4E7] rounded-2xl shadow-md w-full md:w-1/4 text-left overflow-hidden">
-                    <!-- Header -->
-                    <div class="bg-[#A16A44] text-white text-center font-semibold py-3 text-lg rounded-t-2xl">
-                        Use Both Sides of Paper
-                    </div>
-                    <!-- Body -->
-                    <div class="p-6 relative">
-                        <p class="text-[#4A6613] text-sm leading-relaxed mb-2">
-                            <strong>STEP 1:</strong> If writing or printing is required, use the back side.
-                        </p>
-                        <p class="text-[#4A6613] text-sm leading-relaxed">
-                            <strong>STEP 2:</strong> Reserve used paper for drafts <br> or notes.
-                        </p>
-                        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (5).png') }}"
-                            alt="Paper Icon" class="absolute bottom-4 right-4 w-[40px] opacity-90">
-                    </div>
-                </div>
-            </div>
-
-            <button class="bg-[#7A8C4F] text-white px-6 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                See more eco-actions
-            </button>
-
-            <!-- Discount Card -->
-            <div class="mt-30 max-w-4xl mx-auto flex justify-center">
-                <img src="{{ Vite::asset('resources/images/viewport1/dicountcard.png') }}" alt="Discount Card"
-                    class="w-[900px]">
-            </div>
-        </div>
-    </section>
 
     <section class="relative py-48 px-8 bg-center bg-cover overflow-hidden"
         style="background-image: url('{{ Vite::asset('resources/images/viewport1/cc23b421-0654-477b-86a8-4b6462a55a94.png') }}');">
@@ -886,22 +805,8 @@
             alt="Leaf cluster">
 
         <div class="relative z-10 max-w-6xl mx-auto text-center">
-            <h2 class="text-[#5C3B23] font-semibold text-xl md:text-2xl mb-6">
-                Ecobrew leads by example:
-            </h2>
 
-            <!-- ♻️ Recycle Image Slider -->
-            <div class="relative mx-auto aspect-square w-[260px] md:w-[320px]">
-                <img src="{{ Vite::asset('resources/images/viewport1/ecoexample.png') }}" alt="Eco Example">
-                <button class="absolute left-[-40px] top-1/2 transform -translate-y-1/2 text-[#4A6613] text-3xl">
-                    &#8249;
-                </button>
-                <button class="absolute right-[-40px] top-1/2 transform -translate-y-1/2 text-[#4A6613] text-3xl">
-                    &#8250;
-                </button>
-            </div>
-
-            <h3 class="text-[#4A6613] italic font-semibold text-2xl md:text-3xl mt-24 mb-12">
+            <h3 class="text-[#4A6613] italic font-semibold text-2xl md:text-3xl mb-12">
                 What our community <br> is saying:
             </h3>
 
@@ -992,27 +897,15 @@
         style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}'); background-blend-mode: soft-light;">
 
         <div class="max-w-3xl mx-auto">
-            <h2 class="text-[#4A6613] italic font-semibold text-2xl md:text-4xl mb-8 leading-[1.8]">
-                Join others in making small <br><br class="md:hidden"> movements for a big impact
-            </h2>
-
-            <!-- 👥 Community Icons -->
-            <div class="flex justify-center gap-2 mb-4">
-                <img src="{{ Vite::asset('resources/images/viewport1/communityicon.png') }}" alt="Community Icons"
-                    class="w-48 md:w-60 mx-auto select-none pointer-events-none">
-            </div>
-
-            <p class="text-[#4A6613] text-sm mb-16">200 eco-actions completed this week</p>
-
             <!-- 🌎 Call to Action -->
             <h3 class="text-[#5C3B23] italic font-semibold text-xl md:text-5xl mb-8">
                 Your first eco-quest awaits!
             </h3>
 
-            <button
+            <a href="/"
                 class="bg-gradient-to-r from-[#8B5E3C] to-[#5C3B23] text-white font-semibold py-3 px-8 rounded-full shadow-md hover:opacity-90 transition">
                 Start Your Journey
-            </button>
+            </a>
         </div>
     </section>
     <script>
