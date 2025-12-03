@@ -408,7 +408,6 @@ class QuestController extends Controller
         ]);
     }
 
-
     public function update(Request $request, Quest $quest)
     {
         $validated = $request->validate([
@@ -416,12 +415,25 @@ class QuestController extends Controller
             'description' => 'required|string',
             'category' => 'nullable|string|max:100',
             'points_reward' => 'required|integer|min:1',
+            'required_points' => 'required|integer|min:0', // ← added
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|in:active,ending_soon,closed',
         ]);
 
+        // 🔹 Capture old data before update
+        $oldData = $quest->toArray();
+
+        // 🔹 Update quest
         $quest->update($validated);
+
+        // 🔹 Log the change
+        Log::info('Quest updated.', [
+            'quest_id' => $quest->quest_id,
+            'updated_by' => auth()->id(),
+            'before' => $oldData,
+            'after' => $validated,
+        ]);
 
         if ($request->expectsJson()) {
             return response()->json([

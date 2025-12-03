@@ -11,7 +11,7 @@
 
                 <!-- MAIN TREE BADGE CARD -->
                 <div
-                    class="bg-gradient-to-br from-[#F8F2E6] to-[#E8F0D8] rounded-3xl p-10 shadow-inner border-2 border-[#D4E4C1] relative overflow-hidden">
+                    class="bg-gradient-to-br from-[#F8F2E6] to-[#E8F0D8] rounded-3xl p-6 shadow-inner border-2 border-[#D4E4C1] relative overflow-hidden">
 
                     <!-- Tree / Seed Display -->
                     <div class="flex justify-center mb-6">
@@ -23,7 +23,8 @@
                         @else
                             <!-- All other stages: Your real beautiful SVGs -->
                             <img src="{{ Vite::asset('resources/images/badges/' . $treeStageSvgs[$stage]) }}"
-                                alt="{{ $treeNames[$stage] }}" class="w-52 h-52 object-contain drop-shadow-2xl">
+                                alt="{{ $treeNames[$stage] }}"
+                                class="w-52 h-52 animate-bounce-slow object-contain drop-shadow-2xl">
                         @endif
                     </div>
 
@@ -33,7 +34,7 @@
                     </h3>
 
                     <p class="text-center text-sm text-[#6B8254] mt-2 font-medium">
-                        Stage <span class="text-xl font-bold text-[#5E7345]">{{ $stage - 1 }}</span> / 10
+                        Stage <span class="text-xl font-bold text-[#5E7345]">{{ $stage }}</span> / 10
                     </p>
 
                     <!-- Special Message + Mini Progress for Seed Stage -->
@@ -46,38 +47,43 @@
                                 Complete quests & daily eco-actions to watch it sprout
                             </p>
 
-                            <!-- Mini progress to first real stage (50 pts) -->
+                            <!-- Mini progress to first real stage -->
                             <div class="mt-6">
                                 <div class="text-xs text-[#6B8254] text-center mb-2">
-                                    <span>0</span> → <span class="font-bold text-[#5E7345]">50 pts</span> for Sprout
+                                    <span>{{ $myPoints }}</span> / <span
+                                        class="font-bold text-[#5E7345]">{{ $nextThreshold }} pts</span> for Sprout
                                 </div>
+
                                 <div class="w-full bg-[#E0E8D5]/70 rounded-full h-3 shadow-inner">
                                     <div class="bg-gradient-to-r from-[#7A8F55] to-[#5E7345] h-full rounded-full transition-all duration-1000"
-                                        style="width: {{ min(100, ($myPoints / 50) * 100) }}%">
+                                        style="width: {{ $progressPercent }}%">
                                     </div>
                                 </div>
-                                <p class="text-xs text-[#6B8254] mt-2 font-medium">
-                                    {{ $myPoints }} / 50 points
+
+                                <p class="text-xs text-[#6B8254] mt-2 font-medium text-center">
+                                    {{ round($progressPercent) }}% to next stage
+                                    @if ($pointsRemaining > 0)
+                                        ({{ $pointsRemaining }} pts remaining)
+                                    @endif
                                 </p>
                             </div>
-                        </div>
-                    @else
-                        <!-- Normal Progress Bar for Stage 2+ -->
-                        <div class="mt-8">
-                            <div class="flex justify-between text-xs text-[#6B8254] mb-2">
-                                <span>{{ number_format($myPoints) }} pts</span>
-                                <span>Next: {{ number_format($nextThreshold) }} pts</span>
-                            </div>
-                            <div class="w-full bg-[#E0E8D5]/80 rounded-full h-4 shadow-inner overflow-hidden">
-                                <div class="bg-gradient-to-r from-[#7A8F55] to-[#5E7345] h-full rounded-full transition-all duration-1000 relative"
-                                    style="width: {{ $progress }}%">
-                                    <div class="absolute inset-0 bg-white/30 animate-shine"></div>
+                        @else
+                            <!-- Normal Progress Bar for Stage 2+ -->
+                            <div class="mt-8">
+                                <div class="flex justify-between text-xs text-[#6B8254] mb-2">
+                                    <span>{{ number_format($myPoints) }} pts</span>
+                                    <span>Next: {{ number_format($nextThreshold) }} pts</span>
                                 </div>
+                                <div class="w-full bg-[#E0E8D5]/80 rounded-full h-4 shadow-inner overflow-hidden">
+                                    <div class="bg-gradient-to-r from-[#7A8F55] to-[#5E7345] h-full rounded-full transition-all duration-1000 relative"
+                                        style="width: {{ $progressPercent }}%">
+                                        <div class="absolute inset-0 bg-white/30 animate-shine"></div>
+                                    </div>
+                                </div>
+                                <p class="text-center text-xs text-[#6B8254] mt-3 font-medium">
+                                    {{ round($progress) }}% to {{ $treeNames[$stage + 1] ?? 'next stage' }}
+                                </p>
                             </div>
-                            <p class="text-center text-xs text-[#6B8254] mt-3 font-medium">
-                                {{ round($progress) }}% to {{ $treeNames[$stage + 1] ?? 'next stage' }}
-                            </p>
-                        </div>
                     @endif
                 </div>
 

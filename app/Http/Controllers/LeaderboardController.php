@@ -153,12 +153,17 @@ class LeaderboardController extends Controller
             7 => 'Growing Tree',
 
         ];
+        $progressPercent = min(100, ($myPoints / $nextThreshold) * 100); // percentage
+        $pointsRemaining = max(0, $nextThreshold - $myPoints);
 
         return view('leaderboard', compact(
             'treeStageSvgs',
             'treeNames',
             'stage',
             'nextThreshold',
+            'progressPercent',
+            'pointsRemaining',
+            'thresholds',
             'myPoints',
             'rankPoints',
             'myDailyTaps',

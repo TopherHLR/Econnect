@@ -1,4 +1,4 @@
-<table class="min-w-full bg-white border border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
+<table id="collectionTable" class="min-w-full bg-white border border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
     <thead class="bg-[#FCF9EF] border-b border-[#D8E2CA]">
         <tr>
             <th class="px-4 py-3 text-left font-semibold w-16">#</th>
@@ -51,7 +51,7 @@
                 </td>
                 <td class="px-4 py-3">
                     <div class="flex gap-2">
-                        <button class="btn-action btn-edit compact" data-quest='@json($quest)'
+                        <button class="btn-action btn-edit compact" data-quest='@json($quest)' data-quest-id="{{ $quest->quest_id }}
                             title="Edit Quest">
                             <i class="fas fa-edit"></i>
                             <span class="hidden sm:inline">Edit</span>
