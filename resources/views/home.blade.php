@@ -115,53 +115,71 @@
         </script>
     @endauth
 
-<section style="position: relative; top: -75px; min-height: 110vh; display: flex; align-items: center; justify-content: center;" class="viewport2BG">
+    <section
+        style="position: relative; top: -75px; min-height: 110vh; display: flex; align-items: center; justify-content: center;"
+        class="viewport2BG">
 
-    @auth
-        @if (auth()->user()->user_type === 'verified_user')
-            <!-- 🌿 LEFT MODAL PANEL -->
-            <div style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
-                <!-- Title + View More Link -->
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-                    <h2 style="font-size: 1.5rem; font-weight: 700; color: #4F6B3F; font-family: 'Nunito Sans', sans-serif;">Available Quests</h2>
+        @auth
+            @if (auth()->user()->user_type === 'verified_user')
+                <!-- 🌿 LEFT MODAL PANEL -->
+                <div
+                    style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
+                    <!-- Title + View More Link -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                        <h2
+                            style="font-size: 1.5rem; font-weight: 700; color: #4F6B3F; font-family: 'Nunito Sans', sans-serif;">
+                            Available Quests</h2>
 
-                    @if ($pendingSubmissions->count() > 0)
-                        <a href="/quests" style="font-size: 0.875rem; color: #7A8C4F; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.25rem; font-weight: 500;">
-                            View More <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-top: 0.125rem;"></i>
-                        </a>
-                    @endif
-                </div>
-
-                @if ($availableQuests->isEmpty())
-                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 14rem; text-align: center;">
-                        <div style="font-size: 2.5rem; color: rgba(122, 140, 79, 0.3); margin-bottom: 0.75rem;">
-                            <i class="fas fa-seedling"></i>
-                        </div>
-                        <p style="color: rgba(90, 74, 54, 0.7); font-size: 0.875rem; font-style: italic;">No available quests at the moment 🌱</p>
+                        @if ($pendingSubmissions->count() > 0)
+                            <a href="/quests"
+                                style="font-size: 0.875rem; color: #7A8C4F; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.25rem; font-weight: 500;">
+                                View More <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-top: 0.125rem;"></i>
+                            </a>
+                        @endif
                     </div>
-                @else
-                    <div style="display: flex; flex-direction: column; gap: 1rem; max-height: 240px; overflow-y: auto;">
-                        @foreach ($availableQuests->take(2) as $quest)
-                            <div style="position: relative; display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 1rem; cursor: pointer; transition: all 0.3s ease-out; background: rgba(255, 255, 255, 0.9); border: 1.5px solid rgba(224, 233, 214, 0.5); box-shadow: 0 2px 8px rgba(122, 140, 79, 0.04), 0 1px 3px rgba(195, 122, 73, 0.02); transform: translateY(0);"
-                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 16px rgba(122, 140, 79, 0.08), 0 2px 6px rgba(195, 122, 73, 0.04)'; this.style.borderColor='rgba(122, 140, 79, 0.3)';"
-                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(122, 140, 79, 0.04), 0 1px 3px rgba(195, 122, 73, 0.02)'; this.style.borderColor='rgba(224, 233, 214, 0.5)';">
-                                <div style="margin-top: 0.25rem; color: #7A8C4F;">
-                                    <i class="fas fa-tasks" style="font-size: 1.125rem;"></i>
-                                </div>
-                                <div style="flex: 1;">
-                                    <h3 style="font-weight: 600; color: #4F6B3F; font-size: 1rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $quest->title }}</h3>
-                                    <p style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.8); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0.5rem;">{{ $quest->description }}</p>
-                                    
-                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.75rem;">
-                                        <div style="display: flex; align-items: center; gap: 1rem;">
-                                            <span style="font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(122, 140, 79, 0.1); color: #4F6B3F;">
-                                                <i class="fas fa-star" style="font-size: 0.75rem; margin-right: 0.25rem;"></i> {{ $quest->points_reward }} pts
-                                            </span>
-                                            <span style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.6);">
-                                                <i class="far fa-calendar" style="margin-right: 0.25rem;"></i> {{ \Carbon\Carbon::parse($quest->end_date)->format('M d') }}
-                                            </span>
-                                        </div>
-                                        <span onclick="openActiveQuestModal({
+
+                    @if ($availableQuests->isEmpty())
+                        <div
+                            style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 14rem; text-align: center;">
+                            <div style="font-size: 2.5rem; color: rgba(122, 140, 79, 0.3); margin-bottom: 0.75rem;">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <p style="color: rgba(90, 74, 54, 0.7); font-size: 0.875rem; font-style: italic;">No available
+                                quests at the moment 🌱</p>
+                        </div>
+                    @else
+                        <div style="display: flex; flex-direction: column; gap: 1rem; max-height: 240px; overflow-y: auto;">
+                            @foreach ($availableQuests->take(2) as $quest)
+                                <div style="position: relative; display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 1rem; cursor: pointer; transition: all 0.3s ease-out; background: rgba(255, 255, 255, 0.9); border: 1.5px solid rgba(224, 233, 214, 0.5); box-shadow: 0 2px 8px rgba(122, 140, 79, 0.04), 0 1px 3px rgba(195, 122, 73, 0.02); transform: translateY(0);"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 16px rgba(122, 140, 79, 0.08), 0 2px 6px rgba(195, 122, 73, 0.04)'; this.style.borderColor='rgba(122, 140, 79, 0.3)';"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(122, 140, 79, 0.04), 0 1px 3px rgba(195, 122, 73, 0.02)'; this.style.borderColor='rgba(224, 233, 214, 0.5)';">
+                                    <div style="margin-top: 0.25rem; color: #7A8C4F;">
+                                        <i class="fas fa-tasks" style="font-size: 1.125rem;"></i>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h3
+                                            style="font-weight: 600; color: #4F6B3F; font-size: 1rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            {{ $quest->title }}</h3>
+                                        <p
+                                            style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.8); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0.5rem;">
+                                            {{ $quest->description }}</p>
+
+                                        <div
+                                            style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.75rem;">
+                                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                                <span
+                                                    style="font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(122, 140, 79, 0.1); color: #4F6B3F;">
+                                                    <i class="fas fa-star"
+                                                        style="font-size: 0.75rem; margin-right: 0.25rem;"></i>
+                                                    {{ $quest->points_reward }} pts
+                                                </span>
+                                                <span style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.6);">
+                                                    <i class="far fa-calendar" style="margin-right: 0.25rem;"></i>
+                                                    {{ \Carbon\Carbon::parse($quest->end_date)->format('M d') }}
+                                                </span>
+                                            </div>
+                                            <span
+                                                onclick="openActiveQuestModal({
                                             id: {{ $quest->quest_id }},
                                             title: '{{ addslashes($quest->title) }}',
                                             description: '{{ addslashes($quest->description) }}',
@@ -171,143 +189,174 @@
                                             start_date: '{{ $quest->start_date }}',
                                             end_date: '{{ $quest->end_date }}'
                                         })"
-                                        style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.75rem; padding: 0.375rem 0.75rem; border-radius: 9999px; cursor: pointer; transition: all 0.3s ease-out; background: rgba(224, 229, 216, 0.95); color: #4F3B2C; box-shadow: inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12);"
-                                        onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='-2px -2px 4px rgba(255, 255, 255, 0.65), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
-                                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12)'; this.style.filter='brightness(1)';">
-                                            View Quest <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-left: 0.25rem;"></i>
-                                        </span>
+                                                style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.75rem; padding: 0.375rem 0.75rem; border-radius: 9999px; cursor: pointer; transition: all 0.3s ease-out; background: rgba(224, 229, 216, 0.95); color: #4F3B2C; box-shadow: inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12);"
+                                                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='-2px -2px 4px rgba(255, 255, 255, 0.65), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
+                                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12)'; this.style.filter='brightness(1)';">
+                                                View Quest <i class="fas fa-arrow-right"
+                                                    style="font-size: 0.75rem; margin-left: 0.25rem;"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
-
-            <!-- 🌿 RIGHT MODAL PANEL -->
-            <div style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
-                <!-- Title + View More Link -->
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-                    <h2 style="font-size: 1.5rem; font-weight: 700; color: #8B5A3C; font-family: 'Nunito Sans', sans-serif;">Pending Submissions</h2>
-
-                    @if ($pendingSubmissions->count() > 0)
-                        <a href="/quests" style="font-size: 0.875rem; color: #C37A49; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.25rem; font-weight: 500;">
-                            View More <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-top: 0.125rem;"></i>
-                        </a>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
 
-                @if ($pendingSubmissions->isEmpty())
-                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 14rem; text-align: center;">
-                        <div style="font-size: 2.5rem; color: rgba(195, 122, 73, 0.3); margin-bottom: 0.75rem;">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <p style="color: rgba(90, 74, 54, 0.7); font-size: 0.875rem; font-style: italic;">No pending tasks ✨</p>
-                    </div>
-                @else
-                    <div style="display: flex; flex-direction: column; gap: 1rem; max-height: 240px; overflow-y: auto;">
-                        @foreach ($pendingSubmissions->take(2) as $sub)
-                            <div style="position: relative; display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 1rem; cursor: pointer; transition: all 0.3s ease-out; background: rgba(255, 255, 255, 0.9); border: 1.5px solid rgba(240, 230, 222, 0.5); box-shadow: 0 2px 8px rgba(195, 122, 73, 0.04), 0 1px 3px rgba(122, 140, 79, 0.02); transform: translateY(0);"
-                                 onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 16px rgba(195, 122, 73, 0.08), 0 2px 6px rgba(122, 140, 79, 0.04)'; this.style.borderColor='rgba(195, 122, 73, 0.3)';"
-                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(195, 122, 73, 0.04), 0 1px 3px rgba(122, 140, 79, 0.02)'; this.style.borderColor='rgba(240, 230, 222, 0.5)';">
-                                <div style="margin-top: 0.25rem; color: #C37A49;">
-                                    <i class="fas fa-hourglass-half" style="font-size: 1.125rem;"></i>
-                                </div>
-                                <div style="flex: 1;">
-                                    <h3 style="font-weight: 600; color: #8B5A3C; font-size: 1rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $sub->quest->title }}</h3>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                        <span style="font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(195, 122, 73, 0.1); color: #8B5A3C;">
-                                            <i class="fas fa-clock" style="font-size: 0.75rem; margin-right: 0.25rem;"></i> {{ ucfirst($sub->status) }}
-                                        </span>
-                                        @if($sub->submitted_at)
-                                        <span style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.6);">
-                                            <i class="far fa-calendar-check" style="margin-right: 0.25rem;"></i> {{ \Carbon\Carbon::parse($sub->submitted_at)->format('M d') }}
-                                        </span>
-                                        @endif
-                                    </div>
+                <!-- 🌿 RIGHT MODAL PANEL -->
+                <div
+                    style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
+                    <!-- Title + View More Link -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                        <h2
+                            style="font-size: 1.5rem; font-weight: 700; color: #8B5A3C; font-family: 'Nunito Sans', sans-serif;">
+                            Pending Submissions</h2>
 
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem;">
-                                        <span style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.7);">
-                                            <i class="fas fa-exclamation-circle" style="color: #C37A49; margin-right: 0.25rem;"></i> Awaiting review
-                                        </span>
-                                        @php
-                                            $submissionData = [
-                                                'submission_id' => $sub->submission_id,
-                                                'questTitle' => $sub->quest->title,
-                                                'questDescription' => $sub->quest->description,
-                                            ];
-                                        @endphp
-                                        <span onclick='openAcceptedQuestModal(@json($submissionData))'
-                                              style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.75rem; padding: 0.375rem 0.75rem; border-radius: 9999px; cursor: pointer; transition: all 0.3s ease-out; background: rgba(224, 229, 216, 0.95); color: #4F6B3F; box-shadow: inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12);"
-                                              onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='-2px -2px 4px rgba(255, 255, 255, 0.65), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
-                                              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12)'; this.style.filter='brightness(1)';">
-                                            Continue <i class="fas fa-external-link-alt" style="font-size: 0.75rem; margin-left: 0.25rem;"></i>
-                                        </span>
+                        @if ($pendingSubmissions->count() > 0)
+                            <a href="/quests"
+                                style="font-size: 0.875rem; color: #C37A49; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.25rem; font-weight: 500;">
+                                View More <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-top: 0.125rem;"></i>
+                            </a>
+                        @endif
+                    </div>
+
+                    @if ($pendingSubmissions->isEmpty())
+                        <div
+                            style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 14rem; text-align: center;">
+                            <div style="font-size: 2.5rem; color: rgba(195, 122, 73, 0.3); margin-bottom: 0.75rem;">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <p style="color: rgba(90, 74, 54, 0.7); font-size: 0.875rem; font-style: italic;">No pending tasks ✨
+                            </p>
+                        </div>
+                    @else
+                        <div style="display: flex; flex-direction: column; gap: 1rem; max-height: 240px; overflow-y: auto;">
+                            @foreach ($pendingSubmissions->take(2) as $sub)
+                                <div style="position: relative; display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 1rem; cursor: pointer; transition: all 0.3s ease-out; background: rgba(255, 255, 255, 0.9); border: 1.5px solid rgba(240, 230, 222, 0.5); box-shadow: 0 2px 8px rgba(195, 122, 73, 0.04), 0 1px 3px rgba(122, 140, 79, 0.02); transform: translateY(0);"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 16px rgba(195, 122, 73, 0.08), 0 2px 6px rgba(122, 140, 79, 0.04)'; this.style.borderColor='rgba(195, 122, 73, 0.3)';"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(195, 122, 73, 0.04), 0 1px 3px rgba(122, 140, 79, 0.02)'; this.style.borderColor='rgba(240, 230, 222, 0.5)';">
+                                    <div style="margin-top: 0.25rem; color: #C37A49;">
+                                        <i class="fas fa-hourglass-half" style="font-size: 1.125rem;"></i>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h3
+                                            style="font-weight: 600; color: #8B5A3C; font-size: 1rem; margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            {{ $sub->quest->title }}</h3>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                            <span
+                                                style="font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(195, 122, 73, 0.1); color: #8B5A3C;">
+                                                <i class="fas fa-clock"
+                                                    style="font-size: 0.75rem; margin-right: 0.25rem;"></i>
+                                                {{ ucfirst($sub->status) }}
+                                            </span>
+                                            @if ($sub->submitted_at)
+                                                <span style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.6);">
+                                                    <i class="far fa-calendar-check" style="margin-right: 0.25rem;"></i>
+                                                    {{ \Carbon\Carbon::parse($sub->submitted_at)->format('M d') }}
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem;">
+                                            <span style="font-size: 0.75rem; color: rgba(90, 74, 54, 0.7);">
+                                                <i class="fas fa-exclamation-circle"
+                                                    style="color: #C37A49; margin-right: 0.25rem;"></i> Awaiting review
+                                            </span>
+                                            @php
+                                                $submissionData = [
+                                                    'submission_id' => $sub->submission_id,
+                                                    'questTitle' => $sub->quest->title,
+                                                    'questDescription' => $sub->quest->description,
+                                                ];
+                                            @endphp
+                                            <span onclick='openAcceptedQuestModal(@json($submissionData))'
+                                                style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.75rem; padding: 0.375rem 0.75rem; border-radius: 9999px; cursor: pointer; transition: all 0.3s ease-out; background: rgba(224, 229, 216, 0.95); color: #4F6B3F; box-shadow: inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12);"
+                                                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='-2px -2px 4px rgba(255, 255, 255, 0.65), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
+                                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(140, 160, 130, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.6), 0 2px 4px rgba(140, 160, 130, 0.12)'; this.style.filter='brightness(1)';">
+                                                Continue <i class="fas fa-external-link-alt"
+                                                    style="font-size: 0.75rem; margin-left: 0.25rem;"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
-        @else
-            <!-- 🌿 LEFT MODAL PANEL LOCKED -->
-            <div style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
-                <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                    <!-- 🔒 Overlay Lock -->
-                    <div style="background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(248,250,237,0.5) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); border-radius: 1rem; padding: 2rem; box-shadow: 0 12px 40px rgba(122,140,79,0.2); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;">
-                        <div style="font-size: 3rem; color: #7A8C4F; margin-bottom: 1rem; text-shadow: 0 4px 8px rgba(122,140,79,0.2);">
-                            <i class="fas fa-lock"></i>
+                            @endforeach
                         </div>
-                        <h2 style="font-size: 1.25rem; font-weight: 700; color: #4F6B3F; margin-bottom: 0.75rem; font-family: 'Nunito Sans', sans-serif;">Access Restricted</h2>
-                        <p style="color: #5A4A36; font-size: 0.875rem; line-height: 1.5; max-width: 20rem; margin-bottom: 1.25rem;">
-                            Only verified users can access Available Quests. Become a customer and scan your Account QR at your first in-store purchase.
-                        </p>
-                        <div style="margin-top: 1.25rem;">
-                            <button style="position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 600; cursor: pointer; border-radius: 9999px; user-select: none; transition: all 0.3s ease-out; padding: 0.5rem 1rem; font-size: 0.875rem; min-width: 10rem; text-align: center; background: rgba(122, 140, 79, 0.92); color: white; box-shadow: inset 2px 2px 4px rgba(70, 85, 45, 0.35), inset -2px -2px 4px rgba(200, 220, 170, 0.4), 0 2px 6px rgba(122, 140, 79, 0.25);"
+                    @endif
+                </div>
+            @else
+                <!-- 🌿 LEFT MODAL PANEL LOCKED -->
+                <div
+                    style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                        <!-- 🔒 Overlay Lock -->
+                        <div
+                            style="background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(248,250,237,0.5) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); border-radius: 1rem; padding: 2rem; box-shadow: 0 12px 40px rgba(122,140,79,0.2); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;">
+                            <div
+                                style="font-size: 3rem; color: #7A8C4F; margin-bottom: 1rem; text-shadow: 0 4px 8px rgba(122,140,79,0.2);">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h2
+                                style="font-size: 1.25rem; font-weight: 700; color: #4F6B3F; margin-bottom: 0.75rem; font-family: 'Nunito Sans', sans-serif;">
+                                Access Restricted</h2>
+                            <p
+                                style="color: #5A4A36; font-size: 0.875rem; line-height: 1.5; max-width: 20rem; margin-bottom: 1.25rem;">
+                                Only verified users can access Available Quests. Become a customer and scan your Account QR at
+                                your first in-store purchase.
+                            </p>
+                            <div style="margin-top: 1.25rem;">
+                                <button
+                                    style="position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 600; cursor: pointer; border-radius: 9999px; user-select: none; transition: all 0.3s ease-out; padding: 0.5rem 1rem; font-size: 0.875rem; min-width: 10rem; text-align: center; background: rgba(122, 140, 79, 0.92); color: white; box-shadow: inset 2px 2px 4px rgba(70, 85, 45, 0.35), inset -2px -2px 4px rgba(200, 220, 170, 0.4), 0 2px 6px rgba(122, 140, 79, 0.25);"
                                     onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(140, 160, 130, 0.12), -2px -2px 4px rgba(255, 255, 255, 0.7), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
                                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(70, 85, 45, 0.35), inset -2px -2px 4px rgba(200, 220, 170, 0.4), 0 2px 6px rgba(122, 140, 79, 0.25)'; this.style.filter='brightness(1)';">
-                                <i class="fas fa-store" style="transition: transform 0.3s ease-out;"></i> Visit Store
-                            </button>
+                                    <i class="fas fa-store" style="transition: transform 0.3s ease-out;"></i> Visit Store
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
-            <div style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
-                <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                    <!-- 🔒 Overlay Lock -->
-                    <div style="background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(250,248,242,0.5) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); border-radius: 1rem; padding: 2rem; box-shadow: 0 12px 40px rgba(195,122,73,0.2); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;">
-                        <div style="font-size: 3rem; color: #C37A49; margin-bottom: 1rem; text-shadow: 0 4px 8px rgba(195,122,73,0.2);">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h2 style="font-size: 1.25rem; font-weight: 700; color: #8B5A3C; margin-bottom: 0.75rem; font-family: 'Nunito Sans', sans-serif;">Access Restricted</h2>
-                        <p style="color: #5A4A36; font-size: 0.875rem; line-height: 1.5; max-width: 20rem; margin-bottom: 1.25rem;">
-                            Only verified users can access Pending Submissions. Become a customer and scan your Account QR at your first in-store purchase.
-                        </p>
-                        <div style="margin-top: 1.25rem;">
-                            <button style="position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 600; cursor: pointer; border-radius: 9999px; user-select: none; transition: all 0.3s ease-out; padding: 0.5rem 1rem; font-size: 0.875rem; min-width: 10rem; text-align: center; background: rgba(195, 122, 73, 0.92); color: white; box-shadow: inset 2px 2px 4px rgba(120, 80, 50, 0.3), inset -2px -2px 4px rgba(255, 200, 170, 0.5), 0 2px 6px rgba(195, 122, 73, 0.2);"
+                <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
+                <div
+                    style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                        <!-- 🔒 Overlay Lock -->
+                        <div
+                            style="background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(250,248,242,0.5) 100%); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); border-radius: 1rem; padding: 2rem; box-shadow: 0 12px 40px rgba(195,122,73,0.2); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;">
+                            <div
+                                style="font-size: 3rem; color: #C37A49; margin-bottom: 1rem; text-shadow: 0 4px 8px rgba(195,122,73,0.2);">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h2
+                                style="font-size: 1.25rem; font-weight: 700; color: #8B5A3C; margin-bottom: 0.75rem; font-family: 'Nunito Sans', sans-serif;">
+                                Access Restricted</h2>
+                            <p
+                                style="color: #5A4A36; font-size: 0.875rem; line-height: 1.5; max-width: 20rem; margin-bottom: 1.25rem;">
+                                Only verified users can access Pending Submissions. Become a customer and scan your Account QR
+                                at your first in-store purchase.
+                            </p>
+                            <div style="margin-top: 1.25rem;">
+                                <button
+                                    style="position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 600; cursor: pointer; border-radius: 9999px; user-select: none; transition: all 0.3s ease-out; padding: 0.5rem 1rem; font-size: 0.875rem; min-width: 10rem; text-align: center; background: rgba(195, 122, 73, 0.92); color: white; box-shadow: inset 2px 2px 4px rgba(120, 80, 50, 0.3), inset -2px -2px 4px rgba(255, 200, 170, 0.5), 0 2px 6px rgba(195, 122, 73, 0.2);"
                                     onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(140, 160, 130, 0.12), -2px -2px 4px rgba(255, 255, 255, 0.7), 2px 2px 4px rgba(160, 180, 150, 0.25)'; this.style.filter='brightness(1.03)';"
                                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='inset 2px 2px 4px rgba(120, 80, 50, 0.3), inset -2px -2px 4px rgba(255, 200, 170, 0.5), 0 2px 6px rgba(195, 122, 73, 0.2)'; this.style.filter='brightness(1)';">
-                                <i class="fas fa-qrcode" style="transition: transform 0.3s ease-out;"></i> Scan QR
-                            </button>
+                                    <i class="fas fa-qrcode" style="transition: transform 0.3s ease-out;"></i> Scan QR
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endif
-    @endauth
+            @endif
+        @endauth
 
 
-<div id="plant-container"
-    class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
+        <div id="plant-container"
+            class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
 
-<!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
-<!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
-<div id="fallen-leaves" 
-     class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
-     style="
+            <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
+            <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
+            <div id="fallen-leaves" class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
+                style="
         mask-image: 
             /* Top soft fade */
             linear-gradient(
@@ -339,25 +388,24 @@
                 transparent 100%
             );
      ">
-</div>
-    <!-- Rest of your HTML remains the same... -->
+            </div>
+            <!-- Rest of your HTML remains the same... -->
 
-    <div id="plant-text"
-        class="absolute top-[25rem] left-1/2 z-70 -translate-x-1/2 w-max text-center"
-        style="text-shadow: 
+            <div id="plant-text" class="absolute top-[25rem] left-1/2 z-70 -translate-x-1/2 w-max text-center"
+                style="text-shadow: 
             0 0 10px rgba(255, 255, 200, 1),
             0 0 20px rgba(255, 255, 200, 0.95),
             0 0 30px rgba(255, 255, 180, 0.85),
             0 0 40px rgba(255, 255, 180, 0.7),
             0 0 50px rgba(255, 255, 180, 0.5);">
-        <h1 class="md:text-3xl font-serif font-semibold text-[#5e471dff] leading-snug whitespace-nowrap">
-            Even in small ways,
-        </h1>
-    </div>
+                <h1 class="md:text-3xl font-serif font-semibold text-[#5e471dff] leading-snug whitespace-nowrap">
+                    Even in small ways,
+                </h1>
+            </div>
 
 
             <!-- 🌾 Glow Background -->
-          <div class="absolute top-1/4 flex items-center justify-center"> <!-- 25% from top -->
+            <div class="absolute top-1/4 flex items-center justify-center"> <!-- 25% from top -->
                 <!-- Outer glow -->
                 <div
                     class="w-[500px] h-[650px] rounded-full bg-gradient-to-b 
@@ -425,37 +473,37 @@
 
                     <!-- Enhanced glow container with bright center -->
                     <div class="relative top-0">
- <!-- Outer golden glow -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Outer golden glow -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffacd]/60 via-[#fff8b0]/80 to-[#fff695]/80 
                             blur-[10px] md:blur-[15px] -z-10 w-[130%] -left-[15%]
                             opacity-80">
-                </div>
+                        </div>
 
-                <!-- Middle bright yellow layer -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Middle bright yellow layer -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffee0]/70 via-[#fffdc2]/65 to-[#fffb9d]/60 
                             blur-[6px] md:blur-[10px] -z-10 w-[115%] -left-[7.5%]
                             opacity-90 mix-blend-overlay">
-                </div>
+                        </div>
 
-                <!-- Center intense yellow core -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Center intense yellow core -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#ffffe0] via-[#ffffb5] to-[#ffff8f] 
                             blur-[3px] md:blur-[5px] -z-10 w-[105%] -left-[2.5%]
                             opacity-70 mix-blend-screen">
-                </div>
+                        </div>
 
-                <!-- Subtle yellow shimmer effect -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Subtle yellow shimmer effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-transparent via-[#ffffd0]/30 to-transparent 
                             blur-[2px] -z-10 w-[102%] -left-[1%]
                             opacity-100 mix-blend-lighten">
-                </div>
+                        </div>
                         <p
                             class="text-[#553722ff] text-base md:text-3xl font-serif italic tracking-wide text-center relative font-medium">
                             Your personal growth tree
@@ -569,7 +617,8 @@
                                     shadow-[0_0_15px_rgba(255,246,149,0.3)]
                                     group-hover:bg-gradient-to-r group-hover:from-[#fffee0] group-hover:to-[#fff695]/80
                                     group-hover:border-[#fff695] transition-all duration-300">
-                                Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }} points
+                                Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }}
+                                points
                                 <span class="block text-lg text-[#885b2eff]/90 font-normal mt-1">
                                     {{ $treeStages - $stage }} stages remaining
                                 </span>
@@ -592,7 +641,7 @@
                             Please log in to see your personalized growth tree
                         </p>
                     @endauth
-                    </div>
+                </div>
 
             @endauth
 
@@ -610,37 +659,37 @@
 
                     <!-- Enhanced glow container with bright center -->
                     <div class="relative top-0">
- <!-- Outer golden glow -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Outer golden glow -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffacd]/60 via-[#fff8b0]/80 to-[#fff695]/80 
                             blur-[10px] md:blur-[15px] -z-10 w-[130%] -left-[15%]
                             opacity-80">
-                </div>
+                        </div>
 
-                <!-- Middle bright yellow layer -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Middle bright yellow layer -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffee0]/70 via-[#fffdc2]/65 to-[#fffb9d]/60 
                             blur-[6px] md:blur-[10px] -z-10 w-[115%] -left-[7.5%]
                             opacity-90 mix-blend-overlay">
-                </div>
+                        </div>
 
-                <!-- Center intense yellow core -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Center intense yellow core -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#ffffe0] via-[#ffffb5] to-[#ffff8f] 
                             blur-[3px] md:blur-[5px] -z-10 w-[105%] -left-[2.5%]
                             opacity-70 mix-blend-screen">
-                </div>
+                        </div>
 
-                <!-- Subtle yellow shimmer effect -->
-                <div
-                    class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Subtle yellow shimmer effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-transparent via-[#ffffd0]/30 to-transparent 
                             blur-[2px] -z-10 w-[102%] -left-[1%]
                             opacity-100 mix-blend-lighten">
-                </div>
+                        </div>
 
                         <p
                             class="text-[#553722ff] text-base md:text-2xl font-sans-serif italic tracking-wide text-center relative font-medium">
@@ -698,519 +747,349 @@
     </section>
 
 
- <section class="relative text-center py-27 px-6 overflow-hidden mb-[96px]">
-    <!-- Pattern background layer (behind everything) -->
-    <div class="absolute inset-0 bg-[url('/resources/images/viewport1/patter.png')] bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none 
-                filter hue-rotate-30 saturate-200 brightness-75 z-0"></div>
-    
-    <!-- Left Cloud (in front of pattern) -->
-    <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Left"
-         class="absolute left-[-160px] top-[-70px] w-[50rem] opacity-90 z-10">
+    <section class="relative text-center py-27 px-6 overflow-hidden mb-[96px]">
+        <!-- Pattern background layer (behind everything) -->
+        <div
+            class="absolute inset-0 bg-[url('/resources/images/viewport1/patter.png')] bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none 
+                filter hue-rotate-30 saturate-200 brightness-75 z-0">
+        </div>
 
-    <!-- Right Cloud (in front of pattern) -->
-    <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Right"
-         class="absolute right-[-160px] top-[-70px] w-[50rem] opacity-90 z-10">
+        <!-- Left Cloud (in front of pattern) -->
+        <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Left"
+            class="absolute left-[-160px] top-[-70px] w-[50rem] opacity-90 z-10">
 
-    <!-- Content -->
-    <div class="relative flex flex-col items-center justify-center space-y-10 z-20 -mt-20 md:-mt-23">
-        <h2 class="text-white font-serif italic font-bold text-5xl md:text-6xl lg:text-7xl 
+        <!-- Right Cloud (in front of pattern) -->
+        <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Right"
+            class="absolute right-[-160px] top-[-70px] w-[50rem] opacity-90 z-10">
+
+        <!-- Content -->
+        <div class="relative flex flex-col items-center justify-center space-y-10 z-20 -mt-20 md:-mt-23">
+            <h2
+                class="text-white font-serif italic font-bold text-5xl md:text-6xl lg:text-7xl 
                   drop-shadow-[0_4px_8px_rgba(111,78,55,0.65),0_8px_24px_rgba(89,63,44,0.55),0_0_35px_rgba(255,252,225,0.25)]
                    tracking-wider leading-snug text-center px-4 relative z-30">
-            Just like <span class="text-[#fff8b0] drop-shadow-[0_0_20px_rgba(255,248,176,0.6)]">Eco Brew</span>
-        </h2>
-        
+                Just like <span class="text-[#fff8b0] drop-shadow-[0_0_20px_rgba(255,248,176,0.6)]">Eco Brew</span>
+            </h2>
 
-<!-- Eco Brew Logo - Circular & Emotional -->
-<div class="flex justify-center">
-    <div class="relative group mt-10">
-        <!-- Soft outer glow with nature colors -->
-        <div class="absolute inset-0 bg-gradient-to-br from-[#e8f5e9]/30 via-[#c8e6c9]/20 to-[#a5d6a7]/10 blur-lg rounded-full -z-10 
+
+            <!-- Eco Brew Logo - Circular & Emotional -->
+            <div class="flex justify-center">
+                <div class="relative group mt-10">
+                    <!-- Soft outer glow with nature colors -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-[#e8f5e9]/30 via-[#c8e6c9]/20 to-[#a5d6a7]/10 blur-lg rounded-full -z-10 
                     group-hover:from-[#f1f8e9]/40 group-hover:via-[#dcedc8]/30 group-hover:to-[#c5e1a5]/20 
-                    transition-all duration-500"></div>
-        
-        <!-- Natural leaf pattern overlay -->
-        <div class="absolute inset-0 bg-gradient-to-br from-[#81c784]/5 via-transparent to-[#4caf50]/5 
-                    rounded-full -z-10 mix-blend-overlay"></div>
-        
-        <!-- Main circular logo container -->
-        <div class="relative overflow-hidden rounded-full border-2 border-[#c8e6c9]/40 
+                    transition-all duration-500">
+                    </div>
+
+                    <!-- Natural leaf pattern overlay -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-[#81c784]/5 via-transparent to-[#4caf50]/5 
+                    rounded-full -z-10 mix-blend-overlay">
+                    </div>
+
+                    <!-- Main circular logo container -->
+                    <div
+                        class="relative overflow-hidden rounded-full border-2 border-[#c8e6c9]/40 
                     shadow-inner shadow-[#e8f5e9]/30 
                     group-hover:border-[#a5d6a7]/60 group-hover:shadow-[#f1f8e9]/40
                     transition-all duration-300">
-            
-            <!-- Logo image with circular crop -->
-            <img src="{{ Vite::asset('resources/images/logo/ecobrew.jpg') }}" alt="Eco Brew Logo"
-                 class="w-[140px] md:w-[400px] h-[170px] md:h-[400px] object-cover 
+
+                        <!-- Logo image with circular crop -->
+                        <img src="{{ Vite::asset('resources/images/logo/ecobrew.jpg') }}" alt="Eco Brew Logo"
+                            class="w-[140px] md:w-[400px] h-[170px] md:h-[400px] object-cover 
                         transition-all duration-500 ease-out
                         group-hover:scale-105 group-hover:brightness-110
                         filter saturate-110">
-            
-            <!-- Subtle shine effect -->
-            <div class="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent 
-                        opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        </div>
-        
-        <!-- Floating leaf accent -->
-        <div class="absolute -top-2 -right-2 opacity-70 group-hover:opacity-100 
+
+                        <!-- Subtle shine effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent 
+                        opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+                    </div>
+
+                    <!-- Floating leaf accent -->
+                    <div
+                        class="absolute -top-2 -right-2 opacity-70 group-hover:opacity-100 
                     transition-opacity duration-300">
-            <svg class="w-8 h-8 text-[#81c784]" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z"/>
-            </svg>
-        </div>
-        
-        <!-- Soft shadow with earthy tones -->
-        <div class="absolute inset-0 -z-20 rounded-full 
+                        <svg class="w-8 h-8 text-[#81c784]" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z" />
+                        </svg>
+                    </div>
+
+                    <!-- Soft shadow with earthy tones -->
+                    <div
+                        class="absolute inset-0 -z-20 rounded-full 
                     drop-shadow-[0_0_30px_rgba(129,199,132,0.2),
                                 0_0_60px_rgba(76,175,80,0.15),
-                                0_4px_20px_rgba(90,74,54,0.1)]"></div>
-    </div>
-</div>
+                                0_4px_20px_rgba(90,74,54,0.1)]">
+                    </div>
+                </div>
+            </div>
 
             <!-- Text Box -->
- <div class="bg-gradient-to-r from-[#6b4f37]/80 to-[#3a2a1c]/80 
+            <div
+                class="bg-gradient-to-r from-[#6b4f37]/80 to-[#3a2a1c]/80 
                 text-amber-50 text-lg md:text-2xl px-8 py-3 rounded-2xl max-w-4xl 
                 leading-relaxed shadow-[0_8px_32px_rgba(111,78,55,0.3)]
                 border border-amber-900/30 backdrop-blur-sm
                 font-sans-serif italic text-center
                 drop-shadow-[0_4px_6px_rgba(0,0,0,0.25)] mt-35">
-        Ecobrew shares simple ways to live more sustainably—at no cost.
-        </div>
+                Ecobrew shares simple ways to live more sustainably—at no cost.
+            </div>
     </section>
 
-  <section class="py-20 px-8 overflow-hidden relative">
-         
+    <section class="py-20 px-8 overflow-hidden relative">
+
 
         <!-- Background overlay image with exact opacity and pointer-events -->
-   <div class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat"></div>
-       <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat">
+        </div>
+        <!-- 🌫️ Soft Fog Layer -->
         <div
             class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
         </div>
 
-      <!-- 🌫️ Soft Fog Layer -->
-<div class="absolute top-[-3rem] left-0 w-full h-[150px] 
-            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"></div>
-    <!-- 🌿 Cards -->
-    <!-- 🌿 Cards -->
-    <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
-
-      <!-- 🌱 Card 1 (Picture on LEFT) -->
-<div class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
-    <!-- Left side image -->
-    <div class="w-64 h-64 mr-8 flex-shrink-0">
-        <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}" 
-             alt="People collaborating on sustainability"
-             class="w-full h-full object-cover rounded-2xl shadow-md">
-    </div>
-    
-    <!-- Content on right -->
-    <div class="flex-1">
-        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute more</h3>
-        <p class="text-gray-700 mt-1text-[20px]">EcoBrew shares simple ways to live more sustainably—at no cost.</p>
-        <div class="flex justify-end">
-            <a href="/leaderboard" class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                Explore Leaderboards
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- 🌿 Card 2 (Picture on RIGHT) -->
-<div class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[160px] mr-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
-    <!-- Content on left -->
-    <div class="flex-1">
-        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
-        <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
-        <div class="flex justify-start">
-            <a href="/quests" class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                Explore quests
-            </a>
-        </div>
-    </div>
-    
-    <!-- Right side image -->
-    <div class="w-64 h-64 ml-8 flex-shrink-0">
-        <img src="{{ Vite::asset('resources/images/viewport1/quest.jpg') }}" 
-             alt="Eco quests and challenges"
-             class="w-full h-full object-cover rounded-2xl shadow-md">
-    </div>
-</div>
-
-<!-- ☕ Card 3 (Picture on LEFT) -->
-<div class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
-    <!-- Left side image -->
-    <div class="w-64 h-64 mr-8 flex-shrink-0">
-        <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}" 
-             alt="Sustainable café inspiration"
-             class="w-full h-full object-cover rounded-2xl shadow-md">
-    </div>
-    
-    <!-- Content on right -->
-    <div class="flex-1">
-        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Be inspired by ECOnnect</h3>
-        <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
-        <div class="flex justify-end">
-            <a href="/about" class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
-                Explore About Us
-            </a>
-        </div>
-    </div>
-</div>
-</section><section>
-       <!-- 🌫️ Soft Fog Layer -->
+        <!-- 🌫️ Soft Fog Layer -->
         <div
-            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
+            class="absolute top-[-3rem] left-0 w-full h-[150px] 
+            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]">
         </div>
+        <!-- 🌿 Cards -->
+        <!-- 🌿 Cards -->
+        <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
 
-    <!-- Soft organic pattern background -->
-    <div class="absolute inset-0 bg-[url('/resources/images/viewport1/patter.png')] bg-cover bg-center bg-no-repeat opacity-5 pointer-events-none z-0" 
-         style="filter: hue-rotate(60deg) saturate(0.8) brightness(1.1)"></div>
+            <!-- 🌱 Card 1 (Picture on LEFT) -->
+            <div
+                class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+                <!-- Left side image -->
+                <div class="w-64 h-64 mr-8 flex-shrink-0">
+                    <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}"
+                        alt="People collaborating on sustainability"
+                        class="w-full h-full object-cover rounded-2xl shadow-md">
+                </div>
 
-    <!-- Subtle nature accents -->
-    <div class="absolute top-10 left-5 w-32 h-32 opacity-10 z-[1]">
-        <i class="fa-solid fa-leaf text-8xl" style="color: #8A9A7B"></i>
-    </div>
-    <div class="absolute bottom-10 right-5 w-28 h-28 opacity-10 z-[1]">
-        <i class="fa-solid fa-seedling text-7xl" style="color: #6B7D5A"></i>
-    </div>
-
-    <div class="relative z-10 max-w-7xl mx-auto text-center">
-
-        <!-- Section header -->
-        <div class="mb-14">
-            <div class="inline-flex items-center gap-3 mb-4">
-                <div class="w-12 h-0.5" style="background-color: #C8D5BB"></div>
-                <i class="fa-solid fa-heart text-2xl" style="color: #9BAF8D"></i>
-                <div class="w-12 h-0.5" style="background-color: #C8D5BB"></div>
+                <!-- Content on right -->
+                <div class="flex-1">
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute more
+                    </h3>
+                    <p class="text-gray-700 mt-1text-[20px]">EcoBrew shares simple ways to live more sustainably—at no
+                        cost.</p>
+                    <div class="flex justify-end">
+                        <a href="/leaderboard"
+                            class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            Explore Leaderboards
+                        </a>
+                    </div>
+                </div>
             </div>
-            <h3 class="font-serif italic font-medium text-4xl md:text-5xl mb-3" style="color: #5A6B4A">
-                Voices from Our Community
+
+            <!-- 🌿 Card 2 (Picture on RIGHT) -->
+            <div
+                class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[160px] mr-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+                <!-- Content on left -->
+                <div class="flex-1">
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
+                    <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
+                    <div class="flex justify-start">
+                        <a href="/quests"
+                            class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            Explore quests
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right side image -->
+                <div class="w-64 h-64 ml-8 flex-shrink-0">
+                    <img src="{{ Vite::asset('resources/images/viewport1/quest.jpg') }}" alt="Eco quests and challenges"
+                        class="w-full h-full object-cover rounded-2xl shadow-md">
+                </div>
+            </div>
+
+            <!-- ☕ Card 3 (Picture on LEFT) -->
+            <div
+                class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+                <!-- Left side image -->
+                <div class="w-64 h-64 mr-8 flex-shrink-0">
+                    <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}"
+                        alt="Sustainable café inspiration" class="w-full h-full object-cover rounded-2xl shadow-md">
+                </div>
+
+                <!-- Content on right -->
+                <div class="flex-1">
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Be inspired by ECOnnect</h3>
+                    <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
+                    <div class="flex justify-end">
+                        <a href="/about"
+                            class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            Explore About Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section class="relative py-48 px-8 bg-center bg-cover overflow-hidden"
+        style="background-image: url('{{ Vite::asset('resources/images/viewport1/cc23b421-0654-477b-86a8-4b6462a55a94.png') }}');">
+
+        <!-- 🌿 Left Leaf Cluster Top (moved lower) -->
+        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (15).png') }}"
+            class="absolute left-93 bottom-27 w-48 md:w-64 opacity-90 pointer-events-none select-none" alt="Leaf cluster">
+
+        <!-- 🌿 Right Leaf Cluster Top -->
+        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (16).png') }}"
+            class="absolute right-90 bottom-70 w-52 md:w-72 opacity-90 pointer-events-none select-none"
+            alt="Leaf cluster">
+
+        <!-- 🌿 Left Leaf Cluster Bottom -->
+        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (18).png') }}"
+            class="absolute left-[-100px] top-50 w-56 md:w-72 opacity-90 pointer-events-none select-none"
+            alt="Leaf cluster">
+
+        <!-- 🌿 Right Leaf Cluster Bottom -->
+        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (19).png') }}"
+            class="absolute right-[-100px] top-50 w-60 md:w-80 opacity-90 pointer-events-none select-none"
+            alt="Leaf cluster">
+
+        <div class="relative z-10 max-w-6xl mx-auto text-center">
+            <!-- Section header -->
+            <div class="mb-14">
+                <div class="inline-flex items-center gap-3 mb-4">
+                    <div class="w-12 h-0.5" style="background-color: #C8D5BB"></div>
+                    <i class="fa-solid fa-heart text-2xl" style="color: #9BAF8D"></i>
+                    <div class="w-12 h-0.5" style="background-color: #C8D5BB"></div>
+                </div>
+                <h3 class="font-serif italic font-medium text-4xl md:text-5xl mb-3" style="color: #5A6B4A">
+                    Voices from Our Community
+                </h3>
+                <p class="text-lg max-w-2xl mx-auto font-light" style="color: rgba(91, 107, 74, 0.7)">
+                    Hear what mindful souls are saying about their sustainable journey
+                </p>
+            </div>
+
+            <h3 class="text-[#4A6613] italic font-semibold text-2xl md:text-3xl mb-12">
+                What our community <br> is saying:
             </h3>
-            <p class="text-lg max-w-2xl mx-auto font-light" style="color: rgba(91, 107, 74, 0.7)">
-                Hear what mindful souls are saying about their sustainable journey
-            </p>
-        </div>
 
-        <!-- ⭐ ADD FEEDBACK FORM -->
-        @auth
-            <form action="{{ route('feedback.store') }}" method="POST"
-                class="rounded-3xl shadow-sm p-8 mb-16 max-w-2xl mx-auto text-center border transition-shadow duration-500 backdrop-blur-sm"
-                style="background: rgba(255, 255, 255, 0.8); border-color: rgba(200, 213, 187, 0.8)">
-                @csrf
+            <!-- ⭐ ADD FEEDBACK FORM -->
+            @auth
+                <form action="{{ route('feedback.store') }}" method="POST"
+                    class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-10 max-w-xl mx-auto text-left">
+                    @csrf
 
-                <div class="flex items-center justify-center gap-3 mb-6">
-                    <i class="fa-solid fa-pen-nib text-2xl" style="color: #6B7D5A"></i>
-                    <h4 class="font-medium text-2xl" style="color: #5A6B4A">
-                        Share Your Thoughts
+                    <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-comment-dots text-[#4A6613]"></i>
+                        Share Your Feedback
                     </h4>
-                </div>
 
-                <textarea name="content" required rows="3"
-                    class="w-full p-5 border rounded-2xl focus:outline-none transition-all duration-300 resize-none"
-                    style="background: rgba(255, 255, 255, 0.95); border-color: #D4DECD;"
-                    placeholder="What positive change has sustainability brought to your life? 🌱"
-                    x-data="{ charCount: 0 }"
-                    x-on:input="charCount = $event.target.value.length"
-                    maxlength="280"></textarea>
-                
-                <div class="text-right text-sm mt-2" x-show="charCount > 0" style="color: rgba(107, 125, 90, 0.6)">
-                    <span x-text="charCount"></span>/280
-                </div>
+                    <textarea name="content" required rows="3"
+                        class="w-full p-4 border rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#4A6613]"
+                        placeholder="Write your feedback here..."></textarea>
 
-                <div class="my-8">
-                    <label class="block font-medium text-lg mb-4" style="color: #6B7D5A">
-                        How would you rate your experience?
-                    </label>
-                    <div class="flex justify-center gap-2 mb-4" x-data="{ rating: 0 }">
+                    <label class="block mt-4 mb-2 font-semibold text-[#4A6613]">Rating:</label>
+
+
+                    <div class="flex gap-2 mb-4" x-data="{ rating: 0 }">
                         @for ($i = 1; $i <= 5; $i++)
-                            <label class="cursor-pointer group">
+                            <label class="cursor-pointer">
                                 <input type="radio" name="rating" value="{{ $i }}" class="hidden"
                                     x-model="rating" required>
-                                <div class="relative">
-                                    <i class="fa-solid fa-star text-3xl transition-all duration-300 group-hover:scale-110"
-                                        :class="rating >= {{ $i }} ? 'text-[#FBBF24]' : 'text-[#D4DECD]'"
-                                        :style="rating < {{ $i }} ? 'color: #D4DECD' : ''"></i>
-                                </div>
+                                <i class="fa-solid fa-star text-2xl"
+                                    :class="rating >= {{ $i }} ? 'text-yellow-500' : 'text-gray-300'"
+                                    @click="rating = {{ $i }}"></i>
                             </label>
                         @endfor
                     </div>
-                </div>
 
-                <button type="submit" 
-                    class="group text-white px-10 py-3 rounded-full text-lg font-medium transition-all duration-400 shadow-sm hover:shadow"
-                    style="background: linear-gradient(to right, #6B7D5A, #8A9A7B)">
-                    <i class="fa-solid fa-paper-plane mr-3 group-hover:rotate-12 transition-transform"></i>
-                    Share Feedback
-                </button>
-            </form>
-        @else
-            <div class="rounded-2xl p-8 mb-16 max-w-xl mx-auto border shadow-sm backdrop-blur-sm"
-                 style="background: rgba(255, 255, 255, 0.8); border-color: rgba(200, 213, 187, 0.8)">
-                <i class="fa-solid fa-leaf-circle text-5xl mb-4" style="color: #9BAF8D"></i>
-                <p class="font-medium text-xl mb-3" style="color: #6B7D5A">
-                    Join our community conversation
-                </p>
-                <p class="mb-6 font-light" style="color: rgba(107, 125, 90, 0.7)">
-                    Sign in to share your sustainable journey with others
-                </p>
-                <a href="{{ route('login') }}" 
-                   class="inline-flex items-center gap-2 text-white px-8 py-3 rounded-full transition-colors shadow-sm"
-                   style="background-color: #8A9A7B">
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                    Sign in to contribute
-                </a>
-            </div>
-        @endauth
 
-        <!-- FEEDBACK CARDS -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            @foreach ($feedback as $item)
-                <div class="group rounded-3xl p-6 text-left relative border transition-all duration-300 hover:shadow-lg cursor-default overflow-hidden backdrop-blur-sm"
-                     style="background: rgba(255, 255, 255, 0.8); border-color: rgba(200, 213, 187, 0.8)">
-                    
-                    <!-- Soft top accent -->
-                    <div class="absolute top-0 left-0 right-0 h-1"
-                         style="background: linear-gradient(to right, rgba(200, 213, 187, 0.6), rgba(155, 175, 141, 0.5), rgba(200, 213, 187, 0.6))"></div>
-                    
-                    <!-- Soft floating avatar -->
-                    <div class="absolute -top-5 right-6">
-                        <div class="relative">
-                            <div class="w-12 h-12 rounded-full border-2 border-white shadow-sm flex items-center justify-center"
-                                 style="background: linear-gradient(to bottom right, #F8F9F7, #F0F1EA)">
-                                <i class="fa-solid fa-leaf text-lg" style="color: #8A9A7B"></i>
-                            </div>
-                        </div>
-                    </div>
+                    <button type="submit" class="bg-[#4A6613] text-white px-6 py-2 rounded-xl hover:bg-[#3a5010] transition">
+                        Submit Feedback
+                    </button>
+                </form>
+            @else
+                <p class="text-red-600 font-semibold mb-10">You must be logged in to submit feedback.</p>
+            @endauth
 
-                    <!-- User info -->
-                    <div class="mb-4">
-                        <p class="font-medium text-lg" style="color: #6B7D5A">
-                            {{ $item->user->first_name ?? 'Community Member' }}
+            <!-- FEEDBACK CARDS -->
+            <div class="flex flex-col md:flex-row justify-center gap-6 flex-wrap">
+
+                @foreach ($feedback as $item)
+                    <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 w-full md:w-1/4 text-left relative">
+
+                        <!-- Quotation Mark -->
+                        <i class="fa-solid fa-quote-left text-4xl text-[#4A6613] absolute top-3 left-3 opacity-70"></i>
+
+                        <!-- User Avatar -->
+                        <i class="fa-solid fa-user-circle text-4xl text-[#4A6613] absolute top-3 right-3 opacity-70"></i>
+
+                        <!-- User Name -->
+                        <p class="font-semibold text-[#4A6613] mt-14">
+                            {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
                         </p>
-                        <p class="text-sm flex items-center gap-2 mt-1 font-light" style="color: rgba(107, 125, 90, 0.6)">
-                            <i class="fa-solid fa-calendar-day text-xs"></i>
-                            {{ $item->created_at->format('M d, Y') }}
-                        </p>
-                    </div>
 
-                    <!-- Feedback content with soft quotation -->
-                    <div class="relative">
-                        <i class="fa-solid fa-quote-left text-2xl absolute -top-1 -left-1" style="color: rgba(212, 222, 205, 0.5)"></i>
-                        <p class="italic leading-relaxed pl-5 mb-5 min-h-[100px] text-sm md:text-base" style="color: rgba(90, 107, 74, 0.9)">
-                            "{{ $item->content }}"
+                        <!-- Feedback Content -->
+                        <p class="text-[#4E3A2E] italic mb-2">
+                            “{{ $item->content }}”
                         </p>
-                        <i class="fa-solid fa-quote-right text-2xl absolute bottom-0 right-2" style="color: rgba(212, 222, 205, 0.5)"></i>
-                    </div>
 
-                    <!-- Soft star rating -->
-                    <div class="flex items-center justify-between pt-5" style="border-top: 1px solid rgba(200, 213, 187, 0.5)">
-                        <div class="flex gap-0.5">
+                        <!-- ⭐ Dynamic Star Rating -->
+                        <div class="absolute bottom-3 left-3 flex">
                             @for ($i = 1; $i <= 5; $i++)
-                                <i class="fa-solid fa-star text-lg {{ $i <= $item->rating ? 'text-[#FBBF24]' : 'text-[#D4DECD]' }}"></i>
+                                <i
+                                    class="fa-solid fa-star {{ $i <= $item->rating ? 'text-yellow-500' : 'text-gray-300' }} text-xl"></i>
                             @endfor
                         </div>
-                        
-                        <!-- Soft impact indicator -->
-                        <div class="flex items-center gap-2 text-sm font-light" style="color: rgba(107, 125, 90, 0.7)">
-                            <div class="flex items-center">
-                                @php
-                                    $ecoLevel = match($item->rating) {
-                                        5 => 'Inspiring',
-                                        4 => 'Heartwarming',
-                                        3 => 'Thoughtful',
-                                        default => 'Nice'
-                                    };
-                                    $ecoIcon = match($item->rating) {
-                                        5 => 'fa-sparkles',
-                                        4 => 'fa-heart',
-                                        3 => 'fa-lightbulb',
-                                        default => 'fa-smile'
-                                    };
-                                @endphp
-                                <i class="fa-solid {{ $ecoIcon }} mr-1 text-xs"></i>
-                                {{ $ecoLevel }}
-                            </div>
-                        </div>
+
+                        <!-- Decorative icon -->
+                        <i
+                            class="fa-solid fa-quote-right text-3xl text-[#4A6613] absolute bottom-3 right-5 opacity-60"></i>
                     </div>
+                @endforeach
 
-                    <!-- Very subtle hover effect -->
-                    <div class="absolute inset-0 -z-10 transition-all duration-500"
-                         style="background: linear-gradient(to bottom right, rgba(248, 249, 247, 0), rgba(240, 241, 234, 0), rgba(248, 249, 247, 0))"></div>
-                </div>
-            @endforeach
-        </div>
-
-        <!-- Empty state -->
-        @if($feedback->isEmpty())
-        <div class="rounded-3xl p-10 text-center border shadow-sm backdrop-blur-sm"
-             style="background: rgba(255, 255, 255, 0.8); border-color: rgba(200, 213, 187, 0.8)">
-            <i class="fa-solid fa-comments text-5xl mb-5" style="color: #C8D5BB"></i>
-            <h4 class="text-xl font-medium mb-2" style="color: #6B7D5A">Be the first to share!</h4>
-            <p class="text-sm max-w-md mx-auto font-light" style="color: rgba(107, 125, 90, 0.7)">
-                Your sustainable story could inspire others to embrace mindful living.
-            </p>
-        </div>
-        @endif
-
-        <!-- View more button -->
-        @if($feedback->count() >= 6)
-        <div class="mt-10">
-            <a href="{{ route('feedback.index') }}" 
-               class="inline-flex items-center gap-2 font-medium text-sm border px-6 py-3 rounded-full transition-all duration-300 group"
-               style="color: #8A9A7B; border-color: #C8D5BB">
-                <span>View all stories</span>
-                <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-            </a>
-        </div>
-        @endif
-
-    </div>
-
-</section>
- <section class="relative text-center py-32 px-6 overflow-hidden">
-            <!-- Background overlay image with exact opacity and pointer-events -->
-   <div class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat"></div>
-       <!-- 🌫️ Soft Fog Layer -->
-        <div
-            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
-        </div>
-
-      <!-- 🌫️ Soft Fog Layer -->
-<div class="absolute top-[-3rem] left-0 w-full h-[150px] 
-            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"></div>
-   
-    <!-- Soft gradient background (different from above) -->
-    <div class="absolute inset-0" 
-         style="background: radial-gradient(circle at 50% 50%, #F1EEE6, #E8E4DA)"></div>
-    
-    <!-- Subtle water/wave pattern overlay -->
-    <div class="absolute inset-0 opacity-10 pointer-events-none"
-         style="background-image: url('data:image/svg+xml,<svg width="100" height="20" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M0,10 C20,5 40,15 60,10 C80,5 100,15 100,10 L100,20 L0,20 Z" fill="%236B7D5A"/></svg></div>
-    
-    <!-- Floating eco elements -->
-    <div class="absolute top-20 left-10 w-16 h-16 opacity-10 animate-float">
-        <i class="fa-solid fa-droplet text-5xl" style="color: #8A9A7B"></i>
-    </div>
-    <div class="absolute bottom-20 right-12 w-20 h-20 opacity-10 animate-float" style="animation-delay: 1s">
-        <i class="fa-solid fa-wind text-6xl" style="color: #9BAF8D"></i>
-    </div>
-    
-    <!-- Subtle background image with very low opacity -->
-    <div class="absolute inset-0 bg-center bg-contain bg-no-repeat opacity-5 mix-blend-soft-light"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}');"></div>
-
-    <div class="relative z-10 max-w-3xl mx-auto">
-        
-        <!-- Nature-inspired divider -->
-        <div class="flex justify-center mb-10">
-            <div class="relative">
-                <div class="w-32 h-1 rounded-full" style="background: linear-gradient(to right, transparent, #C8D5BB, transparent)"></div>
-                <div class="absolute -top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center"
-                     style="background: #F1EEE6; border: 2px solid #C8D5BB">
-                    <i class="fa-solid fa-leaf text-sm" style="color: #8A9A7B"></i>
-                </div>
             </div>
+
+
         </div>
 
-        <!-- Earthy call to action -->
-        <div class="mb-12">
-            <p class="text-sm font-light tracking-wider uppercase mb-4" style="color: #8A9A7B; letter-spacing: 0.2em">
-                Begin Your Path
-            </p>
-            <h3 class="font-serif text-4xl md:text-6xl font-light mb-6 leading-tight" style="color: #5A6B4A">
-                Ready to make<br>
-                <span class="italic font-medium">gentle waves</span> of change?
+
+    </section>
+
+    <section class="relative text-center py-32 px-6 bg-center bg-repeat"
+        style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}'); background-blend-mode: soft-light;">
+
+        <div class="max-w-3xl mx-auto">
+            <!-- 🌎 Call to Action -->
+            <h3 class="text-[#5C3B23] italic font-semibold text-xl md:text-5xl mb-8">
+                Your first eco-quest awaits!
             </h3>
-            <p class="text-lg max-w-xl mx-auto font-light mb-10" style="color: rgba(90, 107, 74, 0.8); line-height: 1.8">
-                Join our community of mindful individuals taking small, 
-                meaningful steps toward a more sustainable future.
-            </p>
-        </div>
 
-        <!-- Soft pill-shaped CTA button -->
-        <a href="/"
-            class="group relative inline-flex items-center justify-center gap-3 text-lg font-medium py-5 px-12 rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 mb-10">
-            <!-- Button background with gradient -->
-            <div class="absolute inset-0 rounded-full" 
-                 style="background: linear-gradient(to right, #8A9A7B, #9BAF8D)"></div>
-            
-            <!-- Button hover effect overlay -->
-            <div class="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-            
-            <!-- Button content -->
-            <span class="relative text-white">
-                <i class="fa-solid fa-seedling mr-3 group-hover:rotate-180 transition-transform duration-700"></i>
-                Start Your First Quest
-            </span>
-            
-            <!-- Subtle glow effect -->
-            <div class="absolute -inset-1 rounded-full blur opacity-0 group-hover:opacity-30 transition-opacity duration-500"
-                 style="background: #8A9A7B"></div>
-        </a>
-
-        <!-- Alternative paths in soft cards -->
-        <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <a href="/quests" 
-               class="group p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1"
-               style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(200, 213, 187, 0.4); backdrop-filter: blur(10px)">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto"
-                     style="background: rgba(139, 154, 123, 0.1); border: 1px solid rgba(139, 154, 123, 0.3)">
-                    <i class="fa-solid fa-mountain-sun text-xl" style="color: #8A9A7B"></i>
-                </div>
-                <h4 class="font-medium mb-2" style="color: #5A6B4A">Explore Quests</h4>
-                <p class="text-sm font-light" style="color: rgba(90, 107, 74, 0.7)">Daily challenges for positive impact</p>
-            </a>
-            
-            <a href="/leaderboard" 
-               class="group p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1"
-               style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(200, 213, 187, 0.4); backdrop-filter: blur(10px)">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto"
-                     style="background: rgba(155, 175, 141, 0.1); border: 1px solid rgba(155, 175, 141, 0.3)">
-                    <i class="fa-solid fa-users text-xl" style="color: #9BAF8D"></i>
-                </div>
-                <h4 class="font-medium mb-2" style="color: #5A6B4A">Meet Community</h4>
-                <p class="text-sm font-light" style="color: rgba(90, 107, 74, 0.7)">Connect with like-minded individuals</p>
-            </a>
-            
-            <a href="/about" 
-               class="group p-6 rounded-2xl transition-all duration-300 hover:-translate-y-1"
-               style="background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(200, 213, 187, 0.4); backdrop-filter: blur(10px)">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto"
-                     style="background: rgba(107, 125, 90, 0.1); border: 1px solid rgba(107, 125, 90, 0.3)">
-                    <i class="fa-solid fa-book-open text-xl" style="color: #6B7D5A"></i>
-                </div>
-                <h4 class="font-medium mb-2" style="color: #5A6B4A">Learn More</h4>
-                <p class="text-sm font-light" style="color: rgba(90, 107, 74, 0.7)">Discover our sustainability mission</p>
+            <a href="/"
+                class="bg-gradient-to-r from-[#8B5E3C] to-[#5C3B23] text-white font-semibold py-3 px-8 rounded-full shadow-md hover:opacity-90 transition">
+                Start Your Journey
             </a>
         </div>
+    </section>
 
-        <!-- Final inspirational note -->
-        <div class="mt-16 pt-10">
-            <div class="max-w-md mx-auto p-6 rounded-2xl" 
-                 style="background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(200, 213, 187, 0.3)">
-                <i class="fa-solid fa-quote-left text-2xl mb-4 block" style="color: #fbf6bfff"></i>
-                <p class="text-lg font-light italic mb-2" style="color: #6B7D5A">
-                    "Sustainability isn't about perfection—it's about progress, one gentle step at a time."
-                </p>
-                <p class="text-sm font-light mt-4" style="color: rgba(90, 107, 74, 0.6)">
-                    Welcome to a community that celebrates every small victory.
-                </p>
-            </div>
-        </div>
+    <style>
+        @keyframes float {
 
-    </div>
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
 
-</section>
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
 
-<style>
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(5deg); }
-}
-.animate-float {
-    animation: float 6s ease-in-out infinite;
-}
-</style>
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
     <script>
         window.isGuest = @guest true
         @else
@@ -1633,444 +1512,445 @@
             // They should work with the enhanced click handler
 
             // Update the sendTaps function to show messages in the progress label area:
-function sendTaps(tapCount) {
-    fetch("{{ url('/tree/tap') }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-            },
-            body: JSON.stringify({
-                taps: tapCount
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log("Tree tap response:", data);
+            function sendTaps(tapCount) {
+                fetch("{{ url('/tree/tap') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            taps: tapCount
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Tree tap response:", data);
 
-            // ========== ADD THIS: Handle "Only verified users" message ==========
-            if (data.message === 'Only verified users') {
-                showToastMessage(
-                    '🌿 Only verified users can grow their tree',
-                    'verification',
-                    'Verify your account to nurture your eco-tree and earn points'
-                );
-                return; // Stop further processing
-            }
-            // ========== END ADDED SECTION ==========
+                        // ========== ADD THIS: Handle "Only verified users" message ==========
+                        if (data.message === 'Only verified users') {
+                            showToastMessage(
+                                '🌿 Only verified users can grow their tree',
+                                'verification',
+                                'Verify your account to nurture your eco-tree and earn points'
+                            );
+                            return; // Stop further processing
+                        }
+                        // ========== END ADDED SECTION ==========
 
-            const growthFill = document.getElementById('growth-fill');
-            const growthLabel = document.getElementById('growth-label');
-            const growthBar = document.getElementById('growth-bar');
+                        const growthFill = document.getElementById('growth-fill');
+                        const growthLabel = document.getElementById('growth-label');
+                        const growthBar = document.getElementById('growth-bar');
 
-            // 1. Update Progress Bar Fill
-            if (data.growthPercent !== undefined && growthFill) {
-                const oldPercent = parseFloat(growthFill.style.width) || 0;
-                const newPercent = parseFloat(data.growthPercentReal);
+                        // 1. Update Progress Bar Fill
+                        if (data.growthPercent !== undefined && growthFill) {
+                            const oldPercent = parseFloat(growthFill.style.width) || 0;
+                            const newPercent = parseFloat(data.growthPercentReal);
 
-                growthFill.style.width = `${newPercent}%`;
+                            growthFill.style.width = `${newPercent}%`;
 
-                // Level-up celebration when crossing a stage
-                const segment = 100 / 10; // 10 stages
-                if (Math.floor(oldPercent / segment) < Math.floor(newPercent / segment)) {
-                    createLevelUpEffect();
-                }
-            }
+                            // Level-up celebration when crossing a stage
+                            const segment = 100 / 10; // 10 stages
+                            if (Math.floor(oldPercent / segment) < Math.floor(newPercent / segment)) {
+                                createLevelUpEffect();
+                            }
+                        }
 
-            // 2. Update Growth Label (only for verified users)
-            if (growthLabel && data.stage !== undefined) {
-                // Non-verified users see restricted message (handled in Blade)
-                // But if server says we're good → show full info
-                growthLabel.innerHTML = `
+                        // 2. Update Growth Label (only for verified users)
+                        if (growthLabel && data.stage !== undefined) {
+                            // Non-verified users see restricted message (handled in Blade)
+                            // But if server says we're good → show full info
+                            growthLabel.innerHTML = `
                     Stage ${data.stage} / 10 — ${data.progressPointsReal} / ${data.growthMax} points
                     <span class="block text-[20px] text-[#9f8f6a]/70 font-normal mt-1">
                         ${data.stages_remaining} stage${data.stages_remaining === 1 ? '' : 's'} remaining
                     </span>
                 `;
+                        }
+
+                        // 3. Update Stage Markers (current stage glows)
+                        const markerContainer = growthBar?.querySelector('.absolute.inset-0.flex');
+                        if (markerContainer && data.stage !== undefined) {
+                            const markers = markerContainer.querySelectorAll('.group\\/marker');
+                            markers.forEach((markerEl, index) => {
+                                const stageNum = index + 1;
+                                const dot = markerEl.querySelector('div[class*="w-["]');
+                                const label = markerEl.querySelector('span');
+
+                                const isCurrent = stageNum === data.stage;
+                                const isPast = stageNum < data.stage;
+
+                                // Update dot
+                                if (isCurrent) {
+                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                            '') +
+                                        ' bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a] shadow-[0_0_8px_2px_rgba(159,143,106,0.6)] ring-2 ring-white/50';
+                                    if (label) label.textContent = 'Stage ' + stageNum;
+                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                                        'text-[#5C7919] font-bold');
+                                } else if (isPast) {
+                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                            '') +
+                                        ' bg-gradient-to-br from-[#bfae7c] to-[#9f8f6a] shadow-[0_0_4px_1px_rgba(159,143,106,0.4)]';
+                                    if (label) label.textContent = 'Stage ' + stageNum;
+                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                                        'text-[#9f8f6a]');
+                                } else {
+                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                            '') +
+                                        ' bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
+                                    if (label) label.textContent = 'Stage ' + stageNum;
+                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                                        'text-[#cbbfa8]/70');
+                                }
+                            });
+                        }
+
+                        // 4. Quest Progress Message
+                        if (data.tap_progress !== undefined) {
+                            if (data.quest_completed || data.tap_progress >= 100) {
+                                showProgressBarMessage("Quest Already completed! +5 points awarded", "success");
+                            } else if (data.has_quest && data.tap_progress > 0) {
+                                showProgressBarMessage(`Keep tapping — ${data.tap_progress}/100 taps`, "info");
+                            }
+                        }
+
+                        // 5. Optional: Show toast message from server
+                        if (data.message && !data.message.includes("progress")) {
+                            // Use new consistent toast instead of showIntegratedMessage
+                            showToastMessage(data.message, 'info');
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Tap failed:", err);
+                        showToastMessage("Connection lost. Try again!", "error");
+                    });
             }
-
-            // 3. Update Stage Markers (current stage glows)
-            const markerContainer = growthBar?.querySelector('.absolute.inset-0.flex');
-            if (markerContainer && data.stage !== undefined) {
-                const markers = markerContainer.querySelectorAll('.group\\/marker');
-                markers.forEach((markerEl, index) => {
-                    const stageNum = index + 1;
-                    const dot = markerEl.querySelector('div[class*="w-["]');
-                    const label = markerEl.querySelector('span');
-
-                    const isCurrent = stageNum === data.stage;
-                    const isPast = stageNum < data.stage;
-
-                    // Update dot
-                    if (isCurrent) {
-                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                '') +
-                            ' bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a] shadow-[0_0_8px_2px_rgba(159,143,106,0.6)] ring-2 ring-white/50';
-                        if (label) label.textContent = 'Stage ' + stageNum;
-                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                            'text-[#5C7919] font-bold');
-                    } else if (isPast) {
-                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                '') +
-                            ' bg-gradient-to-br from-[#bfae7c] to-[#9f8f6a] shadow-[0_0_4px_1px_rgba(159,143,106,0.4)]';
-                        if (label) label.textContent = 'Stage ' + stageNum;
-                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                            'text-[#9f8f6a]');
-                    } else {
-                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                '') +
-                            ' bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
-                        if (label) label.textContent = 'Stage ' + stageNum;
-                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                            'text-[#cbbfa8]/70');
-                    }
-                });
-            }
-
-            // 4. Quest Progress Message
-            if (data.tap_progress !== undefined) {
-                if (data.quest_completed || data.tap_progress >= 100) {
-                    showProgressBarMessage("Quest Already completed! +5 points awarded", "success");
-                } else if (data.has_quest && data.tap_progress > 0) {
-                    showProgressBarMessage(`Keep tapping — ${data.tap_progress}/100 taps`, "info");
+            // ========== ADD THIS NEW FUNCTION ==========
+            function showToastMessage(message, type = 'info', subtitle = '') {
+                // Remove existing toast if present
+                const existingToast = document.getElementById('dynamic-toast');
+                if (existingToast) {
+                    existingToast.remove();
                 }
-            }
 
-            // 5. Optional: Show toast message from server
-            if (data.message && !data.message.includes("progress")) {
-                // Use new consistent toast instead of showIntegratedMessage
-                showToastMessage(data.message, 'info');
-            }
-        })
-        .catch(err => {
-            console.error("Tap failed:", err);
-            showToastMessage("Connection lost. Try again!", "error");
-        });
-}
-// ========== ADD THIS NEW FUNCTION ==========
-function showToastMessage(message, type = 'info', subtitle = '') {
-    // Remove existing toast if present
-    const existingToast = document.getElementById('dynamic-toast');
-    if (existingToast) {
-        existingToast.remove();
-    }
+                // Create toast element with your consistent styling
+                const toast = document.createElement('div');
+                toast.id = 'dynamic-toast';
 
-    // Create toast element with your consistent styling
-    const toast = document.createElement('div');
-    toast.id = 'dynamic-toast';
-    
-    // Base styling matching your feedback toast
-    let baseClasses = 'fixed top-6 left-1/2 -translate-x-1/2 font-sans-serif font-bold italic text-lg shadow-md px-6 py-3 rounded-full z-[99999] transition-opacity duration-1000 ease-in-out opacity-100 backdrop-blur-sm';
-    
-    // Type-specific styling
-    let typeClasses = '';
-    let icon = '';
-    
-    switch(type) {
-        case 'verification':
-            typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
-            icon = '🌿';
-            break;
-        case 'success':
-            typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
-            icon = '🌱';
-            break;
-        case 'error':
-        case 'warning':
-            typeClasses = 'bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]';
-            icon = '❌';
-            break;
-        case 'info':
-        default:
-            typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
-            icon = '💡';
-    }
-    
-    toast.className = `${baseClasses} ${typeClasses}`;
-    
-    // Create content with optional subtitle
-    let content = `${icon} ${message}`;
-    if (subtitle) {
-        content += `<div class="text-sm font-normal not-italic mt-1 opacity-80">${subtitle}</div>`;
-    }
-    
-    toast.innerHTML = content;
-    
-    // Add to body - ensure it's visible
-    document.body.appendChild(toast);
-    
-    // Force reflow to trigger animation
-    toast.getBoundingClientRect();
-    
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
-            }
-        }, 1000);
-    }, 5000);
-}
+                // Base styling matching your feedback toast
+                let baseClasses =
+                    'fixed top-6 left-1/2 -translate-x-1/2 font-sans-serif font-bold italic text-lg shadow-md px-6 py-3 rounded-full z-[99999] transition-opacity duration-1000 ease-in-out opacity-100 backdrop-blur-sm';
 
-// ========== UPDATE sendTaps() FUNCTION ==========
-function sendTaps(tapCount) {
-    fetch("{{ url('/tree/tap') }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-            },
-            body: JSON.stringify({
-                taps: tapCount
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log("Tree tap response:", data);
+                // Type-specific styling
+                let typeClasses = '';
+                let icon = '';
 
-            // ========== HANDLE ALL NON-VERIFIED USER CASES ==========
-            // Check for "Only verified users" message OR if user is guest/unverified
-            const isGuest = window.isGuest === true;
-            const isUnverified = data.message && (
-                data.message.includes('Only verified users') || 
-                data.message.includes('verification') ||
-                data.message.includes('verify')
-            );
-            
-            if (isGuest || isUnverified || data.message === 'Only verified users') {
-                // Determine message based on user status
-                let message = '🌿 Only verified users can grow their tree';
-                let subtitle = 'Verify your account to nurture your eco-tree and earn points';
-                
-                if (isGuest) {
-                    message = '🌱 Welcome to our growing community';
-                    subtitle = 'Please log in to start nurturing your personal eco-tree';
+                switch (type) {
+                    case 'verification':
+                        typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
+                        icon = '🌿';
+                        break;
+                    case 'success':
+                        typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
+                        icon = '🌱';
+                        break;
+                    case 'error':
+                    case 'warning':
+                        typeClasses = 'bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]';
+                        icon = '❌';
+                        break;
+                    case 'info':
+                    default:
+                        typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
+                        icon = '💡';
                 }
-                
-                showToastMessage(message, 'verification', subtitle);
-                return; // Stop further processing
-            }
-            // ========== END NON-VERIFIED HANDLING ==========
 
-            const growthFill = document.getElementById('growth-fill');
-            const growthLabel = document.getElementById('growth-label');
-            const growthBar = document.getElementById('growth-bar');
+                toast.className = `${baseClasses} ${typeClasses}`;
 
-            // 1. Update Progress Bar Fill
-            if (data.growthPercent !== undefined && growthFill) {
-                const oldPercent = parseFloat(growthFill.style.width) || 0;
-                const newPercent = parseFloat(data.growthPercentReal);
-
-                growthFill.style.width = `${newPercent}%`;
-
-                // Level-up celebration when crossing a stage
-                const segment = 100 / 10; // 10 stages
-                if (Math.floor(oldPercent / segment) < Math.floor(newPercent / segment)) {
-                    createLevelUpEffect();
+                // Create content with optional subtitle
+                let content = `${icon} ${message}`;
+                if (subtitle) {
+                    content += `<div class="text-sm font-normal not-italic mt-1 opacity-80">${subtitle}</div>`;
                 }
+
+                toast.innerHTML = content;
+
+                // Add to body - ensure it's visible
+                document.body.appendChild(toast);
+
+                // Force reflow to trigger animation
+                toast.getBoundingClientRect();
+
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 1000);
+                }, 5000);
             }
 
-            // 2. Update Growth Label (only for verified users)
-            if (growthLabel && data.stage !== undefined) {
-                // Non-verified users see restricted message (handled in Blade)
-                // But if server says we're good → show full info
-                growthLabel.innerHTML = `
+            // ========== UPDATE sendTaps() FUNCTION ==========
+            function sendTaps(tapCount) {
+                fetch("{{ url('/tree/tap') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            taps: tapCount
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Tree tap response:", data);
+
+                        // ========== HANDLE ALL NON-VERIFIED USER CASES ==========
+                        // Check for "Only verified users" message OR if user is guest/unverified
+                        const isGuest = window.isGuest === true;
+                        const isUnverified = data.message && (
+                            data.message.includes('Only verified users') ||
+                            data.message.includes('verification') ||
+                            data.message.includes('verify')
+                        );
+
+                        if (isGuest || isUnverified || data.message === 'Only verified users') {
+                            // Determine message based on user status
+                            let message = '🌿 Only verified users can grow their tree';
+                            let subtitle = 'Verify your account to nurture your eco-tree and earn points';
+
+                            if (isGuest) {
+                                message = '🌱 Welcome to our growing community';
+                                subtitle = 'Please log in to start nurturing your personal eco-tree';
+                            }
+
+                            showToastMessage(message, 'verification', subtitle);
+                            return; // Stop further processing
+                        }
+                        // ========== END NON-VERIFIED HANDLING ==========
+
+                        const growthFill = document.getElementById('growth-fill');
+                        const growthLabel = document.getElementById('growth-label');
+                        const growthBar = document.getElementById('growth-bar');
+
+                        // 1. Update Progress Bar Fill
+                        if (data.growthPercent !== undefined && growthFill) {
+                            const oldPercent = parseFloat(growthFill.style.width) || 0;
+                            const newPercent = parseFloat(data.growthPercentReal);
+
+                            growthFill.style.width = `${newPercent}%`;
+
+                            // Level-up celebration when crossing a stage
+                            const segment = 100 / 10; // 10 stages
+                            if (Math.floor(oldPercent / segment) < Math.floor(newPercent / segment)) {
+                                createLevelUpEffect();
+                            }
+                        }
+
+                        // 2. Update Growth Label (only for verified users)
+                        if (growthLabel && data.stage !== undefined) {
+                            // Non-verified users see restricted message (handled in Blade)
+                            // But if server says we're good → show full info
+                            growthLabel.innerHTML = `
                     Stage ${data.stage} / 10 — ${data.progressPointsReal} / ${data.growthMax} points
                     <span class="block text-[20px] text-[#9f8f6a]/70 font-normal mt-1">
                         ${data.stages_remaining} stage${data.stages_remaining === 1 ? '' : 's'} remaining
                     </span>
                 `;
+                        }
+
+                        // 3. Update Stage Markers (current stage glows)
+                        const markerContainer = growthBar?.querySelector('.absolute.inset-0.flex');
+                        if (markerContainer && data.stage !== undefined) {
+                            const markers = markerContainer.querySelectorAll('.group\\/marker');
+                            markers.forEach((markerEl, index) => {
+                                const stageNum = index + 1;
+                                const dot = markerEl.querySelector('div[class*="w-["]');
+                                const label = markerEl.querySelector('span');
+
+                                const isCurrent = stageNum === data.stage;
+                                const isPast = stageNum < data.stage;
+
+                                // Update dot
+                                if (isCurrent) {
+                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                            '') +
+                                        ' bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a] shadow-[0_0_8px_2px_rgba(159,143,106,0.6)] ring-2 ring-white/50';
+                                    if (label) label.textContent = 'Stage ' + stageNum;
+                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                                        'text-[#5C7919] font-bold');
+                                } else if (isPast) {
+                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                            '') +
+                                        ' bg-gradient-to-br from-[#bfae7c] to-[#9f8f6a] shadow-[0_0_4px_1px_rgba(159,143,106,0.4)]';
+                                    if (label) label.textContent = 'Stage ' + stageNum;
+                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                                        'text-[#9f8f6a]');
+                                } else {
+                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
+                                            '') +
+                                        ' bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
+                                    if (label) label.textContent = 'Stage ' + stageNum;
+                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
+                                        'text-[#cbbfa8]/70');
+                                }
+                            });
+                        }
+
+                        // 4. Quest Progress Message
+                        if (data.tap_progress !== undefined) {
+                            if (data.quest_completed || data.tap_progress >= 100) {
+                                showProgressBarMessage("Quest Already completed! +5 points awarded", "success");
+                            } else if (data.has_quest && data.tap_progress > 0) {
+                                showProgressBarMessage(`Keep tapping — ${data.tap_progress}/100 taps`, "info");
+                            }
+                        }
+
+                        // 5. Optional: Show toast message from server
+                        if (data.message && !data.message.includes("progress")) {
+                            // Use new consistent toast instead of showIntegratedMessage
+                            showToastMessage(data.message, 'info');
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Tap failed:", err);
+                        showToastMessage("Connection lost. Try again!", "error");
+                    });
             }
 
-            // 3. Update Stage Markers (current stage glows)
-            const markerContainer = growthBar?.querySelector('.absolute.inset-0.flex');
-            if (markerContainer && data.stage !== undefined) {
-                const markers = markerContainer.querySelectorAll('.group\\/marker');
-                markers.forEach((markerEl, index) => {
-                    const stageNum = index + 1;
-                    const dot = markerEl.querySelector('div[class*="w-["]');
-                    const label = markerEl.querySelector('span');
+            // ========== UPDATE showProgressBarMessage to use consistent styling ==========
+            function showProgressBarMessage(msg, type = "info") {
+                // Instead of the badge, use the consistent toast
+                const toastType = type === 'warning' ? 'error' :
+                    type === 'success' ? 'success' : 'info';
 
-                    const isCurrent = stageNum === data.stage;
-                    const isPast = stageNum < data.stage;
-
-                    // Update dot
-                    if (isCurrent) {
-                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                '') +
-                            ' bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a] shadow-[0_0_8px_2px_rgba(159,143,106,0.6)] ring-2 ring-white/50';
-                        if (label) label.textContent = 'Stage ' + stageNum;
-                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                            'text-[#5C7919] font-bold');
-                    } else if (isPast) {
-                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                '') +
-                            ' bg-gradient-to-br from-[#bfae7c] to-[#9f8f6a] shadow-[0_0_4px_1px_rgba(159,143,106,0.4)]';
-                        if (label) label.textContent = 'Stage ' + stageNum;
-                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                            'text-[#9f8f6a]');
-                    } else {
-                        dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                '') +
-                            ' bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
-                        if (label) label.textContent = 'Stage ' + stageNum;
-                        if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                            'text-[#cbbfa8]/70');
-                    }
-                });
+                showToastMessage(msg, toastType);
             }
 
-            // 4. Quest Progress Message
-            if (data.tap_progress !== undefined) {
-                if (data.quest_completed || data.tap_progress >= 100) {
-                    showProgressBarMessage("Quest Already completed! +5 points awarded", "success");
-                } else if (data.has_quest && data.tap_progress > 0) {
-                    showProgressBarMessage(`Keep tapping — ${data.tap_progress}/100 taps`, "info");
-                }
-            }
+            // ========== UPDATE showIntegratedMessage to use consistent styling ==========
+            function showIntegratedMessage(msg, targetElement) {
+                // Use toast instead of modifying the element
+                showToastMessage(msg, 'info');
 
-            // 5. Optional: Show toast message from server
-            if (data.message && !data.message.includes("progress")) {
-                // Use new consistent toast instead of showIntegratedMessage
-                showToastMessage(data.message, 'info');
-            }
-        })
-        .catch(err => {
-            console.error("Tap failed:", err);
-            showToastMessage("Connection lost. Try again!", "error");
-        });
-}
+                // Optionally keep the original functionality for backward compatibility
+                if (!targetElement) return;
 
-// ========== UPDATE showProgressBarMessage to use consistent styling ==========
-function showProgressBarMessage(msg, type = "info") {
-    // Instead of the badge, use the consistent toast
-    const toastType = type === 'warning' ? 'error' : 
-                      type === 'success' ? 'success' : 'info';
-    
-    showToastMessage(msg, toastType);
-}
+                // Save original content
+                const originalContent = targetElement.innerHTML;
+                const originalClasses = targetElement.className;
 
-// ========== UPDATE showIntegratedMessage to use consistent styling ==========
-function showIntegratedMessage(msg, targetElement) {
-    // Use toast instead of modifying the element
-    showToastMessage(msg, 'info');
-    
-    // Optionally keep the original functionality for backward compatibility
-    if (!targetElement) return;
-
-    // Save original content
-    const originalContent = targetElement.innerHTML;
-    const originalClasses = targetElement.className;
-
-    // Update with message (simpler version)
-    targetElement.innerHTML = `
+                // Update with message (simpler version)
+                targetElement.innerHTML = `
         <div class="flex items-center gap-2 animate-pulse">
             <span class="text-sm font-medium">${msg}</span>
         </div>
     `;
 
-    targetElement.className = originalClasses +
-        ' bg-gradient-to-r from-[#E8E2D5]/80 to-[#D8D1C1]/80 ' +
-        'border border-[#B8A992]/50 shadow-sm text-[#5C4E3F]';
+                targetElement.className = originalClasses +
+                    ' bg-gradient-to-r from-[#E8E2D5]/80 to-[#D8D1C1]/80 ' +
+                    'border border-[#B8A992]/50 shadow-sm text-[#5C4E3F]';
 
-    // Restore after 3 seconds
-    setTimeout(() => {
-        targetElement.innerHTML = originalContent;
-        targetElement.className = originalClasses;
-    }, 3000);
-}
-// ========== UPDATE showProgressBarMessage to use consistent styling ==========
-function showProgressBarMessage(msg, type = "info") {
-    // Instead of the badge, use the consistent toast
-    const toastType = type === 'warning' ? 'error' : 
-                      type === 'success' ? 'success' : 'info';
-    
-    showToastMessage(msg, toastType);
-}
+                // Restore after 3 seconds
+                setTimeout(() => {
+                    targetElement.innerHTML = originalContent;
+                    targetElement.className = originalClasses;
+                }, 3000);
+            }
+            // ========== UPDATE showProgressBarMessage to use consistent styling ==========
+            function showProgressBarMessage(msg, type = "info") {
+                // Instead of the badge, use the consistent toast
+                const toastType = type === 'warning' ? 'error' :
+                    type === 'success' ? 'success' : 'info';
 
-// ========== UPDATE showIntegratedMessage to use consistent styling ==========
-function showIntegratedMessage(msg, targetElement) {
-    // Use toast instead of modifying the element
-    showToastMessage(msg, 'info');
-    
-    // Optionally keep the original functionality for backward compatibility
-    if (!targetElement) return;
+                showToastMessage(msg, toastType);
+            }
 
-    // Save original content
-    const originalContent = targetElement.innerHTML;
-    const originalClasses = targetElement.className;
+            // ========== UPDATE showIntegratedMessage to use consistent styling ==========
+            function showIntegratedMessage(msg, targetElement) {
+                // Use toast instead of modifying the element
+                showToastMessage(msg, 'info');
 
-    // Update with message (simpler version)
-    targetElement.innerHTML = `
+                // Optionally keep the original functionality for backward compatibility
+                if (!targetElement) return;
+
+                // Save original content
+                const originalContent = targetElement.innerHTML;
+                const originalClasses = targetElement.className;
+
+                // Update with message (simpler version)
+                targetElement.innerHTML = `
         <div class="flex items-center gap-2 animate-pulse">
             <span class="text-sm font-medium">${msg}</span>
         </div>
     `;
 
-    targetElement.className = originalClasses +
-        ' bg-gradient-to-r from-[#E8E2D5]/80 to-[#D8D1C1]/80 ' +
-        'border border-[#B8A992]/50 shadow-sm text-[#5C4E3F]';
+                targetElement.className = originalClasses +
+                    ' bg-gradient-to-r from-[#E8E2D5]/80 to-[#D8D1C1]/80 ' +
+                    'border border-[#B8A992]/50 shadow-sm text-[#5C4E3F]';
 
-    // Restore after 3 seconds
-    setTimeout(() => {
-        targetElement.innerHTML = originalContent;
-        targetElement.className = originalClasses;
-    }, 3000);
-}
+                // Restore after 3 seconds
+                setTimeout(() => {
+                    targetElement.innerHTML = originalContent;
+                    targetElement.className = originalClasses;
+                }, 3000);
+            }
 
-// ========== KEEP THE REST OF YOUR FUNCTIONS AS IS ==========
-function createLevelUpEffect() {
-    // Create level up particles
-    for (let i = 0; i < 15; i++) {
-        setTimeout(() => {
-            const particle = document.createElement('div');
-            particle.className =
-                'absolute w-3 h-3 bg-gradient-to-br from-[#5C7919] to-[#9f8f6a] rounded-full pointer-events-none z-50';
+            // ========== KEEP THE REST OF YOUR FUNCTIONS AS IS ==========
+            function createLevelUpEffect() {
+                // Create level up particles
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => {
+                        const particle = document.createElement('div');
+                        particle.className =
+                            'absolute w-3 h-3 bg-gradient-to-br from-[#5C7919] to-[#9f8f6a] rounded-full pointer-events-none z-50';
 
-            const bar = document.querySelector('#growth-bar');
-            if (!bar) return;
+                        const bar = document.querySelector('#growth-bar');
+                        if (!bar) return;
 
-            const rect = bar.getBoundingClientRect();
-            const x = rect.left + Math.random() * rect.width;
-            const y = rect.top;
+                        const rect = bar.getBoundingClientRect();
+                        const x = rect.left + Math.random() * rect.width;
+                        const y = rect.top;
 
-            particle.style.left = `${x}px`;
-            particle.style.top = `${y}px`;
+                        particle.style.left = `${x}px`;
+                        particle.style.top = `${y}px`;
 
-            document.body.appendChild(particle);
+                        document.body.appendChild(particle);
 
-            particle.animate([{
-                    transform: 'translateY(0) scale(1)',
-                    opacity: 1
-                },
-                {
-                    transform: `translateY(-${100 + Math.random() * 100}px) scale(0)`,
-                    opacity: 0
+                        particle.animate([{
+                                transform: 'translateY(0) scale(1)',
+                                opacity: 1
+                            },
+                            {
+                                transform: `translateY(-${100 + Math.random() * 100}px) scale(0)`,
+                                opacity: 0
+                            }
+                        ], {
+                            duration: 1000 + Math.random() * 500,
+                            easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)'
+                        });
+
+                        setTimeout(() => particle.remove(), 1500);
+                    }, i * 50);
                 }
-            ], {
-                duration: 1000 + Math.random() * 500,
-                easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)'
-            });
+            }
 
-            setTimeout(() => particle.remove(), 1500);
-        }, i * 50);
-    }
-}
+            function showMessage(msg) {
+                const tapMessage = document.getElementById('tap-message');
+                if (!tapMessage) return;
 
-function showMessage(msg) {
-    const tapMessage = document.getElementById('tap-message');
-    if (!tapMessage) return;
+                tapMessage.textContent = msg;
+                tapMessage.classList.remove('opacity-0', 'translate-y-2');
+                tapMessage.classList.add('opacity-100', 'translate-y-0');
 
-    tapMessage.textContent = msg;
-    tapMessage.classList.remove('opacity-0', 'translate-y-2');
-    tapMessage.classList.add('opacity-100', 'translate-y-0');
-
-    setTimeout(() => {
-        tapMessage.classList.remove('opacity-100', 'translate-y-0');
-        tapMessage.classList.add('opacity-0', 'translate-y-2');
-    }, 3000);
-}
+                setTimeout(() => {
+                    tapMessage.classList.remove('opacity-100', 'translate-y-0');
+                    tapMessage.classList.add('opacity-0', 'translate-y-2');
+                }, 3000);
+            }
         });
     </script>
 @endsection

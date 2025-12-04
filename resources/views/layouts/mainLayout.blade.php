@@ -14,7 +14,7 @@
 
 </head>
 
-<nav id="navbar" class="navbar fixed top-0 left-0 right-0 z-100">
+<nav id="navbar" class="navbar {{ !Request::is('/') && !Request::is('home') ? 'navbar-scrolled navbar-green-shadow' : '' }}">
     <div class="navbar-container">
         <div class="max-w-7xl mx-auto px-2 py-2 flex items-center justify-between">
             <!-- Left: Logo -->

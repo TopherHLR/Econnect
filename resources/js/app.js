@@ -19,15 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('menu-toggle');
     const closeSidebar = document.getElementById('close-sidebar');
 
-    // Detect current page (Laravel renders full path, so we check it cleanly)
+    // Detect current page
     const isHomePage = window.location.pathname === '/' || window.location.pathname === '/home';
 
     // Function to apply or remove solid navbar
     const handleNavbarScroll = () => {
         if (window.scrollY > 50) {
-            navbar.classList.add('navbar-solid');
+            navbar.classList.add('navbar-scrolled');
         } else if (isHomePage) {
-            navbar.classList.remove('navbar-solid');
+            navbar.classList.remove('navbar-scrolled');
         }
     };
 
@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Immediately set navbar style based on current page
     if (!isHomePage) {
         // Force solid navbar on all non-home pages
-        navbar.classList.add('navbar-solid');
+        navbar.classList.add('navbar-scrolled');
+        navbar.classList.add('navbar-green-shadow');
     } else {
         // Home starts transparent and only changes after scroll
         handleNavbarScroll();
@@ -57,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
     closeSidebar.addEventListener('click', close);
     overlay.addEventListener('click', close);
 });
-
 
 //======================================================================================= VIEWPORT2 ======================================================================================
 window.addEventListener('scroll', () => {

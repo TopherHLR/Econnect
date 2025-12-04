@@ -8,29 +8,48 @@
                         <ul id="notification-list" class="max-h-64 overflow-y-auto">
                             <!-- Notification items will be injected here -->
                             @foreach (App\Models\Notification::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get() as $notif)
-                                <li data-id="{{ $notif->notification_id }}"
-                                    class="px-4 py-2 border-b border-gray-100 hover:bg-gray-50 flex justify-between items-start cursor-pointer">
-                                    <div>
-                                        <p class="font-medium text-gray-800">{{ $notif->title }}</p>
-                                        <p class="text-gray-500 text-sm">{{ $notif->message }}</p>
-                                        <p class="text-gray-400 text-xs mt-1">{{ $notif->created_at->diffForHumans() }}
-                                        </p>
-                                    </div>
-                                    @if (!$notif->read_at)
-                                        <span class="w-2 h-2 bg-red-500 rounded-full mt-1"></span>
-                                    @endif
-                                </li>
+                                @php
+                                    // Determine redirect based on notification title
+                                    $title = strtolower($notif->title);
+
+                                    if (str_contains($title, 'lifestyle')) {
+                                        $url = url('/lifestyle');
+                                    } elseif (str_contains($title, 'voucher')) {
+                                        $url = url('/rewards');
+                                    } elseif (str_contains($title, 'reward')) {
+                                        $url = url('/rewards'); // rewards go to voucher page
+                                    } elseif (str_contains($title, 'quest')) {
+                                        $url = url('/quests');
+                                    } else {
+                                        $url = '#'; // default fallback
+                                    }
+                                @endphp
+
+                                <a href="{{ $url }}" class="block">
+                                    <li data-id="{{ $notif->notification_id }}"
+                                        class="px-4 py-2 border-b border-gray-100 hover:bg-gray-50 flex justify-between items-start cursor-pointer">
+                                        <div>
+                                            <p class="font-medium text-gray-800">{{ $notif->title }}</p>
+                                            <p class="text-gray-500 text-sm">{{ $notif->message }}</p>
+                                            <p class="text-gray-400 text-xs mt-1">
+                                                {{ $notif->created_at->diffForHumans() }}</p>
+                                        </div>
+
+                                        @if (!$notif->read_at)
+                                            <span class="w-2 h-2 bg-red-500 rounded-full mt-1"></span>
+                                        @endif
+                                    </li>
+                                </a>
                             @endforeach
+
 
                         </ul>
                         <div class="p-2 text-center bg-gray-50">
                             <button id="mark-all-read" class="text-sm text-[#6A8A52] hover:text-[#4F6B3F]">
                                 Mark all as read
                             </button>
-
                         </div>
                     </div>
-
                 </div>
                 <!-- Tailwind + Alpine.js for interactivity -->
                 <script src="//unpkg.com/alpinejs" defer></script>
