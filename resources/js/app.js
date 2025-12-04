@@ -77,11 +77,11 @@ window.addEventListener('scroll', () => {
 
         // Move & scale plant
         const scaleFactor = window.innerWidth > 768 ? 1.3 : 0.9;
-        const moveY = window.innerHeight * 0.700;
+        const moveY = window.innerHeight * 0.600;
         plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
 
         // Set text content & style
-        textDiv.style.top = `${window.innerHeight * 0.520}px`;
+        textDiv.style.top = `${window.innerHeight * 0.590}px`;
         textEl.textContent = 'We all yearn to make a difference...';
         textEl.style.fontSize = window.innerWidth > 768 ? '1.5rem' : '1rem';
         textEl.style.color = '#3a5a0c';
