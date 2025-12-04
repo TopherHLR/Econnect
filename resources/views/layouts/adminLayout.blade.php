@@ -44,7 +44,7 @@
             box-shadow: 0 8px 32px rgba(79, 107, 63, 0.12);
             transition: var(--sidebar-transition);
             font-family: 'Nunito Sans', sans-serif;
-            z-index: 100;
+            z-index: 50;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -305,7 +305,7 @@
             padding: 20px 32px;
             position: sticky;
             top: 0;
-            z-index: 90;
+            z-index: 50;
         }
 
         /* 🌾 Toasts */
