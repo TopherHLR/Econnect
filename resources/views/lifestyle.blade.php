@@ -1,36 +1,43 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-    <div class="w-[90%] mx-auto px-12 py-12 mt-15">
-        <div class="bg-[#F7F3E7] rounded-4xl shadow-sm border border-green-100 overflow-hidden p-8">
-            <!-- Header -->
+    {{--  --------------------------------------------------------------
+     Climate & Nature Awareness – RESPONSIVE
+     -------------------------------------------------------------- --}}
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 mt-4 sm:mt-15">
+        <div class="bg-[#F7F3E7] rounded-2xl sm:rounded-4xl shadow-sm border border-green-100 overflow-hidden p-4 sm:p-8">
+
+            {{-- Header --}}
             <div class="flex items-center justify-between px-2 pt-2 mb-4">
-                <h1 class="text-2xl font-serif font-semibold text-[#5C7919]">
-                    Climate & Nature Awareness 🌍
+                <h1 class="text-xl sm:text-2xl font-serif font-semibold text-[#5C7919]">
+                    Climate & Nature Awareness [Earth]
                 </h1>
             </div>
 
-            <!-- Top Controls Row -->
-            <div class="flex justify-between items-start gap-6 px-4 mb-8">
-                <!-- Left Column -->
-                <div class="flex flex-col flex-1">
-                    <!-- Toggle + Search -->
-                    <div class="flex items-center justify-between gap-4 mb-6">
-                        <!-- iOS-style Toggle -->
-                        <div class="relative flex items-center bg-[#5C7919] rounded-full p-3 w-40">
+            {{-- Top Controls Row – stacked on mobile --}}
+            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6 px-2 sm:px-4 mb-6 sm:mb-8">
+
+                {{-- LEFT COLUMN (topics / actions list) --}}
+                <div class="flex flex-col w-full lg:flex-1">
+
+                    {{-- Toggle + Search --}}
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+
+                        {{-- iOS-style Toggle --}}
+                        <div class="relative flex items-center bg-[#5C7919] rounded-full p-1 w-full sm:w-40">
                             <div id="toggle-slider"
                                 class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-[#FCFFF6] rounded-full shadow-md transition-all duration-300 ease-in-out">
                             </div>
                             <button id="topicsBtn"
-                                class="relative z-10 flex-1 text-center text-sm font-medium text-[#5C7919]"
+                                class="relative z-10 flex-1 text-center text-sm font-medium text-[#5C7919] py-"
                                 onclick="switchTab('topics')">Topics</button>
                             <button id="actionsBtn"
-                                class="relative z-10 flex-1 text-center text-sm font-medium text-[#FCF9EF]"
+                                class="relative z-10 flex-1 text-center text-sm font-medium text-[#FCF9EF] py-2"
                                 onclick="switchTab('actions')">Actions</button>
                         </div>
 
-                        <!-- Search + Category -->
-                        <div class="flex items-center gap-2 flex-1">
+                        {{-- Search + Category --}}
+                        <div class="flex flex-col sm:flex-row gap-2 w-full">
                             @php
                                 $categories = collect($ecoTopics)
                                     ->pluck('category')
@@ -39,56 +46,62 @@
                                     ->unique()
                                     ->sort();
                             @endphp
-                            <!-- Search + Category (LIVE SEARCH VERSION) -->
-                            <div class="flex items-center gap-2 flex-1">
-                                <div class="relative w-full max-w-70">
-                                    <input type="text" id="liveSearchInput" placeholder="Search topics & actions..."
-                                        value="{{ request('search') }}"
-                                        class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2 border border-[#7A8C4F] rounded-full focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm"
-                                        autocomplete="off">
-                                    <svg class="absolute right-3 top-2.5 w-4 h-4 text-gray-400 pointer-events-none"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </div>
 
-                                <select name="category" id="categoryDropdown"
-                                    class="text-sm text-gray-600 bg-[#FCFFF6] border border-[#7A8C4F] rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F]">
-                                    <option value="">All Categories</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category }}"
-                                            {{ request('category') == $category ? 'selected' : '' }}>
-                                            {{ $category }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="relative w-full">
+                                <input type="text" id="liveSearchInput" placeholder="Search topics & actions..."
+                                    value="{{ request('search') }}"
+                                    class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2 border border-[#7A8C4F] rounded-full focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm"
+                                    autocomplete="off">
+                                <svg class="absolute right-3 top-2.5 w-4 h-4 text-gray-400 pointer-events-none"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
                             </div>
 
+                            <select name="category" id="categoryDropdown"
+                                class="text-sm text-gray-600 bg-[#FCFFF6] border border-[#7A8C4F] rounded-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] w-full sm:w-auto">
+                                <option value="">All Categories</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category }}"
+                                        {{ request('category') == $category ? 'selected' : '' }}>
+                                        {{ $category }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            {{-- Mobile Saved Items Button --}}
+                            @auth
+                                <div class="lg:hidden flex justify-center mt-2">
+                                    <button onclick="toggleMobileSaved()"
+                                        class="px-4 py-2 w-full bg-[#5C7919] text-[#FCFFF6] rounded-full text-sm font-medium">
+                                        Saved Items
+                                    </button>
+                                </div>
+                            @endauth
                         </div>
                     </div>
 
-                    <!-- Scrollable Eco Content -->
+                    {{-- Scrollable Eco Content --}}
                     <div id="ecoContent"
-                        class="space-y-4 w-full overflow-y-auto overflow-x-visible pr-2 custom-scroll max-h-[65vh]">
+                        class="space-y-4 w-full overflow-y-auto pr-2 custom-scroll max-h-[55vh] sm:max-h-[65vh]">
                         @foreach ($ecoTopics as $topic)
-                            <div class="eco-card flex items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
+                            <div class="eco-card flex flex-col sm:flex-row items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl border border-green-100 hover:bg-[#FCFFF6] shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
                                 data-type="ecoTopic" data-id="{{ $topic->library_id }}"
                                 data-category="{{ $topic->category }}">
                                 <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('storage/default.png') }}"
                                     alt="{{ $topic->title }}" class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
-
                                 <div class="flex-1 min-w-0">
-                                    <h3 class="font-semibold text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
+                                    <h3 class="font-semibold text-base sm:text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
                                         onclick="openEcoModal('ecoTopic', {{ $topic->library_id }})">{{ $topic->title }}
                                     </h3>
                                     <p
                                         class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
-                                        {{ $topic->content }}
-                                    </p>
+                                        {{ $topic->content }}</p>
                                 </div>
                                 @auth
-                                    <form action="{{ route('libraries.save', ['id' => $topic->library_id]) }}" method="POST">
+                                    <form action="{{ route('libraries.save', ['id' => $topic->library_id]) }}" method="POST"
+                                        class="mt-2 sm:mt-0">
                                         @csrf
                                         <input type="hidden" name="type" value="ecoTopic">
                                         <button type="submit"
@@ -107,32 +120,29 @@
                         @endforeach
                     </div>
                 </div>
-                <!-- END Left Column -->
+                {{-- END LEFT COLUMN --}}
+
+                {{-- Sidebar / Saved Items Panel --}}
                 @auth
-                    <!-- Sidebar -->
                     <div id="ecoSidebar"
-                        class="w-[32rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 border border-green-100 max-h-[80vh] overflow-y-auto overflow-x-hidden custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
+                        class="hidden lg:block w-full lg:w-[32rem]  flex-shrink-0 z-50 bg-[#FCF9EF] rounded-xl p-4 sm:p-6 border border-green-100 max-h-[80vh] overflow-y-auto custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
                         <h2 class="text-lg font-semibold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
                         <div class="space-y-3" id="savedList">
                             @foreach ($savedTopics as $saved)
                                 <div class="flex items-center justify-between p-2 bg-[#FCFFF6] rounded-lg border border-green-100 saved-item hover:scale-105 transition min-w-0"
                                     data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
                                     data-category="{{ $saved->category }}">
-                                    <div class="flex items-center">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
                                         <img src="{{ $saved->image ? Vite::asset('resources/images/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : Vite::asset('resources/images/default.png') }}"
-                                            alt="{{ $saved->title }}"
-                                            class="w-10 h-10 object-cover rounded-md mr-3 flex-shrink-0">
-                                        <div class="flex-1 min-w-0">
-                                            <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
-                                                onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
-                                                {{ $saved->title }}
-                                            </h4>
-
-                                        </div>
+                                            alt="{{ $saved->title }}" class="w-10 h-10 object-cover rounded-md flex-shrink-0">
+                                        <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                            onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
+                                            {{ $saved->title }}
+                                        </h4>
                                     </div>
+
                                     <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
+                                        @csrf @method('DELETE')
                                         <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500">
                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
@@ -140,14 +150,45 @@
                                         </button>
                                     </form>
                                 </div>
+                                <!-- Mobile Overlay -->
+                                <div id="mobileOverlayLifestyle" class="hidden fixed inset-0  "
+                                    onclick="closeMobileSaved()"></div>
                             @endforeach
                         </div>
                     </div>
-                @endauth
-                <!-- END Sidebar -->
-            </div> <!-- END Top Controls Row -->
 
-            <!-- Motivational Quote -->
+                    {{-- Mobile toggle script --}}
+                    <script>
+                        function toggleMobileSaved() {
+                            const sidebar = document.getElementById('ecoSidebar');
+                            const overlay = document.getElementById('mobileOverlayLifestyle');
+
+                            sidebar.classList.toggle('hidden');
+                            sidebar.classList.toggle('fixed');
+                            sidebar.classList.toggle('inset-x-0');
+                            sidebar.classList.toggle('bottom-100');
+                            sidebar.classList.toggle('z-50');
+
+                            overlay.classList.toggle('hidden');
+                        }
+
+                        function closeMobileSaved() {
+                            const sidebar = document.getElementById('ecoSidebar');
+                            const overlay = document.getElementById('mobileOverlayLifestyle');
+
+                            // Hide sidebar
+                            sidebar.classList.add('hidden');
+                            sidebar.classList.remove('fixed', 'inset-x-0', 'bottom-0', 'z-50');
+
+                            // Hide overlay
+                            overlay.classList.add('hidden');
+                        }
+                    </script>
+                @endauth
+            </div>
+
+
+            {{-- Motivational Quote (centered) --}}
             <div class="mt-6 text-center text-sm text-gray-500 italic">
                 “You don’t have to know everything today — one tip at a time is enough.”
             </div>
@@ -182,6 +223,19 @@
         // 🌱 Switch tab
         function switchTab(tab) {
             currentTab = tab;
+
+            // Clear search input and reset category filter on tab switch
+            const searchInput = document.getElementById('liveSearchInput');
+            const categoryDropdown = document.getElementById('categoryDropdown');
+
+            if (searchInput) {
+                searchInput.value = ''; // Clear search
+            }
+            if (categoryDropdown) {
+                categoryDropdown.value = ''; // Reset to "All Categories"
+            }
+
+            currentCategory = ''; // Reset internal category filter
             const slider = document.getElementById('toggle-slider');
             const topicsBtn = document.getElementById('topicsBtn');
             const actionsBtn = document.getElementById('actionsBtn');

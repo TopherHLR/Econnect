@@ -9,10 +9,11 @@
 
                 {{-- Sidebar Wrapper --}}
                 <div id="sidebarLeader"
-                    class="fixed inset-y-0  left-0 w-80 bg-[#FAF7EE] rounded-3xl shadow-xl p-8
-                       transform transition-transform duration-300 ease-in-out
-                       -translate-x-full lg:translate-x-0 lg:static lg:inset-auto lg:w-auto
-                       lg:col-span-3 lg:py-8 py-15 md:col-span-3 sm:col-span-12" style="z-index: 1200;">
+                    class="fixed inset-y-0 left-0 w-80 bg-[#FAF7EE] rounded-3xl shadow-xl p-8
+                        transform transition-transform duration-300 ease-in-out
+                        -translate-x-full lg:translate-x-0 lg:static lg:inset-auto lg:w-auto
+                        lg:col-span-3 lg:py-8 py-15 md:col-span-3 sm:col-span-12
+                        z-[1200] lg:z-10">
 
                     <h2 class="text-2xl font-bold text-[#4F6B3F] text-center mb-6">Your Growth</h2>
 
