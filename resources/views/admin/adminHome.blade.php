@@ -19,7 +19,7 @@
                     <i class="fa-solid fa-circle-plus"></i>
                     <span class="hidden lg:inline">New Quest</span>
                 </button>
-                <button onclick="openEcoTopicModal()" class="btn-eco btn-leaf compact" title="Add Eco Topic">
+                <button onclick="openCreateEcoTopicModal()" class="btn-eco btn-leaf compact" title="Add Eco Topic">
                     <i class="fa-solid fa-leaf"></i>
                     <span class="hidden lg:inline">Eco Topic</span>
                 </button>

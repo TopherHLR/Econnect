@@ -11,6 +11,8 @@ use App\Models\Feedback;
 use App\Models\UserPointsHistory;
 use App\Models\UserLibrary;
 use App\Models\UserAction;
+use App\Models\EcoAction;
+use App\Models\EcoLibrary;
 use App\Models\UserVoucher;
 use App\Models\Voucher;
 use App\Models\Notification;
@@ -225,6 +227,16 @@ class AdminController extends Controller
             ];
         })->sortByDesc('pointsEarned')->values()->take(10);
 
+        $categoriesAction = EcoAction::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+            
+        $categoriesLibrary = EcoLibrary::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+
         return view('admin.adminHome', compact(
             'totalUsers',
             'verifiedUsers',
@@ -242,6 +254,8 @@ class AdminController extends Controller
             'pointsRedeemed',
             'newFeedbackCount',
             'categories',
+            'categoriesAction',
+            'categoriesLibrary',
             'ecoActionsDaily',
             'pointsDaily',
             'pointsRedeemedDaily',
@@ -256,6 +270,7 @@ class AdminController extends Controller
             'topLibrarySavers',
             'topVoucherRedeemers',
             'topPointsLast7Days'
+
         ));
 
     }

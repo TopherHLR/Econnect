@@ -23,10 +23,31 @@
                     placeholder="Enter eco topic title">
             </div>
 
+            <!-- Category -->
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Category</label>
-                <input type="text" name="category" class="w-full rounded-lg border p-2"
-                    placeholder="e.g. Sustainability, Recycling, Energy Saving">
+
+                <!-- Dropdown -->
+                <select id="categorySelectLibrary" name="category"
+                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+                    <option value="">Select Category</option>
+
+                    @foreach ($categoriesLibrary as $cat)
+                        <option value="{{ $cat }}">{{ $cat }}</option>
+                    @endforeach
+
+                    <option value="__add_new">➕ Add New Category</option>
+                </select>
+
+                <!-- Textbox (hidden by default) -->
+                <input type="text" id="newCategoryInputLibrary" name="category" placeholder="Enter new category"
+                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 mt-2 hidden focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+
+                <!-- Back to dropdown button -->
+                <button type="button" id="backToSelectBtnLibrary" class="hidden text-sm text-blue-700 underline mt-2"
+                    onclick="switchBackToDropdownLibrary()">
+                    ⬅ Back to Category List
+                </button>
             </div>
 
             <div>
@@ -124,7 +145,6 @@
     </div>
 </div>
 
-
 <!-- Add Eco Action Modal -->
 <div id="addEcoActionModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
     <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
@@ -161,10 +181,29 @@
 
             <!-- Category -->
             <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Category (optional)</label>
-                <input type="text" name="category"
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
-                    placeholder="e.g. Recycling, Energy Saving, Community">
+                <label class="block text-[#4F6B3F] font-medium mb-1">Category</label>
+
+                <!-- Dropdown -->
+                <select id="categorySelectAction" name="category"
+                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+                    <option value="">Select Category</option>
+
+                    @foreach ($categoriesAction as $cat)
+                        <option value="{{ $cat }}">{{ $cat }}</option>
+                    @endforeach
+
+                    <option value="__add_new">➕ Add New Category</option>
+                </select>
+
+                <!-- Textbox (hidden by default) -->
+                <input type="text" id="newCategoryInputAction" name="category" placeholder="Enter new category"
+                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 mt-2 hidden focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+
+                <!-- Back to dropdown button -->
+                <button type="button" id="backToSelectBtnAction" class="hidden text-sm text-blue-700 underline mt-2"
+                    onclick="switchBackToDropdownAction()">
+                    ⬅ Back to Category List
+                </button>
             </div>
 
             <!-- Image Upload -->
@@ -189,7 +228,6 @@
     </div>
 </div>
 
-<!-- Edit Eco Action Modal -->
 <!-- Edit Eco Action Modal -->
 <div id="editEcoActionModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
     <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
@@ -254,6 +292,62 @@
 
 
 <script>
+    const categorySelectAction = document.getElementById('categorySelectAction');
+    const newCategoryInputAction = document.getElementById('newCategoryInputAction');
+    const backToSelectBtnAction = document.getElementById('backToSelectBtnAction');
+
+    categorySelectAction.addEventListener('change', function() {
+        if (this.value === '__add_new') {
+            // Hide dropdown, show textbox
+            categorySelectAction.classList.add('hidden');
+            newCategoryInputAction.classList.remove('hidden');
+            newCategoryInputAction.required = true;
+            newCategoryInputAction.focus();
+
+            backToSelectBtnAction.classList.remove('hidden');
+        }
+    });
+
+    function switchBackToDropdownAction() {
+        // Reset values
+        categorySelectAction.value = "";
+        newCategoryInputAction.value = "";
+
+        // Show dropdown, hide textbox + button
+        categorySelectAction.classList.remove('hidden');
+        newCategoryInputAction.classList.add('hidden');
+        newCategoryInputAction.required = false;
+
+        backToSelectBtnAction.classList.add('hidden');
+    }
+    const categorySelectLibrary = document.getElementById('categorySelectLibrary');
+    const newCategoryInputLibrary = document.getElementById('newCategoryInputLibrary');
+    const backToSelectBtnLibrary = document.getElementById('backToSelectBtnLibrary');
+
+    categorySelectLibrary.addEventListener('change', function() {
+        if (this.value === '__add_new') {
+            // Hide dropdown, show textbox
+            categorySelectLibrary.classList.add('hidden');
+            newCategoryInputLibrary.classList.remove('hidden');
+            newCategoryInputLibrary.required = true;
+            newCategoryInputLibrary.focus();
+
+            backToSelectBtnLibrary.classList.remove('hidden');
+        }
+    });
+
+    function switchBackToDropdownLibrary() {
+        // Reset values
+        categorySelectLibrary.value = "";
+        newCategoryInputLibrary.value = "";
+
+        // Show dropdown, hide textbox + button
+        categorySelectLibrary.classList.remove('hidden');
+        newCategoryInputLibrary.classList.add('hidden');
+        newCategoryInputLibrary.required = false;
+
+        backToSelectBtnLibrary.classList.add('hidden');
+    }
     // --- MODAL UTILITIES ---
     function openModal(modal) {
         modal.classList.remove('hidden');
@@ -350,6 +444,7 @@
         form.reset();
         openModal(actionModal);
     }
+
 
     function closeEcoActionModal() {
         closeModal(actionModal);

@@ -387,7 +387,15 @@ class LibraryController extends Controller
             ->get();
         $archivedActionsList = EcoAction::where('archive', 1)
             ->get();
-
+        $categoriesAction = EcoAction::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+            
+        $categoriesLibrary = EcoLibrary::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
 
           if ($request->ajax()) {
             $type = $request->get('type'); // "catalog" or "redeemed"
@@ -417,7 +425,8 @@ class LibraryController extends Controller
 
         }
 
-        return view('admin.adminLifestyle', compact('ecoTopics', 'archivedTopics', 'ecoActions' , 'archivedActions','ecoTopicsList', 'archivedTopicsList', 'ecoActionsList' , 'archivedActionsList'));
+
+        return view('admin.adminLifestyle', compact('ecoTopics', 'categoriesLibrary','categoriesAction','archivedTopics', 'ecoActions' , 'archivedActions','ecoTopicsList', 'archivedTopicsList', 'ecoActionsList' , 'archivedActionsList'));
     }
 
 

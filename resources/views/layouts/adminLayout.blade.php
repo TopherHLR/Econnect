@@ -296,7 +296,6 @@
                         class="fa-solid fa-book-open"></i></a>
                 <a href="/adminAnalytics" class="nav-item" data-tooltip="Analytics"><i
                         class="fa-solid fa-chart-column"></i></a>
-                <a href="/adminSettings" class="nav-item" data-tooltip="Settings"><i class="fa-solid fa-gear"></i></a>
             </nav>
         </aside>
 

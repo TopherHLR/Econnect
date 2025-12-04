@@ -1,8 +1,10 @@
                         <table class="min-w-full">
                             <thead class="bg-[#FCF9EF]">
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Image</th>
-                                    <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Topic</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Image
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Topic
+                                    </th>
                                     <th class="px-6 py-4 text-right text-xs font-medium text-[#6A8A52] uppercase">Actions
                                     </th>
                                 </tr>
@@ -12,7 +14,8 @@
                                     <tr class="hover:bg-[#FAF8ED] group">
                                         <td class="px-6 py-5">
                                             <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('images/default.jpg') }}"
-                                                alt="{{ $topic->title }}" class="w-16 h-16 object-cover rounded-xl border">
+                                                alt="{{ $topic->title }}"
+                                                class="w-16 h-16 object-cover rounded-xl border">
                                         </td>
                                         <td class="px-6 py-5">
                                             <h3 class="font-semibold text-[#4F6B3F]">{{ $topic->title }}</h3>
@@ -21,8 +24,10 @@
                                         <td class="px-6 py-5 text-right">
                                             <div class="flex justify-end gap-2">
                                                 <!-- View -->
-                                                <button onclick='openViewModal({{ $topic->toJson() }}, "topic")'
-                                                    class="btn-action btn-view compact" title="View">
+                                                <button class="btn-action btn-view-eco compact"
+                                                    data-item='@json($topic)'
+                                                    data-image="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : '' }}"
+                                                    title="View">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </button>
 
@@ -35,7 +40,8 @@
                                                 </button>
 
                                                 <!-- Archive -->
-                                                <form method="POST" action="{{ route('admin.libraries.archive', $topic) }}"
+                                                <form method="POST"
+                                                    action="{{ route('admin.libraries.archive', $topic) }}"
                                                     class="inline">
                                                     @csrf
                                                     @method('PATCH')

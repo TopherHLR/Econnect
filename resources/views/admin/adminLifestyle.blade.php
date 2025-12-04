@@ -3,7 +3,7 @@
 @section('title', 'Eco Library')
 
 @section('content')
-    @include('modal.ecoTopics_ecoActionModal')
+
     @include('modal.viewLifestyleModal')
     <div class="space-y-6">
         <!-- Header with Stats -->
@@ -271,6 +271,21 @@
             document.querySelector('[data-section="topics"]').classList.add('tab-eco-active');
             document.getElementById('topicsTable').classList.remove('hidden');
             updateAddButton();
+        });
+
+        document.querySelectorAll('.btn-view-eco').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = JSON.parse(btn.dataset.item);
+                item.image_url = btn.dataset.image || '';
+                openViewModal(item, "topic");
+            });
+        });
+        document.querySelectorAll('.btn-view-eco-action').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = JSON.parse(btn.dataset.action);
+                item.image_url = btn.dataset.image || '';
+                openViewModal(item, btn.dataset.type);
+            });
         });
     </script>
 @endsection
