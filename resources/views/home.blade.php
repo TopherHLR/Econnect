@@ -755,31 +755,31 @@
         </div>
 <!-- Multiple Clouds on Left Side -->
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 1"
-    class="absolute left-[-120px] top-[50px] w-[25rem] opacity-90 z-10">
+    class="absolute left-[-120px] top-[50px] w-[25rem] opacity-70 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 2"
-    class="absolute left-[-80px] top-[150px] w-[35rem] opacity-85 z-10">
+    class="absolute left-[-80px] top-[150px] w-[35rem] opacity-55 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 3"
-    class="absolute left-[-160px] top-[250px] w-[30rem] opacity-95 z-10">
+    class="absolute left-[-160px] top-[250px] w-[30rem] opacity-65 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 4"
-    class="absolute left-[-100px] top-[350px] w-[40rem] opacity-80 z-10">
+    class="absolute left-[-100px] top-[350px] w-[40rem] opacity-70 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 5"
     class="absolute left-[-140px] top-[450px] w-[20rem] opacity-75 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 6"
-    class="absolute left-[-60px] top-[550px] w-[45rem] opacity-90 z-10">
+    class="absolute left-[-60px] top-[550px] w-[45rem] opacity-75 z-10">
 
 <!-- Multiple Clouds on Right Side -->
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 1"
-    class="absolute right-[-120px] top-[30px] w-[28rem] opacity-85 z-10">
+    class="absolute right-[-120px] top-[30px] w-[28rem] opacity-70 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 2"
-    class="absolute right-[-80px] top-[180px] w-[32rem] opacity-90 z-10">
+    class="absolute right-[-80px] top-[180px] w-[32rem] opacity-55 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 3"
-    class="absolute right-[-160px] top-[280px] w-[38rem] opacity-80 z-10">
+    class="absolute right-[-160px] top-[280px] w-[38rem] opacity-55 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 4"
-    class="absolute right-[-100px] top-[380px] w-[25rem] opacity-95 z-10">
+    class="absolute right-[-100px] top-[380px] w-[25rem] opacity-65 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 5"
     class="absolute right-[-140px] top-[480px] w-[42rem] opacity-75 z-10">
 <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 6"
-    class="absolute right-[-60px] top-[580px] w-[39rem] opacity-85 z-10">
+    class="absolute right-[-60px] top-[580px] w-[39rem] opacity-75 z-10">
 
         <!-- Content -->
         <div class="relative flex flex-col items-center justify-center space-y-10 z-20 -mt-20 md:-mt-23">
@@ -1007,7 +1007,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <!-- 🌿 Left Leaf Cluster Bottom -->
         <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (18).png') }}"
-            class="absolute left-[-100px] top-133 w-56 md:w-72 opacity-90 pointer-events-none select-none"
+            class="absolute left-[-100px] top-50 w-56 md:w-72 opacity-90 pointer-events-none select-none"
             alt="Leaf cluster">
 
         <!-- 🌿 Right Leaf Cluster Bottom -->
@@ -1092,22 +1092,12 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 @endauth
 <!-- FEEDBACK CARDS - Horizontal Scroll Layout -->
-<div class="mt-16 relative">
+<div class="mt-16">
     <h4 class="text-[#4A6613] font-semibold text-2xl mb-8 text-center">Community Stories</h4>
     
-    <!-- Right Leaf Cluster - Attached to top right of first row -->
-    <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (16).png') }}"
-        class="absolute top-10 right-4 md:right-10 w-32 md:w-40 opacity-80 pointer-events-none select-none z-10"
-        alt="Leaf cluster">
-
-    <!-- Left Leaf Cluster - Attached to bottom left of second row container -->
-    <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (18).png') }}"
-        class="absolute bottom-10 left-4 md:left-10 w-36 md:w-44 opacity-80 pointer-events-none select-none z-10"
-        alt="Leaf cluster">
-
     <!-- Empty State -->
     @if($feedback->isEmpty())
-        <div class="bg-[#F8F4E7] rounded-2xl p-10 text-center max-w-md mx-auto relative z-20">
+        <div class="bg-[#F8F4E7] rounded-2xl p-10 text-center max-w-md mx-auto">
             <i class="fa-solid fa-comments text-5xl text-[#4A6613] opacity-70 mb-4"></i>
             <h5 class="text-[#4A6613] font-semibold text-xl mb-2">No stories yet</h5>
             <p class="text-[#4E3A2E] mb-4">Be the first to share your sustainable journey</p>
@@ -1121,17 +1111,14 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     @else
         <!-- Container with limited width and horizontal scroll -->
-        <div class="max-w-6xl mx-auto px-4 relative z-20">
+        <div class="max-w-5xl mx-auto px-4">
             <!-- First Row -->
-            <div class="mb-12 relative">
-                <div class="flex items-center justify-between mb-4">
-                    <h5 class="text-[#4A6613] font-medium text-lg pl-2">Recent Stories</h5>
-                    <!-- Right leaf will appear near this heading -->
-                </div>
-                <div class="flex overflow-x-auto pb-8 gap-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
-                    <div class="flex gap-6 min-w-max pl-2">
+            <div class="mb-6">
+                <h5 class="text-[#4A6613] font-medium text-lg mb-4 pl-2">Recent Stories</h5>
+                <div class="flex overflow-x-auto pb-6 gap-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <div class="flex gap-6 min-w-max">
                         @foreach ($feedback->take(ceil($feedback->count() / 2)) as $item)
-                            <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[300px] md:min-w-[320px] max-w-[300px] md:max-w-[320px] flex-shrink-0">
+                            <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[320px] max-w-[320px] flex-shrink-0">
                                 <!-- Quotation Mark -->
                                 <i class="fa-solid fa-quote-left text-3xl text-[#4A6613] absolute top-4 left-4 opacity-70"></i>
 
@@ -1174,15 +1161,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <!-- Second Row (if enough feedback) -->
             @if($feedback->count() > ceil($feedback->count() / 2))
-                <div class="relative mt-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <h5 class="text-[#4A6613] font-medium text-lg pl-2">More Stories</h5>
-                        <!-- Left leaf will appear near this heading -->
-                    </div>
-                    <div class="flex overflow-x-auto pb-8 gap-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
-                        <div class="flex gap-6 min-w-max pl-2">
+                <div>
+                    <h5 class="text-[#4A6613] font-medium text-lg mb-4 pl-2">More Stories</h5>
+                    <div class="flex overflow-x-auto pb-6 gap-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
+                        <div class="flex gap-6 min-w-max">
                             @foreach ($feedback->slice(ceil($feedback->count() / 2)) as $item)
-                                <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[300px] md:min-w-[320px] max-w-[300px] md:max-w-[320px] flex-shrink-0">
+                                <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[320px] max-w-[320px] flex-shrink-0">
                                     <!-- Quotation Mark -->
                                     <i class="fa-solid fa-quote-left text-3xl text-[#4A6613] absolute top-4 left-4 opacity-70"></i>
 
@@ -1225,127 +1209,15 @@ document.addEventListener('DOMContentLoaded', function() {
             @endif
 
             <!-- Scroll indicator -->
-            <div class="text-center mt-8 pt-6 border-t border-[#8A9A7B]/20">
+            <div class="text-center mt-6">
                 <p class="text-sm text-[#4E3A2E]/70 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-arrows-left-right text-xs"></i>
                     Scroll horizontally to see more stories
-                    <i class="fa-solid fa-arrows-left-right text-xs"></i>
                 </p>
             </div>
         </div>
     @endif
 </div>
-
-<style>
-/* Responsive leaf positioning */
-@media (max-width: 768px) {
-    /* Right leaf - smaller and repositioned for mobile */
-    .absolute.top-10.right-4 {
-        top: 5px;
-        right: 0;
-        width: 100px;
-        opacity: 0.7;
-    }
-    
-    /* Left leaf - smaller and repositioned for mobile */
-    .absolute.bottom-10.left-4 {
-        bottom: 5px;
-        left: 0;
-        width: 110px;
-        opacity: 0.7;
-    }
-    
-    /* Adjust container padding for leaf clearance */
-    .max-w-6xl.mx-auto.px-4 {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    /* Larger leaves on desktop */
-    .absolute.top-10.right-4.md\:right-10 {
-        width: 180px;
-    }
-    
-    .absolute.bottom-10.left-4.md\:left-10 {
-        width: 200px;
-    }
-}
-
-/* Hide leaves on very small screens */
-@media (max-width: 480px) {
-    .absolute.top-10.right-4,
-    .absolute.bottom-10.left-4 {
-        display: none;
-    }
-}
-
-/* Card responsive sizing */
-@media (max-width: 640px) {
-    .min-w-\[300px\] {
-        min-width: 260px;
-    }
-    
-    .max-w-\[300px\] {
-        max-width: 260px;
-    }
-}
-
-/* Custom scrollbar hide */
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-
-/* Line clamp for text */
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-</style>
-
-<script>
-// Optional: Add intersection observer to fade leaves in/out based on scroll
-document.addEventListener('DOMContentLoaded', function() {
-    const leaves = document.querySelectorAll('img[alt*="Leaf cluster"]');
-    
-    // Simple fade in effect
-    leaves.forEach(leaf => {
-        leaf.style.opacity = '0';
-        leaf.style.transition = 'opacity 0.8s ease';
-        
-        setTimeout(() => {
-            leaf.style.opacity = '0.8';
-        }, 300);
-    });
-    
-    // Hide leaves when scrolling the feedback rows
-    const scrollContainers = document.querySelectorAll('.flex.overflow-x-auto');
-    
-    scrollContainers.forEach(container => {
-        container.addEventListener('scroll', () => {
-            leaves.forEach(leaf => {
-                leaf.style.opacity = '0.4';
-            });
-        });
-        
-        container.addEventListener('scrollend', () => {
-            setTimeout(() => {
-                leaves.forEach(leaf => {
-                    leaf.style.opacity = '0.8';
-                });
-            }, 300);
-        });
-    });
-});
-</script>
 
 <style>
 /* Custom scrollbar styling (optional) */
