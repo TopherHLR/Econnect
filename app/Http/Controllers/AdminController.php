@@ -296,7 +296,17 @@ class AdminController extends Controller
         if ($request->ajax()) {
             return view('admin.partials.users_table', compact('users'))->render();
         }
-        return view('admin.adminUsers', compact('users'));
+        
+        $categoriesAction = EcoAction::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+            
+        $categoriesLibrary = EcoLibrary::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+        return view('admin.adminUsers', compact('users','categoriesLibrary','categoriesAction'));
     }
 
     public function setInactive(User $user)
