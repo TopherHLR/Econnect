@@ -1,28 +1,28 @@
 @extends('layouts.mainLayout')
 
 @section('content')
+
     <div class="min-h-screen bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
             <!-- LEFT SIDEBAR – Only for Authenticated Users -->
             @auth
-
                 {{-- Sidebar Wrapper --}}
                 <div id="sidebarLeader"
-                    class="fixed inset-y-0 left-0 w-80 bg-[#FAF7EE] rounded-3xl shadow-xl p-8
-                        transform transition-transform duration-300 ease-in-out
+                    class="fixed inset-y-0 left-0 w-80 bg-[#FAF7EE] lg:rounded-2xl sm:rounded-b-none shadow-xl p-6
+                        transform  transition-transform duration-300 ease-in-out
                         -translate-x-full lg:translate-x-0 lg:static lg:inset-auto lg:w-auto
                         lg:col-span-3 lg:py-8 py-15 md:col-span-3 sm:col-span-12
-                        z-[1200] lg:z-10">
+                        z-[1200] lg:z-10 ">
 
                     <h2 class="text-2xl font-bold text-[#4F6B3F] text-center mb-6">Your Growth</h2>
 
-                    {{-- Content (same as before) --}}
+                    {{-- Content --}}
                     <div class="flex flex-col space-y-6">
 
                         {{-- MAIN TREE BADGE CARD --}}
                         <div
-                            class="bg-gradient-to-br from-[#F8F2E6] to-[#E8F0D8] rounded-3xl p-4 shadow-inner border-2 border-[#D4E4C1] overflow-hidden">
+                            class="bg-gradient-to-br from-[#F8F2E6] to-[#E8F0D8] rounded-2xl p-4 shadow-inner border border-[#D4E4C1] overflow-hidden">
                             <div class="flex justify-center mb-2">
                                 <img src="{{ Vite::asset('resources/images/badges/' . $treeStageSvgs[$stage]) }}"
                                     alt="{{ $treeNames[$stage] }}"
@@ -77,39 +77,132 @@
                         </div>
 
                         {{-- Compact Stats Grid --}}
-                        <div class="grid grid-cols-3 gap-4">
-                            <div class="bg-white rounded-2xl py-7 shadow-sm border border-[#E8DBC7] text-center">
-                                <p class="text-xl font-bold text-[#5E7345]">{{ number_format($myPoints) }}</p>
-                                <p class="text-sm text-gray-600">Points</p>
-                                <p class="text-md font-bold text-[#7A8F55]">Rank #{{ $rankPoints }}</p>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="bg-white rounded-xl p-3 lg:p-7 shadow-sm border border-[#E8DBC7] text-center">
+                                <p class="text-lg font-bold text-[#5E7345]">{{ number_format($myPoints) }}</p>
+                                <p class="text-xs text-gray-600">Points</p>
+                                <p class="text-sm font-bold text-[#7A8F55]">Rank #{{ $rankPoints }}</p>
                             </div>
-                            <div class="bg-white rounded-2xl py-7 shadow-sm border border-[#E8DBC7] text-center">
-                                <p class="text-xl font-bold text-[#5E7345]">{{ $myQuests }}</p>
-                                <p class="text-sm text-gray-600">Quests</p>
-                                <p class="text-md font-bold text-[#7A8F55]">Rank #{{ $rankQuests }}</p>
+                            <div class="bg-white rounded-xl p-3 lg:p-7 shadow-sm border border-[#E8DBC7] text-center">
+                                <p class="text-lg font-bold text-[#5E7345]">{{ $myQuests }}</p>
+                                <p class="text-xs text-gray-600">Quests</p>
+                                <p class="text-sm font-bold text-[#7A8F55]">Rank #{{ $rankQuests }}</p>
                             </div>
-                            <div class="bg-white rounded-2xl py-7 shadow-sm border border-[#E8DBC7] text-center">
-                                <p class="text-xl font-bold text-[#5E7345]">{{ $myDailyTaps }}</p>
-                                <p class="text-sm text-gray-600">Eco-Taps</p>
-                                <p class="text-md font-bold text-[#7A8F55]">Rank #{{ $rankTaps }}</p>
+                            <div class="bg-white rounded-xl p-3 lg:p-7 shadow-sm border border-[#E8DBC7] text-center">
+                                <p class="text-lg font-bold text-[#5E7345]">{{ $myDailyTaps }}</p>
+                                <p class="text-xs text-gray-600">Eco-Taps</p>
+                                <p class="text-sm font-bold text-[#7A8F55]">Rank #{{ $rankTaps }}</p>
                             </div>
                         </div>
 
                         {{-- Pending Quests --}}
                         <div class="text-center">
                             <p class="font-medium text-[#4F6B3F] mb-2">Pending Quests</p>
-                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-dashed border-[#D7E2C3]">
-                                <p class="text-3xl font-bold text-[#5E7345]">{{ $pendingQuests }}</p>
-                                <p class="text-sm text-gray-500">In progress</p>
+                            <div class="bg-white rounded-xl p-3 lg:p-7 shadow-sm border border-dashed border-[#D7E2C3]">
+                                <p class="text-2xl font-bold text-[#5E7345]">{{ $pendingQuests }}</p>
+                                <p class="text-xs text-gray-500">In progress</p>
                             </div>
                         </div>
 
                     </div>
                 </div>
 
+                {{-- Mobile Sidebar Panel --}}
+                <div id="ecoSidebarMobile"
+                    class="lg:hidden fixed left-0 top-0 h-full w-[85vw] max-w-sm bg-[#FAF7EE] z-[1300] transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl ">
+
+                    {{-- Mobile Header --}}
+                    <div class="sticky top-0 bg-[#FAF7EE] p-4 flex items-center justify-between rounded-tr-2xl">
+                        <h2 class="text-lg font-semibold text-[#4F6B3F]">Your Growth</h2>
+                        <button onclick="closeMobileSaved()" class="p-2 rounded-full hover:bg-[#E8F0D8]">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <hr class="border-[#D4E4C1]">
+
+                    {{-- Mobile Content --}}
+                    <div class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
+                        <div class="flex flex-col space-y-6">
+                            {{-- MAIN TREE BADGE CARD --}}
+                            <div
+                                class="bg-gradient-to-br from-[#F8F2E6] to-[#E8F0D8] rounded-xl p-4 shadow-inner border border-[#D4E4C1] overflow-hidden">
+                                <div class="flex justify-center mb-2">
+                                    <img src="{{ Vite::asset('resources/images/badges/' . $treeStageSvgs[$stage]) }}"
+                                        alt="{{ $treeNames[$stage] }}" class="w-40 h-40 object-contain drop-shadow-2xl">
+                                </div>
+
+                                <h3 class="text-center text-xl font-bold text-[#4F6B3F] tracking-wider">
+                                    {{ $treeNames[$stage] ?? 'Growing Tree' }}
+                                </h3>
+                                <p class="text-center text-sm text-[#6B8254] mt-1 font-medium">
+                                    Stage <span class="text-lg font-bold text-[#5E7345]">{{ $stage }}</span> / 10
+                                </p>
+
+                                @if ($stage === 1)
+                                    <div class="mt-3 text-center">
+                                        <p class="text-sm font-semibold text-[#5E7345] italic">Grow your tree!</p>
+                                        <div class="mt-3 space-y-1">
+                                            <div class="text-xs text-[#6B8254] text-center">
+                                                <span>{{ $myPoints }}</span> / <span
+                                                    class="font-bold text-[#5E7345]">{{ $nextThreshold }} pts</span>
+                                            </div>
+                                            <div class="w-full bg-[#E0E8D5]/70 rounded-full h-2 shadow-inner">
+                                                <div class="bg-gradient-to-r from-[#7A8F55] to-[#5E7345] h-full rounded-full transition-all duration-1000"
+                                                    style="width: {{ $progressPercent }}%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="mt-4 space-y-2">
+                                        <div class="flex justify-between text-xs text-[#6B8254]">
+                                            <span>{{ number_format($myPoints) }} pts</span>
+                                            <span>Next: {{ number_format($nextThreshold) }}</span>
+                                        </div>
+                                        <div class="w-full bg-[#E0E8D5]/80 rounded-full h-2 shadow-inner overflow-hidden">
+                                            <div class="bg-gradient-to-r from-[#7A8F55] to-[#5E7345] h-full rounded-full transition-all duration-1000"
+                                                style="width: {{ $progressPercent }}%"></div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{-- Compact Stats Grid --}}
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="bg-white rounded-lg p-3 shadow-sm border border-[#E8DBC7] text-center">
+                                    <p class="text-base font-bold text-[#5E7345]">{{ number_format($myPoints) }}</p>
+                                    <p class="text-xs text-gray-600">Points</p>
+                                    <p class="text-xs font-bold text-[#7A8F55]">Rank #{{ $rankPoints }}</p>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 shadow-sm border border-[#E8DBC7] text-center">
+                                    <p class="text-base font-bold text-[#5E7345]">{{ $myQuests }}</p>
+                                    <p class="text-xs text-gray-600">Quests</p>
+                                    <p class="text-xs font-bold text-[#7A8F55]">Rank #{{ $rankQuests }}</p>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 shadow-sm border border-[#E8DBC7] text-center">
+                                    <p class="text-base font-bold text-[#5E7345]">{{ $myDailyTaps }}</p>
+                                    <p class="text-xs text-gray-600">Eco-Taps</p>
+                                    <p class="text-xs font-bold text-[#7A8F55]">Rank #{{ $rankTaps }}</p>
+                                </div>
+                            </div>
+
+                            {{-- Pending Quests --}}
+                            <div class="text-center">
+                                <p class="font-medium text-[#4F6B3F] mb-2">Pending Quests</p>
+                                <div class="bg-white rounded-xl p-4 shadow-sm border border-dashed border-[#D7E2C3]">
+                                    <p class="text-xl font-bold text-[#5E7345]">{{ $pendingQuests }}</p>
+                                    <p class="text-xs text-gray-500">In progress</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- Overlay (click to close on mobile) --}}
-                <div id="sidebar-overlayLeader"
-                    class="fixed inset-0 bg-black/30 z-30 hidden lg:hidden transition-opacity duration-300"></div>
+                <div id="mobileOverlayLeader"
+                    class="fixed inset-0 bg-black/30 z-[1000] hidden transition-opacity duration-300"></div>
             @endauth
 
             <!-- RIGHT SIDE – Full width for guests -->
@@ -119,8 +212,8 @@
                     {{-- Toggle Button (mobile & tablet) --}}
                     <button id="sidebar-toggleLeader"
                         class="lg:hidden fixed top-6 mt-16 right-8 z-30 p-2 bg-[#FAF7EE] rounded-full shadow-lg transition-all duration-300 hover:scale-110">
-                        <svg id="toggle-icon-open" class="w-6 h-6 text-[#4F6B3F] block" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
+                        <svg id="toggle-icon-open" class="w-6 h-6 text-[#4F6B3F] block" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -215,8 +308,8 @@
                                                         d="M5 17c-1.1 0-2 .9-2 2v2h2v-2c0-.55.45-1 1-1h12c.55 0 1 .45 1 1v2h2v-2c0-1.1-.9-2-2-2h-1v-2h-2v2H8v-2H6v2H5z" />
                                                 </svg>
                                             @elseif($item['icon'] === 'check')
-                                                <svg class="w-7 h-7 text-emerald-200" fill="none" stroke="currentColor"
-                                                    stroke-width="2.5" viewBox="0 0 24 24">
+                                                <svg class="w-7 h-7 text-emerald-200" fill="none"
+                                                    stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
@@ -382,10 +475,30 @@
 
             showSection('points');
         });
+
+        // Mobile sidebar functions
+        function toggleMobileSaved() {
+            const mobileSidebar = document.getElementById('ecoSidebarMobile');
+            const overlay = document.getElementById('mobileOverlayLeader');
+
+            mobileSidebar.classList.toggle('-translate-x-full'); // off-screen left
+            overlay.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        function closeMobileSaved() {
+            const mobileSidebar = document.getElementById('ecoSidebarMobile');
+            const overlay = document.getElementById('mobileOverlayLeader');
+
+            mobileSidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const toggleBtn = document.getElementById('sidebar-toggleLeader');
             const sidebar = document.getElementById('sidebarLeader');
-            const overlay = document.getElementById('sidebar-overlayLeader');
+            const overlay = document.getElementById('mobileOverlayLeader');
             const openIcon = document.getElementById('toggle-icon-open');
             const closeIcon = document.getElementById('toggle-icon-close');
 
@@ -394,7 +507,7 @@
                 overlay.classList.remove('hidden');
                 openIcon.classList.add('hidden');
                 closeIcon.classList.remove('hidden');
-
+                document.body.classList.add('overflow-hidden');
             };
 
             const closeSidebar = () => {
@@ -402,7 +515,7 @@
                 overlay.classList.add('hidden');
                 openIcon.classList.remove('hidden');
                 closeIcon.classList.add('hidden');
-
+                document.body.classList.remove('overflow-hidden');
             };
 
             toggleBtn?.addEventListener('click', () => {
