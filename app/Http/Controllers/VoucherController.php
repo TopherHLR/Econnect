@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Voucher;
 use App\Models\UserVoucher;
 use App\Models\Notification;
+use App\Models\EcoAction;
+use App\Models\EcoLibrary;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,8 +61,16 @@ class VoucherController extends Controller
             // default = catalog
             return view('admin.partials.rewards_table', compact('vouchers'))->render();
         }
-
-        return view('admin.adminRewards', compact('vouchers', 'redeemed', 'archived','vouchersList', 'redeemedList', 'archivedList'));
+        $categoriesAction = EcoAction::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+            
+        $categoriesLibrary = EcoLibrary::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+        return view('admin.adminRewards', compact('vouchers', 'categoriesLibrary','categoriesAction','redeemed', 'archived','vouchersList', 'redeemedList', 'archivedList'));
     }
     public function store(Request $request)
     {

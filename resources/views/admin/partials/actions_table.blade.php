@@ -20,10 +20,13 @@
                 </td>
                 <td class="px-6 py-5 text-right">
                     <div class="flex justify-end gap-2">
-                        <button onclick='openViewModal({{ $action->toJson() }}, "action")'
-                            class="btn-action btn-view compact">
+                        <button class="btn-action btn-view-eco-action compact"
+                            data-action='@json($action)'
+                            data-image="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : '' }}"
+                            data-type="action">
                             <i class="fa-solid fa-eye"></i>
                         </button>
+
                         <button class="btn-action btn-edit-eco-action compact"
                             data-action='@json($action)'
                             data-image="{{ $action->image ? asset('storage/eco-actions/' . $action->image) : '' }}">

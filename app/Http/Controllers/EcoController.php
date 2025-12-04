@@ -9,6 +9,7 @@ use App\Models\QuestSubmission;
 use App\Models\Notification;
 use App\Models\Quest;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class EcoController extends Controller
 {
@@ -70,6 +71,43 @@ class EcoController extends Controller
                 $this->autoAssignSmallQuest($user->user_id);
             }
             $currentPoints = $progressPoints - $pointsSpent;
+
+            $today = now()->toDateString();
+
+            Log::info("Auto-close running. Today: {$today}");
+
+            // 1. Get quests that are active but already expired
+            $expiredQuests = Quest::where('status', 'active')
+                ->whereNotNull('end_date')
+                ->where('end_date', '<=', $today)
+                ->get();
+
+            Log::info("Expired quests found", [
+                'count' => $expiredQuests->count(),
+                'ids' => $expiredQuests->pluck('quest_id')->toArray(),
+                'dates' => $expiredQuests->pluck('end_date')->toArray(),
+            ]);
+
+            foreach ($expiredQuests as $quest) {
+                // Close the quest
+                $quest->update(['status' => 'closed']);
+                Log::info("Quest closed", [
+                    'quest_id' => $quest->quest_id,
+                    'title' => $quest->title,
+                    'end_date' => $quest->end_date
+                ]);
+
+                // Update all pending submissions (no need to re-check quest status)
+                $affected = QuestSubmission::where('quest_id', $quest->quest_id)
+                    ->where('status', 'pending')
+                    ->update(['status' => 'rejected']);
+
+                Log::info("Pending submissions updated", [
+                    'quest_id' => $quest->quest_id,
+                    'affected_rows' => $affected
+                ]);
+            }
+
                         // =========================
             // GET AVAILABLE QUESTS
             // =========================

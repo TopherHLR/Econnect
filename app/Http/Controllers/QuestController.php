@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Quest;
 use App\Models\QuestSubmission;
 use Illuminate\Http\Request;
+use App\Models\EcoAction;
+use App\Models\EcoLibrary;
 use App\Models\UserPointsHistory;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +23,7 @@ class QuestController extends Controller
             ->paginate(5);
 
         $archivedQuests = Quest::with('submissions.user')
-            ->where('status', 'archived')
+            ->whereIn('status', ['archived', 'closed'])
             ->orderBy('end_date', 'desc')
             ->paginate(5); // or 5, 15 — whatever you prefer
 
@@ -57,8 +59,16 @@ class QuestController extends Controller
             // 3. Default: Quest Collection
             return view('admin.partials.quest_collection_table', compact('quests'))->render();
         }
-
-        return view('admin.adminQuests', compact('quests', 'archivedQuests', 'categories', 'questsList'));
+        $categoriesAction = EcoAction::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+            
+        $categoriesLibrary = EcoLibrary::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+        return view('admin.adminQuests', compact('quests', 'archivedQuests', 'categories', 'questsList','categoriesAction','categoriesLibrary'));
     }
 
 

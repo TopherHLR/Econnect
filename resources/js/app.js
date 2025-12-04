@@ -35,17 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', handleNavbarScroll);
 
     // Immediately set navbar style based on current page
-    if (!isHomePage) {
-        // Force solid navbar on all non-home pages
-        navbar.classList.add('navbar-scrolled');
-        navbar.classList.add('navbar-green-shadow');
-    } else {
-        // Home starts transparent and only changes after scroll
-        handleNavbarScroll();
+    if (navbar) {
+        if (!isHomePage) {
+            navbar.classList.add('navbar-scrolled', 'navbar-green-shadow');
+        } else {
+            handleNavbarScroll();
+        }
     }
 
     // Sidebar open/close
-    menuToggle.addEventListener('click', () => {
+    menuToggle?.addEventListener('click', () => {
         sidebar.classList.add('open');
         overlay.classList.add('active');
     });
@@ -55,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.classList.remove('active');
     };
 
-    closeSidebar.addEventListener('click', close);
-    overlay.addEventListener('click', close);
+    closeSidebar?.addEventListener('click', close);
+    overlay?.addEventListener('click', close);
 });
 
 //======================================================================================= VIEWPORT2 ======================================================================================
@@ -169,8 +168,8 @@ window.addEventListener('scroll', () => {
 const dropdownButton = document.getElementById('dropdownButton');
 const dropdownMenu = document.getElementById('dropdownMenu');
 
-dropdownButton.addEventListener('click', () => {
-    dropdownMenu.classList.toggle('hidden');
+dropdownButton?.addEventListener('click', () => {
+    dropdownMenu?.classList.toggle('hidden');
 });
 
 // Close dropdown if clicked outside
@@ -231,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const archiveMenu = document.getElementById('archiveDropdownMenu');
     const archiveArrow = document.getElementById('archiveArrow');
 
-    archiveBtn.addEventListener('click', () => {
+    archiveBtn?.addEventListener('click', () => {
         archiveMenu.classList.toggle('hidden'); // show/hide menu
         archiveArrow.classList.toggle('rotate-180'); // rotate arrow
     });
