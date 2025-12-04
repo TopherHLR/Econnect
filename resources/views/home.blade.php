@@ -468,7 +468,7 @@
                 <!-- 🌾 Horizontal Progress Bar -->
                 <div id="growth-bar"
                     class="absolute opacity-0 flex flex-col items-center gap-2 md:gap-3 z-70 transition-opacity duration-700 ease-out
-                w-full px-4 top-90"
+                w-full px-4 top-105"
                     style="bottom: 50px;">
 
                     <!-- Enhanced glow container with bright center -->
@@ -753,14 +753,33 @@
             class="absolute inset-0 bg-[url('/resources/images/viewport1/patter.png')] bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none 
                 filter hue-rotate-30 saturate-200 brightness-75 z-0">
         </div>
+<!-- Multiple Clouds on Left Side -->
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 1"
+    class="absolute left-[-120px] top-[50px] w-[25rem] opacity-90 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 2"
+    class="absolute left-[-80px] top-[150px] w-[35rem] opacity-85 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 3"
+    class="absolute left-[-160px] top-[250px] w-[30rem] opacity-95 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 4"
+    class="absolute left-[-100px] top-[350px] w-[40rem] opacity-80 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 5"
+    class="absolute left-[-140px] top-[450px] w-[20rem] opacity-75 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 6"
+    class="absolute left-[-60px] top-[550px] w-[45rem] opacity-90 z-10">
 
-        <!-- Left Cloud (in front of pattern) -->
-        <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Left"
-            class="absolute left-[-160px] top-[-70px] w-[50rem] opacity-90 z-10">
-
-        <!-- Right Cloud (in front of pattern) -->
-        <img src="{{ Vite::asset('resources/images/cloud/cloud-removebg-preview.png') }}" alt="Cloud Right"
-            class="absolute right-[-160px] top-[-70px] w-[50rem] opacity-90 z-10">
+<!-- Multiple Clouds on Right Side -->
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 1"
+    class="absolute right-[-120px] top-[30px] w-[28rem] opacity-85 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 2"
+    class="absolute right-[-80px] top-[180px] w-[32rem] opacity-90 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 3"
+    class="absolute right-[-160px] top-[280px] w-[38rem] opacity-80 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 4"
+    class="absolute right-[-100px] top-[380px] w-[25rem] opacity-95 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 5"
+    class="absolute right-[-140px] top-[480px] w-[42rem] opacity-75 z-10">
+<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 6"
+    class="absolute right-[-60px] top-[580px] w-[39rem] opacity-85 z-10">
 
         <!-- Content -->
         <div class="relative flex flex-col items-center justify-center space-y-10 z-20 -mt-20 md:-mt-23">
@@ -830,41 +849,37 @@
             </div>
 
             <!-- Text Box -->
-            <div
-                class="bg-gradient-to-r from-[#6b4f37]/80 to-[#3a2a1c]/80 
-                text-amber-50 text-lg md:text-2xl px-8 py-3 rounded-2xl max-w-4xl 
-                leading-relaxed shadow-[0_8px_32px_rgba(111,78,55,0.3)]
-                border border-amber-900/30 backdrop-blur-sm
-                font-sans-serif italic text-center
-                drop-shadow-[0_4px_6px_rgba(0,0,0,0.25)] mt-35">
-                Ecobrew shares simple ways to live more sustainably—at no cost.
-            </div>
+<div class="bg-gradient-to-br from-[#6b4f37]/90 via-[#5a402c] to-[#3a2a1c]/90 
+            text-amber-50 text-2xl md:text-3xl px-15 py-8 rounded-[2rem] max-w-6xl mx-auto
+            leading-relaxed shadow-[0_25px_50px_-12px_rgba(111,78,55,0.5)]
+            border border-amber-900/30 backdrop-blur-md
+            font-serif italic text-center mt-40 mb-20
+            hover:shadow-[0_35px_60px_-15px_rgba(111,78,55,0.6)] transition-shadow duration-500">
+<div class="relative">
+    <i class="fa-solid fa-leaf absolute -left-10 top-1/2 transform -translate-y-1/2 text-white/30 text-3xl -rotate-90"></i>
+    Ecobrew shares simple ways to live more sustainably—at no cost.
+    <i class="fa-solid fa-leaf absolute -right-10 top-1/2 transform -translate-y-1/2 text-white/30 text-3xl rotate-90"></i>
+</div>
+</div>
     </section>
 
-    <section class="py-20 px-8 overflow-hidden relative">
+   <section class="py-20 px-8 overflow-hidden relative">
 
+    <!-- Background overlay image -->
+    <div class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat opacity-15"></div>
+    
+    <!-- 🌫️ Soft Fog Layer -->
+    <div class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]"></div>
 
-        <!-- Background overlay image with exact opacity and pointer-events -->
-        <div
-            class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat">
-        </div>
-        <!-- 🌫️ Soft Fog Layer -->
-        <div
-            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
-        </div>
+    <!-- 🌫️ Soft Fog Layer -->
+    <div class="absolute top-[-3rem] left-0 w-full h-[150px] bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"></div>
 
-        <!-- 🌫️ Soft Fog Layer -->
-        <div
-            class="absolute top-[-3rem] left-0 w-full h-[150px] 
-            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]">
-        </div>
-        <!-- 🌿 Cards -->
-        <!-- 🌿 Cards -->
-        <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
+    <!-- Cards Container -->
+    <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
 
-            <!-- 🌱 Card 1 (Picture on LEFT) -->
-            <div
-                class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+        <!-- 🌱 Card 1 -->
+        <div class="fade-card">
+            <div class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
                 <!-- Left side image -->
                 <div class="w-64 h-64 mr-8 flex-shrink-0">
                     <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}"
@@ -874,29 +889,28 @@
 
                 <!-- Content on right -->
                 <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute more
-                    </h3>
-                    <p class="text-gray-700 mt-1text-[20px]">EcoBrew shares simple ways to live more sustainably—at no
-                        cost.</p>
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute more</h3>
+                    <p class="text-gray-700 mt-1 text-[20px]">EcoBrew shares simple ways to live more sustainably—at no cost.</p>
                     <div class="flex justify-end">
                         <a href="/leaderboard"
-                            class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
                             Explore Leaderboards
                         </a>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 🌿 Card 2 (Picture on RIGHT) -->
-            <div
-                class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[160px] mr-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+        <!-- 🌿 Card 2 (MOVED SIGNIFICANTLY RIGHT) -->
+        <div class="fade-card">
+          <div class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[300px] min-h-[300px] backdrop-blur-sm border border-white/20">
                 <!-- Content on left -->
                 <div class="flex-1">
                     <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
                     <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
                     <div class="flex justify-start">
                         <a href="/quests"
-                            class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
                             Explore quests
                         </a>
                     </div>
@@ -908,10 +922,11 @@
                         class="w-full h-full object-cover rounded-2xl shadow-md">
                 </div>
             </div>
+        </div>
 
-            <!-- ☕ Card 3 (Picture on LEFT) -->
-            <div
-                class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+        <!-- ☕ Card 3 -->
+        <div class="fade-card">
+            <div class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
                 <!-- Left side image -->
                 <div class="w-64 h-64 mr-8 flex-shrink-0">
                     <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}"
@@ -924,13 +939,59 @@
                     <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
                     <div class="flex justify-end">
                         <a href="/about"
-                            class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617]">
+                            class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
                             Explore About Us
                         </a>
                     </div>
                 </div>
             </div>
-    </section>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Simple fade animation */
+.fade-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.fade-card');
+    
+    // Simple Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            } else {
+                entry.target.classList.remove('show');
+            }
+        });
+    }, {
+        threshold: 0.1, // Trigger when 10% of card is visible
+        rootMargin: '0px 0px -50px 0px' // Slight offset for smoothness
+    });
+    
+    // Start observing each card
+    cards.forEach(card => {
+        observer.observe(card);
+    });
+});
+</script>
 
     <section class="relative py-48 px-8 bg-center bg-cover overflow-hidden"
         style="background-image: url('{{ Vite::asset('resources/images/viewport1/cc23b421-0654-477b-86a8-4b6462a55a94.png') }}');">
@@ -941,12 +1002,12 @@
 
         <!-- 🌿 Right Leaf Cluster Top -->
         <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (16).png') }}"
-            class="absolute right-90 bottom-70 w-52 md:w-72 opacity-90 pointer-events-none select-none"
+            class="absolute right-90 bottom-150 w-52 md:w-72 opacity-90 pointer-events-none select-none"
             alt="Leaf cluster">
 
         <!-- 🌿 Left Leaf Cluster Bottom -->
         <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (18).png') }}"
-            class="absolute left-[-100px] top-50 w-56 md:w-72 opacity-90 pointer-events-none select-none"
+            class="absolute left-[-100px] top-133 w-56 md:w-72 opacity-90 pointer-events-none select-none"
             alt="Leaf cluster">
 
         <!-- 🌿 Right Leaf Cluster Bottom -->
@@ -973,105 +1034,493 @@
             <h3 class="text-[#4A6613] italic font-semibold text-2xl md:text-3xl mb-12">
                 What our community <br> is saying:
             </h3>
+<!-- ⭐ ADD FEEDBACK FORM -->
+@auth
+    <form action="{{ route('feedback.store') }}" method="POST"
+        class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-12 max-w-xl mx-auto text-center">
+        @csrf
 
-            <!-- ⭐ ADD FEEDBACK FORM -->
-            @auth
-                <form action="{{ route('feedback.store') }}" method="POST"
-                    class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-10 max-w-xl mx-auto text-left">
-                    @csrf
+        <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-comment-dots text-[#4A6613]"></i>
+            Share Your Feedback
+        </h4>
 
-                    <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-comment-dots text-[#4A6613]"></i>
-                        Share Your Feedback
-                    </h4>
+        <textarea name="content" required rows="3"
+            class="w-full p-4 border-2 border-[#8A9A7B]/60 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#8A9A7B]/30 focus:border-[#6B7D5A]"
+            placeholder="Write your feedback here..."></textarea>
 
-                    <textarea name="content" required rows="3"
-                        class="w-full p-4 border rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#4A6613]"
-                        placeholder="Write your feedback here..."></textarea>
+        <label class="block mt-4 mb-2 font-semibold text-[#4A6613]">Rating:</label>
 
-                    <label class="block mt-4 mb-2 font-semibold text-[#4A6613]">Rating:</label>
-
-
-                    <div class="flex gap-2 mb-4" x-data="{ rating: 0 }">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <label class="cursor-pointer">
-                                <input type="radio" name="rating" value="{{ $i }}" class="hidden"
-                                    x-model="rating" required>
-                                <i class="fa-solid fa-star text-2xl"
-                                    :class="rating >= {{ $i }} ? 'text-yellow-500' : 'text-gray-300'"
-                                    @click="rating = {{ $i }}"></i>
-                            </label>
-                        @endfor
-                    </div>
-
-
-                    <button type="submit" class="bg-[#4A6613] text-white px-6 py-2 rounded-xl hover:bg-[#3a5010] transition">
-                        Submit Feedback
-                    </button>
-                </form>
-            @else
-                <p class="text-red-600 font-semibold mb-10">You must be logged in to submit feedback.</p>
-            @endauth
-
-            <!-- FEEDBACK CARDS -->
-            <div class="flex flex-col md:flex-row justify-center gap-6 flex-wrap">
-
-                @foreach ($feedback as $item)
-                    <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 w-full md:w-1/4 text-left relative">
-
-                        <!-- Quotation Mark -->
-                        <i class="fa-solid fa-quote-left text-4xl text-[#4A6613] absolute top-3 left-3 opacity-70"></i>
-
-                        <!-- User Avatar -->
-                        <i class="fa-solid fa-user-circle text-4xl text-[#4A6613] absolute top-3 right-3 opacity-70"></i>
-
-                        <!-- User Name -->
-                        <p class="font-semibold text-[#4A6613] mt-14">
-                            {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
-                        </p>
-
-                        <!-- Feedback Content -->
-                        <p class="text-[#4E3A2E] italic mb-2">
-                            “{{ $item->content }}”
-                        </p>
-
-                        <!-- ⭐ Dynamic Star Rating -->
-                        <div class="absolute bottom-3 left-3 flex">
-                            @for ($i = 1; $i <= 5; $i++)
-                                <i
-                                    class="fa-solid fa-star {{ $i <= $item->rating ? 'text-yellow-500' : 'text-gray-300' }} text-xl"></i>
-                            @endfor
-                        </div>
-
-                        <!-- Decorative icon -->
-                        <i
-                            class="fa-solid fa-quote-right text-3xl text-[#4A6613] absolute bottom-3 right-5 opacity-60"></i>
-                    </div>
-                @endforeach
-
-            </div>
-
-
+        <div class="flex justify-center gap-2 mb-6" x-data="{ rating: 0 }">
+            @for ($i = 1; $i <= 5; $i++)
+                <label class="cursor-pointer">
+                    <input type="radio" name="rating" value="{{ $i }}" class="hidden"
+                        x-model="rating" required>
+                    <i class="fa-solid fa-star text-2xl transition-colors duration-300"
+                        :class="rating >= {{ $i }} ? 'text-yellow-500' : 'text-gray-300'"
+                        @click="rating = {{ $i }}"></i>
+                </label>
+            @endfor
         </div>
 
-
-    </section>
-
-    <section class="relative text-center py-32 px-6 bg-center bg-repeat"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}'); background-blend-mode: soft-light;">
-
-        <div class="max-w-3xl mx-auto">
-            <!-- 🌎 Call to Action -->
-            <h3 class="text-[#5C3B23] italic font-semibold text-xl md:text-5xl mb-8">
-                Your first eco-quest awaits!
-            </h3>
-
-            <a href="/"
-                class="bg-gradient-to-r from-[#8B5E3C] to-[#5C3B23] text-white font-semibold py-3 px-8 rounded-full shadow-md hover:opacity-90 transition">
-                Start Your Journey
+        <button type="submit" class="bg-[#4A6613] text-white px-8 py-3 rounded-xl hover:bg-[#3a5010] transition-colors duration-300 font-semibold">
+            Submit Feedback
+        </button>
+    </form>
+@else
+    <!-- Consistent Style for Non-Logged In Users -->
+    <div class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-12 max-w-xl mx-auto text-center">
+        <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-comment-dots text-[#4A6613]"></i>
+            Share Your Feedback
+        </h4>
+        
+        <div class="p-6 bg-white/80 rounded-xl border-2 border-[#8A9A7B]/30 mb-6">
+            <i class="fa-solid fa-lock text-4xl text-[#4A6613] mb-3"></i>
+            <p class="text-[#4A6613] font-semibold text-lg mb-2">Join the Conversation</p>
+            <p class="text-[#4E3A2E] mb-4">Sign in to share your sustainable journey with our community</p>
+            <a href="{{ route('login') }}" 
+               class="inline-block bg-[#4A6613] text-white px-8 py-3 rounded-xl hover:bg-[#3a5010] transition-colors duration-300 font-semibold">
+                Sign in to Contribute
             </a>
         </div>
+        
+        <div class="text-sm text-[#4E3A2E]/70">
+            <i class="fa-solid fa-info-circle mr-1"></i>
+            Your feedback helps others on their sustainability journey
+        </div>
+    </div>
+@endauth
+<!-- FEEDBACK CARDS - Horizontal Scroll Layout -->
+<div class="mt-16 relative">
+    <h4 class="text-[#4A6613] font-semibold text-2xl mb-8 text-center">Community Stories</h4>
+    
+    <!-- Right Leaf Cluster - Attached to top right of first row -->
+    <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (16).png') }}"
+        class="absolute top-10 right-4 md:right-10 w-32 md:w-40 opacity-80 pointer-events-none select-none z-10"
+        alt="Leaf cluster">
+
+    <!-- Left Leaf Cluster - Attached to bottom left of second row container -->
+    <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (18).png') }}"
+        class="absolute bottom-10 left-4 md:left-10 w-36 md:w-44 opacity-80 pointer-events-none select-none z-10"
+        alt="Leaf cluster">
+
+    <!-- Empty State -->
+    @if($feedback->isEmpty())
+        <div class="bg-[#F8F4E7] rounded-2xl p-10 text-center max-w-md mx-auto relative z-20">
+            <i class="fa-solid fa-comments text-5xl text-[#4A6613] opacity-70 mb-4"></i>
+            <h5 class="text-[#4A6613] font-semibold text-xl mb-2">No stories yet</h5>
+            <p class="text-[#4E3A2E] mb-4">Be the first to share your sustainable journey</p>
+            @auth
+                <p class="text-sm text-[#4E3A2E]/70">Use the form above to share your experience</p>
+            @else
+                <a href="{{ route('login') }}" class="text-[#4A6613] font-semibold hover:text-[#3a5010] transition-colors">
+                    Sign in to get started →
+                </a>
+            @endauth
+        </div>
+    @else
+        <!-- Container with limited width and horizontal scroll -->
+        <div class="max-w-6xl mx-auto px-4 relative z-20">
+            <!-- First Row -->
+            <div class="mb-12 relative">
+                <div class="flex items-center justify-between mb-4">
+                    <h5 class="text-[#4A6613] font-medium text-lg pl-2">Recent Stories</h5>
+                    <!-- Right leaf will appear near this heading -->
+                </div>
+                <div class="flex overflow-x-auto pb-8 gap-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <div class="flex gap-6 min-w-max pl-2">
+                        @foreach ($feedback->take(ceil($feedback->count() / 2)) as $item)
+                            <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[300px] md:min-w-[320px] max-w-[300px] md:max-w-[320px] flex-shrink-0">
+                                <!-- Quotation Mark -->
+                                <i class="fa-solid fa-quote-left text-3xl text-[#4A6613] absolute top-4 left-4 opacity-70"></i>
+
+                                <!-- User Info Section -->
+                                <div class="flex items-center gap-3 mb-4 mt-8">
+                                    <div class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
+                                        <i class="fa-solid fa-user text-[#4A6613]"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-[#4A6613] text-sm">
+                                            {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
+                                        </p>
+                                        <p class="text-xs text-[#4E3A2E]/60">
+                                            {{ $item->created_at->format('M d, Y') }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Feedback Content -->
+                                <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">
+                                    "{{ $item->content }}"
+                                </p>
+
+                                <!-- Star Rating & Footer -->
+                                <div class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
+                                    <div class="flex gap-1">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i class="fa-solid fa-star {{ $i <= $item->rating ? 'text-yellow-500' : 'text-gray-300' }} text-base"></i>
+                                        @endfor
+                                    </div>
+                                    
+                                    <!-- Decorative quote -->
+                                    <i class="fa-solid fa-quote-right text-xl text-[#4A6613] opacity-60"></i>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Row (if enough feedback) -->
+            @if($feedback->count() > ceil($feedback->count() / 2))
+                <div class="relative mt-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h5 class="text-[#4A6613] font-medium text-lg pl-2">More Stories</h5>
+                        <!-- Left leaf will appear near this heading -->
+                    </div>
+                    <div class="flex overflow-x-auto pb-8 gap-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
+                        <div class="flex gap-6 min-w-max pl-2">
+                            @foreach ($feedback->slice(ceil($feedback->count() / 2)) as $item)
+                                <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[300px] md:min-w-[320px] max-w-[300px] md:max-w-[320px] flex-shrink-0">
+                                    <!-- Quotation Mark -->
+                                    <i class="fa-solid fa-quote-left text-3xl text-[#4A6613] absolute top-4 left-4 opacity-70"></i>
+
+                                    <!-- User Info Section -->
+                                    <div class="flex items-center gap-3 mb-4 mt-8">
+                                        <div class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
+                                            <i class="fa-solid fa-user text-[#4A6613]"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-[#4A6613] text-sm">
+                                                {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
+                                            </p>
+                                            <p class="text-xs text-[#4E3A2E]/60">
+                                                {{ $item->created_at->format('M d, Y') }}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Feedback Content -->
+                                    <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">
+                                        "{{ $item->content }}"
+                                    </p>
+
+                                    <!-- Star Rating & Footer -->
+                                    <div class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
+                                        <div class="flex gap-1">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i class="fa-solid fa-star {{ $i <= $item->rating ? 'text-yellow-500' : 'text-gray-300' }} text-base"></i>
+                                            @endfor
+                                        </div>
+                                        
+                                        <!-- Decorative quote -->
+                                        <i class="fa-solid fa-quote-right text-xl text-[#4A6613] opacity-60"></i>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Scroll indicator -->
+            <div class="text-center mt-8 pt-6 border-t border-[#8A9A7B]/20">
+                <p class="text-sm text-[#4E3A2E]/70 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-arrows-left-right text-xs"></i>
+                    Scroll horizontally to see more stories
+                    <i class="fa-solid fa-arrows-left-right text-xs"></i>
+                </p>
+            </div>
+        </div>
+    @endif
+</div>
+
+<style>
+/* Responsive leaf positioning */
+@media (max-width: 768px) {
+    /* Right leaf - smaller and repositioned for mobile */
+    .absolute.top-10.right-4 {
+        top: 5px;
+        right: 0;
+        width: 100px;
+        opacity: 0.7;
+    }
+    
+    /* Left leaf - smaller and repositioned for mobile */
+    .absolute.bottom-10.left-4 {
+        bottom: 5px;
+        left: 0;
+        width: 110px;
+        opacity: 0.7;
+    }
+    
+    /* Adjust container padding for leaf clearance */
+    .max-w-6xl.mx-auto.px-4 {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    /* Larger leaves on desktop */
+    .absolute.top-10.right-4.md\:right-10 {
+        width: 180px;
+    }
+    
+    .absolute.bottom-10.left-4.md\:left-10 {
+        width: 200px;
+    }
+}
+
+/* Hide leaves on very small screens */
+@media (max-width: 480px) {
+    .absolute.top-10.right-4,
+    .absolute.bottom-10.left-4 {
+        display: none;
+    }
+}
+
+/* Card responsive sizing */
+@media (max-width: 640px) {
+    .min-w-\[300px\] {
+        min-width: 260px;
+    }
+    
+    .max-w-\[300px\] {
+        max-width: 260px;
+    }
+}
+
+/* Custom scrollbar hide */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Line clamp for text */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+</style>
+
+<script>
+// Optional: Add intersection observer to fade leaves in/out based on scroll
+document.addEventListener('DOMContentLoaded', function() {
+    const leaves = document.querySelectorAll('img[alt*="Leaf cluster"]');
+    
+    // Simple fade in effect
+    leaves.forEach(leaf => {
+        leaf.style.opacity = '0';
+        leaf.style.transition = 'opacity 0.8s ease';
+        
+        setTimeout(() => {
+            leaf.style.opacity = '0.8';
+        }, 300);
+    });
+    
+    // Hide leaves when scrolling the feedback rows
+    const scrollContainers = document.querySelectorAll('.flex.overflow-x-auto');
+    
+    scrollContainers.forEach(container => {
+        container.addEventListener('scroll', () => {
+            leaves.forEach(leaf => {
+                leaf.style.opacity = '0.4';
+            });
+        });
+        
+        container.addEventListener('scrollend', () => {
+            setTimeout(() => {
+                leaves.forEach(leaf => {
+                    leaf.style.opacity = '0.8';
+                });
+            }, 300);
+        });
+    });
+});
+</script>
+
+<style>
+/* Custom scrollbar styling (optional) */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Horizontal scroll indicator */
+.flex.overflow-x-auto {
+    scroll-behavior: smooth;
+    cursor: grab;
+}
+
+.flex.overflow-x-auto:active {
+    cursor: grabbing;
+}
+
+/* Line clamp for text */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .min-w-\[320px\] {
+        min-width: 280px;
+    }
+    
+    .max-w-\[320px\] {
+        max-width: 280px;
+    }
+}
+</style>
+
+<script>
+// Optional: Add smooth scrolling with mouse drag
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollContainers = document.querySelectorAll('.flex.overflow-x-auto');
+    
+    scrollContainers.forEach(container => {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        
+        container.addEventListener('mousedown', (e) => {
+            isDown = true;
+            container.classList.add('active');
+            startX = e.pageX - container.offsetLeft;
+            scrollLeft = container.scrollLeft;
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            isDown = false;
+            container.classList.remove('active');
+        });
+        
+        container.addEventListener('mouseup', () => {
+            isDown = false;
+            container.classList.remove('active');
+        });
+        
+        container.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const walk = (x - startX) * 2; // Scroll speed
+            container.scrollLeft = scrollLeft - walk;
+        });
+    });
+});
+</script>
+           
+
     </section>
+
+<section class="relative text-center py-8px-6 overflow-hidden">
+            <!-- Background overlay image with exact opacity and pointer-events -->
+
+       <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
+        </div>
+
+      <!-- 🌫️ Soft Fog Layer -->
+<div class="absolute top-[-3rem] left-0 w-full h-[150px] 
+            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"></div>
+   
+    <!-- Soft gradient background (different from above) -->
+    <div class="absolute inset-0" 
+         style="background: radial-gradient(circle at 50% 50%, #F1EEE6, #E8E4DA)"></div>
+    
+    <!-- Subtle water/wave pattern overlay -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none"
+         style="background-image: url('data:image/svg+xml,<svg width="100" height="20" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M0,10 C20,5 40,15 60,10 C80,5 100,15 100,10 L100,20 L0,20 Z" fill="%236B7D5A"/></svg></div>
+    
+    <!-- Floating eco elements -->
+    <div class="absolute top-20 left-10 w-16 h-16 opacity-10 animate-float">
+        <i class="fa-solid fa-droplet text-5xl" style="color: #8A9A7B"></i>
+    </div>
+    <div class="absolute bottom-20 right-12 w-20 h-20 opacity-10 animate-float" style="animation-delay: 1s">
+        <i class="fa-solid fa-wind text-6xl" style="color: #9BAF8D"></i>
+    </div>
+    
+    <!-- Subtle background image with very low opacity -->
+    <div class="absolute inset-0 bg-center bg-contain bg-no-repeat opacity-5 mix-blend-soft-light"
+        style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}');"></div>
+
+    <div class="relative z-30 max-w-3xl mx-auto">
+        
+        <!-- Nature-inspired divider -->
+        <div class="flex justify-center mb-10">
+            <div class="relative">
+                <div class="w-32 h-1 rounded-full" style="background: linear-gradient(to right, transparent, #C8D5BB, transparent)"></div>
+                <div class="absolute -top-0 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center"
+                     style="background: #F1EEE6; border: 2px solid #C8D5BB">
+                    <i class="fa-solid fa-leaf text-sm" style="color: #8A9A7B"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earthy call to action -->
+<div class="mb-16">
+    <!-- Soft subtitle -->
+    <p class="text-xs font-light tracking-widest uppercase text-center mb-10" 
+       style="color: #9BAF8D; letter-spacing: 0.25em">
+        A Moment of Gentle Reflection
+    </p>
+
+    <!-- Emotional heading -->
+    <h3 class="font-serif text-3xl md:text-5xl font-light mb-12 leading-snug text-center px-6" 
+        style="color: #5A6B4A; line-height: 1.3">
+        What if making a difference<br>
+        felt as natural as<br>
+        <span class="italic font-normal" style="color: #8A9A7B">breathing?</span>
+    </h3>
+
+    <!-- Gentle quote box -->
+    <div class="max-w-lg mx-auto p-10 rounded-2xl relative" 
+         style="background: rgba(255, 255, 255, 0.8); 
+                border: 1px solid rgba(200, 213, 187, 0.4);
+                backdrop-filter: blur(8px)">
+        
+        <!-- Quote with soft spacing -->
+        <div class="space-y-6">
+            <p class="text-lg font-sans-serif italic leading-relaxed text-center" 
+               style="color: #6B7D5A; line-height: 1.8">
+                "Sustainability isn't about being perfect.<br>
+                It's about being present.<br>
+                <span class="font-medium" style="color: #8A9A7B">One gentle choice at a time,</span><br>
+                we weave a kinder world together."
+            </p>
+            
+            <div class="pt-6 border-t text-center" style="border-top-color: rgba(200, 213, 187, 0.3)">
+                <p class="text-sm font-light tracking-wide" style="color: rgba(107, 125, 90, 0.7)">
+                    Welcome to a space where<br>
+                    every small step is celebrated
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+       <!-- Olive Button Design -->
+<!-- Olive Button using your existing CSS classes -->
+<a href="/quests" class="btn-eco btn-olive w-67 py-3 px-8 text-base md:text-lg">
+    <i class="fa-solid fa-seedling"></i>
+    <span>Start Your First Quest</span>
+</a>
+
+    
+    </div>
+
+</section>
 
     <style>
         @keyframes float {
