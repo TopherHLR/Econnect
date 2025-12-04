@@ -574,7 +574,16 @@ class AdminController extends Controller
         ->sortByDesc('pointsEarned')
         ->first(); // Top 1
 
-
+        
+        $categoriesAction = EcoAction::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+            
+        $categoriesLibrary = EcoLibrary::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
         return view('admin.adminAnalytics', compact(
             'totalUsers',
             'verifiedUsers',
@@ -592,6 +601,8 @@ class AdminController extends Controller
             'pointsRedeemed',
             'newFeedbackCount',
             'categories',
+            'categoriesAction',
+            'categoriesLibrary',
             'ecoActionsDaily',
             'pointsDaily',
             'pointsRedeemedDaily',
