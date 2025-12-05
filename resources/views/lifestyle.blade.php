@@ -1,7 +1,7 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 mt-4 sm:mt-15">
+<div class="min-h-screen bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">
         <div class="bg-[#F7F3E7] rounded-2xl sm:rounded-4xl shadow-sm overflow-hidden p-4 sm:p-8">
 
             {{-- Header --}}
