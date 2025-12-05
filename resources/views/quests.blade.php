@@ -26,8 +26,8 @@
     <!-- Three side-by-side containers with fixed total height -->
     <div class="flex gap-6" style="height: 600px;">
         
-        <!-- Left Container: Accepted Quests (Full height, own scroll) -->
-        <div class="bg-white rounded-2xl shadow-md p-5 flex-1 flex flex-col">
+        <!-- Left Container: Accepted Quests (Fixed height) -->
+        <div class="bg-white rounded-2xl shadow-md p-5 h-[74vh] flex flex-col">
             <!-- Distinct title style -->
             <div class="mb-5 border-b-2 border-[#da7a5f] pb-3">
                 <h3 class="text-base font-semibold text-[#4F6B3F] flex items-center gap-2">
@@ -86,10 +86,9 @@
         <!-- END Left Container -->
 
         <!-- Right Container: Split into Completed & Rejected -->
-        <div class="flex-1 flex flex-col gap-6">
-            
-            <!-- Completed Quests Container (60% height with scroll) -->
-            <div class="bg-white rounded-2xl shadow-md p-5 flex flex-col" style="height: 60%;">
+        <div class="flex-1 flex flex-col">
+            <!-- Completed Quests Container (auto height, grows with content) -->
+            <div class="bg-white rounded-2xl shadow-md p-5 mb-6 flex flex-col">
                 <div class="mb-4 border-b-2 border-green-500 pb-3">
                     <h3 class="text-base font-semibold text-[#4F6B3F] flex items-center gap-2">
                         <span class="w-3 h-3 rounded-full bg-green-500"></span>
@@ -98,7 +97,7 @@
                     <p class="text-xs text-gray-500 mt-1">Successfully finished quests</p>
                 </div>
 
-                <div class="flex-1 overflow-y-auto space-y-2">
+                <div class="flex-1 overflow-y-auto space-y-2 max-h-[40vh]">
                     @foreach ($quests as $quest)
                         @php
                             $submission = $quest->submissions->firstWhere('user_id', auth()->id());
@@ -123,17 +122,17 @@
             </div>
             <!-- END Completed Container -->
 
-            <!-- Rejected Quests Container (40% height with scroll) -->
-            <div class="bg-white rounded-2xl shadow-md p-5 flex flex-col" style="height: 40%;">
-                <div class="mb-4 border-b-2 border-red-400 pb-3">
-                    <h3 class="text-base font-semibold text-[#4F6B3F] flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-red-400"></span>
-                        Rejected Quests
-                    </h3>
-                    <p class="text-xs text-gray-500 mt-1">Quests that need revision</p>
-                </div>
+  <!-- Rejected Quests Container (Fixed height to match Accepted Quests) -->
+<div class="bg-white rounded-2xl shadow-md p-5 h-[20vh] flex flex-col">
+    <div class="mb-5 border-b-2 border-red-400 pb-3">
+        <h3 class="text-base font-semibold text-[#4F6B3F] flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-400"></span>
+            Rejected Quests
+        </h3>
+        <p class="text-xs text-gray-500 mt-1">Quests that need revision</p>
+    </div>
 
-                <div class="flex-1 overflow-y-auto space-y-2">
+    <div class="flex-1 overflow-y-auto space-y-2">
                     @foreach ($quests as $quest)
    @php
                             $submission = $quest->submissions->firstWhere('user_id', auth()->id());
