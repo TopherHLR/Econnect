@@ -125,7 +125,7 @@
                 @auth
                     {{-- Desktop Sidebar --}}
                     <div id="ecoSidebarDesktop"
-                        class="hidden lg:block w-full lg:w-[32rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6  max-h-[80vh] overflow-y-auto custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
+                        class="hidden lg:block w-full lg:w-[32rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6  max-h-[80vh] overflow-y-auto custom-scroll shadow-[0_8px_10px_#7A8C4F]/60">
                         <h2 class="text-2xl font-serif font-bold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
                         <div class="space-y-3" id="savedList">
                             @foreach ($savedTopics as $saved)
