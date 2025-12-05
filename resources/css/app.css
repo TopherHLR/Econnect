@@ -1226,3 +1226,14 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+.fade-in-panel {
+    opacity: 0;              /* start hidden */
+    transform: translateY(20px); /* start slightly down */
+    transition: opacity 1s ease, transform 1s ease; /* smooth fade-in when triggered */
+}
+.fade-in-panel.show {
+    opacity: 1;
+    transform: translateY(0); /* slide up into position */
+}
+

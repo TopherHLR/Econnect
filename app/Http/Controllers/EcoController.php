@@ -108,7 +108,7 @@ class EcoController extends Controller
                 ]);
             }
 
-                        // =========================
+            // =========================
             // GET AVAILABLE QUESTS
             // =========================
             $availableQuests = Quest::where('status', 'active')
@@ -125,6 +125,7 @@ class EcoController extends Controller
                         $q->where('user_id', $user->user_id);
                     }
                 })
+                ->where('required_points', '<=', $progressPoints) // <-- new condition
                 ->orderBy('start_date', 'desc')
                 ->get();
 

@@ -471,6 +471,28 @@
                 });
             });
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('gridSearch');
+            const questCards = document.querySelectorAll('.eco-card');
+
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.toLowerCase();
+
+                questCards.forEach(card => {
+                    const title = card.dataset.title.toLowerCase();
+                    const description = card.dataset.description.toLowerCase();
+                    const category = card.dataset.category.toLowerCase();
+
+                    if (title.includes(query) || description.includes(query) || category.includes(
+                            query)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
     </script>
 
     @include('modal.userQuestModal')
