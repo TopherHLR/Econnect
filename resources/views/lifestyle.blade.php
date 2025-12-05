@@ -5,10 +5,12 @@
         <div class="bg-[#F7F3E7] rounded-2xl sm:rounded-4xl shadow-sm overflow-hidden p-4 sm:p-8">
 
             {{-- Header --}}
-            <div class="flex items-center justify-between px-2 pt-2 mb-4">
-                <h1 class="text-xl sm:text-2xl font-serif font-semibold text-[#5C7919]">
-                    Climate & Nature Awareness [Earth]
-                </h1>
+<div class="flex flex-col sm:flex-row sm:items-center gap-3 px-2 pt-2 mb-4">
+    <h1 class="text-4xl font-serif font-bold text-[#4F6B3F]">Lifestyle</h1>
+    <div class="hidden sm:block h-8 w-px bg-[#8A9A7B]/50"></div>
+    <p class="font-sans italic text-[#6A8A52] sm:mt-0 mt-1">
+        Mindful living through habits, choices, and daily experiences.
+    </p>
                 {{-- Mobile Saved Button in Header --}}
                 @auth
                     <button onclick="toggleMobileSaved()"
@@ -124,7 +126,7 @@
                     {{-- Desktop Sidebar --}}
                     <div id="ecoSidebarDesktop"
                         class="hidden lg:block w-full lg:w-[32rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6  max-h-[80vh] overflow-y-auto custom-scroll shadow-[0_8px_20px_#7A8C4F]/70">
-                        <h2 class="text-lg font-semibold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
+                        <h2 class="text-2xl font-serif font-bold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
                         <div class="space-y-3" id="savedList">
                             @foreach ($savedTopics as $saved)
                                 <div class="flex items-center justify-between p-3 bg-white rounded-lg  saved-item hover:scale-[1.02] transition min-w-0"

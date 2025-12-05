@@ -11,7 +11,7 @@
 
                         <!-- Main left column title -->
                         <div class="mb-6">
-                            <h2 class="text-xl font-semibold text-[#4F6B3F] py-3 text-center"
+                            <h2 class="text-2xl font-serif font-bold text-[#5C7919] py-3 text-center"
                                 style="font-family: var(--font-serif);">
                                 My Quest Progress
                             </h2>
@@ -176,19 +176,20 @@
 
 
                         <!-- 🌱 Right Column Content -->
-                        <div class="w-full bg-[#F8F6F1] rounded-2xl shadow-sm p-6 flex flex-col"
+                        <div class="w-full bg-white rounded-2xl  shadow-sm p-6 flex flex-col"
                             style="border: 1px solid rgba(139, 169, 123, 0.2);">
 
                             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                                <div class="text-center md:text-left">
-                                    <h2 class="text-2xl font-bold text-[#5A6B4A] mb-2"
-                                        style="font-family: var(--font-serif);">
-                                        <i class="fa-solid fa-leaf mr-2 text-[#8A9A7B]"></i>
-                                        Active Eco-Quests
-                                    </h2>
-                                    <p class="text-sm text-[#6B7D5A]/80 font-light">Complete quests to nurture your
-                                        eco-impact journey</p>
-                                </div>
+                             <div class="flex flex-col sm:flex-row sm:items-center gap-3 px-2 pt-2 mb-4">
+    <h1 class="text-2xl font-serif font-bold text-[#5C7919] flex items-center">
+    
+         Eco-Quests
+    </h1>
+    <div class="hidden sm:block h-8 w-px bg-[#8A9A7B]/50"></div>
+    <p class="font-sans italic text-[#5C7919]/80 sm:mt-0 mt-1">
+        Complete quests to nurture your eco-impact journey
+    </p>
+</div>
 
                                 <div class="flex items-center gap-3">
                                     <div class="relative">
