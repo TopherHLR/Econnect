@@ -369,6 +369,13 @@ class AccountController extends Controller
     // --- Rewards Page ---
     public function rewards()
     {
+        // Redirect if not logged in
+        if (!auth()->check()) {
+            return redirect()->route('home')
+                ->with('error', 'You must be logged in to view rewards.');
+        }
+
         return view('account.rewards', $this->getAccountData());
     }
+
 }

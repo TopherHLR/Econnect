@@ -236,6 +236,19 @@ class AdminController extends Controller
             ->where('category', '!=', '')
             ->distinct()
             ->pluck('category');
+        // ======== MOST DESERVING PLAYER (Highest Points Earned in Last 7 Days) ========
+        $mostDeserving = $users->map(function($user) {
+            $pointsEarned = $user->pointsHistory->where('created_at', '>=', now()->subDays(7))
+                ->where('points_change', '>', 0)
+                ->sum('points_change');
+
+            return (object)[
+                'user' => $user,
+                'pointsEarned' => $pointsEarned,
+            ];
+        })
+        ->sortByDesc('pointsEarned')
+        ->first(); // Top 1
 
         return view('admin.adminHome', compact(
             'totalUsers',
@@ -269,7 +282,8 @@ class AdminController extends Controller
             'topDailyActions',
             'topLibrarySavers',
             'topVoucherRedeemers',
-            'topPointsLast7Days'
+            'topPointsLast7Days',
+            'mostDeserving'
 
         ));
 
@@ -560,6 +574,7 @@ class AdminController extends Controller
                 'pointsEarned' => $pointsEarned,
             ];
         })->sortByDesc('pointsEarned')->values()->take(10);
+
         // ======== MOST DESERVING PLAYER (Highest Points Earned in Last 7 Days) ========
         $mostDeserving = $users->map(function($user) {
             $pointsEarned = $user->pointsHistory->where('created_at', '>=', now()->subDays(7))

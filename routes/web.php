@@ -48,9 +48,6 @@ Route::get('/lifestyle', function () {
 
 
 Route::get('/quests', [QuestController::class, 'userQuests'])->name('quests');
-Route::get('/rewards', function () {
-    return view('rewards');
-})->name('rewards');
 
 //---------------------------------------------------- ADMIN PAGES (VIEW-ONLY NAVIGATION) -------------------------------------------------
 
@@ -196,6 +193,8 @@ Route::middleware(['auth'])->group(function () {
 
         // ✅ Add this POST route for storing quests
         Route::post('/admin/quests', [QuestController::class, 'store'])->name('quests.store');
+
+        Route::get('/adminRewards', [VoucherController::class, 'index'])->name('adminRewards');
     });
 });
 Route::post('/user/{user}/set-inactive', [AdminController::class, 'setInactive']);
@@ -228,11 +227,10 @@ Route::post('/quests/submit', [QuestSubmissionController::class, 'submit'])->nam
 Route::get('/adminUsers', [AdminController::class, 'index'])->name('adminUsers');
 
 //---------------------------------------------------- VOUCHER -------------------------------------------------
+
 Route::post('/vouchers/store', [App\Http\Controllers\VoucherController::class, 'store'])
      ->name('vouchers.store');
 
-
-Route::get('/adminRewards', [VoucherController::class, 'index'])->name('adminRewards');
 
 Route::put('/rewards/update/{id}', [VoucherController::class, 'update'])->name('rewards.update');
 Route::put('/rewards/recover/{id}', [VoucherController::class, 'recover'])->name('rewards.recover');
@@ -243,10 +241,10 @@ Route::delete('/rewards/delete/{id}', [VoucherController::class, 'destroy'])->na
 Route::put('/user-voucher/status/{id}', [VoucherController::class, 'updateUserVoucherStatus'])
     ->name('userVoucher.updateStatus');
 
-Route::middleware(['auth'])->group(function () {
+
     Route::get('/rewards', [UserRewardsController::class, 'index'])->name('rewards.index');
     Route::post('/rewards/redeem/{voucherId}', [UserRewardsController::class, 'redeemVoucher'])->name('rewards.redeem');
-});
+
 
 Route::post('/admin/voucher/redeem/{qr_code}', [VoucherController::class, 'redeemByQrCode'])
     ->name('admin.voucher.redeem');

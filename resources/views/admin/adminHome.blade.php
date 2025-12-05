@@ -3,7 +3,9 @@
 @section('title', 'Home')
 
 @section('content')
-@include('modal.userModal')
+    @include('modal.userModal')
+    @include('modal.AddVoucherModal')
+    @include('modal.deservingPlayerModal')
     <div class="space-y-6">
         <!-- Header Section with ALL Quick Actions -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -42,13 +44,115 @@
 
         <!-- 📊 METRICS DASHBOARD SECTION -->
         <section>
-            <h2 class="text-xl font-semibold text-[#4F6B3F] mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-chart-line text-[#7F8A4F]"></i>
-                Platform Metrics
-            </h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- TOP PERFORMERS TICKER -->
+            <div
+                class="bg-gradient-to-r mb-3 from-[#4F6B3F]/10 to-[#7F8A4F]/10 rounded-xl p-3 border border-[#E6EAD7] shadow-sm">
+                <div class="flex items-center overflow-hidden">
+                    <span
+                        class="flex-shrink-0 animate-pulse bg-[#4F6B3F] px-4 py-1.5 rounded-full text-sm text-white font-semibold">
+                        <i class="fa-solid fa-chart-line mr-2"></i>LIVE TOP PERFORMERS
+                    </span>
+                    <div class="ticker-wrapper whitespace-nowrap ml-4 flex-1 overflow-hidden">
+                        <div class="ticker-content inline-block animate-ticker">
+                            @php
+                                $currentUserId = auth()->check() ? auth()->user()->user_id : null;
+                                $items = collect();
+
+                                // Top Points
+                                foreach ($topByPoints->take(3) as $i => $u) {
+                                    $isYou = $currentUserId && $u->user->user_id == $currentUserId;
+                                    $items->push([
+                                        'icon' => $isYou ? 'star' : 'trophy',
+                                        'label' => '#' . ($i + 1) . ' Points',
+                                        'name' => $u->user->first_name . ' ' . substr($u->user->last_name, 0, 1) . '.',
+                                        'value' => number_format($u->progressPoints) . ' pts',
+                                        'is_you' => $isYou,
+                                    ]);
+                                }
+
+                                // Top Quests
+                                foreach ($topByQuests->take(3) as $i => $u) {
+                                    $isYou = $currentUserId && $u->user->user_id == $currentUserId;
+                                    $items->push([
+                                        'icon' => $isYou ? 'star' : 'check',
+                                        'label' => '#' . ($i + 1) . ' Quests',
+                                        'name' => $u->user->first_name . ' ' . substr($u->user->last_name, 0, 1) . '.',
+                                        'value' => $u->questsCompleted . ' completed',
+                                        'is_you' => $isYou,
+                                    ]);
+                                }
+
+                                // Top Eco-Taps
+                                foreach ($topDailyActions->take(3) as $i => $u) {
+                                    $isYou = $currentUserId && $u->user->user_id == $currentUserId;
+                                    $items->push([
+                                        'icon' => $isYou ? 'star' : 'globe',
+                                        'label' => '#' . ($i + 1) . ' Eco-Taps',
+                                        'name' => $u->user->first_name . ' ' . substr($u->user->last_name, 0, 1) . '.',
+                                        'value' => $u->dailyEcoActions . ' taps',
+                                        'is_you' => $isYou,
+                                    ]);
+                                }
+                            @endphp
+
+
+
+                            <!-- Render items twice for seamless loop -->
+                            @foreach ([$items, $items] as $set)
+                                @foreach ($set as $item)
+                                    <span
+                                        class="mx-8 inline-flex items-center gap-3 {{ $item['is_you'] ? 'animate-pulse font-extrabold drop-shadow-lg' : '' }}">
+                                        @if ($item['icon'] === 'star')
+                                            <i class="fa-solid fa-star text-yellow-400 text-lg drop-shadow"></i>
+                                        @elseif($item['icon'] === 'trophy')
+                                            <i class="fa-solid fa-trophy text-yellow-300 text-lg"></i>
+                                        @elseif($item['icon'] === 'check')
+                                            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+                                        @elseif($item['icon'] === 'globe')
+                                            <i class="fa-solid fa-earth-americas text-cyan-400 text-lg"></i>
+                                        @endif
+
+                                        <span
+                                            class="font-bold text-[#4F6B3F] {{ $item['is_you'] ? 'text-[#C37A49]' : '' }}">
+                                            {{ $item['label'] }}
+                                        </span>
+                                        <span
+                                            class="font-medium {{ $item['is_you'] ? 'text-[#C37A49] underline decoration-2 underline-offset-2 font-bold' : 'text-gray-700' }}">
+                                            {{ $item['name'] }} @if ($item['is_you'])
+                                                (You!)
+                                            @endif
+                                        </span>
+                                        <span class="text-[#6A8A52] font-medium">{{ $item['value'] }}</span>
+                                        <span class="mx-4 text-gray-400">|</span>
+                                    </span>
+                                @endforeach
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">   
                 <!-- 🟢 HIGH PRIORITY CARDS (Top Row) -->
+                @if ($mostDeserving && $mostDeserving->pointsEarned > 0)
+                    <div class="metric-card">
+                        <h3 class="text-lg font-semibold text-green-700">Most Deserving Player</h3>
+
+                        <div class="mt-2">
+                            <p><strong>Name:</strong> {{ $mostDeserving->user->first_name }}
+                                {{ $mostDeserving->user->last_name }}</p>
+                            <p><strong>Points Earned (Last 7 Days):</strong> {{ $mostDeserving->pointsEarned }}</p>
+                        </div>
+
+                        <!-- Reward Button -->
+                        <button onclick="openRewardModal()"
+                            class="mt-3 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            Give Reward
+                        </button>
+
+                    </div>
+                @endif
 
                 <!-- Total Verified Users -->
                 <div class="metric-card">
@@ -186,7 +290,7 @@
                 </div>
 
                 <!-- Points Distributed -->
-                <div class="metric-card">
+                <div class="metric-card lg:col-span-2">
                     <div class="flex justify-between items-start">
                         <h3 class="metric-title">Points Distributed</h3>
                         <i class="fa-solid fa-coins text-[#C37A49] text-lg"></i>
@@ -290,189 +394,6 @@
                     </div>
                 </div>
 
-                <!-- Quests Accomplished -->
-                <div class="metric-card">
-                    <div class="flex justify-between items-start">
-                        <h3 class="metric-title">Quests Accomplished</h3>
-                        <i class="fa-solid fa-check-circle text-[#4F6B3F] text-lg"></i>
-                    </div>
-                    <div class="mt-4">
-                        <div class="metric-value text-[#4F6B3F]">{{ $questsAccomplished }}</div>
-                    </div>
-                </div>
-
-                <!-- Vouchers Used -->
-                <div class="metric-card">
-                    <div class="flex justify-between items-start">
-                        <h3 class="metric-title">Vouchers Used</h3>
-                        <i class="fa-solid fa-ticket text-[#4F6B3F] text-lg"></i>
-                    </div>
-                    <div class="mt-4">
-                        <div class="metric-value text-[#4F6B3F]">{{ $vouchersUsed }}</div>
-                    </div>
-                </div>
-                <div class="metric-card"">
-                    <h2 class="text-2xl font-bold text-green-800 mb-6">Top Active Users</h2>
-
-                    <div class="grid grid-cols-3 text-center text-xl font-semibold text-black border-b pb-3 mb-3">
-                        <p>Rank</p>
-                        <p>User</p>
-                        <p>Total Activities</p>
-                    </div>
-
-                    @foreach ($topActiveUsers as $index => $entry)
-                        <div class="grid grid-cols-3 text-center py-3 border-b hover:bg-green-50 cursor-pointer"
-                            onclick="window.location='{{ route('myprogress') }}'">
-                            <p class="font-semibold">{{ $index + 1 }}</p>
-                            <p>{{ $entry->user->first_name }} {{ $entry->user->last_name }}</p>
-                            <p class="font-semibold text-green-800">{{ $entry->activityCount }}</p>
-                        </div>
-                    @endforeach
-                </div>
-
-                <!-- Total Active Users -->
-                <div class="metric-card">
-                    <div class="flex justify-between items-start">
-                        <h3 class="metric-title">Total Active Users</h3>
-                        <i class="fa-solid fa-users text-[#7F8A4F] text-lg"></i>
-                    </div>
-                    <div class="mt-4">
-                        <div class="metric-value text-[#4F6B3F]">
-                            {{ $topActiveUsers->count() }} <!-- Count of active users in leaderboard -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Most Saved Category -->
-                <div class="metric-card">
-                    <div class="flex justify-between items-start">
-                        <h3 class="metric-title">Most Saved Category</h3>
-                        <i class="fa-solid fa-layer-group text-[#4F6B3F] text-lg"></i>
-                    </div>
-                    <div class="mt-4">
-                        <div class="metric-value text-[#4F6B3F]">{{ $mostCategorySavedName }}</div>
-                    </div>
-                </div>
-
-                <!-- Feedback -->
-                <div class="metric-card">
-                    <div class="flex justify-between items-start">
-                        <h3 class="metric-title">New Feedback</h3>
-                        <i class="fa-solid fa-comment text-[#7F8A4F] text-lg"></i>
-                    </div>
-                    <div class="mt-4">
-                        <div class="metric-value text-[#4F6B3F]" id="newFeedbackCount">{{ $newFeedbackCount }}</div>
-                        <div class="metric-subtext" id="feedbackStatus">awaiting review</div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- ===== Leaderboards Section ===== -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-
-                <!-- Most Active Users -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Most Active Users</h3>
-                    <ul class="space-y-2">
-                        @foreach ($topActiveUsers as $rank => $entry)
-                            <li class="flex justify-between items-center">
-                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
-                                    {{ $entry->user->last_name }}</span>
-                                <span class="font-semibold">{{ $entry->activityCount }} activities</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <!-- Top Points Earned -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Points Earned (All Time)</h3>
-                    <ul class="space-y-2">
-                        @foreach ($topByPoints as $rank => $entry)
-                            <li class="flex justify-between items-center">
-                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
-                                    {{ $entry->user->last_name }}</span>
-                                <span class="font-semibold">{{ $entry->progressPoints }} pts</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <!-- Top Completed Quests -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Quest Completers</h3>
-                    <ul class="space-y-2">
-                        @foreach ($topByQuests as $rank => $entry)
-                            <li class="flex justify-between items-center">
-                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
-                                    {{ $entry->user->last_name }}</span>
-                                <span class="font-semibold">{{ $entry->questsCompleted }} quests</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <!-- Top Daily Eco Actions -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Daily Eco Actions</h3>
-                    <ul class="space-y-2">
-                        @foreach ($topDailyActions as $rank => $entry)
-                            <li class="flex justify-between items-center">
-                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
-                                    {{ $entry->user->last_name }}</span>
-                                <span class="font-semibold">{{ $entry->dailyEcoActions }} actions</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <!-- Top Library Savers -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Library Savers</h3>
-                    <ul class="space-y-2">
-                        @foreach ($topLibrarySavers as $rank => $entry)
-                            <li class="flex justify-between items-center">
-                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
-                                    {{ $entry->user->last_name }}</span>
-                                <span class="font-semibold">{{ $entry->librarySaves }} saves</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <!-- Top Voucher Redeemers -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Voucher Redeemers</h3>
-                    <ul class="space-y-2">
-                        @foreach ($topVoucherRedeemers as $rank => $entry)
-                            <li class="flex justify-between items-center">
-                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
-                                    {{ $entry->user->last_name }}</span>
-                                <span class="font-semibold">{{ $entry->vouchersRedeemed }} vouchers</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <!-- Most Saved Library Category -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Most Saved Library Category</h3>
-                    <div class="text-[#4F6B3F] font-semibold text-center">{{ $mostCategorySavedName }}</div>
-                </div>
-
-                <!-- Top Points Earned (Last 7 Days) -->
-                <div class="bg-white rounded-lg shadow p-4">
-                    <h3 class="text-lg font-bold text-[#4F6B3F] mb-3">Top Points Earned (Last 7 Days)</h3>
-                    <ul class="space-y-2">
-                        @foreach ($topPointsLast7Days as $rank => $entry)
-                            <li class="flex justify-between items-center">
-                                <span>{{ $rank + 1 }}. {{ $entry->user->first_name }}
-                                    {{ $entry->user->last_name }}</span>
-                                <span class="font-semibold">{{ $entry->pointsEarned }} pts</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
 
             </div>
         </section>

@@ -38,7 +38,7 @@
     // Open Voucher Modal Shortcut From Reward Modal
     // -------------------------------------------------------------------
     function openVoucherShortcut() {
-        rewardModal.classList.add('hidden');
+
         openAddVoucherModal();
     }
 
@@ -58,6 +58,11 @@
         form.action = "{{ route('vouchers.store') }}";
         methodField.value = "POST";
 
+        // ⭐ raise z-index dynamically
+        addVoucherModal.style.zIndex = "9999";
+        rewardModal.style.zIndex = "5000"; // ensure below
+
+        // show add voucher modal
         addVoucherModal.classList.remove('hidden');
     }
 </script>

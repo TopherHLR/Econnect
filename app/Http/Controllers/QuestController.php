@@ -130,6 +130,11 @@ class QuestController extends Controller
 
     public function userQuests()
     {
+        // If user is not logged in
+        if (!auth()->check()) {
+            return redirect()->route('home')->with('error', 'You must be logged in to view quests.');
+        }
+
         $user = auth()->user();
 
         // Calculate user's earned points (ignore voided)
@@ -143,16 +148,17 @@ class QuestController extends Controller
             ->orderBy('start_date', 'desc')
             ->get();
 
-        // Filter quests that the user can access
+        // Filter quests accessible based on earned points
         $quests = $allQuests->filter(function ($quest) use ($progressPoints) {
             return $progressPoints >= $quest->required_points;
         });
 
-        // Get unique categories
+        // Unique categories
         $categories = $quests->pluck('category')->filter()->unique()->values();
 
         return view('quests', compact('quests', 'categories'));
     }
+
 
     public function recover2($id)
     {
