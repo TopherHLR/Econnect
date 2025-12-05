@@ -1002,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <!-- 🌿 Right Leaf Cluster Top -->
         <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (16).png') }}"
-            class="absolute right-90 bottom-150 w-52 md:w-72 opacity-90 pointer-events-none select-none"
+            class="absolute right-90 bottom-90  w-52 md:w-72 opacity-90 pointer-events-none select-none"
             alt="Leaf cluster">
 
         <!-- 🌿 Left Leaf Cluster Bottom -->
@@ -1091,7 +1091,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 @endauth
-<!-- FEEDBACK CARDS - Horizontal Scroll Layout -->
+<!-- FEEDBACK CARDS - Single Row Dynamic Layout -->
 <div class="mt-16">
     <h4 class="text-[#4A6613] font-semibold text-2xl mb-8 text-center">Community Stories</h4>
     
@@ -1110,62 +1110,68 @@ document.addEventListener('DOMContentLoaded', function() {
             @endauth
         </div>
     @else
-        <!-- Container with limited width and horizontal scroll -->
-        <div class="max-w-5xl mx-auto px-4">
-            <!-- First Row -->
-            <div class="mb-6">
-                <h5 class="text-[#4A6613] font-medium text-lg mb-4 pl-2">Recent Stories</h5>
-                <div class="flex overflow-x-auto pb-6 gap-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
-                    <div class="flex gap-6 min-w-max">
-                        @foreach ($feedback->take(ceil($feedback->count() / 2)) as $item)
-                            <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[320px] max-w-[320px] flex-shrink-0">
-                                <!-- Quotation Mark -->
-                                <i class="fa-solid fa-quote-left text-3xl text-[#4A6613] absolute top-4 left-4 opacity-70"></i>
-
-                                <!-- User Info Section -->
-                                <div class="flex items-center gap-3 mb-4 mt-8">
-                                    <div class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
-                                        <i class="fa-solid fa-user text-[#4A6613]"></i>
-                                    </div>
-                                    <div>
-                                        <p class="font-semibold text-[#4A6613] text-sm">
-                                            {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
-                                        </p>
-                                        <p class="text-xs text-[#4E3A2E]/60">
-                                            {{ $item->created_at->format('M d, Y') }}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Feedback Content -->
-                                <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">
-                                    "{{ $item->content }}"
-                                </p>
-
-                                <!-- Star Rating & Footer -->
-                                <div class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
-                                    <div class="flex gap-1">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <i class="fa-solid fa-star {{ $i <= $item->rating ? 'text-yellow-500' : 'text-gray-300' }} text-base"></i>
-                                        @endfor
-                                    </div>
-                                    
-                                    <!-- Decorative quote -->
-                                    <i class="fa-solid fa-quote-right text-xl text-[#4A6613] opacity-60"></i>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
+        <!-- Dynamic container that expands based on content -->
+        <div class="relative">
+            <!-- Cluster leaves background (sticky to the container) -->
+            <div class="absolute inset-0 opacity-10 pointer-events-none z-0">
+                <div class="absolute top-0 left-10">
+                    <i class="fa-solid fa-leaf text-6xl text-[#4A6613]"></i>
+                </div>
+                <div class="absolute bottom-10 right-10">
+                    <i class="fa-solid fa-leaf text-5xl text-[#4A6613] transform rotate-45"></i>
+                </div>
+                <div class="absolute top-1/3 right-20">
+                    <i class="fa-solid fa-leaf text-4xl text-[#4A6613] transform -rotate-30"></i>
                 </div>
             </div>
 
-            <!-- Second Row (if enough feedback) -->
-            @if($feedback->count() > ceil($feedback->count() / 2))
-                <div>
-                    <h5 class="text-[#4A6613] font-medium text-lg mb-4 pl-2">More Stories</h5>
-                    <div class="flex overflow-x-auto pb-6 gap-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
-                        <div class="flex gap-6 min-w-max">
-                            @foreach ($feedback->slice(ceil($feedback->count() / 2)) as $item)
+            <!-- Single row container that expands dynamically -->
+            <div class="relative z-10">
+                @if($feedback->count() === 1)
+                    <!-- Center single feedback -->
+                    <div class="flex justify-center">
+                        <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative w-full max-w-md">
+                            <!-- Quotation Mark -->
+                            <i class="fa-solid fa-quote-left text-3xl text-[#4A6613] absolute top-4 left-4 opacity-70"></i>
+
+                            <!-- User Info Section -->
+                            <div class="flex items-center gap-3 mb-4 mt-8">
+                                <div class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
+                                    <i class="fa-solid fa-user text-[#4A6613]"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-[#4A6613] text-sm">
+                                        {{ $feedback->first()->user->first_name ?? 'Anonymous' }} {{ $feedback->first()->user->last_name ?? '' }}
+                                    </p>
+                                    <p class="text-xs text-[#4E3A2E]/60">
+                                        {{ $feedback->first()->created_at->format('M d, Y') }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Feedback Content -->
+                            <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">
+                                "{{ $feedback->first()->content }}"
+                            </p>
+
+                            <!-- Star Rating & Footer -->
+                            <div class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
+                                <div class="flex gap-1">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="fa-solid fa-star {{ $i <= $feedback->first()->rating ? 'text-yellow-500' : 'text-gray-300' }} text-base"></i>
+                                    @endfor
+                                </div>
+                                
+                                <!-- Decorative quote -->
+                                <i class="fa-solid fa-quote-right text-xl text-[#4A6613] opacity-60"></i>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <!-- Multiple feedbacks - ONE ROW ONLY with horizontal scroll -->
+                    <div class="overflow-x-auto pb-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
+                        <div class="flex gap-6 px-4 min-w-min">
+                            @foreach ($feedback as $item)
                                 <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[320px] max-w-[320px] flex-shrink-0">
                                     <!-- Quotation Mark -->
                                     <i class="fa-solid fa-quote-left text-3xl text-[#4A6613] absolute top-4 left-4 opacity-70"></i>
@@ -1205,15 +1211,15 @@ document.addEventListener('DOMContentLoaded', function() {
                             @endforeach
                         </div>
                     </div>
-                </div>
-            @endif
 
-            <!-- Scroll indicator -->
-            <div class="text-center mt-6">
-                <p class="text-sm text-[#4E3A2E]/70 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-arrows-left-right text-xs"></i>
-                    Scroll horizontally to see more stories
-                </p>
+                    <!-- Scroll indicator (only for multiple items) -->
+                    <div class="text-center mt-6">
+                        <p class="text-sm text-[#4E3A2E]/70 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrows-left-right text-xs"></i>
+                            Scroll horizontally to see more stories
+                        </p>
+                    </div>
+                @endif
             </div>
         </div>
     @endif
