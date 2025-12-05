@@ -1,49 +1,124 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-    <section class="w-full py-12 flex justify-center bg-cover bg-center bg-no-repeat"
-        style="background-image: url('resource/images/viewport1/aboutbg.png');">
-        <div class="bg-[#fdf8ef] w-10/12 md:w-2/3 rounded-3xl shadow-xl p-6 md:p-10 pt-16 pb-20 relative">
+<section class="w-full py-16 flex justify-center bg-gradient-to-b from-[#556B2F] via-[#7f915c] to-[#dfeadf]">
+    <div class="bg-[#fdf8ef] w-10/12 md:w-2/3 rounded-3xl shadow-xl p-6 md:p-10 pt-16 pb-20 relative">
 
-            <!-- Title -->
-            <h2 class="ml-6 text-3xl md:text-4xl italic font-semibold text-[#6B462D] flex items-center gap-2"
-                style="font-family: var(--font-serif);">
-                About<span class="text-[#C37A49]">ECOnnect</span>
-                <img src="{{ Vite::asset('resources/images/viewport1/minidahon.png') }}" class="w-10 h-10 " />
-            </h2>
+        <!-- Title -->
+        <h2 class="ml-6 text-4xl md:text-5xl italic font-black text-[#6B462D] flex items-center gap-2"
+            style="font-family: var(--font-serif);">
+            About<span class="text-[#C37A49]">Ecobrew</span>
+        </h2>
 
-            <!-- Content Wrapper -->
-            <div class="relative mt-6 flex items-center justify-center">
+        <!-- Carousel Container -->
+        <div class="mt-8 relative w-full overflow-hidden rounded-[40px] shadow-xl ring-1 ring-black/5">
 
-                <!-- Left Arrow -->
-                <button
-                    class="absolute left-0 md:-left-8 bg-[#d8cbb7] hover:bg-[#c4b39e] text-[#654321] 
-                                                                             rounded-full w-8 h-8 flex items-center justify-center shadow-md">
-                    <span class="text-xl">&lsaquo;</span>
-                </button>
+            <!-- Slides Wrapper -->
+            <div id="carouselWrapper" class="flex transition-transform duration-700 ease-out">
+                @php
+                    $images = [
+                        'resources/images/viewport1/ecobrew.jpg',
+                        'resources/images/viewport1/ecobrew2.jpg',
+                        'resources/images/viewport1/ecobrew3.jpg',
+                        'resources/images/viewport1/ecobrew4.jpg',
+                        'resources/images/viewport1/ecobrew5.jpg',
+                        'resources/images/viewport1/ecobrew6.jpg',
+                         'resources/images/viewport1/ecobrew7.jpg',
+                    ];
+                @endphp
 
-                <!-- Image Box -->
-                <div class="overflow-hidden rounded-[40px] shadow-md w-full">
-                    <img src="{{ Vite::asset('resources/images/viewport1/abouteconnect.png') }}" alt="About ECOconnect"
-                        class="w-full h-[300px] md:h-[650px] object-cover rounded-[40px]">
-                </div>
-
-                <!-- Right Arrow -->
-                <button
-                    class="absolute right-0 md:-right-8 bg-[#d8cbb7] hover:bg-[#c4b39e] text-[#654321] 
-                                                                             rounded-full w-8 h-8 flex items-center justify-center shadow-md">
-                    <span class="text-xl">&rsaquo;</span>
-                </button>
-
+                @foreach ($images as $img)
+                    <div class="relative w-full flex-shrink-0">
+                        <img src="{{ Vite::asset($img) }}"
+                            class="w-full h-[300px] md:h-[650px] object-cover rounded-[40px] animate-fadeZoom"
+                            alt="Carousel Image">
+                        <!-- Image Overlay -->
+                        <div class="absolute inset-0 rounded-[40px] bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
+                    </div>
+                @endforeach
             </div>
 
-            <!-- Caption -->
-            <p class="text-[#6b5b4d]  mt-6 text-center text-base md:text-lg">
-                Connecting people, actions, and awareness for a sustainable world.
-            </p>
+<!-- Left Arrow -->
+<button id="prevBtn"
+    class="absolute top-1/2 left-6 -translate-y-1/2 
+           w-11 h-11 flex items-center justify-center
+           bg-white/25 backdrop-blur-lg
+           hover:bg-white/50
+           rounded-full shadow-lg shadow-black/20
+           transition-all duration-300">
+    <span class="text-3xl text-white drop-shadow-sm">‹</span>
+</button>
+
+<!-- Right Arrow -->
+<button id="nextBtn"
+    class="absolute top-1/2 right-6 -translate-y-1/2 
+           w-11 h-11 flex items-center justify-center
+           bg-white/25 backdrop-blur-lg
+           hover:bg-white/50
+           rounded-full shadow-lg shadow-black/20
+           transition-all duration-300">
+    <span class="text-3xl text-white drop-shadow-sm">›</span>
+</button>
 
         </div>
-    </section>
+
+        <!-- Indicator Dots -->
+        <div id="dots" class="flex justify-center gap-2 mt-4">
+            @foreach ($images as $key => $img)
+                <div class="dot w-3 h-3 rounded-full bg-[#c5b79b]/50 transition" data-index="{{ $key }}"></div>
+            @endforeach
+        </div>
+
+        <!-- Animations -->
+        <style>
+            @keyframes fadeZoom {
+                from { opacity: .3; transform: scale(1.05); }
+                to { opacity: 1; transform: scale(1); }
+            }
+            .animate-fadeZoom {
+                animation: fadeZoom .6s ease;
+            }
+        </style>
+
+        <!-- Carousel Script -->
+        <script>
+            const wrapper = document.getElementById('carouselWrapper');
+            const dots = document.querySelectorAll('.dot');
+            const totalSlides = wrapper.children.length;
+            let index = 0;
+
+            function updateCarousel() {
+                wrapper.style.transform = `translateX(-${index * 100}%)`;
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('bg-[#6B462D]', i === index);
+                    dot.classList.toggle('bg-[#c5b79b]/50', i !== index);
+                });
+            }
+
+            document.getElementById('nextBtn').onclick = () => {
+                index = (index + 1) % totalSlides;
+                updateCarousel();
+            };
+
+            document.getElementById('prevBtn').onclick = () => {
+                index = (index - 1 + totalSlides) % totalSlides;
+                updateCarousel();
+            };
+
+            // Autoplay
+            setInterval(() => {
+                index = (index + 1) % totalSlides;
+                updateCarousel();
+            }, 5000);
+
+            // Initialize
+            updateCarousel();
+        </script>
+
+    </div>
+</section>
+
+
 
     <section class="w-full py-16 bg-[#dfeadf] bg-cover bg-center">
 
@@ -51,14 +126,14 @@
 
             <!-- LEFT IMAGE -->
             <div class="ml-auto">
-                <img src="{{ Vite::asset('resources/images/viewport1/planting.png') }}" class="w-auto">
+                <img src="{{ Vite::asset('resources/images/viewport1/side.png') }}" class="w-auto">
             </div>
 
 
             <!-- MISSION CARD -->
             <div class="flex items-center relative">
                 <!-- CLIP IMAGE -->
-                <img src="{{ Vite::asset('resources/images/viewport1/missionclip.png') }}"
+                <img src="{{ Vite::asset('resources/images/viewport1/side2.jpg') }}"
                     class="absolute top-11 right-62 w-30 z-20">
 
                 <div

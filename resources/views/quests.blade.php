@@ -27,7 +27,7 @@
                         <div class="flex gap-6" style="height: 600px;">
 
                             <!-- Left Container: Accepted Quests (Fixed height) -->
-                            <div class="bg-white rounded-2xl shadow-md p-5 h-[62vh] flex flex-col">
+                            <div class="bg-white rounded-2xl shadow-md p-5 h-[66vh] flex flex-col">
                                 <!-- Distinct title style -->
                                 <div class="mb-5 border-b-2 border-[#da7a5f] pb-3">
                                     <h3 class="text-base font-semibold text-[#4F6B3F] flex items-center gap-2">
@@ -186,7 +186,7 @@
                                         Eco-Quests
                                     </h1>
                                     <div class="hidden sm:block h-8 w-px bg-[#8A9A7B]/50"></div>
-                                    <p class="font-sans italic text-[#5C7919]/80 sm:mt-0 mt-1">
+                                    <p class="font-sans text-[#5C7919]/80 sm:mt-0 mt-1">
                                         Complete quests to nurture your eco-impact journey
                                     </p>
                                 </div>
