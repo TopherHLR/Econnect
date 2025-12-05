@@ -27,7 +27,7 @@
                         <div class="flex gap-6" style="height: 600px;">
 
                             <!-- Left Container: Accepted Quests (Fixed height) -->
-                            <div class="bg-white rounded-2xl shadow-md p-5 h-[74vh] flex flex-col">
+                            <div class="bg-white rounded-2xl shadow-md p-5 h-[62vh] flex flex-col">
                                 <!-- Distinct title style -->
                                 <div class="mb-5 border-b-2 border-[#da7a5f] pb-3">
                                     <h3 class="text-base font-semibold text-[#4F6B3F] flex items-center gap-2">
@@ -94,9 +94,9 @@
                             <!-- END Left Container -->
 
                             <!-- Right Container: Split into Completed & Rejected -->
-                            <div class="flex-1 flex flex-col">
-                                <!-- Completed Quests Container (auto height, grows with content) -->
-                                <div class="bg-white rounded-2xl shadow-md p-5 mb-6 flex flex-col">
+                            <div class="flex-1 flex flex-col h-full">
+                                <!-- Completed Quests Container (60% height) -->
+                                <div class="bg-white rounded-2xl shadow-md p-5 mb-4 flex flex-col flex-[0.6] min-h-0">
                                     <div class="mb-4 border-b-2 border-green-500 pb-3">
                                         <h3 class="text-base font-semibold text-[#4F6B3F] flex items-center gap-2">
                                             <span class="w-3 h-3 rounded-full bg-green-500"></span>
@@ -105,7 +105,7 @@
                                         <p class="text-xs text-gray-500 mt-1">Successfully finished quests</p>
                                     </div>
 
-                                    <div class="flex-1 overflow-y-auto space-y-2 max-h-[40vh]">
+                                    <div class="flex-1 overflow-y-auto space-y-2">
                                         @foreach ($quests as $quest)
                                             @php
                                                 $submission = $quest->submissions->firstWhere('user_id', auth()->id());
@@ -131,8 +131,8 @@
                                 </div>
                                 <!-- END Completed Container -->
 
-                                <!-- Rejected Quests Container (Fixed height to match Accepted Quests) -->
-                                <div class="bg-white rounded-2xl shadow-md p-5 h-[20vh] flex flex-col">
+                                <!-- Rejected Quests Container (40% height) -->
+                                <div class="bg-white rounded-2xl shadow-md p-5 flex flex-col flex-[0.4] min-h-0">
                                     <div class="mb-5 border-b-2 border-red-400 pb-3">
                                         <h3 class="text-base font-semibold text-[#4F6B3F] flex items-center gap-2">
                                             <span class="w-3 h-3 rounded-full bg-red-400"></span>
@@ -162,8 +162,8 @@
                                     </div>
                                 </div>
                                 <!-- END Rejected Container -->
-
                             </div>
+
                             <!-- END Right Split Container -->
                         </div>
                         <!-- END Three side-by-side containers -->
@@ -176,20 +176,20 @@
 
 
                         <!-- 🌱 Right Column Content -->
-                        <div class="w-full bg-white rounded-2xl  shadow-sm p-6 flex flex-col"
+                        <div class="w-full h-full bg-white rounded-2xl  shadow-sm p-6 flex flex-col"
                             style="border: 1px solid rgba(139, 169, 123, 0.2);">
 
                             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                             <div class="flex flex-col sm:flex-row sm:items-center gap-3 px-2 pt-2 mb-4">
-    <h1 class="text-2xl font-serif font-bold text-[#5C7919] flex items-center">
-    
-         Eco-Quests
-    </h1>
-    <div class="hidden sm:block h-8 w-px bg-[#8A9A7B]/50"></div>
-    <p class="font-sans italic text-[#5C7919]/80 sm:mt-0 mt-1">
-        Complete quests to nurture your eco-impact journey
-    </p>
-</div>
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-3 px-2 pt-2 mb-4">
+                                    <h1 class="text-2xl font-serif font-bold text-[#5C7919] flex items-center">
+
+                                        Eco-Quests
+                                    </h1>
+                                    <div class="hidden sm:block h-8 w-px bg-[#8A9A7B]/50"></div>
+                                    <p class="font-sans italic text-[#5C7919]/80 sm:mt-0 mt-1">
+                                        Complete quests to nurture your eco-impact journey
+                                    </p>
+                                </div>
 
                                 <div class="flex items-center gap-3">
                                     <div class="relative">
