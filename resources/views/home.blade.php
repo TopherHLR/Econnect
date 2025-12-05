@@ -993,8 +993,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-    <section class="relative py-48 px-8 bg-center bg-cover overflow-hidden"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/cc23b421-0654-477b-86a8-4b6462a55a94.png') }}');">
+<section class="relative py-48 px-8 overflow-hidden pattern-bg">
 
         <div class="relative z-10 max-w-6xl mx-auto text-center">
             <!-- Section header -->
@@ -1095,17 +1094,17 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="relative">
             
             <!-- Leaf decorations -->
-  <div class="absolute right-0 top-1/2 -translate-y-[30%] translate-x-[85%] z-70 pointer-events-none">
-        <img src="{{ Vite::asset('resources/images/viewport1/3leaves-left.png') }}"
-             alt="Leaf Cluster"
-             class="w-90 h-auto opacity-100">
-    </div>
- <div class="absolute left-0 top-1/2 -translate-y-[30%] -translate-x-[85%] z-70 pointer-events-none">
-        <img src="{{ Vite::asset('resources/images/viewport1/3leaves-right.png') }}"
-             alt="Leaf Cluster"
-             class="w-90 h-auto opacity-100">
-    </div>
+<div class="absolute right-0 top-1/2 -translate-y-[30%] translate-x-[85%] z-70 pointer-events-none">
+    <img src="{{ Vite::asset('resources/images/viewport1/3leaves-left.png') }}"
+         alt="Leaf Cluster"
+         class="w-90 h-auto opacity-100 filter brightness-[0.85]">
+</div>
 
+<div class="absolute left-0 top-1/2 -translate-y-[30%] -translate-x-[85%] z-70 pointer-events-none">
+    <img src="{{ Vite::asset('resources/images/viewport1/3leaves-right.png') }}"
+         alt="Leaf Cluster"
+         class="w-90 h-auto opacity-100 filter brightness-[0.85]">
+</div>
 
 
     <!-- Right leaf -->
@@ -1321,24 +1320,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div class="relative z-30 max-w-3xl mx-auto">
         
-        <!-- Nature-inspired divider -->
-        <div class="flex justify-center mb-10">
-            <div class="relative">
-                <div class="w-32 h-1 rounded-full" style="background: linear-gradient(to right, transparent, #C8D5BB, transparent)"></div>
-                <div class="absolute -top-0 left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center"
-                     style="background: #F1EEE6; border: 2px solid #C8D5BB">
-                    <i class="fa-solid fa-leaf text-sm" style="color: #8A9A7B"></i>
-                </div>
-            </div>
-        </div>
+
 
         <!-- Earthy call to action -->
 <div class="mb-16">
-    <!-- Soft subtitle -->
-    <p class="text-xs font-light tracking-widest uppercase text-center mb-10" 
-       style="color: #9BAF8D; letter-spacing: 0.25em">
-        A Moment of Gentle Reflection
-    </p>
+
 
     <!-- Emotional heading -->
     <h3 class="font-serif text-3xl md:text-5xl font-light mb-12 leading-snug text-center px-6" 
@@ -1384,6 +1370,23 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 
 </section>
+
+<style>
+.pattern-bg {
+    position: relative;
+}
+
+.pattern-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('{{ Vite::asset("resources/images/viewport1/pattern.png") }}');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2; /* Adjust opacity here */
+    z-index: 0;
+}
+</style>
 
     <style>
         @keyframes float {
