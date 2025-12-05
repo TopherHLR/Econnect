@@ -5,36 +5,42 @@
 @section('content')
     @include('modal.AddVoucherModal')
     @include('modal.deservingPlayerModal')
+    <div class="space-y-6 ">
+        <!-- ===== PAGE NAVIGATION TABS ===== -->
+        <div class="page-navigation">
+            <div class="flex justify-between items-center gap-2 border-b border-[#E6EAD7] mb-3">
+                <!-- Left Tabs -->
+                <div class="flex gap-2">
+                    <button onclick="switchPage(1)" id="page1-tab" class="page-tab page-tab-active">
+                        <i class="fa-solid fa-chart-line mr-3"></i>
+                        Analytics Dashboard
+                    </button>
+                    <button onclick="switchPage(2)" id="page2-tab" class="page-tab">
+                        <i class="fa-solid fa-trophy mr-2"></i>
+                        Leaderboards
+                    </button>
+                </div>
 
-    <!-- ===== PAGE NAVIGATION TABS ===== -->
-    <div class="page-navigation">
-        <div class="flex border-b border-[#E6EAD7] mb-6">
-            <button onclick="switchPage(1)" id="page1-tab" class="page-tab page-tab-active">
-                <i class="fa-solid fa-chart-line mr-2"></i>
-                Analytics Dashboard
-            </button>
-            <button onclick="switchPage(2)" id="page2-tab" class="page-tab">
-                <i class="fa-solid fa-trophy mr-2"></i>
-                Leaderboards
-            </button>
+                <!-- Right Date -->
+                <div class="text-sm text-[#6A8A52] flex items-center">
+                    <i class="fa-solid fa-calendar-alt mr-2"></i>
+                    Updated {{ now()->format('M d, Y') }}
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- ===== PAGE 1: ANALYTICS DASHBOARD ===== -->
-    <div id="page1-content" class="page-content active">
-        <div class="space-y-8">
+
+        <!-- ===== PAGE 1: ANALYTICS DASHBOARD ===== -->
+        <div id="page1-content" class="page-content active">
+
             <!-- 📊 METRICS DASHBOARD SECTION -->
             <section>
-                <h2 class="text-xl font-semibold text-[#4F6B3F] mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-chart-line text-[#7F8A4F]"></i>
-                    Platform Metrics
-                </h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-8 gap-6">
                     <!-- 🟢 HIGH PRIORITY CARDS (Top Row) -->
                     @if ($mostDeserving && $mostDeserving->pointsEarned > 0)
-                        <div class="p-4 bg-white border rounded-xl shadow">
-                            <h3 class="text-lg font-semibold text-green-700">Most Deserving Player</h3>
+                        <div class="metric-card">
+                            <h3 class="metric-title">Most Deserving Player</h3>
 
                             <div class="mt-2">
                                 <p><strong>Name:</strong> {{ $mostDeserving->user->first_name }}
@@ -73,7 +79,8 @@
                             <i class="fa-solid fa-inbox text-[#DC2626] text-lg"></i>
                         </div>
                         <div class="mt-4">
-                            <div class="metric-value text-[#DC2626]" id="pendingSubmissionsCount">{{ $pendingSubmissions }}
+                            <div class="metric-value text-[#DC2626]" id="pendingSubmissionsCount">
+                                {{ $pendingSubmissions }}
                             </div>
                             <div class="metric-subtext italic">
                                 "Behind every submission is someone choosing sustainability."
@@ -112,6 +119,18 @@
                     </div>
 
                     <!-- 🟡 SECONDARY CARDS (Bottom Row) -->
+                    <!-- Feedback -->
+                    <div class="metric-card">
+                        <div class="flex justify-between items-start">
+                            <h3 class="metric-title">New Feedback</h3>
+                            <i class="fa-solid fa-comment text-[#7F8A4F] text-lg"></i>
+                        </div>
+                        <div class="mt-4">
+                            <div class="metric-value text-[#4F6B3F]" id="newFeedbackCount">{{ $newFeedbackCount }}
+                            </div>
+                            <div class="metric-subtext" id="feedbackStatus">awaiting review</div>
+                        </div>
+                    </div>
 
                     <!-- Average Daily Eco-Actions -->
                     <div class="metric-card lg:col-span-2">
@@ -188,7 +207,7 @@
                     </div>
 
                     <!-- Points Distributed -->
-                    <div class="metric-card">
+                    <div class="metric-card lg:col-span-2">
                         <div class="flex justify-between items-start">
                             <h3 class="metric-title">Points Distributed</h3>
                             <i class="fa-solid fa-coins text-[#C37A49] text-lg"></i>
@@ -251,7 +270,7 @@
                     </div>
 
                     <!-- Points Redeemed -->
-                    <div class="metric-card">
+                    <div class="metric-card lg:col-span-2">
                         <div class="flex justify-between items-start">
                             <h3 class="metric-title">Points Redeemed</h3>
                             <i class="fa-solid fa-gift text-[#DC2626] text-lg"></i>
@@ -338,362 +357,333 @@
                         </div>
                     </div>
 
-                    <!-- Feedback -->
-                    <div class="metric-card">
-                        <div class="flex justify-between items-start">
-                            <h3 class="metric-title">New Feedback</h3>
-                            <i class="fa-solid fa-comment text-[#7F8A4F] text-lg"></i>
-                        </div>
-                        <div class="mt-4">
-                            <div class="metric-value text-[#4F6B3F]" id="newFeedbackCount">{{ $newFeedbackCount }}</div>
-                            <div class="metric-subtext" id="feedbackStatus">awaiting review</div>
-                        </div>
-                    </div>
 
                 </div>
             </section>
+
         </div>
-    </div>
 
-    <!-- ===== PAGE 2: LEADERBOARDS ===== -->
-    <div id="page2-content" class="page-content">
-        <div class="space-y-8">
-            <!-- ===== ENHANCED LEADERBOARDS SECTION ===== -->
-            <section class="mt-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-[#4F6B3F] flex items-center gap-3">
-                        <i class="fa-solid fa-trophy text-[#C37A49]"></i>
-                        Community Leaderboards
-                    </h2>
-                    <div class="text-sm text-[#6A8A52]">
-                        <i class="fa-solid fa-calendar-alt mr-2"></i>
-                        Updated {{ now()->format('M d, Y') }}
-                    </div>
-                </div>
+        <!-- ===== PAGE 2: LEADERBOARDS ===== -->
+        <div id="page2-content" class="page-content">
+            <div class="space-y-8">
+                <!-- ===== ENHANCED LEADERBOARDS SECTION ===== -->
+                <section class="mt-3">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-6 gap-6">
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-
-                    <!-- Most Active Users Card -->
-                    <div class="leaderboard-card">
-                        <div class="leaderboard-header">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-fire text-[#DC2626]"></i>
-                                <h3 class="leaderboard-title">Most Active Users</h3>
-                            </div>
-                            <span class="leaderboard-subtitle">Total Activities Completed</span>
-                        </div>
-                        <div class="leaderboard-content">
-                            @foreach ($topActiveUsers as $rank => $entry)
-                                <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
-                                    <div class="flex items-center gap-3">
-                                        <div class="rank-badge rank-{{ $rank + 1 }}">
-                                            {{ $rank + 1 }}
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="font-medium text-[#4F6B3F]">
-                                                {{ $entry->user->first_name }} {{ $entry->user->last_name }}
-                                            </div>
-                                            <div class="text-xs text-[#6A8A52]">
-                                                User ID: {{ $entry->user->id }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="leaderboard-value">
-                                        {{ $entry->activityCount }}
-                                        <span class="text-sm text-[#6A8A52] ml-1">activities</span>
-                                    </div>
+                        <!-- Most Active Users Card -->
+                        <div class="leaderboard-card">
+                            <div class="leaderboard-header">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-fire text-[#DC2626]"></i>
+                                    <h3 class="leaderboard-title">Most Active Users</h3>
                                 </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Top Points Earned Card -->
-                    <div class="leaderboard-card">
-                        <div class="leaderboard-header">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-coins text-[#C37A49]"></i>
-                                <h3 class="leaderboard-title">Top Points Earned</h3>
+                                <span class="leaderboard-subtitle">Total Activities Completed</span>
                             </div>
-                            <span class="leaderboard-subtitle">All Time Total</span>
-                        </div>
-                        <div class="leaderboard-content">
-                            @foreach ($topByPoints as $rank => $entry)
-                                <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
-                                    <div class="flex items-center gap-3">
-                                        <div class="rank-badge rank-{{ $rank + 1 }}">
-                                            {{ $rank + 1 }}
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="font-medium text-[#4F6B3F]">
-                                                {{ $entry->user->first_name }} {{ $entry->user->last_name }}
-                                            </div>
-                                            <div class="text-xs text-[#6A8A52]">
-                                                {{ $entry->user->email }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="leaderboard-value">
-                                        {{ number_format($entry->progressPoints) }}
-                                        <span class="text-sm text-[#6A8A52] ml-1">pts</span>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Top Completed Quests Card -->
-                    <div class="leaderboard-card">
-                        <div class="leaderboard-header">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-check-circle text-[#4F6B3F]"></i>
-                                <h3 class="leaderboard-title">Top Quest Completers</h3>
-                            </div>
-                            <span class="leaderboard-subtitle">Quests Completed</span>
-                        </div>
-                        <div class="leaderboard-content">
-                            @foreach ($topByQuests as $rank => $entry)
-                                <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
-                                    <div class="flex items-center gap-3">
-                                        <div class="rank-badge rank-{{ $rank + 1 }}">
-                                            {{ $rank + 1 }}
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="font-medium text-[#4F6B3F]">
-                                                {{ $entry->user->first_name }} {{ $entry->user->last_name }}
-                                            </div>
-                                            <div class="text-xs text-[#6A8A52]">
-                                                Completion Rate:
-                                                {{ round(($entry->questsCompleted / $totalQuests) * 100) }}%
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="leaderboard-value">
-                                        {{ $entry->questsCompleted }}
-                                        <span class="text-sm text-[#6A8A52] ml-1">quests</span>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Top Daily Eco Actions Card -->
-                    <div class="leaderboard-card">
-                        <div class="leaderboard-header">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-bolt text-[#7F8A4F]"></i>
-                                <h3 class="leaderboard-title">Top Daily Eco Actions</h3>
-                            </div>
-                            <span class="leaderboard-subtitle">Daily Activity Average</span>
-                        </div>
-                        <div class="leaderboard-content">
-                            @foreach ($topDailyActions as $rank => $entry)
-                                <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
-                                    <div class="flex items-center gap-3">
-                                        <div class="rank-badge rank-{{ $rank + 1 }}">
-                                            {{ $rank + 1 }}
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="font-medium text-[#4F6B3F]">
-                                                {{ $entry->user->first_name }} {{ $entry->user->last_name }}
-                                            </div>
-                                            <div class="text-xs text-[#6A8A52]">
-                                                {{ $entry->user->created_at->format('M Y') }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="leaderboard-value">
-                                        {{ $entry->dailyEcoActions }}
-                                        <span class="text-sm text-[#6A8A52] ml-1">actions/day</span>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Top Library Savers Card -->
-                    <div class="leaderboard-card">
-                        <div class="leaderboard-header">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-bookmark text-[#4F6B3F]"></i>
-                                <h3 class="leaderboard-title">Top Library Savers</h3>
-                            </div>
-                            <span class="leaderboard-subtitle">Resources Bookmarked</span>
-                        </div>
-                        <div class="leaderboard-content">
-                            @foreach ($topLibrarySavers as $rank => $entry)
-                                <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
-                                    <div class="flex items-center gap-3">
-                                        <div class="rank-badge rank-{{ $rank + 1 }}">
-                                            {{ $rank + 1 }}
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="font-medium text-[#4F6B3F]">
-                                                {{ $entry->user->first_name }} {{ $entry->user->last_name }}
-                                            </div>
-                                            <div class="text-xs text-[#6A8A52]">
-                                                Learner Level: {{ $rank < 3 ? 'Expert' : 'Advanced' }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="leaderboard-value">
-                                        {{ $entry->librarySaves }}
-                                        <span class="text-sm text-[#6A8A52] ml-1">saves</span>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Top Voucher Redeemers Card -->
-                    <div class="leaderboard-card">
-                        <div class="leaderboard-header">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-gift text-[#C37A49]"></i>
-                                <h3 class="leaderboard-title">Top Voucher Redeemers</h3>
-                            </div>
-                            <span class="leaderboard-subtitle">Rewards Claimed</span>
-                        </div>
-                        <div class="leaderboard-content">
-                            @foreach ($topVoucherRedeemers as $rank => $entry)
-                                <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
-                                    <div class="flex items-center gap-3">
-                                        <div class="rank-badge rank-{{ $rank + 1 }}">
-                                            {{ $rank + 1 }}
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="font-medium text-[#4F6B3F]">
-                                                {{ $entry->user->first_name }} {{ $entry->user->last_name }}
-                                            </div>
-                                            <div class="text-xs text-[#6A8A52]">
-                                                Points Spent: {{ number_format($entry->vouchersRedeemed * 100) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="leaderboard-value">
-                                        {{ $entry->vouchersRedeemed }}
-                                        <span class="text-sm text-[#6A8A52] ml-1">vouchers</span>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- ===== CATEGORY & WEEKLY PERFORMANCE SECTION ===== -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-
-                    <!-- Most Saved Category Card -->
-                    <div class="category-card">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="category-icon">
-                                <i class="fa-solid fa-star text-[#4F6B3F]"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-[#4F6B3F]">Most Popular Category</h3>
-                                <p class="text-sm text-[#6A8A52]">Highest engagement by users</p>
-                            </div>
-                        </div>
-                        <div class="text-center py-8">
-                            <div class="text-5xl font-bold text-[#4F6B3F] mb-2">{{ $mostCategorySavedName }}</div>
-                            <div class="text-[#6A8A52]">Most Saved Library Category</div>
-                            <div class="mt-4">
-                                <div class="inline-block px-4 py-2 bg-[#F0F7E6] text-[#4F6B3F] rounded-full text-sm">
-                                    <i class="fa-solid fa-chart-line mr-2"></i>
-                                    Leading by {{ round(($topLibrarySavers[0]->librarySaves ?? 0) * 0.2) }}% engagement
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Top Points Last 7 Days Card -->
-                    <div class="weekly-card">
-                        <div class="flex justify-between items-center mb-4">
-                            <div>
-                                <h3 class="text-lg font-bold text-[#4F6B3F]">Weekly Leaders</h3>
-                                <p class="text-sm text-[#6A8A52]">Top Points Earned (Last 7 Days)</p>
-                            </div>
-                            <div class="px-3 py-1 bg-[#7F8A4F] text-white text-sm rounded-full">
-                                This Week
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-                            @foreach ($topPointsLast7Days as $rank => $entry)
-                                <div class="weekly-item">
-                                    <div class="flex items-center justify-between">
+                            <div class="leaderboard-content">
+                                @foreach ($topActiveUsers as $rank => $entry)
+                                    <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
                                         <div class="flex items-center gap-3">
-                                            <div class="weekly-rank">{{ $rank + 1 }}</div>
-                                            <div>
+                                            <div class="rank-badge rank-{{ $rank + 1 }}">
+                                                {{ $rank + 1 }}
+                                            </div>
+                                            <div class="flex-1">
                                                 <div class="font-medium text-[#4F6B3F]">
                                                     {{ $entry->user->first_name }} {{ $entry->user->last_name }}
                                                 </div>
                                                 <div class="text-xs text-[#6A8A52]">
-                                                    {{ $entry->pointsEarned / 7 }} pts/day average
+                                                    User ID: {{ $entry->user->id }}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="weekly-points">
-                                            {{ $entry->pointsEarned }}
-                                            <span class="text-sm text-[#6A8A52]">pts</span>
+                                        <div class="leaderboard-value">
+                                            {{ $entry->activityCount }}
+                                            <span class="text-sm text-[#6A8A52] ml-1">activities</span>
                                         </div>
                                     </div>
-                                    <!-- Progress Bar -->
-                                    @php
-                                        $maxPoints =
-                                            max(array_column($topPointsLast7Days->toArray(), 'pointsEarned')) ?: 1;
-                                        $percentage = ($entry->pointsEarned / $maxPoints) * 100;
-                                    @endphp
-                                    <div class="mt-2">
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: {{ $percentage }}%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
+
+                        <!-- Top Points Earned Card -->
+                        <div class="leaderboard-card">
+                            <div class="leaderboard-header">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-coins text-[#C37A49]"></i>
+                                    <h3 class="leaderboard-title">Top Points Earned</h3>
+                                </div>
+                                <span class="leaderboard-subtitle">All Time Total</span>
+                            </div>
+                            <div class="leaderboard-content">
+                                @foreach ($topByPoints as $rank => $entry)
+                                    <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
+                                        <div class="flex items-center gap-3">
+                                            <div class="rank-badge rank-{{ $rank + 1 }}">
+                                                {{ $rank + 1 }}
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="font-medium text-[#4F6B3F]">
+                                                    {{ $entry->user->first_name }} {{ $entry->user->last_name }}
+                                                </div>
+                                                <div class="text-xs text-[#6A8A52]">
+                                                    {{ $entry->user->email }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="leaderboard-value">
+                                            {{ number_format($entry->progressPoints) }}
+                                            <span class="text-sm text-[#6A8A52] ml-1">pts</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Top Completed Quests Card -->
+                        <div class="leaderboard-card">
+                            <div class="leaderboard-header">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-check-circle text-[#4F6B3F]"></i>
+                                    <h3 class="leaderboard-title">Top Quest Completers</h3>
+                                </div>
+                                <span class="leaderboard-subtitle">Quests Completed</span>
+                            </div>
+                            <div class="leaderboard-content">
+                                @foreach ($topByQuests as $rank => $entry)
+                                    <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
+                                        <div class="flex items-center gap-3">
+                                            <div class="rank-badge rank-{{ $rank + 1 }}">
+                                                {{ $rank + 1 }}
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="font-medium text-[#4F6B3F]">
+                                                    {{ $entry->user->first_name }} {{ $entry->user->last_name }}
+                                                </div>
+                                                <div class="text-xs text-[#6A8A52]">
+                                                    Completion Rate:
+                                                    {{ round(($entry->questsCompleted / $totalQuests) * 100) }}%
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="leaderboard-value">
+                                            {{ $entry->questsCompleted }}
+                                            <span class="text-sm text-[#6A8A52] ml-1">quests</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Top Daily Eco Actions Card -->
+                        <div class="leaderboard-card">
+                            <div class="leaderboard-header">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-bolt text-[#7F8A4F]"></i>
+                                    <h3 class="leaderboard-title">Top Daily Eco Actions</h3>
+                                </div>
+                                <span class="leaderboard-subtitle">Daily Activity Average</span>
+                            </div>
+                            <div class="leaderboard-content">
+                                @foreach ($topDailyActions as $rank => $entry)
+                                    <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
+                                        <div class="flex items-center gap-3">
+                                            <div class="rank-badge rank-{{ $rank + 1 }}">
+                                                {{ $rank + 1 }}
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="font-medium text-[#4F6B3F]">
+                                                    {{ $entry->user->first_name }} {{ $entry->user->last_name }}
+                                                </div>
+                                                <div class="text-xs text-[#6A8A52]">
+                                                    {{ $entry->user->created_at->format('M Y') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="leaderboard-value">
+                                            {{ $entry->dailyEcoActions }}
+                                            <span class="text-sm text-[#6A8A52] ml-1">actions/day</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Top Library Savers Card -->
+                        <div class="leaderboard-card">
+                            <div class="leaderboard-header">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-bookmark text-[#4F6B3F]"></i>
+                                    <h3 class="leaderboard-title">Top Library Savers</h3>
+                                </div>
+                                <span class="leaderboard-subtitle">Resources Bookmarked</span>
+                            </div>
+                            <div class="leaderboard-content">
+                                @foreach ($topLibrarySavers as $rank => $entry)
+                                    <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
+                                        <div class="flex items-center gap-3">
+                                            <div class="rank-badge rank-{{ $rank + 1 }}">
+                                                {{ $rank + 1 }}
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="font-medium text-[#4F6B3F]">
+                                                    {{ $entry->user->first_name }} {{ $entry->user->last_name }}
+                                                </div>
+                                                <div class="text-xs text-[#6A8A52]">
+                                                    Learner Level: {{ $rank < 3 ? 'Expert' : 'Advanced' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="leaderboard-value">
+                                            {{ $entry->librarySaves }}
+                                            <span class="text-sm text-[#6A8A52] ml-1">saves</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Top Voucher Redeemers Card -->
+                        <div class="leaderboard-card">
+                            <div class="leaderboard-header">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-gift text-[#C37A49]"></i>
+                                    <h3 class="leaderboard-title">Top Voucher Redeemers</h3>
+                                </div>
+                                <span class="leaderboard-subtitle">Rewards Claimed</span>
+                            </div>
+                            <div class="leaderboard-content">
+                                @foreach ($topVoucherRedeemers as $rank => $entry)
+                                    <div class="leaderboard-item {{ $rank < 3 ? 'top-three' : '' }}">
+                                        <div class="flex items-center gap-3">
+                                            <div class="rank-badge rank-{{ $rank + 1 }}">
+                                                {{ $rank + 1 }}
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="font-medium text-[#4F6B3F]">
+                                                    {{ $entry->user->first_name }} {{ $entry->user->last_name }}
+                                                </div>
+                                                <div class="text-xs text-[#6A8A52]">
+                                                    Points Spent: {{ number_format($entry->vouchersRedeemed * 100) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="leaderboard-value">
+                                            {{ $entry->vouchersRedeemed }}
+                                            <span class="text-sm text-[#6A8A52] ml-1">vouchers</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
                     </div>
 
-                </div>
-            </section>
+                    <!-- ===== CATEGORY & WEEKLY PERFORMANCE SECTION ===== -->
+                    <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 mt-2">
+
+                        <!-- Top Points Last 7 Days Card -->
+                        <div class="weekly-card">
+                            <div class="weekly-scroll">
+                                <div class="flex justify-between items-center mb-1">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-[#4F6B3F]">Weekly Leaders</h3>
+                                        <p class="text-sm text-[#6A8A52]">Top Points Earned (Last 7 Days)</p>
+                                    </div>
+                                    <div class="px-3 py-1 bg-[#7F8A4F] text-white text-sm rounded-full">
+                                        This Week
+                                    </div>
+                                </div>
+                                <div class="space-y-3">
+                                    @foreach ($topPointsLast7Days as $rank => $entry)
+                                        <div class="weekly-item">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="weekly-rank">{{ $rank + 1 }}</div>
+                                                    <div>
+                                                        <div class="font-medium text-[#4F6B3F]">
+                                                            {{ $entry->user->first_name }} {{ $entry->user->last_name }}
+                                                        </div>
+                                                        <div class="text-xs text-[#6A8A52]">
+                                                            {{ $entry->pointsEarned / 7 }} pts/day average
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="weekly-points">
+                                                    {{ $entry->pointsEarned }}
+                                                    <span class="text-sm text-[#6A8A52]">pts</span>
+                                                </div>
+                                            </div>
+                                            <!-- Progress Bar -->
+                                            @php
+                                                $maxPoints =
+                                                    max(array_column($topPointsLast7Days->toArray(), 'pointsEarned')) ?:
+                                                    1;
+                                                $percentage = ($entry->pointsEarned / $maxPoints) * 100;
+                                            @endphp
+                                            <div class="mt-2">
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill" style="width: {{ $percentage }}%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
         </div>
     </div>
 
+
     <style>
-        /* ===== PAGE NAVIGATION STYLES ===== */
+        /* ===== ECO NAVIGATION STYLES ===== */
         .page-navigation {
             position: sticky;
             top: 0;
-            background: white;
-            z-index: 40;
-            padding-top: 1rem;
-            margin-bottom: 1.5rem;
+            z-index: 50;
+            background: #FCF9EF;
         }
 
+        /* Tab Buttons */
         .page-tab {
-            @apply px-6 py-3 text-sm font-medium transition-all duration-300;
+            @apply text-sm font-medium;
             color: #6A8A52;
-            border-bottom: 3px solid transparent;
-            margin-right: 0.5rem;
-            background: transparent;
+            padding: 0.65rem 1.25rem;
+            border-radius: 0.75rem;
+            transition:
+                background 0.25s ease,
+                color 0.25s ease,
+                transform 0.2s ease;
         }
 
         .page-tab:hover {
+            background: #E9F2DB;
             color: #4F6B3F;
-            background: #F0F7E6;
-            border-radius: 0.5rem 0.5rem 0 0;
+            transform: translateY(-1px);
+            box-shadow: 0 1px 4px rgba(79, 107, 63, 0.15);
         }
 
+        /* Active Tab */
         .page-tab-active {
-            color: #4F6B3F;
-            border-bottom: 3px solid #4F6B3F;
+            background: #4F6B3F;
+            color: #FCF9EF;
             font-weight: 600;
+            box-shadow: 0 2px 6px rgba(79, 107, 63, 0.28);
         }
 
+        /* Remove bottom border line style */
+        .page-tab-active:hover {
+            background: #4F6B3F;
+        }
+
+        /* Page Content Animation */
         .page-content {
             display: none;
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(12px);
+            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .page-content.active {
@@ -701,6 +691,7 @@
             opacity: 1;
             transform: translateY(0);
         }
+
 
         /* ===== EXISTING STYLES (KEEP ALL YOUR ORIGINAL STYLES) ===== */
         /* Button Styles */
@@ -758,6 +749,7 @@
             border: 1px solid #E6EAD7;
             box-shadow: 0 2px 8px rgba(79, 107, 63, 0.08);
             transition: all 0.3s ease;
+
         }
 
         .metric-card:hover {
@@ -770,8 +762,8 @@
         }
 
         .metric-title {
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 620;
             color: #4F6B3F;
             margin: 0;
         }
@@ -843,7 +835,7 @@
 
         .leaderboard-content {
             padding: 0.75rem;
-            max-height: 320px;
+            max-height: 270px;
             overflow-y: auto;
         }
 
@@ -913,26 +905,6 @@
             text-align: right;
         }
 
-        /* Category Card Styles */
-        .category-card {
-            background: white;
-            border-radius: 1rem;
-            border: 1px solid #E6EAD7;
-            box-shadow: 0 2px 12px rgba(79, 107, 63, 0.08);
-            padding: 1.5rem;
-        }
-
-        .category-icon {
-            width: 48px;
-            height: 48px;
-            background: #F0F7E6;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
         /* Weekly Performance Card */
         .weekly-card {
             background: white;
@@ -940,8 +912,21 @@
             border: 1px solid #E6EAD7;
             box-shadow: 0 2px 12px rgba(79, 107, 63, 0.08);
             padding: 1.5rem;
+            max-height: 280px;
+            /* optional */
         }
 
+        /* Scroll Container */
+        .weekly-scroll {
+            max-height: 250px;
+            /* adjust as needed */
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 4px;
+            /* prevent scrollbar overlap */
+        }
+
+        /* Items */
         .weekly-item {
             padding: 1rem;
             border-radius: 0.75rem;
@@ -950,6 +935,7 @@
             border: 1px solid #E6EAD7;
         }
 
+        /* Rank Badge */
         .weekly-rank {
             width: 36px;
             height: 36px;
@@ -962,6 +948,21 @@
             font-weight: 700;
             font-size: 0.875rem;
         }
+
+        /* Pretty Scrollbar (optional) */
+        .weekly-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .weekly-scroll::-webkit-scrollbar-thumb {
+            background: #4F6B3F;
+            border-radius: 4px;
+        }
+
+        .weekly-scroll::-webkit-scrollbar-track {
+            background: #E6EAD7;
+        }
+
 
         .weekly-points {
             font-size: 1.5rem;
@@ -1024,11 +1025,6 @@
             // Activate selected tab
             document.getElementById(`page${pageNumber}-tab`).classList.add('page-tab-active');
 
-            // Scroll to top of content
-            window.scrollTo({
-                top: document.querySelector('.page-navigation').offsetHeight + 50,
-                behavior: 'smooth'
-            });
         }
 
         // Initialize first page as active
