@@ -149,6 +149,7 @@
         questModal.classList.remove('hidden');
     }
 
+
     function closeQuestModal() {
         questModal.classList.add('hidden');
 

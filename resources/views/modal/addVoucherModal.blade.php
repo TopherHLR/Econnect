@@ -86,7 +86,6 @@
     const methodField = document.getElementById('voucherMethod');
     const voucherSubmit = document.getElementById('voucherSubmit');
 
-
     // OPEN for ADD
     function openAddVoucherModal() {
         form.reset();
@@ -123,7 +122,9 @@
     // CLOSE MODAL
     // -------------------------------------------------------------------
     function closeAddVoucherModal() {
+
         addVoucherModal.classList.add('hidden');
+        
     }
 
     // -------------------------------------------------------------------

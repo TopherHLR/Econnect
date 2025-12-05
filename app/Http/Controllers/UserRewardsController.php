@@ -16,6 +16,10 @@ class UserRewardsController extends Controller
     public function index()
     {
         Log::info('RewardsController@index called');
+        // If user is not logged in
+        if (!auth()->check()) {
+            return redirect()->route('home')->with('error', 'You must be logged in to view rewards.');
+        }
 
         $user = Auth::user();
 
