@@ -996,25 +996,6 @@ document.addEventListener('DOMContentLoaded', function() {
     <section class="relative py-48 px-8 bg-center bg-cover overflow-hidden"
         style="background-image: url('{{ Vite::asset('resources/images/viewport1/cc23b421-0654-477b-86a8-4b6462a55a94.png') }}');">
 
-        <!-- 🌿 Left Leaf Cluster Top (moved lower) -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (15).png') }}"
-            class="absolute left-93 bottom-27 w-48 md:w-64 opacity-90 pointer-events-none select-none" alt="Leaf cluster">
-
-        <!-- 🌿 Right Leaf Cluster Top -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (16).png') }}"
-            class="absolute right-90 bottom-90  w-52 md:w-72 opacity-90 pointer-events-none select-none"
-            alt="Leaf cluster">
-
-        <!-- 🌿 Left Leaf Cluster Bottom -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (18).png') }}"
-            class="absolute left-[-100px] top-50 w-56 md:w-72 opacity-90 pointer-events-none select-none"
-            alt="Leaf cluster">
-
-        <!-- 🌿 Right Leaf Cluster Bottom -->
-        <img src="{{ Vite::asset('resources/images/viewport1/image-removebg-preview (19).png') }}"
-            class="absolute right-[-100px] top-50 w-60 md:w-80 opacity-90 pointer-events-none select-none"
-            alt="Leaf cluster">
-
         <div class="relative z-10 max-w-6xl mx-auto text-center">
             <!-- Section header -->
             <div class="mb-14">
@@ -1112,18 +1093,23 @@ document.addEventListener('DOMContentLoaded', function() {
     @else
         <!-- Dynamic container that expands based on content -->
         <div class="relative">
-            <!-- Cluster leaves background (sticky to the container) -->
-            <div class="absolute inset-0 opacity-10 pointer-events-none z-0">
-                <div class="absolute top-0 left-10">
-                    <i class="fa-solid fa-leaf text-6xl text-[#4A6613]"></i>
-                </div>
-                <div class="absolute bottom-10 right-10">
-                    <i class="fa-solid fa-leaf text-5xl text-[#4A6613] transform rotate-45"></i>
-                </div>
-                <div class="absolute top-1/3 right-20">
-                    <i class="fa-solid fa-leaf text-4xl text-[#4A6613] transform -rotate-30"></i>
-                </div>
-            </div>
+            
+            <!-- Leaf decorations -->
+  <div class="absolute right-0 top-1/2 -translate-y-[30%] translate-x-[85%] z-70 pointer-events-none">
+        <img src="{{ Vite::asset('resources/images/viewport1/3leaves-left.png') }}"
+             alt="Leaf Cluster"
+             class="w-90 h-auto opacity-100">
+    </div>
+ <div class="absolute left-0 top-1/2 -translate-y-[30%] -translate-x-[85%] z-70 pointer-events-none">
+        <img src="{{ Vite::asset('resources/images/viewport1/3leaves-right.png') }}"
+             alt="Leaf Cluster"
+             class="w-90 h-auto opacity-100">
+    </div>
+
+
+
+    <!-- Right leaf -->
+</div>
 
             <!-- Single row container that expands dynamically -->
             <div class="relative z-10">
@@ -1224,7 +1210,6 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     @endif
 </div>
-
 <style>
 /* Custom scrollbar styling (optional) */
 .scrollbar-hide::-webkit-scrollbar {
