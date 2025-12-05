@@ -12,165 +12,76 @@ Alpine.store('authModal', {
 Alpine.start();
 
 //======================================================================================= NAVBAR ======================================================================================
-document.addEventListener('DOMContentLoaded', () => {
-    const navbar   = document.getElementById('navbar');
-    const sidebar  = document.getElementById('sidebar');
-    const overlay  = document.getElementById('overlay');
-    const menuToggle = document.getElementById('menu-toggle');
-    const closeSidebar = document.getElementById('close-sidebar');
-
-    // Detect current page
-    const isHomePage = window.location.pathname === '/' || window.location.pathname === '/home';
-
-    const handleNavbarScroll = () => {
-        if (!navbar) return;
-        if (window.scrollY > 50) {
-            navbar.classList.add('navbar-scrolled');
-        } else if (isHomePage) {
-            navbar.classList.remove('navbar-scrolled');
-        }
-    };
-
-    window.addEventListener('scroll', handleNavbarScroll);
-
-    // Initial style
-    if (navbar) {
-        if (!isHomePage) {
-            navbar.classList.add('navbar-scrolled', 'navbar-green-shadow');
-        } else {
-            handleNavbarScroll();
-        }
-    }
-
-    // Sidebar open/close
-    menuToggle?.addEventListener('click', () => {
-        sidebar?.classList.add('open');
-        overlay?.classList.add('active');
-    });
-
-    const close = () => {
-        sidebar?.classList.remove('open');
-        overlay?.classList.remove('active');
-    };
-
-    closeSidebar?.addEventListener('click', close);
-    overlay?.addEventListener('click', close);
-});
-
-//======================================================================================= VIEWPORT2 (Plant animation) ======================================================================================
-window.addEventListener('scroll', () => {
-    const plant       = document.getElementById('plant-container');
-    const plantImg    = document.getElementById('plant-image');
-    const textDiv     = document.getElementById('plant-text');
-    const textEl      = textDiv?.querySelector('h1');
+(() => {
+    const plant = document.getElementById('plant-container');
+    const plantImg = document.getElementById('plant-image');
+    const textDiv = document.getElementById('plant-text');
+    const textEl = textDiv?.querySelector('h1');
     const progressBar = document.getElementById('growth-bar');
+    const leftPanel = document.getElementById('left-panel');
+    const rightPanel = document.getElementById('right-panel');
 
-    if (!plant && !textDiv && !progressBar) return; // nothing to animate
+    if (!plant && !textDiv && !progressBar) return;
 
-    const scrollY      = window.scrollY;
-    const windowHeight = window.innerHeight;
+    let ticking = false;
+    let hasAnimated = false; // run animation only once
 
-    // Initialise flags
-    if (window.textShown === undefined) window.textShown = false;
-    if (window.textFadedOut === undefined) window.textFadedOut = false;
+    const onScroll = () => {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const pastThreshold = scrollY > windowHeight * 0.3;
 
-    if (scrollY > windowHeight * 0.3) {
-        // ---- Plant movement ----
-        if (plant) {
-            const scaleFactor = window.innerWidth > 768 ? 1.3 : 0.9;
-            const moveY       = window.innerHeight * 0.600;
-            plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
+        if (!ticking && pastThreshold && !hasAnimated) {
+            window.requestAnimationFrame(() => {
+                // ---- Panels ----
+                if (leftPanel) leftPanel.classList.add('show');
+                if (rightPanel) rightPanel.classList.add('show');
+
+                // ---- Plant ----
+                if (plant) {
+                    const scaleFactor = window.innerWidth > 768 ? 1.3 : 0.9;
+                    const moveY = window.innerHeight * 0.6;
+                    plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
+                    plant.style.willChange = 'transform';
+                }
+
+                // ---- Progress bar ----
+                if (progressBar) {
+                    progressBar.style.opacity = '1';
+                    progressBar.style.transform =
+                        window.innerWidth > 768
+                            ? 'scale(0.7) translateY(-15%)'
+                            : 'scale(0.55) translateY(-18%)';
+                    progressBar.style.willChange = 'transform, opacity';
+                }
+
+                // ---- Plant image ----
+                if (plantImg && typeof plantBasePath !== 'undefined' && typeof stage !== 'undefined') {
+                    plantImg.src = `${plantBasePath}/${stage}.gif`;
+                }
+
+                // ---- Text ----
+                if (textDiv && textEl) {
+                    textDiv.style.top = `${window.innerHeight * 0.59}px`;
+                    textEl.textContent = 'We all yearn to make a difference...';
+                    textEl.classList.add('fade-text'); // CSS handles fade
+                }
+
+                hasAnimated = true; // prevent further animation
+                ticking = false;
+            });
+
+            ticking = true;
         }
+    };
 
-        // ---- Text positioning & content ----
-        if (textDiv && textEl) {
-            textDiv.style.top = `${window.innerHeight * 0.590}px`;
-            textEl.textContent = 'We all yearn to make a difference...';
-            textEl.style.fontSize = window.innerWidth > 768 ? '1.5rem' : '1rem';
-            textEl.style.color = '#3a5a0c';
-
-            if (!window.textShown) {
-                window.textShown = true;
-                window.textFadedOut = false;
-
-                clearTimeout(window.fadeInTimeout);
-                clearTimeout(window.fadeOutTimeout);
-
-                // start hidden, no transition yet
-                textEl.style.transition = 'none';
-                textEl.style.opacity = '0';
-
-                window.fadeInTimeout = setTimeout(() => {
-                    textEl.style.transition = 'opacity 3s ease';
-                    textEl.style.opacity = '1';
-
-                    window.fadeOutTimeout = setTimeout(() => {
-                        textEl.style.transition = 'opacity 1.4s ease';
-                        textEl.style.opacity = '0';
-                        window.textFadedOut = true;
-                    }, 5000);
-                }, 1400);
-            }
-        }
-
-        // ---- Progress bar ----
-        if (progressBar) {
-            progressBar.style.opacity = '1';
-            progressBar.style.transform =
-                window.innerWidth > 768
-                    ? 'scale(0.7) translateY(-15%)'
-                    : 'scale(0.55) translateY(-18%)';
-        }
-
-        // Stop for guests
-        if (window.isGuest) return;
-
-        // ---- Plant image ----
-        if (plantImg && typeof plantBasePath !== 'undefined' && typeof stage !== 'undefined') {
-            plantImg.src = `${plantBasePath}/${stage}.gif`;
-        }
-
-    } else {
-        // ---- Reset plant ----
-        plant?.style && (plant.style.transform = 'translateY(0px) scale(1)');
-
-        // ---- Reset text ----
-        if (textDiv && textEl) {
-            textDiv.style.top = '25rem';
-            textEl.textContent = 'Even in small ways,';
-            textEl.style.fontSize = window.innerWidth > 768 ? '2rem' : '1.5rem';
-            textEl.style.color = '#7a5d2bff';
-            textEl.style.textShadow = `
-                0 0 10px rgba(255, 255, 200, 1),
-                0 0 20px rgba(255, 255, 200, 0.95),
-                0 0 30px rgba(255, 255, 180, 0.85),
-                0 0 40px rgba(255, 255, 180, 0.7),
-                0 0 50px rgba(255, 255, 180, 0.5)
-            `;
-            textEl.style.opacity = '1';
-        }
-
-        // ---- Reset progress bar ----
-        progressBar?.style && (progressBar.style.opacity = '0');
-        progressBar?.style && (progressBar.style.transform = 'scale(1) translateY(0)');
-
-        // ---- Reset plant image ----
-        if (plantImg && typeof plantBasePath !== 'undefined') {
-            plantImg.src = `${plantBasePath}/5.gif`;
-        }
-
-        // ---- Clean timers ----
-        clearTimeout(window.fadeInTimeout);
-        clearTimeout(window.fadeOutTimeout);
-        window.textShown = false;
-        window.textFadedOut = false;
-    }
-});
+    window.addEventListener('scroll', onScroll, { passive: true });
+})();
 
 //======================================================================================= PROFILE DROPDOWN ======================================================================================
 (() => {
     const dropdownButton = document.getElementById('dropdownButton');
-    const dropdownMenu   = document.getElementById('dropdownMenu');
+    const dropdownMenu = document.getElementById('dropdownMenu');
     const profileDropdown = document.getElementById('profileDropdown');
 
     dropdownButton?.addEventListener('click', () => {
@@ -187,7 +98,7 @@ window.addEventListener('scroll', () => {
 
 //======================================================================================= SIGN-IN / SIGN-UP OVERLAY ======================================================================================
 document.addEventListener('DOMContentLoaded', () => {
-    const container  = document.getElementById('container');
+    const container = document.getElementById('container');
     const overlayBtn = document.getElementById('overlayBtn');
 
     overlayBtn?.addEventListener('click', () => {
@@ -202,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //======================================================================================= QUEST LIST TABS ======================================================================================
 document.addEventListener('DOMContentLoaded', () => {
     const questListItems = document.querySelectorAll('#questList li');
-    const questTables    = document.querySelectorAll('[id^="questTable-"]');
+    const questTables = document.querySelectorAll('[id^="questTable-"]');
     const collectionTable = document.getElementById('collectionTable');
 
     questListItems.forEach(item => {
@@ -229,8 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //======================================================================================= ARCHIVE DROPDOWN ======================================================================================
 document.addEventListener('DOMContentLoaded', () => {
-    const archiveBtn   = document.getElementById('archiveDropdownBtn');
-    const archiveMenu  = document.getElementById('archiveDropdownMenu');
+    const archiveBtn = document.getElementById('archiveDropdownBtn');
+    const archiveMenu = document.getElementById('archiveDropdownMenu');
     const archiveArrow = document.getElementById('archiveArrow');
 
     archiveBtn?.addEventListener('click', () => {
@@ -255,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.status-dropdown').forEach(dropdown => {
         dropdown.addEventListener('change', e => {
             const questId = e.target.dataset.questId;
-            const status  = e.target.value;
+            const status = e.target.value;
 
             fetch(`/quests/${questId}/status`, {
                 method: 'POST',
@@ -284,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-archive').forEach(button => {
         button.addEventListener('click', e => {
             e.preventDefault();
-            const questId    = button.dataset.questId;
+            const questId = button.dataset.questId;
             const questTitle = button.closest('tr')?.querySelector('td:nth-child(2)')?.innerText || '';
 
             if (!confirm('Are you sure you want to archive this quest?')) return;

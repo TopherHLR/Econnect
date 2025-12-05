@@ -122,7 +122,7 @@
         @auth
             @if (auth()->user()->user_type === 'verified_user')
                 <!-- 🌿 LEFT MODAL PANEL -->
-                <div
+                <div id="left-panel" class="fade-in-panel"
                     style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                     <!-- Title + View More Link -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
@@ -130,7 +130,7 @@
                             style="font-size: 1.5rem; font-weight: 700; color: #4F6B3F; font-family: 'Nunito Sans', sans-serif;">
                             Available Quests</h2>
 
-                        @if ($pendingSubmissions->count() > 0)
+                        @if ($availableQuests->count() > 0)
                             <a href="/quests"
                                 style="font-size: 0.875rem; color: #7A8C4F; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.25rem; font-weight: 500;">
                                 View More <i class="fas fa-arrow-right" style="font-size: 0.75rem; margin-top: 0.125rem;"></i>
@@ -204,7 +204,7 @@
                 </div>
 
                 <!-- 🌿 RIGHT MODAL PANEL -->
-                <div
+                <div id="right-panel" class="fade-in-panel"
                     style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                     <!-- Title + View More Link -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
@@ -286,7 +286,7 @@
                 </div>
             @else
                 <!-- 🌿 LEFT MODAL PANEL LOCKED -->
-                <div
+                <div id="left-panel" class="fade-in-panel"
                     style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                         <!-- 🔒 Overlay Lock -->
@@ -317,7 +317,7 @@
                 </div>
 
                 <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
-                <div
+                <div id="right-panel" class="fade-in-panel"
                     style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                         <!-- 🔒 Overlay Lock -->
@@ -750,263 +750,255 @@
     <section class="relative text-center py-27 px-6 overflow-hidden mb-[96px]">
         <!-- Pattern background layer (behind everything) -->
         <div
-            class="absolute inset-0 bg-[url('/resources/images/viewport1/patter.png')] bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none 
-                filter hue-rotate-30 saturate-200 brightness-75 z-0">
+            class="absolute inset-0 bg-[url('/resources/images/viewport1/patter.webp')] bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none 
+            filter hue-rotate-30 saturate-200 brightness-75 z-0">
         </div>
-<!-- Multiple Clouds on Left Side -->
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 1"
-    class="absolute left-[-120px] top-[50px] w-[25rem] opacity-70 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 2"
-    class="absolute left-[-80px] top-[150px] w-[35rem] opacity-55 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 3"
-    class="absolute left-[-160px] top-[250px] w-[30rem] opacity-65 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 4"
-    class="absolute left-[-100px] top-[350px] w-[40rem] opacity-70 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 5"
-    class="absolute left-[-140px] top-[450px] w-[20rem] opacity-75 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Left 6"
-    class="absolute left-[-60px] top-[550px] w-[45rem] opacity-75 z-10">
 
-<!-- Multiple Clouds on Right Side -->
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 1"
-    class="absolute right-[-120px] top-[30px] w-[28rem] opacity-70 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 2"
-    class="absolute right-[-80px] top-[180px] w-[32rem] opacity-55 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 3"
-    class="absolute right-[-160px] top-[280px] w-[38rem] opacity-55 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 4"
-    class="absolute right-[-100px] top-[380px] w-[25rem] opacity-65 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 5"
-    class="absolute right-[-140px] top-[480px] w-[42rem] opacity-75 z-10">
-<img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}" alt="Cloud Right 6"
-    class="absolute right-[-60px] top-[580px] w-[39rem] opacity-75 z-10">
+        <!-- Multiple Clouds on Left Side -->
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Left 1"
+            class="absolute left-[-120px] top-[50px] w-[25rem] opacity-70 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Left 2"
+            class="absolute left-[-80px] top-[150px] w-[35rem] opacity-55 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Left 3"
+            class="absolute left-[-160px] top-[250px] w-[30rem] opacity-65 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Left 4"
+            class="absolute left-[-100px] top-[350px] w-[40rem] opacity-70 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Left 5"
+            class="absolute left-[-140px] top-[450px] w-[20rem] opacity-75 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Left 6"
+            class="absolute left-[-60px] top-[550px] w-[45rem] opacity-75 z-10">
+
+        <!-- Multiple Clouds on Right Side -->
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Right 1"
+            class="absolute right-[-120px] top-[30px] w-[28rem] opacity-70 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Right 2"
+            class="absolute right-[-80px] top-[180px] w-[32rem] opacity-55 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Right 3"
+            class="absolute right-[-160px] top-[280px] w-[38rem] opacity-55 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Right 4"
+            class="absolute right-[-100px] top-[380px] w-[25rem] opacity-65 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Right 5"
+            class="absolute right-[-140px] top-[480px] w-[42rem] opacity-75 z-10">
+        <img src="{{ Vite::asset('resources/images/viewport1/widgetcloudb.webp') }}" alt="Cloud Right 6"
+            class="absolute right-[-60px] top-[580px] w-[39rem] opacity-75 z-10">
 
         <!-- Content -->
         <div class="relative flex flex-col items-center justify-center space-y-10 z-20 -mt-20 md:-mt-23">
             <h2
                 class="text-white font-serif italic font-bold text-5xl md:text-6xl lg:text-7xl 
-                  drop-shadow-[0_4px_8px_rgba(111,78,55,0.65),0_8px_24px_rgba(89,63,44,0.55),0_0_35px_rgba(255,252,225,0.25)]
-                   tracking-wider leading-snug text-center px-4 relative z-30">
+            drop-shadow-[0_4px_8px_rgba(111,78,55,0.65),0_8px_24px_rgba(89,63,44,0.55),0_0_35px_rgba(255,252,225,0.25)]
+            tracking-wider leading-snug text-center px-4 relative z-30">
                 Just like <span class="text-[#fff8b0] drop-shadow-[0_0_20px_rgba(255,248,176,0.6)]">Eco Brew</span>
             </h2>
-
 
             <!-- Eco Brew Logo - Circular & Emotional -->
             <div class="flex justify-center">
                 <div class="relative group mt-10">
-                    <!-- Soft outer glow with nature colors -->
+                    <!-- Soft outer glow -->
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from-[#e8f5e9]/30 via-[#c8e6c9]/20 to-[#a5d6a7]/10 blur-lg rounded-full -z-10 
-                    group-hover:from-[#f1f8e9]/40 group-hover:via-[#dcedc8]/30 group-hover:to-[#c5e1a5]/20 
-                    transition-all duration-500">
+                        class="absolute inset-0 bg-gradient-to-br from-[#e8f5e9]/30 via-[#c8e6c9]/20 to-[#a5d6a7]/10 blur-lg rounded-full -z-10">
                     </div>
 
-                    <!-- Natural leaf pattern overlay -->
+                    <!-- Leaf pattern overlay -->
                     <div
-                        class="absolute inset-0 bg-gradient-to-br from-[#81c784]/5 via-transparent to-[#4caf50]/5 
-                    rounded-full -z-10 mix-blend-overlay">
+                        class="absolute inset-0 bg-gradient-to-br from-[#81c784]/5 via-transparent to-[#4caf50]/5 rounded-full -z-10 mix-blend-overlay">
                     </div>
 
-                    <!-- Main circular logo container -->
+                    <!-- Logo container -->
                     <div
-                        class="relative overflow-hidden rounded-full border-2 border-[#c8e6c9]/40 
-                    shadow-inner shadow-[#e8f5e9]/30 
-                    group-hover:border-[#a5d6a7]/60 group-hover:shadow-[#f1f8e9]/40
-                    transition-all duration-300">
-
-                        <!-- Logo image with circular crop -->
-                        <img src="{{ Vite::asset('resources/images/logo/ecobrew.jpg') }}" alt="Eco Brew Logo"
-                            class="w-[140px] md:w-[400px] h-[170px] md:h-[400px] object-cover 
-                        transition-all duration-500 ease-out
-                        group-hover:scale-105 group-hover:brightness-110
-                        filter saturate-110">
-
-                        <!-- Subtle shine effect -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent 
-                        opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        </div>
+                        class="relative overflow-hidden rounded-full border-2 border-[#c8e6c9]/40 shadow-inner shadow-[#e8f5e9]/30">
+                        <img src="{{ Vite::asset('resources/images/logo/ecobrew.webp') }}" alt="Eco Brew Logo"
+                            class="w-[140px] md:w-[400px] h-[170px] md:h-[400px] object-cover filter saturate-110">
                     </div>
 
                     <!-- Floating leaf accent -->
-                    <div
-                        class="absolute -top-2 -right-2 opacity-70 group-hover:opacity-100 
-                    transition-opacity duration-300">
+                    <div class="absolute -top-2 -right-2 opacity-70">
                         <svg class="w-8 h-8 text-[#81c784]" fill="currentColor" viewBox="0 0 24 24">
                             <path
                                 d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22L6.66 19.7C7.14 19.87 7.64 20 8 20C19 20 22 3 22 3C21 5 14 5.25 9 6.25C4 7.25 2 11.5 2 13.5C2 15.5 3.75 17.25 3.75 17.25C7 8 17 8 17 8Z" />
                         </svg>
                     </div>
 
-                    <!-- Soft shadow with earthy tones -->
+                    <!-- Static shadow -->
                     <div
-                        class="absolute inset-0 -z-20 rounded-full 
-                    drop-shadow-[0_0_30px_rgba(129,199,132,0.2),
-                                0_0_60px_rgba(76,175,80,0.15),
-                                0_4px_20px_rgba(90,74,54,0.1)]">
+                        class="absolute inset-0 -z-20 rounded-full drop-shadow-[0_0_30px_rgba(129,199,132,0.2),0_0_60px_rgba(76,175,80,0.15),0_4px_20px_rgba(90,74,54,0.1)]">
                     </div>
                 </div>
             </div>
 
             <!-- Text Box -->
-<div class="bg-gradient-to-br from-[#6b4f37]/90 via-[#5a402c] to-[#3a2a1c]/90 
+            <div
+                class="bg-gradient-to-br from-[#6b4f37]/90 via-[#5a402c] to-[#3a2a1c]/90 
             text-amber-50 text-2xl md:text-3xl px-15 py-8 rounded-[2rem] max-w-6xl mx-auto
             leading-relaxed shadow-[0_25px_50px_-12px_rgba(111,78,55,0.5)]
             border border-amber-900/30 backdrop-blur-md
-            font-serif italic text-center mt-40 mb-20
-            hover:shadow-[0_35px_60px_-15px_rgba(111,78,55,0.6)] transition-shadow duration-500">
-<div class="relative">
-    <i class="fa-solid fa-leaf absolute -left-10 top-1/2 transform -translate-y-1/2 text-white/30 text-3xl -rotate-90"></i>
-    Ecobrew shares simple ways to live more sustainably—at no cost.
-    <i class="fa-solid fa-leaf absolute -right-10 top-1/2 transform -translate-y-1/2 text-white/30 text-3xl rotate-90"></i>
-</div>
-</div>
+            font-serif italic text-center mt-40 mb-20">
+                <div class="relative">
+                    <i
+                        class="fa-solid fa-leaf absolute -left-10 top-1/2 transform -translate-y-1/2 text-white/30 text-3xl -rotate-90"></i>
+                    Ecobrew shares simple ways to live more sustainably—at no cost.
+                    <i
+                        class="fa-solid fa-leaf absolute -right-10 top-1/2 transform -translate-y-1/2 text-white/30 text-3xl rotate-90"></i>
+                </div>
+            </div>
     </section>
 
-   <section class="py-20 px-8 overflow-hidden relative">
 
-    <!-- Background overlay image -->
-    <div class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat opacity-15"></div>
-    
-    <!-- 🌫️ Soft Fog Layer -->
-    <div class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]"></div>
+    <section class="py-20 px-8 overflow-hidden relative">
 
-    <!-- 🌫️ Soft Fog Layer -->
-    <div class="absolute top-[-3rem] left-0 w-full h-[150px] bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"></div>
+        <!-- Background overlay image -->
+        <div
+            class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat opacity-15">
+        </div>
 
-    <!-- Cards Container -->
-    <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
+        <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
+        </div>
 
-        <!-- 🌱 Card 1 -->
-        <div class="fade-card">
-            <div class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
-                <!-- Left side image -->
-                <div class="w-64 h-64 mr-8 flex-shrink-0">
-                    <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}"
-                        alt="People collaborating on sustainability"
-                        class="w-full h-full object-cover rounded-2xl shadow-md">
+        <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute top-[-3rem] left-0 w-full h-[150px] bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]">
+        </div>
+
+        <!-- Cards Container -->
+        <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
+
+            <!-- 🌱 Card 1 -->
+            <div class="fade-card">
+                <div
+                    class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+                    <!-- Left side image -->
+                    <div class="w-64 h-64 mr-8 flex-shrink-0">
+                        <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}"
+                            alt="People collaborating on sustainability"
+                            class="w-full h-full object-cover rounded-2xl shadow-md">
+                    </div>
+
+                    <!-- Content on right -->
+                    <div class="flex-1">
+                        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute
+                            more</h3>
+                        <p class="text-gray-700 mt-1 text-[20px]">EcoBrew shares simple ways to live more sustainably—at no
+                            cost.</p>
+                        <div class="flex justify-end">
+                            <a href="/leaderboard"
+                                class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
+                                Explore Leaderboards
+                            </a>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <!-- Content on right -->
-                <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute more</h3>
-                    <p class="text-gray-700 mt-1 text-[20px]">EcoBrew shares simple ways to live more sustainably—at no cost.</p>
-                    <div class="flex justify-end">
-                        <a href="/leaderboard"
-                            class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
-                            Explore Leaderboards
-                        </a>
+            <!-- 🌿 Card 2 (MOVED SIGNIFICANTLY RIGHT) -->
+            <div class="fade-card">
+                <div
+                    class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[300px] min-h-[300px] backdrop-blur-sm border border-white/20">
+                    <!-- Content on left -->
+                    <div class="flex-1">
+                        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
+                        <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
+                        <div class="flex justify-start">
+                            <a href="/quests"
+                                class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
+                                Explore quests
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right side image -->
+                    <div class="w-64 h-64 ml-8 flex-shrink-0">
+                        <img src="{{ Vite::asset('resources/images/viewport1/quest.jpg') }}"
+                            alt="Eco quests and challenges" class="w-full h-full object-cover rounded-2xl shadow-md">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ☕ Card 3 -->
+            <div class="fade-card">
+                <div
+                    class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
+                    <!-- Left side image -->
+                    <div class="w-64 h-64 mr-8 flex-shrink-0">
+                        <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}"
+                            alt="Sustainable café inspiration" class="w-full h-full object-cover rounded-2xl shadow-md">
+                    </div>
+
+                    <!-- Content on right -->
+                    <div class="flex-1">
+                        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Be inspired by ECOnnect</h3>
+                        <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
+                        <div class="flex justify-end">
+                            <a href="/about"
+                                class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
+                                Explore About Us
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- 🌿 Card 2 (MOVED SIGNIFICANTLY RIGHT) -->
-        <div class="fade-card">
-          <div class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[300px] min-h-[300px] backdrop-blur-sm border border-white/20">
-                <!-- Content on left -->
-                <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
-                    <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
-                    <div class="flex justify-start">
-                        <a href="/quests"
-                            class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
-                            Explore quests
-                        </a>
-                    </div>
-                </div>
+    <style>
+        /* Simple fade animation */
+        .fade-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
 
-                <!-- Right side image -->
-                <div class="w-64 h-64 ml-8 flex-shrink-0">
-                    <img src="{{ Vite::asset('resources/images/viewport1/quest.jpg') }}" alt="Eco quests and challenges"
-                        class="w-full h-full object-cover rounded-2xl shadow-md">
-                </div>
-            </div>
-        </div>
+        .fade-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-        <!-- ☕ Card 3 -->
-        <div class="fade-card">
-            <div class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
-                <!-- Left side image -->
-                <div class="w-64 h-64 mr-8 flex-shrink-0">
-                    <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}"
-                        alt="Sustainable café inspiration" class="w-full h-full object-cover rounded-2xl shadow-md">
-                </div>
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 
-                <!-- Content on right -->
-                <div class="flex-1">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Be inspired by ECOnnect</h3>
-                    <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
-                    <div class="flex justify-end">
-                        <a href="/about"
-                            class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
-                            Explore About Us
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.fade-card');
 
-<style>
-/* Simple fade animation */
-.fade-card {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
+            // Simple Intersection Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    } else {
+                        entry.target.classList.remove('show');
+                    }
+                });
+            }, {
+                threshold: 0.1, // Trigger when 10% of card is visible
+                rootMargin: '0px 0px -50px 0px' // Slight offset for smoothness
+            });
 
-.fade-card.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Smooth scrolling */
-html {
-    scroll-behavior: smooth;
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.fade-card');
-    
-    // Simple Intersection Observer
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('show');
-            } else {
-                entry.target.classList.remove('show');
-            }
+            // Start observing each card
+            cards.forEach(card => {
+                observer.observe(card);
+            });
         });
-    }, {
-        threshold: 0.1, // Trigger when 10% of card is visible
-        rootMargin: '0px 0px -50px 0px' // Slight offset for smoothness
-    });
-    
-    // Start observing each card
-    cards.forEach(card => {
-        observer.observe(card);
-    });
-});
-</script>
+    </script>
 
-<section class="relative py-48 px-8 overflow-hidden pattern-bg">
+    <section class="relative py-48 px-8 overflow-hidden pattern-bg">
 
         <div class="relative z-10 max-w-6xl mx-auto text-center">
             <!-- Section header -->
             <div class="mb-14">
                 <div class="inline-flex items-center gap-3 mb-4">
-                    <div class="w-12 h-0.5" style="background-color: #C8D5BB"></div>
-                    <i class="fa-solid fa-heart text-2xl" style="color: #9BAF8D"></i>
-                    <div class="w-12 h-0.5" style="background-color: #C8D5BB"></div>
+                    <div class="w-12 h-0.5 bg-[#C8D5BB]"></div>
+                    <i class="fa-solid fa-heart text-2xl text-[#9BAF8D]"></i>
+                    <div class="w-12 h-0.5 bg-[#C8D5BB]"></div>
                 </div>
-                <h3 class="font-serif italic font-medium text-4xl md:text-5xl mb-3" style="color: #5A6B4A">
+                <h3 class="font-serif italic font-medium text-4xl md:text-5xl mb-3 text-[#5A6B4A]">
                     Voices from Our Community
                 </h3>
-                <p class="text-lg max-w-2xl mx-auto font-light" style="color: rgba(91, 107, 74, 0.7)">
+                <p class="text-lg max-w-2xl mx-auto font-light text-[#5B6B4A]/70">
                     Hear what mindful souls are saying about their sustainable journey
                 </p>
             </div>
@@ -1014,190 +1006,150 @@ document.addEventListener('DOMContentLoaded', function() {
             <h3 class="text-[#4A6613] italic font-semibold text-2xl md:text-3xl mb-12">
                 What our community <br> is saying:
             </h3>
-<!-- ⭐ ADD FEEDBACK FORM -->
-@auth
-    <form action="{{ route('feedback.store') }}" method="POST"
-        class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-12 max-w-xl mx-auto text-center">
-        @csrf
 
-        <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-comment-dots text-[#4A6613]"></i>
-            Share Your Feedback
-        </h4>
-
-        <textarea name="content" required rows="3"
-            class="w-full p-4 border-2 border-[#8A9A7B]/60 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#8A9A7B]/30 focus:border-[#6B7D5A]"
-            placeholder="Write your feedback here..."></textarea>
-
-        <label class="block mt-4 mb-2 font-semibold text-[#4A6613]">Rating:</label>
-
-        <div class="flex justify-center gap-2 mb-6" x-data="{ rating: 0 }">
-            @for ($i = 1; $i <= 5; $i++)
-                <label class="cursor-pointer">
-                    <input type="radio" name="rating" value="{{ $i }}" class="hidden"
-                        x-model="rating" required>
-                    <i class="fa-solid fa-star text-2xl transition-colors duration-300"
-                        :class="rating >= {{ $i }} ? 'text-yellow-500' : 'text-gray-300'"
-                        @click="rating = {{ $i }}"></i>
-                </label>
-            @endfor
-        </div>
-
-        <button type="submit" class="bg-[#4A6613] text-white px-8 py-3 rounded-xl hover:bg-[#3a5010] transition-colors duration-300 font-semibold">
-            Submit Feedback
-        </button>
-    </form>
-@else
-    <!-- Consistent Style for Non-Logged In Users -->
-    <div class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-12 max-w-xl mx-auto text-center">
-        <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-comment-dots text-[#4A6613]"></i>
-            Share Your Feedback
-        </h4>
-        
-        <div class="p-6 bg-white/80 rounded-xl border-2 border-[#8A9A7B]/30 mb-6">
-            <i class="fa-solid fa-lock text-4xl text-[#4A6613] mb-3"></i>
-            <p class="text-[#4A6613] font-semibold text-lg mb-2">Join the Conversation</p>
-            <p class="text-[#4E3A2E] mb-4">Sign in to share your sustainable journey with our community</p>
-            <a href="{{ route('login') }}" 
-               class="inline-block bg-[#4A6613] text-white px-8 py-3 rounded-xl hover:bg-[#3a5010] transition-colors duration-300 font-semibold">
-                Sign in to Contribute
-            </a>
-        </div>
-        
-        <div class="text-sm text-[#4E3A2E]/70">
-            <i class="fa-solid fa-info-circle mr-1"></i>
-            Your feedback helps others on their sustainability journey
-        </div>
-    </div>
-@endauth
-<!-- FEEDBACK CARDS - Single Row Dynamic Layout -->
-<div class="mt-16">
-    <h4 class="text-[#4A6613] font-semibold text-2xl mb-8 text-center">Community Stories</h4>
-    
-    <!-- Empty State -->
-    @if($feedback->isEmpty())
-        <div class="bg-[#F8F4E7] rounded-2xl p-10 text-center max-w-md mx-auto">
-            <i class="fa-solid fa-comments text-5xl text-[#4A6613] opacity-70 mb-4"></i>
-            <h5 class="text-[#4A6613] font-semibold text-xl mb-2">No stories yet</h5>
-            <p class="text-[#4E3A2E] mb-4">Be the first to share your sustainable journey</p>
+            <!-- ⭐ Feedback Form -->
             @auth
-                <p class="text-sm text-[#4E3A2E]/70">Use the form above to share your experience</p>
+                <form action="{{ route('feedback.store') }}" method="POST"
+                    class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-12 max-w-xl mx-auto text-center">
+                    @csrf
+                    <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-comment-dots"></i>
+                        Share Your Feedback
+                    </h4>
+
+                    <textarea name="content" required rows="3"
+                        class="w-full p-4 border-2 border-[#8A9A7B]/60 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#8A9A7B]/30 focus:border-[#6B7D5A]"
+                        placeholder="Write your feedback here..."></textarea>
+
+                    <label class="block mt-4 mb-2 font-semibold text-[#4A6613]">Rating:</label>
+                    <div class="flex justify-center gap-2 mb-6" x-data="{ rating: 0 }">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <label class="cursor-pointer">
+                                <input type="radio" name="rating" value="{{ $i }}" class="hidden"
+                                    x-model="rating" required>
+                                <i class="fa-solid fa-star text-2xl transition-colors duration-300"
+                                    :class="rating >= {{ $i }} ? 'text-yellow-500' : 'text-gray-300'"
+                                    @click="rating = {{ $i }}"></i>
+                            </label>
+                        @endfor
+                    </div>
+
+                    <button type="submit"
+                        class="bg-[#4A6613] text-white px-8 py-3 rounded-xl hover:bg-[#3a5010] transition-colors duration-300 font-semibold">
+                        Submit Feedback
+                    </button>
+                </form>
             @else
-                <a href="{{ route('login') }}" class="text-[#4A6613] font-semibold hover:text-[#3a5010] transition-colors">
-                    Sign in to get started →
-                </a>
+                <div class="bg-[#F8F4E7] rounded-2xl shadow-lg p-8 mb-12 max-w-xl mx-auto text-center">
+                    <h4 class="text-[#4A6613] font-semibold text-xl mb-4 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-comment-dots"></i>
+                        Share Your Feedback
+                    </h4>
+
+                    <div class="p-6 bg-white/80 rounded-xl border-2 border-[#8A9A7B]/30 mb-6">
+                        <i class="fa-solid fa-lock text-4xl text-[#4A6613] mb-3"></i>
+                        <p class="text-[#4A6613] font-semibold text-lg mb-2">Join the Conversation</p>
+                        <p class="text-[#4E3A2E] mb-4">Sign in to share your sustainable journey with our community</p>
+                        <a href="{{ route('login') }}"
+                            class="inline-block bg-[#4A6613] text-white px-8 py-3 rounded-xl hover:bg-[#3a5010] transition-colors duration-300 font-semibold">
+                            Sign in to Contribute
+                        </a>
+                    </div>
+
+                    <div class="text-sm text-[#4E3A2E]/70">
+                        <i class="fa-solid fa-info-circle mr-1"></i>
+                        Your feedback helps others on their sustainability journey
+                    </div>
+                </div>
             @endauth
-        </div>
-    @else
-        <!-- Dynamic container that expands based on content -->
-        <div class="relative">
-            
-            <!-- Leaf decorations -->
-<div class="absolute right-0 top-1/2 -translate-y-[30%] translate-x-[85%] z-70 pointer-events-none">
-    <img src="{{ Vite::asset('resources/images/viewport1/3leaves-left.png') }}"
-         alt="Leaf Cluster"
-         class="w-90 h-auto opacity-100 filter brightness-[0.85]">
-</div>
 
-<div class="absolute left-0 top-1/2 -translate-y-[30%] -translate-x-[85%] z-70 pointer-events-none">
-    <img src="{{ Vite::asset('resources/images/viewport1/3leaves-right.png') }}"
-         alt="Leaf Cluster"
-         class="w-90 h-auto opacity-100 filter brightness-[0.85]">
-</div>
+            <!-- FEEDBACK CARDS -->
+            <div class="mt-16">
+                <h4 class="text-[#4A6613] font-semibold text-2xl mb-8 text-center">Community Stories</h4>
 
+                @php $feedbackCount = $feedback->count(); @endphp
 
-    <!-- Right leaf -->
-</div>
-
-            <!-- Single row container that expands dynamically -->
-            <div class="relative z-10">
-                @if($feedback->count() === 1)
-                    <!-- Center single feedback -->
+                @if ($feedbackCount === 0)
+                    <div class="bg-[#F8F4E7] rounded-2xl p-10 text-center max-w-md mx-auto">
+                        <i class="fa-solid fa-comments text-5xl text-[#4A6613] opacity-70 mb-4"></i>
+                        <h5 class="text-[#4A6613] font-semibold text-xl mb-2">No stories yet</h5>
+                        <p class="text-[#4E3A2E] mb-4">Be the first to share your sustainable journey</p>
+                        @auth
+                            <p class="text-sm text-[#4E3A2E]/70">Use the form above to share your experience</p>
+                        @else
+                            <a href="{{ route('login') }}"
+                                class="text-[#4A6613] font-semibold hover:text-[#3a5010] transition-colors">
+                                Sign in to get started →
+                            </a>
+                        @endauth
+                    </div>
+                @elseif ($feedbackCount === 1)
                     <div class="flex justify-center">
-                        <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative w-full max-w-md">
-                            <!-- Quotation Mark -->
-                            <i class="fa-solid fa-quote-left text-3xl text-[#4A6613] absolute top-4 left-4 opacity-70"></i>
-
-                            <!-- User Info Section -->
+                        @php $item = $feedback->first(); @endphp
+                        <div
+                            class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative w-full max-w-md feedback-card">
                             <div class="flex items-center gap-3 mb-4 mt-8">
                                 <div class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
                                     <i class="fa-solid fa-user text-[#4A6613]"></i>
                                 </div>
                                 <div>
                                     <p class="font-semibold text-[#4A6613] text-sm">
-                                        {{ $feedback->first()->user->first_name ?? 'Anonymous' }} {{ $feedback->first()->user->last_name ?? '' }}
+                                        {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
                                     </p>
-                                    <p class="text-xs text-[#4E3A2E]/60">
-                                        {{ $feedback->first()->created_at->format('M d, Y') }}
-                                    </p>
+                                    <p class="text-xs text-[#4E3A2E]/60">{{ $item->created_at->format('M d, Y') }}</p>
                                 </div>
                             </div>
-
-                            <!-- Feedback Content -->
-                            <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">
-                                "{{ $feedback->first()->content }}"
-                            </p>
-
-                            <!-- Star Rating & Footer -->
+                            <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">"{{ $item->content }}"</p>
                             <div class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
                                 <div class="flex gap-1">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <i class="fa-solid fa-star {{ $i <= $feedback->first()->rating ? 'text-yellow-500' : 'text-gray-300' }} text-base"></i>
-                                    @endfor
+                                    <span class="text-yellow-500">{!! str_repeat('<i class="fa-solid fa-star"></i>', $item->rating) !!}</span>
+                                    <span class="text-gray-300">{!! str_repeat('<i class="fa-solid fa-star"></i>', 5 - $item->rating) !!}</span>
                                 </div>
-                                
-                                <!-- Decorative quote -->
-                                <i class="fa-solid fa-quote-right text-xl text-[#4A6613] opacity-60"></i>
                             </div>
                         </div>
                     </div>
                 @else
-                    <!-- Multiple feedbacks - ONE ROW ONLY with horizontal scroll -->
-                    <div class="overflow-x-auto pb-6 scrollbar-hide" style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <div class="relative">
+                        <!-- Leaf decorations -->
+                        <img src="{{ Vite::asset('resources/images/viewport1/3leaves-left.png') }}" alt="Leaf Cluster"
+                            class="absolute right-0 top-1/2 transform translate-x-[85%] -translate-y-[30%] w-90 h-auto filter brightness-[0.85]"
+                            loading="lazy">
+                        <img src="{{ Vite::asset('resources/images/viewport1/3leaves-right.png') }}" alt="Leaf Cluster"
+                            class="absolute left-0 top-1/2 transform -translate-x-[85%] -translate-y-[30%] w-90 h-auto filter brightness-[0.85]"
+                            loading="lazy">
+                    </div>
+
+                    <div class="overflow-x-auto pb-6 scrollbar-hide"
+                        style="scrollbar-width: none; -ms-overflow-style: none;">
                         <div class="flex gap-6 px-4 min-w-min">
                             @foreach ($feedback as $item)
-                                <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[320px] max-w-[320px] flex-shrink-0">
-                                    <!-- Quotation Mark -->
-                                    <i class="fa-solid fa-quote-left text-3xl text-[#4A6613] absolute top-4 left-4 opacity-70"></i>
-
-                                    <!-- User Info Section -->
+                                <div
+                                    class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative min-w-[320px] max-w-[320px] flex-shrink-0 feedback-card">
                                     <div class="flex items-center gap-3 mb-4 mt-8">
-                                        <div class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
                                             <i class="fa-solid fa-user text-[#4A6613]"></i>
                                         </div>
                                         <div>
                                             <p class="font-semibold text-[#4A6613] text-sm">
-                                                {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
-                                            </p>
-                                            <p class="text-xs text-[#4E3A2E]/60">
-                                                {{ $item->created_at->format('M d, Y') }}
+                                                {{ $item->user->first_name ?? 'Anonymous' }}
+                                                {{ $item->user->last_name ?? '' }}</p>
+                                            <p class="text-xs text-[#4E3A2E]/60">{{ $item->created_at->format('M d, Y') }}
                                             </p>
                                         </div>
                                     </div>
-
-                                    <!-- Feedback Content -->
-                                    <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">
-                                        "{{ $item->content }}"
-                                    </p>
-
-                                    <!-- Star Rating & Footer -->
+                                    <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">"{{ $item->content }}"</p>
                                     <div class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
                                         <div class="flex gap-1">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fa-solid fa-star {{ $i <= $item->rating ? 'text-yellow-500' : 'text-gray-300' }} text-base"></i>
-                                            @endfor
+                                            <span class="text-yellow-500">{!! str_repeat('<i class="fa-solid fa-star"></i>', $item->rating) !!}</span>
+                                            <span class="text-gray-300">{!! str_repeat('<i class="fa-solid fa-star"></i>', 5 - $item->rating) !!}</span>
                                         </div>
-                                        
-                                        <!-- Decorative quote -->
-                                        <i class="fa-solid fa-quote-right text-xl text-[#4A6613] opacity-60"></i>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    <!-- Scroll indicator (only for multiple items) -->
                     <div class="text-center mt-6">
                         <p class="text-sm text-[#4E3A2E]/70 flex items-center justify-center gap-2">
                             <i class="fa-solid fa-arrows-left-right text-xs"></i>
@@ -1207,186 +1159,183 @@ document.addEventListener('DOMContentLoaded', function() {
                 @endif
             </div>
         </div>
-    @endif
-</div>
-<style>
-/* Custom scrollbar styling (optional) */
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
 
-/* Horizontal scroll indicator */
-.flex.overflow-x-auto {
-    scroll-behavior: smooth;
-    cursor: grab;
-}
+        <style>
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
 
-.flex.overflow-x-auto:active {
-    cursor: grabbing;
-}
+            .flex.overflow-x-auto {
+                scroll-behavior: smooth;
+                cursor: grab;
+            }
 
-/* Line clamp for text */
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
+            .flex.overflow-x-auto:active {
+                cursor: grabbing;
+            }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .min-w-\[320px\] {
-        min-width: 280px;
-    }
-    
-    .max-w-\[320px\] {
-        max-width: 280px;
-    }
-}
-</style>
+            .line-clamp-3 {
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
 
-<script>
-// Optional: Add smooth scrolling with mouse drag
-document.addEventListener('DOMContentLoaded', function() {
-    const scrollContainers = document.querySelectorAll('.flex.overflow-x-auto');
-    
-    scrollContainers.forEach(container => {
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-        
-        container.addEventListener('mousedown', (e) => {
-            isDown = true;
-            container.classList.add('active');
-            startX = e.pageX - container.offsetLeft;
-            scrollLeft = container.scrollLeft;
-        });
-        
-        container.addEventListener('mouseleave', () => {
-            isDown = false;
-            container.classList.remove('active');
-        });
-        
-        container.addEventListener('mouseup', () => {
-            isDown = false;
-            container.classList.remove('active');
-        });
-        
-        container.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - container.offsetLeft;
-            const walk = (x - startX) * 2; // Scroll speed
-            container.scrollLeft = scrollLeft - walk;
-        });
-    });
-});
-</script>
-           
+            @media (max-width: 768px) {
+                .min-w-[320px] {
+                    min-width: 280px;
+                }
+
+                .max-w-[320px] {
+                    max-width: 280px;
+                }
+            }
+
+            .feedback-card::before {
+                content: "“";
+                font-size: 1.5rem;
+                color: #4A6613;
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+                opacity: 0.7;
+            }
+        </style>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const scrollContainers = document.querySelectorAll('.flex.overflow-x-auto');
+                scrollContainers.forEach(container => {
+                    let isDown = false,
+                        startX, scrollLeft;
+                    container.addEventListener('mousedown', e => {
+                        isDown = true;
+                        startX = e.pageX - container.offsetLeft;
+                        scrollLeft = container.scrollLeft;
+                    });
+                    ['mouseup', 'mouseleave'].forEach(evt => container.addEventListener(evt, () => isDown =
+                        false));
+                    container.addEventListener('mousemove', e => {
+                        if (!isDown) return;
+                        requestAnimationFrame(() => {
+                            const x = e.pageX - container.offsetLeft;
+                            container.scrollLeft = scrollLeft - (x - startX) * 2;
+                        });
+                    });
+                });
+            });
+        </script>
 
     </section>
 
-<section class="relative text-center py-8px-6 overflow-hidden">
-            <!-- Background overlay image with exact opacity and pointer-events -->
 
-       <!-- 🌫️ Soft Fog Layer -->
+    <section class="relative text-center py-8px-6 overflow-hidden">
+        <!-- Background overlay image with exact opacity and pointer-events -->
+
+        <!-- 🌫️ Soft Fog Layer -->
         <div
             class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
         </div>
 
-      <!-- 🌫️ Soft Fog Layer -->
-<div class="absolute top-[-3rem] left-0 w-full h-[150px] 
-            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]"></div>
-   
-    <!-- Soft gradient background (different from above) -->
-    <div class="absolute inset-0" 
-         style="background: radial-gradient(circle at 50% 50%, #F1EEE6, #E8E4DA)"></div>
-    
-    <!-- Subtle water/wave pattern overlay -->
-    <div class="absolute inset-0 opacity-10 pointer-events-none"
-         style="background-image: url('data:image/svg+xml,<svg width="100" height="20" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M0,10 C20,5 40,15 60,10 C80,5 100,15 100,10 L100,20 L0,20 Z" fill="%236B7D5A"/></svg></div>
-    
-    <!-- Floating eco elements -->
-    <div class="absolute top-20 left-10 w-16 h-16 opacity-10 animate-float">
-        <i class="fa-solid fa-droplet text-5xl" style="color: #8A9A7B"></i>
-    </div>
-    <div class="absolute bottom-20 right-12 w-20 h-20 opacity-10 animate-float" style="animation-delay: 1s">
-        <i class="fa-solid fa-wind text-6xl" style="color: #9BAF8D"></i>
-    </div>
-    
-    <!-- Subtle background image with very low opacity -->
-    <div class="absolute inset-0 bg-center bg-contain bg-no-repeat opacity-5 mix-blend-soft-light"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}');"></div>
+        <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute top-[-3rem] left-0 w-full h-[150px] 
+            bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]">
+        </div>
 
-    <div class="relative z-30 max-w-3xl mx-auto">
-        
+        <!-- Soft gradient background (different from above) -->
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, #F1EEE6, #E8E4DA)"></div>
+
+        <!-- Subtle water/wave pattern overlay -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none"
+            style="background-image: url('data:image/svg+xml,<svg width="100" height="20" viewBox="0 0 100 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,10 C20,5 40,15 60,10 C80,5 100,15 100,10 L100,20 L0,20 Z" fill="%236B7D5A" /></svg>
+        </div>
+
+        <!-- Floating eco elements -->
+        <div class="absolute top-20 left-10 w-16 h-16 opacity-10 animate-float">
+            <i class="fa-solid fa-droplet text-5xl" style="color: #8A9A7B"></i>
+        </div>
+        <div class="absolute bottom-20 right-12 w-20 h-20 opacity-10 animate-float" style="animation-delay: 1s">
+            <i class="fa-solid fa-wind text-6xl" style="color: #9BAF8D"></i>
+        </div>
+
+        <!-- Subtle background image with very low opacity -->
+        <div class="absolute inset-0 bg-center bg-contain bg-no-repeat opacity-5 mix-blend-soft-light"
+            style="background-image: url('{{ Vite::asset('resources/images/viewport1/image-removebg-preview (12).png') }}');">
+        </div>
+
+        <div class="relative z-30 max-w-3xl mx-auto">
 
 
-        <!-- Earthy call to action -->
-<div class="mb-16">
+
+            <!-- Earthy call to action -->
+            <div class="mb-16">
 
 
-    <!-- Emotional heading -->
-    <h3 class="font-serif text-3xl md:text-5xl font-light mb-12 leading-snug text-center px-6" 
-        style="color: #5A6B4A; line-height: 1.3">
-        What if making a difference<br>
-        felt as natural as<br>
-        <span class="italic font-normal" style="color: #8A9A7B">breathing?</span>
-    </h3>
+                <!-- Emotional heading -->
+                <h3 class="font-serif text-3xl md:text-5xl font-light mb-12 leading-snug text-center px-6"
+                    style="color: #5A6B4A; line-height: 1.3">
+                    What if making a difference<br>
+                    felt as natural as<br>
+                    <span class="italic font-normal" style="color: #8A9A7B">breathing?</span>
+                </h3>
 
-    <!-- Gentle quote box -->
-    <div class="max-w-lg mx-auto p-10 rounded-2xl relative" 
-         style="background: rgba(255, 255, 255, 0.8); 
+                <!-- Gentle quote box -->
+                <div class="max-w-lg mx-auto p-10 rounded-2xl relative"
+                    style="background: rgba(255, 255, 255, 0.8); 
                 border: 1px solid rgba(200, 213, 187, 0.4);
                 backdrop-filter: blur(8px)">
-        
-        <!-- Quote with soft spacing -->
-        <div class="space-y-6">
-            <p class="text-lg font-sans-serif italic leading-relaxed text-center" 
-               style="color: #6B7D5A; line-height: 1.8">
-                "Sustainability isn't about being perfect.<br>
-                It's about being present.<br>
-                <span class="font-medium" style="color: #8A9A7B">One gentle choice at a time,</span><br>
-                we weave a kinder world together."
-            </p>
-            
-            <div class="pt-6 border-t text-center" style="border-top-color: rgba(200, 213, 187, 0.3)">
-                <p class="text-sm font-light tracking-wide" style="color: rgba(107, 125, 90, 0.7)">
-                    Welcome to a space where<br>
-                    every small step is celebrated
-                </p>
+
+                    <!-- Quote with soft spacing -->
+                    <div class="space-y-6">
+                        <p class="text-lg font-sans-serif italic leading-relaxed text-center"
+                            style="color: #6B7D5A; line-height: 1.8">
+                            "Sustainability isn't about being perfect.<br>
+                            It's about being present.<br>
+                            <span class="font-medium" style="color: #8A9A7B">One gentle choice at a time,</span><br>
+                            we weave a kinder world together."
+                        </p>
+
+                        <div class="pt-6 border-t text-center" style="border-top-color: rgba(200, 213, 187, 0.3)">
+                            <p class="text-sm font-light tracking-wide" style="color: rgba(107, 125, 90, 0.7)">
+                                Welcome to a space where<br>
+                                every small step is celebrated
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- Olive Button Design -->
+            <!-- Olive Button using your existing CSS classes -->
+            <a href="/quests" class="btn-eco btn-olive w-67 py-3 px-8 text-base md:text-lg">
+                <i class="fa-solid fa-seedling"></i>
+                <span>Start Your First Quest</span>
+            </a>
+
+
         </div>
-    </div>
-</div>
-       <!-- Olive Button Design -->
-<!-- Olive Button using your existing CSS classes -->
-<a href="/quests" class="btn-eco btn-olive w-67 py-3 px-8 text-base md:text-lg">
-    <i class="fa-solid fa-seedling"></i>
-    <span>Start Your First Quest</span>
-</a>
 
-    
-    </div>
+    </section>
 
-</section>
+    <style>
+        .pattern-bg {
+            position: relative;
+        }
 
-<style>
-.pattern-bg {
-    position: relative;
-}
-
-.pattern-bg::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('{{ Vite::asset("resources/images/viewport1/pattern.png") }}');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.2; /* Adjust opacity here */
-    z-index: 0;
-}
-</style>
+        .pattern-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('{{ Vite::asset('resources/images/viewport1/pattern.webp') }}');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            /* Adjust opacity here */
+            z-index: 0;
+        }
+    </style>
 
     <style>
         @keyframes float {
@@ -1491,18 +1440,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // Create burst glow
             const burstGlow = document.createElement('div');
             burstGlow.style.cssText = `
-            position: fixed;
-            width: 50px;
-            height: 50px;
-            background: radial-gradient(circle, rgba(159,143,106,0.4) 0%, rgba(159,143,106,0) 70%);
-            border-radius: 50%;
-            left: ${x - 25}px;
-            top: ${y - 25}px;
-            pointer-events: none;
-            z-index: 45;
-            filter: blur(8px);
-            opacity: 0;
-        `;
+                position: fixed;
+                width: 50px;
+                height: 50px;
+                background: radial-gradient(circle, rgba(159,143,106,0.4) 0%, rgba(159,143,106,0) 70%);
+                border-radius: 50%;
+                left: ${x - 25}px;
+                top: ${y - 25}px;
+                pointer-events: none;
+                z-index: 45;
+                filter: blur(8px);
+                opacity: 0;
+            `;
 
             container.appendChild(burstGlow);
 
@@ -1575,21 +1524,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Juicy leaf styles
             leaf.style.cssText = `
-            position: absolute;
-            width: ${leafSize}px;
-            height: ${leafSize}px;
-            pointer-events: none;
-            z-index: 40;
-            opacity: 0;
-            filter: 
-                drop-shadow(0 0 6px rgba(159, 143, 106, 0.6))
-                drop-shadow(0 0 12px rgba(159, 143, 106, 0.3))
-                blur(${0.3 + Math.random() * 0.4}px);
-            transform-origin: center;
-            mix-blend-mode: multiply;
-            will-change: transform, opacity, filter;
-            transition: opacity 0.2s ease-out;
-        `;
+                position: absolute;
+                width: ${leafSize}px;
+                height: ${leafSize}px;
+                pointer-events: none;
+                z-index: 40;
+                opacity: 0;
+                filter: 
+                    drop-shadow(0 0 6px rgba(159, 143, 106, 0.6))
+                    drop-shadow(0 0 12px rgba(159, 143, 106, 0.3))
+                    blur(${0.3 + Math.random() * 0.4}px);
+                transform-origin: center;
+                mix-blend-mode: multiply;
+                will-change: transform, opacity, filter;
+                transition: opacity 0.2s ease-out;
+            `;
 
             const containerRect = fallenLeavesContainer.getBoundingClientRect();
 
@@ -1775,17 +1724,17 @@ document.addEventListener('DOMContentLoaded', function() {
             function createRippleEffect(x, y) {
                 const ripple = document.createElement('div');
                 ripple.style.cssText = `
-                    position: fixed;
-                    width: 40px;
-                    height: 40px;
-                    border: 2px solid rgba(159, 143, 106, 0.6);
-                    border-radius: 50%;
-                    left: ${x - 20}px;
-                    top: ${y - 20}px;
-                    pointer-events: none;
-                    z-index: 45;
-                    opacity: 0.8;
-                `;
+                        position: fixed;
+                        width: 40px;
+                        height: 40px;
+                        border: 2px solid rgba(159, 143, 106, 0.6);
+                        border-radius: 50%;
+                        left: ${x - 20}px;
+                        top: ${y - 20}px;
+                        pointer-events: none;
+                        z-index: 45;
+                        opacity: 0.8;
+                    `;
 
                 document.body.appendChild(ripple);
 
@@ -1810,137 +1759,22 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add CSS for active tap effect
             const style = document.createElement('style');
             style.textContent = `
-                .active-tap {
-                    animation: juicyTap 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) !important;
-                    filter: brightness(1.2) !important;
-                }
-                
-                @keyframes juicyTap {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(0.95); }
-                    100% { transform: scale(1); }
-                }
-            `;
+                    .active-tap {
+                        animation: juicyTap 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) !important;
+                        filter: brightness(1.2) !important;
+                    }
+                    
+                    @keyframes juicyTap {
+                        0% { transform: scale(1); }
+                        50% { transform: scale(0.95); }
+                        100% { transform: scale(1); }
+                    }
+                `;
             document.head.appendChild(style);
 
             // Keep the rest of your functions (sendTaps, showMessage, etc.) unchanged
             // They should work with the enhanced click handler
 
-            // Update the sendTaps function to show messages in the progress label area:
-            function sendTaps(tapCount) {
-                fetch("{{ url('/tree/tap') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            taps: tapCount
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log("Tree tap response:", data);
-
-                        // ========== ADD THIS: Handle "Only verified users" message ==========
-                        if (data.message === 'Only verified users') {
-                            showToastMessage(
-                                '🌿 Only verified users can grow their tree',
-                                'verification',
-                                'Verify your account to nurture your eco-tree and earn points'
-                            );
-                            return; // Stop further processing
-                        }
-                        // ========== END ADDED SECTION ==========
-
-                        const growthFill = document.getElementById('growth-fill');
-                        const growthLabel = document.getElementById('growth-label');
-                        const growthBar = document.getElementById('growth-bar');
-
-                        // 1. Update Progress Bar Fill
-                        if (data.growthPercent !== undefined && growthFill) {
-                            const oldPercent = parseFloat(growthFill.style.width) || 0;
-                            const newPercent = parseFloat(data.growthPercentReal);
-
-                            growthFill.style.width = `${newPercent}%`;
-
-                            // Level-up celebration when crossing a stage
-                            const segment = 100 / 10; // 10 stages
-                            if (Math.floor(oldPercent / segment) < Math.floor(newPercent / segment)) {
-                                createLevelUpEffect();
-                            }
-                        }
-
-                        // 2. Update Growth Label (only for verified users)
-                        if (growthLabel && data.stage !== undefined) {
-                            // Non-verified users see restricted message (handled in Blade)
-                            // But if server says we're good → show full info
-                            growthLabel.innerHTML = `
-                    Stage ${data.stage} / 10 — ${data.progressPointsReal} / ${data.growthMax} points
-                    <span class="block text-[20px] text-[#9f8f6a]/70 font-normal mt-1">
-                        ${data.stages_remaining} stage${data.stages_remaining === 1 ? '' : 's'} remaining
-                    </span>
-                `;
-                        }
-
-                        // 3. Update Stage Markers (current stage glows)
-                        const markerContainer = growthBar?.querySelector('.absolute.inset-0.flex');
-                        if (markerContainer && data.stage !== undefined) {
-                            const markers = markerContainer.querySelectorAll('.group\\/marker');
-                            markers.forEach((markerEl, index) => {
-                                const stageNum = index + 1;
-                                const dot = markerEl.querySelector('div[class*="w-["]');
-                                const label = markerEl.querySelector('span');
-
-                                const isCurrent = stageNum === data.stage;
-                                const isPast = stageNum < data.stage;
-
-                                // Update dot
-                                if (isCurrent) {
-                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                            '') +
-                                        ' bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a] shadow-[0_0_8px_2px_rgba(159,143,106,0.6)] ring-2 ring-white/50';
-                                    if (label) label.textContent = 'Stage ' + stageNum;
-                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                                        'text-[#5C7919] font-bold');
-                                } else if (isPast) {
-                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                            '') +
-                                        ' bg-gradient-to-br from-[#bfae7c] to-[#9f8f6a] shadow-[0_0_4px_1px_rgba(159,143,106,0.4)]';
-                                    if (label) label.textContent = 'Stage ' + stageNum;
-                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                                        'text-[#9f8f6a]');
-                                } else {
-                                    dot.className = dot.className.replace(/bg-gradient-to-br[^ ]*/g,
-                                            '') +
-                                        ' bg-gradient-to-br from-[#cbbfa8]/80 to-[#9f8f6a]/30 border border-[#cbbfa8]/50';
-                                    if (label) label.textContent = 'Stage ' + stageNum;
-                                    if (label) label.className = label.className.replace(/text-[^ ]*/g,
-                                        'text-[#cbbfa8]/70');
-                                }
-                            });
-                        }
-
-                        // 4. Quest Progress Message
-                        if (data.tap_progress !== undefined) {
-                            if (data.quest_completed || data.tap_progress >= 100) {
-                                showProgressBarMessage("Quest Already completed! +5 points awarded", "success");
-                            } else if (data.has_quest && data.tap_progress > 0) {
-                                showProgressBarMessage(`Keep tapping — ${data.tap_progress}/100 taps`, "info");
-                            }
-                        }
-
-                        // 5. Optional: Show toast message from server
-                        if (data.message && !data.message.includes("progress")) {
-                            // Use new consistent toast instead of showIntegratedMessage
-                            showToastMessage(data.message, 'info');
-                        }
-                    })
-                    .catch(err => {
-                        console.error("Tap failed:", err);
-                        showToastMessage("Connection lost. Try again!", "error");
-                    });
-            }
             // ========== ADD THIS NEW FUNCTION ==========
             function showToastMessage(message, type = 'info', subtitle = '') {
                 // Remove existing toast if present
@@ -2136,7 +1970,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         showToastMessage("Connection lost. Try again!", "error");
                     });
             }
-
             // ========== UPDATE showProgressBarMessage to use consistent styling ==========
             function showProgressBarMessage(msg, type = "info") {
                 // Instead of the badge, use the consistent toast
@@ -2160,48 +1993,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Update with message (simpler version)
                 targetElement.innerHTML = `
-        <div class="flex items-center gap-2 animate-pulse">
-            <span class="text-sm font-medium">${msg}</span>
-        </div>
-    `;
-
-                targetElement.className = originalClasses +
-                    ' bg-gradient-to-r from-[#E8E2D5]/80 to-[#D8D1C1]/80 ' +
-                    'border border-[#B8A992]/50 shadow-sm text-[#5C4E3F]';
-
-                // Restore after 3 seconds
-                setTimeout(() => {
-                    targetElement.innerHTML = originalContent;
-                    targetElement.className = originalClasses;
-                }, 3000);
-            }
-            // ========== UPDATE showProgressBarMessage to use consistent styling ==========
-            function showProgressBarMessage(msg, type = "info") {
-                // Instead of the badge, use the consistent toast
-                const toastType = type === 'warning' ? 'error' :
-                    type === 'success' ? 'success' : 'info';
-
-                showToastMessage(msg, toastType);
-            }
-
-            // ========== UPDATE showIntegratedMessage to use consistent styling ==========
-            function showIntegratedMessage(msg, targetElement) {
-                // Use toast instead of modifying the element
-                showToastMessage(msg, 'info');
-
-                // Optionally keep the original functionality for backward compatibility
-                if (!targetElement) return;
-
-                // Save original content
-                const originalContent = targetElement.innerHTML;
-                const originalClasses = targetElement.className;
-
-                // Update with message (simpler version)
-                targetElement.innerHTML = `
-        <div class="flex items-center gap-2 animate-pulse">
-            <span class="text-sm font-medium">${msg}</span>
-        </div>
-    `;
+                    <div class="flex items-center gap-2 animate-pulse">
+                        <span class="text-sm font-medium">${msg}</span>
+                    </div>
+                `;
 
                 targetElement.className = originalClasses +
                     ' bg-gradient-to-r from-[#E8E2D5]/80 to-[#D8D1C1]/80 ' +
@@ -2214,8 +2009,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 3000);
             }
 
-            // ========== KEEP THE REST OF YOUR FUNCTIONS AS IS ==========
+            let levelUpEffectTriggered = false; // flag to ensure animation runs only once
+
             function createLevelUpEffect() {
+                if (levelUpEffectTriggered) return; // exit if already triggered
+                levelUpEffectTriggered = true; // mark as triggered
+
                 // Create level up particles
                 for (let i = 0; i < 15; i++) {
                     setTimeout(() => {
