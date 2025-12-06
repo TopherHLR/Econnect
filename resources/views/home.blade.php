@@ -5,11 +5,11 @@
         <div class="overlay"></div>
         <!-- Left Branch -->
         <img src="{{ Vite::asset('resources/images/viewport1/branch-leftt.svg') }}" alt="Left branch"
-            class="opacity-80 absolute top-[10%] right-0 z-[30] animate-sway-left" style="width: 80vh; left: -12%;" />
+            class="opacity-100 absolute top-[10%] right-0 z-[30] animate-sway-left" style="width: 80vh; left: -12%;" />
 
         <!-- Right Branch -->
         <img src="{{ Vite::asset('resources/images/viewport1/branch-right_.svg') }}" alt="Right branch"
-            class="opacity-80 absolute top-[8%] z-[30] animate-sway-right" style="width: 98vh; right: -10%;" />
+            class="opacity-100 absolute top-[8%] z-[30] animate-sway-right" style="width: 98vh; right: -10%;" />
 
 
         <!-- 🌍 Globe (enlarged) -->
