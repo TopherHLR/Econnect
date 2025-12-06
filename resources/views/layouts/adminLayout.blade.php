@@ -35,9 +35,9 @@
         /* 🌱 Sidebar Container */
         aside.mainsidebar {
             position: fixed;
-            top: 120px;
+            top: 110px;
             left: 24px;
-            z-index: 10px;
+            z-index: 1000px;
             width: var(--sidebar-width-expanded);
             background: #FCF9EF;
             border-radius: 2rem;
@@ -282,8 +282,8 @@
 
         /* 🌿 Main Content Responsive */
         main.mainonly {
-            margin-left: var(--sidebar-width-expanded);
-            margin-top: 125px;
+            margin-left: 300px;
+            margin-top: 110px;
             margin-right: 24px;
   
             background: #FCF9EF;
@@ -296,24 +296,6 @@
             padding: 35px;
             height: calc(100vh - 160px);
         }
-
-        /* 📱 Mobile adjustments */
-        @media (max-width: 1024px) {
-            main.mainonly {
-                margin-left: 0 !important;
-                margin-right: 12px;
-                margin-left: 12px;
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            main.mainonly {
-                padding: 16px;
-                border-radius: 1rem;
-            }
-        }
-
 
         /* Adjust main content when sidebar is collapsed */
         aside.mainsidebar.collapsed~main.mainonly {
@@ -381,6 +363,7 @@
 
         <div class="flex items-center space-x-4">
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="Econnect Logo" class="h-12 w-auto">
+            <h2  style="font-size: 1.5rem; font-weight: 700; color: #4F6B3F; font-family: 'Nunito Sans', sans-serif;">Welcome, Admin!<h2>
         </div>
         <!-- Profile, Notifications, Logout + Dynamic Eco Image -->
         <div class="flex items-center space-x-6 relative">
