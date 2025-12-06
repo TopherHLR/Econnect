@@ -6,7 +6,7 @@
     @include('modal.userModal')
     @include('modal.AddVoucherModal')
     @include('modal.deservingPlayerModal')
-    <div class="space-y-6">
+    <div class="space-y-6 ">
         <!-- Header Section with ALL Quick Actions -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div>
@@ -133,7 +133,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">   
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">   
                 <!-- 🟢 HIGH PRIORITY CARDS (Top Row) -->
                 @if ($mostDeserving && $mostDeserving->pointsEarned > 0)
                     <div class="metric-card">

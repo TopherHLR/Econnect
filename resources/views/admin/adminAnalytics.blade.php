@@ -640,7 +640,6 @@
     <style>
         /* ===== ECO NAVIGATION STYLES ===== */
         .page-navigation {
-            position: sticky;
             top: 0;
             z-index: 50;
             background: #FCF9EF;
@@ -745,7 +744,7 @@
         .metric-card {
             background: white;
             border-radius: 1rem;
-            padding: 1.5rem;
+            padding: 1rem;
             border: 1px solid #E6EAD7;
             box-shadow: 0 2px 8px rgba(79, 107, 63, 0.08);
             transition: all 0.3s ease;
@@ -912,13 +911,13 @@
             border: 1px solid #E6EAD7;
             box-shadow: 0 2px 12px rgba(79, 107, 63, 0.08);
             padding: 1.5rem;
-            max-height: 280px;
+            max-height: 260px;
             /* optional */
         }
 
         /* Scroll Container */
         .weekly-scroll {
-            max-height: 250px;
+            max-height: 220px;
             /* adjust as needed */
             overflow-y: auto;
             overflow-x: hidden;

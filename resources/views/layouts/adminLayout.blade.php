@@ -35,16 +35,16 @@
         /* 🌱 Sidebar Container */
         aside.mainsidebar {
             position: fixed;
-            top: 153px;
+            top: 120px;
             left: 24px;
-            height: calc((100vh - 160px) * 0.96);
+            z-index: 10px;
             width: var(--sidebar-width-expanded);
             background: #FCF9EF;
             border-radius: 2rem;
             box-shadow: 0 8px 32px rgba(79, 107, 63, 0.12);
             transition: var(--sidebar-transition);
             font-family: 'Nunito Sans', sans-serif;
-            z-index: 50;
+            height: calc((100vh - 160px) * 1);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -274,10 +274,10 @@
             overflow: hidden;
         }
 
-        /* 🌿 Main Content Area */
+        /* 🌿 Main Content Responsive */
         main.mainonly {
-            margin-left: calc(var(--sidebar-width-expanded) + 48px);
-            margin-top: 24px;
+            margin-left: var(--sidebar-width-expanded);
+            margin-top: 125px;
             margin-right: 24px;
             background: #FCF9EF;
             border-radius: 2rem;
@@ -285,27 +285,31 @@
             border: 1px solid rgba(79, 107, 63, 0.06);
             transition: var(--sidebar-transition);
             font-family: 'Nunito Sans', sans-serif;
-            padding: 32px;
-            min-height: calc(100vh - 200px);
+            padding: 30px;
+            min-height: calc(100vh - 160px);
         }
+
+        /* 📱 Mobile adjustments */
+        @media (max-width: 1024px) {
+            main.mainonly {
+                margin-left: 0 !important;
+                margin-right: 12px;
+                margin-left: 12px;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            main.mainonly {
+                padding: 16px;
+                border-radius: 1rem;
+            }
+        }
+
 
         /* Adjust main content when sidebar is collapsed */
         aside.mainsidebar.collapsed~main.mainonly {
             margin-left: calc(var(--sidebar-width-collapsed) + 48px);
-        }
-
-        /* 🌿 Top Bar */
-        header {
-            background: #FCF9EF;
-            box-shadow: 0 4px 20px rgba(79, 107, 63, 0.08);
-            border-bottom: 1px solid rgba(79, 107, 63, 0.08);
-            border-radius: 0 0 2rem 2rem;
-            transition: all 0.3s ease;
-            margin: 24px 24px 0;
-            padding: 20px 32px;
-            position: sticky;
-            top: 0;
-            z-index: 50;
         }
 
         /* 🌾 Toasts */
@@ -328,41 +332,6 @@
             font-family: 'Nunito Sans', sans-serif;
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 1200px) {
-            aside.mainsidebar {
-                width: var(--sidebar-width-collapsed);
-                top: 100px;
-            }
-
-            main.mainonly {
-                margin-left: calc(var(--sidebar-width-collapsed) + 32px);
-            }
-
-            .sidebar-logo span {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            aside.mainsidebar {
-                width: var(--sidebar-width-collapsed);
-                height: calc(100vh - 140px);
-                top: 80px;
-                left: 16px;
-            }
-
-            main.mainonly {
-                margin-left: calc(var(--sidebar-width-collapsed) + 24px);
-                margin-right: 16px;
-                padding: 24px;
-            }
-
-            header {
-                margin: 16px 16px 0;
-                padding: 16px 24px;
-            }
-        }
 
         /* Smooth transitions for all sidebar related elements */
         .sidebar-transition {
@@ -378,8 +347,13 @@
 
 <body class="flex flex-col min-h-screen">
 
-    <!-- 🌿 Top Bar -->
-    <header class="flex justify-between items-center py-4 px-3 w-[97%] mx-auto mt-3 relative">
+    <header
+        class="flex justify-between items-center fixed top-0 z-50 
+           bg-[#FCF9EF]/80 backdrop-blur-md 
+           shadow-[0_4px_20px_rgba(79,107,63,0.08)] 
+           border-b border-[rgba(79,107,63,0.08)]
+           rounded-b-[2rem] mx-6 px-8 py-5 w-[97%]">
+
         <!-- 🌿 Feedback Notification -->
         @if (session('success'))
             <div id="feedback-toast"
@@ -399,10 +373,6 @@
 
         <div class="flex items-center space-x-4">
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="Econnect Logo" class="h-12 w-auto">
-
-            <h1 class="text-2xl md:text-[24px] font-semibold leading-tight ml-[600px]">
-                Welcome back, <span class="font-bold">Admin</span>!
-            </h1>
         </div>
         <!-- Profile, Notifications, Logout + Dynamic Eco Image -->
         <div class="flex items-center space-x-6 relative">
@@ -419,11 +389,6 @@
                 </button>
             </div>
 
-            <!-- Profile Icon -->
-            <a href="#" class="text-[#6A8A52] hover:text-[#4F6B3F]" title="Profile">
-                <i class="fa-solid fa-user-circle text-4xl"></i>
-            </a>
-
             <!-- Logout -->
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -439,7 +404,7 @@
     </header>
 
     <!-- 🍃 Sidebar -->
-    <aside class="mainsidebar" id="sidebar">
+    <aside class="mainsidebar h-full" id="sidebar">
         <!-- Sidebar Logo -->
         <div class="sidebar-logo">
             <span>Admin Views</span>
@@ -451,7 +416,7 @@
         </div>
 
         <!-- Navigation -->
-        <nav class="sidebar-content">
+        <nav class="sidebar-content mb-10">
             <a href="/adminHome" class="nav-item" data-tooltip="Dashboard">
                 <i class="fa-solid fa-house"></i>
                 <span>Dashboard</span>
@@ -480,68 +445,11 @@
     </aside>
 
     <!-- 🌾 Main Content -->
-    <main class="mainonly">
+    <main class="mainonly overflow-hidden">
         @include('modal.qrScannerModal')
         @include('modal.ecoTopics_ecoActionModal')
         @yield('content')
     </main>
-
-    <!-- 🍂 Footer -->
-    <footer class="mt-16">
-        <div class="bg-[#C37A49] text-center py-2 text-white font-medium text-sm tracking-wide">
-            Developed by the BuggedOut Team • © {{ date('Y') }}
-        </div>
-
-        <div class="bg-[#7F8A4F] text-white px-8 md:px-20 py-12">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-sm leading-relaxed">
-                <div>
-                    <h3 class="font-bold text-xl mb-3">ECOconnect</h3>
-                    <p>Your companion for everyday sustainable living. Built to guide, inspire, and connect
-                        eco-conscious individuals.</p>
-                    <div class="flex space-x-5 mt-5 text-lg">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="font-semibold text-lg mb-3 border-l-4 border-[#C37A49] pl-2">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/lifestyle">Lifestyle</a></li>
-                        <li><a href="/quests">Quests</a></li>
-                        <li><a href="/progress">My Progress</a></li>
-                        <li><a href="/about">About</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="font-semibold text-lg mb-3 border-l-4 border-[#C37A49] pl-2">Learn More</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#">Sustainability Guides</a></li>
-                        <li><a href="#">Community Partners</a></li>
-                        <li><a href="#">Educational Resources</a></li>
-                        <li><a href="#">FAQs</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h3 class="font-semibold text-lg mb-3 border-l-4 border-[#C37A49] pl-2">About & Legal</h3>
-                    <ul class="space-y-2 mb-4">
-                        <li><a href="#">About ECOconnect</a></li>
-                        <li><a href="#">Team Members</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                    <ul class="space-y-2">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Use</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>

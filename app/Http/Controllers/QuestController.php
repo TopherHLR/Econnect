@@ -44,7 +44,7 @@ class QuestController extends Controller
                 $paginatedSubmissions = $quest->submissions()
                     ->with('user', 'verifier')
                     ->orderBy('date_submitted', 'desc')
-                    ->paginate(5);
+                    ->paginate(2);
 
                 $quest->setRelation('submissions', $paginatedSubmissions);
 

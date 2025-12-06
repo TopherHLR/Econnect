@@ -1,7 +1,7 @@
 <!-- resources/views/admin/partials/archived_quests_table.blade.php -->
-<div id="archive-table-container">
+<div id="archive-table-container" >
     <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
+        <table class="min-w-full bg-white border h-full border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
             <thead class="bg-[#FCF9EF] border-b border-[#D8E2CA]">
                 <tr class="text-left text-[#4F6B3F] text-sm font-semibold">
                     <th class="px-4 py-3">#</th>

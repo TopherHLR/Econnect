@@ -1,4 +1,4 @@
-<table class="min-w-full bg-white border border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
+<table class="min-w-full bg-white border  border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
     <thead class="bg-[#FCF9EF] border-b border-[#D8E2CA]">
         <tr>
             <th class="px-4 py-3 text-left font-semibold w-16">#</th>

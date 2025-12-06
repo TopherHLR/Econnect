@@ -6,7 +6,7 @@
     @include('modal.userQuestModal')
     <div class="space-y-6">
         <!-- Header Section with Quick Actions -->
-        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-2">
             <div>
                 <h1 class="text-4xl font-serif font-bold text-[#4F6B3F]">Quest Management</h1>
                 <p class="font-sans text-[#6A8A52] mt-1">Create, manage, and validate sustainability challenges.</p>
@@ -22,7 +22,7 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-6 w-full">
             <!-- SIDEBAR NAVIGATION -->
-            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full h-[690px] lg:w-1/5">
+            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full h-[640px] lg:w-1/5">
                 <aside class="w-full">
                     <!-- Active Quests Header -->
                     <div class="flex justify-between items-center mb-6">
@@ -118,7 +118,7 @@
                 </aside>
             </div>
             <!-- MAIN CONTENT AREA -->
-            <main class="flex-1 space-y-6 w-full lg:w-4/5">
+            <main class="flex-1 space-y-6 w-full h-[500px] lg:w-4/5">
                 <!-- Quest Tables Container -->
                 <div id="questTables" class="space-y-6">
                     <!-- Individual Quest Tables -->
@@ -222,7 +222,7 @@
                     </div>
 
                     <!-- Quest Collection Main Table -->
-                    <div id="collectionTable" class="bg-white rounded-2xl shadow p-6 border h-[570px] border-[#E6EAD7] ">
+                    <div id="collectionTable" class="bg-white rounded-2xl shadow p-6 border  border-[#E6EAD7] ">
                         <!-- Quest Collection Table -->
                         <div class="overflow-x-auto" id="table-data">
 
