@@ -832,7 +832,7 @@
             text-amber-50 text-2xl md:text-3xl px-15 py-8 rounded-[2rem] max-w-6xl mx-auto
             leading-relaxed shadow-[0_25px_50px_-12px_rgba(111,78,55,0.5)]
             border border-amber-900/30 backdrop-blur-md
-            font-serif italic text-center mt-40 mb-20">
+            font-serif italic text-center mt-20 mb-20">
                 <div class="relative">
                     <i
                         class="fa-solid fa-leaf absolute -left-10 top-1/2 transform -translate-y-1/2 text-white/30 text-3xl -rotate-90"></i>
