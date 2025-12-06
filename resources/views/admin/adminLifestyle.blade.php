@@ -27,7 +27,7 @@
 
         <div class="flex flex-col lg:flex-row gap-6 w-full">
             <!-- SIDEBAR -->
-            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full lg:w-1/5">
+            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full h-[690px] lg:w-1/5">
                 <aside>
                     <h2 class="text-xl font-semibold text-[#4F6B3F] mb-6">Library Sections</h2>
                     <div class="space-y-2">
@@ -81,7 +81,7 @@
                     <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
                         <div class="relative flex-1 min-w-[250px]">
                             <input type="text" placeholder="Search topics, actions or archived items..."
-                                class="bg-[#E0E9D6] w-full pl-4 pr-12 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm table-search">
+                                class="bg-[#E0E9D6] w-full pl-4 pr-12 py-2.5 border border-[#7A8C4F] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm table-search">
                             <button type="button" id="clearSearch"
                                 class="hidden absolute right-3 top-2.5 text-[#7A8C4F] hover:text-[#4F6B3F]">
                                 <i class="fa-solid fa-xmark text-lg"></i>
@@ -94,7 +94,7 @@
                 </div>
 
                 <!-- ECO TOPICS -->
-                <div id="topicsTable" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7]">
+                <div id="topicsTable" class="bg-white rounded-2xl shadow p-6 border h-[570px] border-[#E6EAD7]">
                     <div class="flex items-center gap-3 mb-6">
                         <i class="fa-solid fa-book text-[#7F8A4F] text-xl"></i>
                         <h2 class="text-xl font-semibold text-[#4F6B3F]">Eco Topics <span

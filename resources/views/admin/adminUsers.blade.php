@@ -34,7 +34,7 @@
                 <!-- Search Input -->
                 <div class="relative flex-1 min-w-[250px]">
                     <input id="searchInput" type="text" placeholder="Search user or email..."
-                        class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full 
+                        class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-xl 
                focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#3B3B3B] font-sans">
                     <svg class="absolute right-3 top-3 w-4 h-4 text-[#7A8C4F]" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -46,7 +46,7 @@
                 <!-- Filter Dropdowns -->
                 <div class="flex gap-2 shrink-0">
                     <select id="filterType"
-                        class="bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3">
+                        class="bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-xl py-2 px-3">
                         <option value="">All Types</option>
                         <option value="admin">Admin</option>
                         <option value="verified_user">Verified User</option>
@@ -55,7 +55,7 @@
 
 
                     <select id="filterStatus"
-                        class="bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3">
+                        class="bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-xl py-2 px-3">
                         <option value="">All Status</option>
                         <option value="verified">Verified</option>
                         <option value="inactive">Inactive</option>
@@ -67,7 +67,7 @@
 
         <!-- 👥 USERS TABLE -->
         <div id="usersTablePagi">
-            <div class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] overflow-x-auto" id="table-data-users">
+            <div class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7] overflow-x-auto h-[525px]" id="table-data-users">
                 @include('admin.partials.users_table') 
             </div>
         </div>

@@ -28,7 +28,7 @@
 
         <div class="flex flex-col lg:flex-row gap-6 w-full">
             <!-- SIDEBAR NAVIGATION -->
-            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full lg:w-1/5">
+            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full h-[690px] lg:w-1/5">
                 <aside class="w-full">
                     <!-- Sidebar Header -->
                     <div class="flex justify-between items-center mb-6">
@@ -71,7 +71,7 @@
                             <!-- Search Input -->
                             <div class="relative flex-1 min-w-[250px]">
                                 <input type="text" placeholder="Search rewards..."
-                                    class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full 
+                                    class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-xl 
                focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#3B3B3B] font-sans table-search"
                                     data-table-id="catalogTable">
                                 <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F] text-sm"></i>
@@ -81,7 +81,7 @@
                     </div>
 
                     <!-- 🏅 Reward Catalog -->
-                    <div id="catalogTable" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7]">
+                    <div id="catalogTable" class="bg-white rounded-2xl shadow p-6 border h-[570px] border-[#E6EAD7]">
                         <!-- Table Header -->
                         <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between mb-6">
                             <div class="flex items-center gap-2">

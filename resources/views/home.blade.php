@@ -883,7 +883,7 @@
                             cost.</p>
                         <div class="flex justify-end">
                             <a href="/leaderboard"
-                                class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
+                                class="mt-10 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300">
                                 Explore Leaderboards
                             </a>
                         </div>
@@ -901,7 +901,7 @@
                         <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
                         <div class="flex justify-start">
                             <a href="/quests"
-                                class="mt-10 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
+                                class="mt-20 ml-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300">
                                 Explore quests
                             </a>
                         </div>
@@ -931,7 +931,7 @@
                         <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
                         <div class="flex justify-end">
                             <a href="/about"
-                                class="mt-1 bg-[#5C3B23] text-white px-5 py-2 rounded-full text-sm hover:bg-[#3d2617] transition-colors duration-300">
+                                class="mt-15 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300">
                                 Explore About Us
                             </a>
                         </div>
@@ -1277,9 +1277,8 @@
                 <!-- Emotional heading -->
                 <h3 class="font-serif text-3xl md:text-5xl font-light mb-12 leading-snug text-center px-6"
                     style="color: #5A6B4A; line-height: 1.3">
-                    What if making a difference<br>
-                    felt as natural as<br>
-                    <span class="italic font-normal" style="color: #8A9A7B">breathing?</span>
+                    Make a difference<br>
+                    <span class="italic font-normal" style="color: #8A9A7B">with Ecobrew</span>
                 </h3>
 
                 <!-- Gentle quote box -->

@@ -22,7 +22,7 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-6 w-full">
             <!-- SIDEBAR NAVIGATION -->
-            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full lg:w-1/5">
+            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full h-[690px] lg:w-1/5">
                 <aside class="w-full">
                     <!-- Active Quests Header -->
                     <div class="flex justify-between items-center mb-6">
@@ -213,7 +213,7 @@
                             <!-- Search -->
                             <div class="relative flex-1 min-w-[250px] max-w-md">
                                 <input type="text" placeholder="Search quests..."
-                                    class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full 
+                                    class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-xl 
                                focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#3B3B3B] font-sans collection-search"
                                     data-table-id="collectionTable">
                                 <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F] text-sm"></i>
@@ -222,7 +222,7 @@
                     </div>
 
                     <!-- Quest Collection Main Table -->
-                    <div id="collectionTable" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] ">
+                    <div id="collectionTable" class="bg-white rounded-2xl shadow p-6 border h-[570px] border-[#E6EAD7] ">
                         <!-- Quest Collection Table -->
                         <div class="overflow-x-auto" id="table-data">
 

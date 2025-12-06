@@ -50,7 +50,7 @@
                 class="bg-gradient-to-r mb-3 from-[#4F6B3F]/10 to-[#7F8A4F]/10 rounded-xl p-3 border border-[#E6EAD7] shadow-sm">
                 <div class="flex items-center overflow-hidden">
                     <span
-                        class="flex-shrink-0 animate-pulse bg-[#4F6B3F] px-4 py-1.5 rounded-full text-sm text-white font-semibold">
+                        class="flex-shrink-0 animate-pulse bg-[#4F6B3F] px-4 py-1.5 rounded-xl text-sm text-white font-semibold">
                         <i class="fa-solid fa-chart-line mr-2"></i>LIVE TOP PERFORMERS
                     </span>
                     <div class="ticker-wrapper whitespace-nowrap ml-4 flex-1 overflow-hidden">

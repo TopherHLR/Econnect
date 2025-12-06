@@ -33,9 +33,9 @@
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
 
                         {{-- iOS-style Toggle --}}
-                        <div class="relative flex items-center bg-[#5C7919] rounded-full p-1 w-full sm:w-40">
+                        <div class="relative flex items-center bg-[#5C7919] rounded-xl p-1 w-full sm:w-40">
                             <div id="toggle-slider"
-                                class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-white rounded-full shadow-md transition-all duration-300 ease-in-out">
+                                class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-white rounded-xl shadow-md transition-all duration-300 ease-in-out">
                             </div>
                             <button id="topicsBtn"
                                 class="relative z-10 flex-1 text-center text-sm font-medium text-[#5C7919] py-"
@@ -59,7 +59,7 @@
                             <div class="relative w-full">
                                 <input type="text" id="liveSearchInput" placeholder="Search topics & actions..."
                                     value="{{ request('search') }}"
-                                    class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2.5 border border-[#7A8C4F] rounded-full focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm"
+                                    class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2.5 border border-[#7A8C4F] rounded-xl focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm"
                                     autocomplete="off">
                                 <svg class="absolute right-3 top-3 w-4 h-4 text-gray-400 pointer-events-none" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@
                             </div>
 
                             <select name="category" id="categoryDropdown"
-                                class="text-sm text-gray-600 bg-white border border-[#7A8C4F] rounded-full px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] w-full sm:w-auto">
+                                class="text-sm text-gray-600 bg-white border border-[#7A8C4F] rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] w-full sm:w-auto">
                                 <option value="">All Categories</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category }}"

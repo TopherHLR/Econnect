@@ -702,7 +702,7 @@
 
 @layer components {
     .tab-eco {
-        @apply relative flex items-center px-5 py-2.5 font-medium cursor-pointer rounded-full select-none border transition-all duration-300 ease-out text-sm;
+        @apply relative flex items-center px-5 py-2.5 font-medium cursor-pointer rounded-xl select-none border transition-all duration-300 ease-out text-sm;
 
         background: rgba(248, 250, 237, 0.9);
         color: #5A4A36;
@@ -822,7 +822,7 @@
 
     /* 🌿 Base Action Button */
     .btn-action {
-        @apply inline-flex items-center gap-1 font-medium rounded-full px-3 py-1.5 text-xs transition-all duration-300 ease-out select-none;
+        @apply inline-flex items-center gap-1 font-medium rounded-xl px-3 py-1.5 text-xs transition-all duration-300 ease-out select-none;
         z-index: 10;
         /* Soft Minimalism Base */
         color: #5A4A36;

@@ -400,7 +400,7 @@
         <div class="flex items-center space-x-4">
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="Econnect Logo" class="h-12 w-auto">
 
-            <h1 class="text-xl md:text-2xl font-semibold leading-tight">
+            <h1 class="text-2xl md:text-[24px] font-semibold leading-tight ml-[600px]">
                 Welcome back, <span class="font-bold">Admin</span>!
             </h1>
         </div>
@@ -409,29 +409,6 @@
 
             <!-- Include Alpine.js if not already -->
             <script src="//unpkg.com/alpinejs" defer></script>
-
-            <!-- ⭐ ECO-ACTIVITY IMAGE -->
-            <div x-data="{ open: false }" class="relative">
-                <img src="{{ Vite::asset('resources/images/nav-image1.jpg') }}"
-                    class="w-[1000px] h-16 object-cover rounded-xl hidden md:block cursor-zoom-in" alt="Eco Activity"
-                    @click="open = true" />
-
-                <!-- Lightbox Overlay -->
-                <div x-show="open" x-transition @click.self="open = false"
-                    class="fixed inset-0 bg-black/80 flex items-center justify-center z-50" style="display: none;">
-                    <!-- Close Button -->
-                    <button @click="open = false"
-                        class="absolute top-5 right-5 text-white text-3xl font-bold z-50 hover:text-gray-300">
-                        &times;
-                    </button>
-
-                    <!-- Zoomed Image -->
-                    <img src="{{ Vite::asset('resources/images/nav-image1.jpg') }}"
-                        class="max-h-[90vh] max-w-[90vw] rounded-xl shadow-lg" alt="Eco Activity" />
-                </div>
-            </div>
-
-
 
             <!-- Notification Bell -->
             <div class="relative">
