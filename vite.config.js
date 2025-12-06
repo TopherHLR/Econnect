@@ -8,10 +8,6 @@ export default defineConfig({
       input: [
         'resources/css/app.css',
         'resources/js/app.js',
-
-        // Additional tracked files
-        'resources/css/ecoModal.css',
-        'resources/js/ecoModal.js',
       ],
       refresh: true,
     }),

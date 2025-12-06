@@ -602,7 +602,7 @@
 
     /* 🌿 BASE BUTTON — Uniform Neumorphism */
     .btn-eco {
-        @apply relative inline-flex items-center justify-center gap-2 font-semibold cursor-pointer rounded-full select-none transition-all duration-300 ease-out px-4 py-2 text-[0.95rem];
+        @apply relative inline-flex items-center justify-center gap-2 font-semibold cursor-pointer rounded-xl select-none transition-all duration-300 ease-out px-4 py-2 text-[0.95rem];
         z-index: 5;
         color: #5A4A36;
         background: rgba(240, 245, 235, 0.95);

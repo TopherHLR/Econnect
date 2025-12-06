@@ -209,35 +209,39 @@
             <div
                 class="{{ auth()->check() ? 'lg:col-span-9' : 'lg:col-span-12' }} lg:mt-0 mt-5 bg-[#F9F6EB] rounded-3xl p-8 shadow-md text-[#4F6B3F]">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-5 gap-4">
-                    {{-- Toggle Button (mobile & tablet) --}}
-                    <button id="sidebar-toggleLeader"
-                        class="lg:hidden fixed top-6 mt-16 right-8 z-30 p-2 bg-[#FAF7EE] rounded-full shadow-lg transition-all duration-300 hover:scale-110">
-                        <svg id="toggle-icon-open" class="w-6 h-6 text-[#4F6B3F] block" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg id="toggle-icon-close" class="w-6 h-6 text-[#4F6B3F] hidden" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+
                     <div>
                         <h1 class="text-4xl font-serif font-bold">Leaderboard</h1>
                         <p class="text-lg font-sans text-[#6B8254]">Track your progress and achievements</p>
                     </div>
-                    <div class="flex flex-wrap gap-3">
+                    <div class="lg:flex lg:flex-wrap lg:gap-3 grid grid-cols-4 gap-3">
+                        <button id="sidebar-toggleLeader"
+                            class="lg:hidden px-3 py-2 text-xs sm:text-lg lg:text-lg bg-[#5E7345] text-white rounded-xl shadow-sm font-semibold transition-all duration-200 hover:bg-[#4e5f3a]">
+                            View Your Details
+                            <svg id="toggle-icon-close" class="w-5 h-5 text-[#4F6B3F] hidden" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
                         <button id="btn-points"
-                            class="px-6 py-3 sm:w-auto bg-[#5E7345] text-white rounded-full shadow-sm font-semibold transition-all duration-200 hover:bg-[#4e5f3a]">Top
-                            Points</button>
+                            class="px-3 py-2 text-xs sm:text-lg lg:text-lg bg-[#5E7345] text-white rounded-xl shadow-sm font-semibold transition-all duration-200 hover:bg-[#4e5f3a]">
+                            Top Points
+                        </button>
+
                         <button id="btn-quests"
-                            class="px-6 py-3 sm:w-auto bg-[#7A8F55] text-white rounded-full shadow-sm transition-all duration-200 hover:bg-[#6b7d49]">Top
-                            Quests</button>
+                            class="px-3 py-2 text-xs sm:text-lg lg:text-lg bg-[#7A8F55] text-white rounded-xl shadow-sm transition-all duration-200 hover:bg-[#6b7d49]">
+                            Top Quests
+                        </button>
+
                         <button id="btn-ecotap"
-                            class="px-6 py-3 sm:w-auto bg-[#7A8F55] text-white rounded-full shadow-sm transition-all duration-200 hover:bg-[#6b7d49]">Top
-                            Eco-Taps</button>
+                            class="px-3 py-2 text-xs sm:text-lg lg:text-lg bg-[#7A8F55] text-white rounded-xl shadow-sm transition-all duration-200 hover:bg-[#6b7d49]">
+                            Top Eco-Taps
+                        </button>
+
                     </div>
+
                 </div>
 
                 <div class="mb-5 overflow-hidden bg-gradient-to-r from-[#5E7345] to-[#7A8F55] rounded-2xl shadow-lg">

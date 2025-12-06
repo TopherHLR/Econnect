@@ -1,8 +1,8 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-    <div class="min-h-screen mt-11 bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">
-        <div class="bg-[#F7F3E7] rounded-2xl sm:rounded-4xl shadow-sm overflow-hidden p-4 sm:p-8">
+    <div class="min-h-screen  bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">
+        <div class="bg-[#F7F3E7] mt-15 rounded-2xl sm:rounded-4xl shadow-sm overflow-hidden p-4 sm:p-8">
 
             {{-- Header --}}
             <div class="flex flex-col sm:flex-row sm:items-center gap-3 px-2 pt-2 mb-4">
@@ -14,7 +14,7 @@
                 {{-- Mobile Saved Button in Header --}}
                 @auth
                     <button onclick="toggleMobileSaved()"
-                        class="lg:hidden flex items-center gap-2 px-3 py-2 bg-[#5C7919] text-[#FCFFF6] rounded-full text-sm font-medium">
+                        class="lg:hidden flex  justify-center items-center gap-2 px-3 py-2 bg-[#5C7919] text-[#FCFFF6] rounded-full text-sm font-medium">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                         </svg>
@@ -941,4 +941,4 @@
             applyCategoryFilter();
         });
     </script>
-    @endsectionx
+    @endsection

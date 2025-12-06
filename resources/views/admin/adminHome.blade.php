@@ -503,76 +503,7 @@
                 font-weight: 600;
             }
 
-            /* Your Original Button Styles - Preserved */
-            .btn-eco {
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.75rem;
-                font-size: 1rem;
-                padding: 0.75rem 1.5rem;
-                border-radius: 1.5rem;
-                transform: translateY(0);
-                transition: all 0.3s ease-out;
-                cursor: pointer;
-                font-weight: 500;
-                border: none;
-                outline: none;
-                min-width: fit-content;
-            }
-
-            .btn-eco {
-                box-shadow:
-                    inset 2px 2px 4px rgba(140, 160, 130, 0.25),
-                    inset -2px -2px 4px rgba(255, 255, 255, 0.6);
-            }
-
-            .btn-eco:hover {
-                transform: translateY(-1px);
-                box-shadow:
-                    -2px -2px 4px rgba(255, 255, 255, 0.7),
-                    2px 2px 4px rgba(160, 180, 150, 0.25);
-                filter: brightness(1.03);
-            }
-
-            .btn-eco:active {
-                transform: translateY(1px);
-                box-shadow:
-                    inset 3px 3px 5px rgba(120, 140, 110, 0.3),
-                    inset -2px -2px 4px rgba(255, 255, 255, 0.5);
-                filter: brightness(0.97);
-            }
-
-            .btn-mint {
-                background: rgba(122, 140, 79, 0.95);
-                color: white;
-            }
-
-            .btn-leaf {
-                background: rgba(106, 138, 82, 0.9);
-                color: white;
-            }
-
-            .btn-olive {
-                background: rgba(127, 138, 79, 0.9);
-                color: white;
-            }
-
-            .btn-sand {
-                background: rgba(195, 122, 73, 0.1);
-                color: #4F6B3F;
-            }
-
-            .btn-sage {
-                background: rgba(79, 107, 63, 0.1);
-                color: #4F6B3F;
-            }
-
-            .btn-clay {
-                background: rgba(195, 122, 73, 0.15);
-                color: #A46C47;
-            }
+     
 
             /* Responsive Design */
             @media (max-width: 768px) {

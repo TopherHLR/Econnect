@@ -9,7 +9,7 @@
     <title>{{ config('app.name', 'Econnect') }}</title>
 
     {{-- Vite CSS & JS --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/auth.css', 'resources/css/ecoModal.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/auth.css'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>

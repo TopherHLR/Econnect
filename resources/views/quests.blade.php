@@ -7,7 +7,7 @@
             <div class="min-h-screen bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
                     <!-- ========== LEFT COLUMN ========== -->
-                    <div class="lg:col-span-4 bg-[#F9F6EB] rounded-3xl shadow-md overflow-hidden p-8">
+                    <div class="lg:col-span-4 hidden lg:block bg-[#F9F6EB] rounded-3xl shadow-md overflow-hidden p-8">
 
                         <!-- Main left column title -->
                         <div class="mb-6">
@@ -63,8 +63,8 @@
 
                                             <div class="flex flex-col">
                                                 <div class="flex justify-between items-center bg-white p-3 rounded-xl shadow-sm border-l-4 border-[#da7a5f]
-                                    hover:shadow-md transition cursor-pointer accepted-quest
-                                    {{ $isDisabled ? 'pointer-events-none opacity-50 cursor-not-allowed' : '' }}"
+                                        hover:shadow-md transition cursor-pointer accepted-quest
+                                        {{ $isDisabled ? 'pointer-events-none opacity-50 cursor-not-allowed' : '' }}"
                                                     data-submission-id="{{ $submission->submission_id }}"
                                                     data-description="{{ $quest->description }}">
 
@@ -168,60 +168,178 @@
                         </div>
                         <!-- END Three side-by-side containers -->
 
+
                     </div>
-                    <!-- END LEFT COLUMN -->
+                    <!-- MOBILE VIEW QUEST SIDEBAR -->
+                    <!-- Mobile Quest Sidebar Overlay -->
+                    <div id="mobileQuestOverlay"
+                        class="lg:hidden fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300"
+                        onclick="closeMobileQuestSidebar()"></div>
+                    <!-- Mobile Quest Sidebar Panel -->
+                    <div id="questSidebarMobile"
+                        class="lg:hidden fixed left-0 top-0 h-full w-[85vw] max-w-sm bg-[#FCF9EF] z-[1200]
+                                transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
+
+                        <!-- Header -->
+                        <div
+                            class="sticky top-0 bg-[#FCF9EF] p-4 flex items-center justify-between border-b border-[#5C7919]/30">
+                            <h2 class="text-lg font-semibold text-[#5C7919]">My Quest Progress</h2>
+                            <button onclick="closeMobileQuestSidebar()" class="p-2 rounded-full hover:bg-[#E0E9D6]">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-4 overflow-y-auto h-[calc(100%-4rem)] space-y-6">
+
+                            <!-- SEARCH -->
+                            <div>
+                                <input type="text" id="questSearchMobile" placeholder="Search quests..."
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-[#C8D5BB] bg-white shadow-sm text-sm
+                                focus:outline-none focus:ring-2 focus:ring-[#4F6B3F] focus:border-[#4F6B3F]" />
+                            </div>
+
+                            <!-- ========== ACCEPTED QUESTS ========== -->
+                            <div>
+                                <h3 class="text-base font-semibold text-[#4F6B3F] mb-2 flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-[#da7a5f]"></span> Accepted Quests
+                                </h3>
+
+                                <div class="space-y-3">
+                                    @foreach ($quests as $quest)
+                                        @php
+                                            $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                        @endphp
+                                        @if ($submission && $submission->status === 'pending')
+                                            <div class="bg-white p-3 rounded-xl shadow-sm border-l-4 border-[#da7a5f]">
+                                                <div class="flex justify-between items-center">
+                                                    <span
+                                                        class="text-sm font-medium text-[#4F6B3F]">{{ $quest->title }}</span>
+                                                    <small class="text-gray-500 text-xs">
+                                                        {{ ceil(now()->diffInHours($quest->end_date) / 24) }} days left
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <!-- ========== COMPLETED QUESTS ========== -->
+                            <div>
+                                <h3 class="text-base font-semibold text-[#4F6B3F] mb-2 flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-green-500"></span> Completed Quests
+                                </h3>
+
+                                <div class="space-y-3">
+                                    @foreach ($quests as $quest)
+                                        @php
+                                            $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                        @endphp
+                                        @if ($submission && $submission->status === 'completed')
+                                            <div class="bg-white p-3 rounded-xl shadow-sm">
+                                                <div class="flex justify-between items-center">
+                                                    <span
+                                                        class="text-sm text-green-700 font-medium">{{ $quest->title }}</span>
+                                                    <small class="text-xs text-gray-500">
+                                                        {{ optional($submission->date_completed)->format('d/m/Y') }}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <!-- ========== REJECTED QUESTS ========== -->
+                            <div>
+                                <h3 class="text-base font-semibold text-[#4F6B3F] mb-2 flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-red-400"></span> Rejected Quests
+                                </h3>
+
+                                <div class="space-y-3">
+                                    @foreach ($quests as $quest)
+                                        @php
+                                            $submission = $quest->submissions->firstWhere('user_id', auth()->id());
+                                        @endphp
+                                        @if ($submission && $submission->status === 'rejected')
+                                            <div class="bg-white p-3 rounded-xl shadow-sm">
+                                                <div class="flex justify-between items-center">
+                                                    <span
+                                                        class="text-sm text-red-500 font-medium">{{ $quest->title }}</span>
+                                                    <small class="text-xs text-gray-500">
+                                                        {{ optional($submission->date_rejected)->format('d/m/Y') }}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
                     <!-- ========== RIGHT COLUMN ========== -->
-                    <div class="lg:col-span-8 bg-[#FAF7EE] rounded-3xl shadow-md overflow-hidden p-8">
-
+                    <div
+                        class="lg:col-span-8 lg:mt-0 mt-10 bg-[#FAF7EE] rounded-3xl shadow-md overflow-hidden p-4 sm:p-6 lg:p-8">
 
                         <!-- 🌱 Right Column Content -->
-                        <div class="w-full h-full bg-white rounded-2xl  shadow-sm p-6 flex flex-col"
+                        <div class="w-full h-full bg-white rounded-2xl shadow-sm p-4 sm:p-6 flex flex-col"
                             style="border: 1px solid rgba(139, 169, 123, 0.2);">
 
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                                <div class="flex flex-col sm:flex-row sm:items-center gap-3 px-2 pt-2 mb-4">
-                                    <h1 class="text-2xl font-serif font-bold text-[#5C7919] flex items-center">
+                            <!-- Top Bar -->
+                            <div class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-6">
 
+                                <!-- Left: Title + Description -->
+                                <div class="flex flex-col">
+                                    <h1 class="text-xl sm:text-2xl font-serif font-bold text-[#5C7919]">
                                         Eco-Quests
                                     </h1>
-                                    <div class="hidden sm:block h-8 w-px bg-[#8A9A7B]/50"></div>
-                                    <p class="font-sans text-[#5C7919]/80 sm:mt-0 mt-1">
+                                    <p class="text-sm sm:text-base text-[#5C7919]/80 mt-1">
                                         Complete quests to nurture your eco-impact journey
                                     </p>
                                 </div>
 
-                                <div class="flex items-center gap-3">
-                                    <div class="relative">
-                                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#8A9A7B]"
+                                <!-- Controls -->
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
+
+                                    <!-- Search -->
+                                    <div class="relative w-full sm:w-60">
+                                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8A9A7B]"
                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                         </svg>
-                                        <input type="text" id="gridSearch" placeholder="Search for green quests..."
-                                            class="pl-10 pr-4 py-2 rounded-xl border border-[#C8D5BB]/50 text-sm bg-white/70
-                                    focus:outline-none focus:ring-2 focus:ring-[#8A9A7B]/30 focus:border-transparent
-                                    placeholder:text-[#6B7D5A]/60">
+                                        <input id="gridSearch" type="text" placeholder="Search quests..."
+                                            class="pl-10 pr-4 py-2 rounded-xl border border-[#C8D5BB]/50 text-sm bg-white/70 
+                        w-full focus:outline-none focus:ring-2 focus:ring-[#8A9A7B]/30">
                                     </div>
 
-                                    <div class="flex items-center gap-2">
-                                        <label for="questFilter"
-                                            class="text-sm font-medium text-[#5A6B4A] hidden md:block">Filter:</label>
-                                        <select id="questFilter"
-                                            class="px-4 py-2 rounded-xl border border-[#C8D5BB]/50 text-sm bg-white/70
-                                    focus:outline-none focus:ring-2 focus:ring-[#8A9A7B]/30">
-                                            <option value="all" class="text-[#5A6B4A]">All Categories</option>
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category }}" class="text-[#5A6B4A]">
-                                                    {{ $category }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    <!-- Filter -->
+                                    <select id="questFilter"
+                                        class="w-full sm:w-auto px-4 py-2 rounded-xl border border-[#C8D5BB]/50 
+                    text-sm bg-white/70 focus:outline-none focus:ring-2 focus:ring-[#8A9A7B]/30">
+                                        <option value="all">All Categories</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category }}">{{ $category }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <!-- Mobile Sidebar Button -->
+                                    <button onclick="toggleMobileQuestSidebar()"
+                                        class="lg:hidden p-3 rounded-xl bg-[#5C7919] text-white shadow-md hover:bg-[#4a5f2f] transition">
+                                               Your Quests
+                                    </button>
                                 </div>
                             </div>
-                            <!-- Grid -->
+
+                            <!-- Quest Grid -->
                             <div class="max-w-full max-h-[600px] overflow-y-auto pr-2 flex-1 custom-scroll">
-                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
+                                <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-5">
                                     @foreach ($quests as $quest)
                                         @php
                                             $user = auth()->user();
@@ -261,8 +379,8 @@
 
                                         @if ($quest->status === 'active')
                                             <div class="bg-white rounded-2xl overflow-hidden shadow-sm transition-all duration-300 relative
-                                {{ $isInactive || $isNotStarted ? 'opacity-50 pointer-events-none' : 'hover:shadow-xl hover:-translate-y-1 cursor-pointer hover:shadow-[#8A9A7B]/20' }}
-                                border border-[#E8E4DA] eco-card"
+                                                {{ $isInactive || $isNotStarted ? 'opacity-50 pointer-events-none' : 'hover:shadow-xl hover:-translate-y-1 cursor-pointer hover:shadow-[#8A9A7B]/20' }}
+                                                border border-[#E8E4DA] eco-card"
                                                 data-id="{{ $quest->quest_id }}" data-title="{{ $quest->title }}"
                                                 data-description="{{ $quest->description }}"
                                                 data-category="{{ $quest->category }}"
@@ -306,15 +424,15 @@
                                                         <span
                                                             class="text-white font-bold text-sm bg-[#5A6B4A]/80 px-4 py-2 rounded-xl">
                                                             @if ($isCompleted)
-                                                                🌟 Completed
+                                                                Completed
                                                             @elseif($isExpired)
-                                                                📅 Expired
+                                                                Expired
                                                             @elseif($isRejected)
-                                                                ❌ Rejected
+                                                                Rejected
                                                             @elseif($isPending)
-                                                                ⏳ Under Review
+                                                                Pending
                                                             @elseif($isNotStarted)
-                                                                🗓️ Starts {{ $quest->start_date->format('d/m/Y') }}
+                                                                Starts {{ $quest->start_date->format('d/m/Y') }}
                                                             @endif
                                                         </span>
                                                     </div>
@@ -425,16 +543,15 @@
                             <div class="mt-6 pt-5 border-t border-[#E8E4DA]">
                                 <div class="flex items-center justify-center gap-2 text-sm text-[#6B7D5A]/70">
                                     <i class="fa-solid fa-recycle text-[#8A9A7B]"></i>
-                                    <span class="font-light">Each completed quest contributes to your personal eco-impact
+                                    <span class="font-light">Each completed quest contributes to your eco-impact
                                         score</span>
                                     <i class="fa-solid fa-leaf text-[#8A9A7B]"></i>
                                 </div>
                             </div>
-
                         </div>
-                        <!-- END RIGHT COLUMN -->
 
-                    </div> <!-- END FLEX WRAPPER -->
+                    </div>
+                    <!-- END RIGHT COLUMN -->
 
                 </div>
             </div>
@@ -450,6 +567,23 @@
     @endif
 
     <script>
+        function toggleMobileQuestSidebar() {
+            const sidebar = document.getElementById('questSidebarMobile');
+            const overlay = document.getElementById('mobileQuestOverlay');
+
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        function closeMobileQuestSidebar() {
+            const sidebar = document.getElementById('questSidebarMobile');
+            const overlay = document.getElementById('mobileQuestOverlay');
+
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
         const filterSelect = document.getElementById('questFilter');
         if (filterSelect) {
             filterSelect.addEventListener('change', () => {
