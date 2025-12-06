@@ -27,7 +27,7 @@
                         <div class="flex gap-6" style="height: 600px;">
 
                             <!-- Left Container: Accepted Quests (Fixed height) -->
-                            <div class="bg-white rounded-2xl shadow-md p-5 h-[66vh] flex flex-col">
+                            <div class="bg-white rounded-2xl shadow-md p-5 h-full flex flex-col">
                                 <!-- Distinct title style -->
                                 <div class="mb-5 border-b-2 border-[#da7a5f] pb-3">
                                     <h3 class="text-base font-semibold text-[#4F6B3F] flex items-center gap-2">
