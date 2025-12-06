@@ -387,11 +387,11 @@
                                                 {{ $rank + 1 }}
                                             </div>
                                             <div class="flex-1">
-                                                <div class="font-medium text-[#4F6B3F]">
+                                                <div class="font-medium text-xs text-[#4F6B3F]">
                                                     {{ $entry->user->first_name }} {{ $entry->user->last_name }}
                                                 </div>
-                                                <div class="text-xs text-[#6A8A52]">
-                                                    User ID: {{ $entry->user->id }}
+                                                <div class="text-[10px] text-[#6A8A52]">
+                                                    User ID: {{ $entry->user->user_id }}
                                                 </div>
                                             </div>
                                         </div>
@@ -421,10 +421,10 @@
                                                 {{ $rank + 1 }}
                                             </div>
                                             <div class="flex-1">
-                                                <div class="font-medium text-[#4F6B3F]">
+                                                <div class="font-medium text-xs text-[#4F6B3F]">
                                                     {{ $entry->user->first_name }} {{ $entry->user->last_name }}
                                                 </div>
-                                                <div class="text-xs text-[#6A8A52]">
+                                                <div class="text-[10px] text-[#6A8A52]">
                                                     {{ $entry->user->email }}
                                                 </div>
                                             </div>
@@ -455,10 +455,10 @@
                                                 {{ $rank + 1 }}
                                             </div>
                                             <div class="flex-1">
-                                                <div class="font-medium text-[#4F6B3F]">
+                                                <div class="font-medium text-xs text-[#4F6B3F]">
                                                     {{ $entry->user->first_name }} {{ $entry->user->last_name }}
                                                 </div>
-                                                <div class="text-xs text-[#6A8A52]">
+                                                <div class="text-[10px] text-[#6A8A52]">
                                                     Completion Rate:
                                                     {{ round(($entry->questsCompleted / $totalQuests) * 100) }}%
                                                 </div>
@@ -490,10 +490,10 @@
                                                 {{ $rank + 1 }}
                                             </div>
                                             <div class="flex-1">
-                                                <div class="font-medium text-[#4F6B3F]">
+                                                <div class="font-medium text-xs text-[#4F6B3F]">
                                                     {{ $entry->user->first_name }} {{ $entry->user->last_name }}
                                                 </div>
-                                                <div class="text-xs text-[#6A8A52]">
+                                                <div class="text-[10px] text-[#6A8A52]">
                                                     {{ $entry->user->created_at->format('M Y') }}
                                                 </div>
                                             </div>
@@ -821,7 +821,7 @@
         }
 
         .leaderboard-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #4F6B3F;
         }

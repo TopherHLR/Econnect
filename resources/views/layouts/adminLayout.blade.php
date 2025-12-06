@@ -49,11 +49,15 @@
             display: flex;
             flex-direction: column;
         }
+
         .content-scroll-main {
             height: 100%;
-            overflow-y: auto;  /* scrolls vertically */
-            overflow-x: hidden; /* prevents sideways scroll */
-            padding-right: 6px; /* so scrollbar doesn’t overlap content */
+            overflow-y: auto;
+            /* scrolls vertically */
+            overflow-x: hidden;
+            /* prevents sideways scroll */
+            padding-right: 6px;
+            /* so scrollbar doesn’t overlap content */
         }
 
         /* Sidebar Collapsed State */
@@ -285,7 +289,7 @@
             margin-left: 300px;
             margin-top: 110px;
             margin-right: 24px;
-  
+
             background: #FCF9EF;
             border-radius: 2rem;
             overflow: hidden;
@@ -363,7 +367,8 @@
 
         <div class="flex items-center space-x-4">
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="Econnect Logo" class="h-12 w-auto">
-            <h2  style="font-size: 1.5rem; font-weight: 700; color: #4F6B3F; font-family: 'Nunito Sans', sans-serif;">Welcome, Admin!<h2>
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: #4F6B3F; font-family: 'Nunito Sans', sans-serif;">
+                Welcome, Admin!<h2>
         </div>
         <!-- Profile, Notifications, Logout + Dynamic Eco Image -->
         <div class="flex items-center space-x-6 relative">
@@ -395,6 +400,8 @@
     </header>
 
     <!-- 🍃 Sidebar -->
+    <!-- 1. Add this class to your sidebar by default in HTML -->
+    <!-- With this (pure JS, no Laravel needed) -->
     <aside class="mainsidebar h-full" id="sidebar">
         <!-- Sidebar Logo -->
         <div class="sidebar-logo">
@@ -420,11 +427,11 @@
                 <i class="fa-solid fa-bullseye"></i>
                 <span>Quests</span>
             </a>
-            <a href="{{ route('adminRewards') }}" class="nav-item" data-tooltip="Rewards">
+            <a href="/adminRewards" class="nav-item" data-tooltip="Rewards">
                 <i class="fa-solid fa-gift"></i>
                 <span>Rewards</span>
             </a>
-            <a href="{{ route('adminLifestyle') }}" class="nav-item" data-tooltip="Library / Lifestyle">
+            <a href="/adminLifestyle" class="nav-item" data-tooltip="Library / Lifestyle">
                 <i class="fa-solid fa-book-open"></i>
                 <span>Library / Lifestyle</span>
             </a>
@@ -445,77 +452,50 @@
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const toggleIcon = sidebarToggle.querySelector('i');
+            const toggleBtn = document.getElementById('sidebarToggle');
+            const icon = toggleBtn.querySelector('i');
 
-            // Check for saved state in localStorage
-            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-            // Set initial state without animation
-            if (isCollapsed) {
+            // Critical fix: prevent animation on page load when restoring state
+            const savedState = localStorage.getItem('sidebarCollapsed');
+            if (savedState === 'true') {
+                // Apply collapsed state BEFORE browser paints
+                sidebar.style.transition = 'none';
                 sidebar.classList.add('collapsed');
-                toggleIcon.classList.remove('fa-chevron-left');
-                toggleIcon.classList.add('fa-chevron-right');
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+
+                // Re-enable transition after paint
+                requestAnimationFrame(() => {
+                    sidebar.style.transition = '';
+                });
             }
 
-            // Remove no-transition after a short delay to allow regular transitions
-            setTimeout(() => {
-                sidebar.classList.remove('no-transition');
-            }, 10);
-
-            // Toggle sidebar
-            sidebarToggle.addEventListener('click', function() {
+            // Normal toggle
+            toggleBtn.addEventListener('click', () => {
                 sidebar.classList.toggle('collapsed');
-
-                if (sidebar.classList.contains('collapsed')) {
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
-                    localStorage.setItem('sidebarCollapsed', 'true');
-                } else {
-                    toggleIcon.classList.remove('fa-chevron-right');
-                    toggleIcon.classList.add('fa-chevron-left');
-                    localStorage.setItem('sidebarCollapsed', 'false');
-                }
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                icon.classList.toggle('fa-chevron-left', !isCollapsed);
+                icon.classList.toggle('fa-chevron-right', isCollapsed);
+                localStorage.setItem('sidebarCollapsed', isCollapsed);
             });
 
-            // Auto-collapse on smaller screens
-            function handleResize() {
-                if (window.innerWidth < 1200 && !sidebar.classList.contains('collapsed')) {
-                    sidebar.classList.add('collapsed');
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
-                    localStorage.setItem('sidebarCollapsed', 'true');
-                }
-            }
-
-            window.addEventListener('resize', handleResize);
-            handleResize(); // Run on initial load
-
-            // Toast notifications
+            // Rest of your code (resize, toast, active item)...
             setTimeout(() => {
-                const toast = document.getElementById('feedback-toast');
-                const errorToast = document.getElementById('error-toast');
-                [toast, errorToast].forEach(el => {
-                    if (el) {
-                        el.style.opacity = '0';
-                        setTimeout(() => el.remove(), 1000);
+                document.querySelectorAll('#feedback-toast, #error-toast').forEach(t => {
+                    if (t) {
+                        t.style.opacity = '0';
+                        setTimeout(() => t.remove(), 1000);
                     }
                 });
             }, 3000);
 
-            // Active nav item highlighting
-            const navItems = document.querySelectorAll('.nav-item');
-            const currentPath = window.location.pathname.replace(/\/$/, '');
-
-            navItems.forEach(item => {
-                const href = new URL(item.href).pathname.replace(/\/$/, '');
-                item.classList.remove('active');
-
-                if (href === currentPath || currentPath.includes('eco-library')) {
-                    item.classList.add('active');
-                }
+            const path = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(link => {
+                if (link.getAttribute('href') === path) link.classList.add('active');
             });
         });
     </script>
