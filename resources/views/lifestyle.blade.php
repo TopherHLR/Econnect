@@ -1,16 +1,16 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-<div class="min-h-screen bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">
+    <div class="min-h-screen mt-11 bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">
         <div class="bg-[#F7F3E7] rounded-2xl sm:rounded-4xl shadow-sm overflow-hidden p-4 sm:p-8">
 
             {{-- Header --}}
-<div class="flex flex-col sm:flex-row sm:items-center gap-3 px-2 pt-2 mb-4">
-    <h1 class="text-4xl ml-5 font-serif font-bold text-[#4F6B3F]">Lifestyle</h1>
-    <div class="hidden sm:block h-8 w-px bg-[#8A9A7B]/50"></div>
-    <p class="font-sans text-[#6A8A52] sm:mt-0 mt-1">
-        Mindful living through habits, choices, and daily experiences.
-    </p>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 px-2 pt-2 mb-4">
+                <h1 class="text-4xl ml-5 font-serif font-bold text-[#4F6B3F]">Lifestyle</h1>
+                <div class="hidden sm:block h-8 w-px bg-[#8A9A7B]/50"></div>
+                <p class="font-sans text-[#6A8A52] sm:mt-0 mt-1">
+                    Mindful living through habits, choices, and daily experiences.
+                </p>
                 {{-- Mobile Saved Button in Header --}}
                 @auth
                     <button onclick="toggleMobileSaved()"
@@ -123,159 +123,178 @@
 
                 {{-- Sidebar / Saved Items Panel --}}
                 @auth
-{{-- Desktop Sidebar --}}
-<div id="ecoSidebarDesktop"
-    class="hidden lg:block w-full lg:w-[32rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 min-h-[70vh] overflow-y-auto custom-scroll shadow-[0_8px_10px_#7A8C4F]/60">
-    <h2 class="text-2xl font-serif font-bold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
-    <div class="space-y-3" id="savedList">
-        @php
-            $savedTopicsCount = count($savedTopics);
-            $savedEcoTopicsCount = count($savedTopics->where('type', 'ecoTopic'));
-            $savedEcoActionsCount = count($savedTopics->where('type', 'ecoAction'));
-        @endphp
-        
-        {{-- Check if current tab is Topics or Actions --}}
-        @if (($currentTab ?? 'topics') === 'topics')
-            {{-- For Eco-topics --}}
-            @if($savedEcoTopicsCount === 0)
-                <div class="text-center py-8 h-full flex flex-col items-center justify-center">
-                    <div class="mx-auto w-20 h-20 bg-[#E0E9D6] rounded-full flex items-center justify-center mb-4">
-                        <svg class="w-10 h-10 text-[#7A8C4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-gray-600 font-medium mb-2">No saved topics yet</h3>
-                    <p class="text-sm text-gray-500 mb-4">Start exploring and save your favorite eco topics!</p>
-                    <div class="bg-[#F0F5E9] p-4 rounded-lg w-full">
-                        <p class="text-xs text-[#5C7919] italic">💡 Tip: Browse topics and click the bookmark icon to save them here</p>
-                    </div>
-                </div>
-            @elseif($savedEcoTopicsCount < 4)
-                {{-- Show saved topics with filler encouragement --}}
-                @foreach ($savedTopics as $saved)
-                    @if ($saved->type === 'ecoTopic')
-                        <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item hover:scale-[1.02] transition min-w-0"
-                            data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
-                            data-category="{{ $saved->category }}">
-                            <div class="flex items-center gap-3 flex-1 min-w-0">
-                                <img src="{{ $saved->image ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : asset('storage/default.png') }}"
-                                    alt="{{ $saved->title }}" class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                                <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
-                                    onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
-                                    {{ $saved->title }}
-                                </h4>
-                            </div>
-                            <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500 ml-2">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
-                    @endif
-                @endforeach
+                    {{-- Desktop Sidebar --}}
+                    <div id="ecoSidebarDesktop"
+                        class="hidden lg:block w-full lg:w-[32rem] flex-shrink-0 bg-[#FCF9EF] rounded-xl p-6 min-h-[70vh] overflow-y-auto custom-scroll shadow-[0_8px_10px_#7A8C4F]/60">
+                        <h2 class="text-2xl font-serif font-bold text-[#5C7919] mb-4" id="sidebarTitle">Saved Eco-topics</h2>
+                        <div class="space-y-3" id="savedList">
+                            @php
+                                $savedTopicsCount = count($savedTopics);
+                                $savedEcoTopicsCount = count($savedTopics->where('type', 'ecoTopic'));
+                                $savedEcoActionsCount = count($savedTopics->where('type', 'ecoAction'));
+                            @endphp
 
-            @else
-                {{-- 4 or more saved topics - just show the list with scroll --}}
-                @foreach ($savedTopics as $saved)
-                    @if ($saved->type === 'ecoTopic')
-                        <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item hover:scale-[1.02] transition min-w-0"
-                            data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
-                            data-category="{{ $saved->category }}">
-                            <div class="flex items-center gap-3 flex-1 min-w-0">
-                                <img src="{{ $saved->image ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : asset('storage/default.png') }}"
-                                    alt="{{ $saved->title }}" class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                                <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
-                                    onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
-                                    {{ $saved->title }}
-                                </h4>
-                            </div>
-                            <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500 ml-2">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                    </svg>
-                                </button>
-                            </form>
+                            {{-- Check if current tab is Topics or Actions --}}
+                            @if (($currentTab ?? 'topics') === 'topics')
+                                {{-- For Eco-topics --}}
+                                @if ($savedEcoTopicsCount === 0)
+                                    <div class="text-center py-8 h-full flex flex-col items-center justify-center">
+                                        <div
+                                            class="mx-auto w-20 h-20 bg-[#E0E9D6] rounded-full flex items-center justify-center mb-4">
+                                            <svg class="w-10 h-10 text-[#7A8C4F]" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-gray-600 font-medium mb-2">No saved topics yet</h3>
+                                        <p class="text-sm text-gray-500 mb-4">Start exploring and save your favorite eco topics!
+                                        </p>
+                                        <div class="bg-[#F0F5E9] p-4 rounded-lg w-full">
+                                            <p class="text-xs text-[#5C7919] italic">💡 Tip: Browse topics and click the
+                                                bookmark icon to save them here</p>
+                                        </div>
+                                    </div>
+                                @elseif($savedEcoTopicsCount < 4)
+                                    {{-- Show saved topics with filler encouragement --}}
+                                    @foreach ($savedTopics as $saved)
+                                        @if ($saved->type === 'ecoTopic')
+                                            <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item hover:scale-[1.02] transition min-w-0"
+                                                data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
+                                                data-category="{{ $saved->category }}">
+                                                <div class="flex items-center gap-3 flex-1 min-w-0">
+                                                    <img src="{{ $saved->image ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : asset('storage/default.png') }}"
+                                                        alt="{{ $saved->title }}"
+                                                        class="w-10 h-10 object-cover rounded-md flex-shrink-0">
+                                                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                                        onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
+                                                        {{ $saved->title }}
+                                                    </h4>
+                                                </div>
+                                                <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}"
+                                                    method="POST">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit"
+                                                        class="unsave-btn text-yellow-500 hover:text-red-500 ml-2">
+                                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    {{-- 4 or more saved topics - just show the list with scroll --}}
+                                    @foreach ($savedTopics as $saved)
+                                        @if ($saved->type === 'ecoTopic')
+                                            <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item hover:scale-[1.02] transition min-w-0"
+                                                data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
+                                                data-category="{{ $saved->category }}">
+                                                <div class="flex items-center gap-3 flex-1 min-w-0">
+                                                    <img src="{{ $saved->image ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : asset('storage/default.png') }}"
+                                                        alt="{{ $saved->title }}"
+                                                        class="w-10 h-10 object-cover rounded-md flex-shrink-0">
+                                                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                                        onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
+                                                        {{ $saved->title }}
+                                                    </h4>
+                                                </div>
+                                                <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}"
+                                                    method="POST">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit"
+                                                        class="unsave-btn text-yellow-500 hover:text-red-500 ml-2">
+                                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            @else
+                                {{-- For Eco-actions --}}
+                                @if ($savedEcoActionsCount === 0)
+                                    <div class="text-center py-8 h-full flex flex-col items-center justify-center">
+                                        <div
+                                            class="mx-auto w-20 h-20 bg-[#E0E9D6] rounded-full flex items-center justify-center mb-4">
+                                            <svg class="w-10 h-10 text-[#7A8C4F]" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-gray-600 font-medium mb-2">No saved actions yet</h3>
+                                        <p class="text-sm text-gray-500 mb-4">Discover and save actionable eco tips!</p>
+                                        <div class="bg-[#F0F5E9] p-4 rounded-lg w-full">
+                                            <p class="text-xs text-[#5C7919] italic">💡 Tip: Browse actions and click the
+                                                bookmark icon to save them here</p>
+                                        </div>
+                                    </div>
+                                @elseif($savedEcoActionsCount < 4)
+                                    {{-- Show saved actions with filler encouragement --}}
+                                    @foreach ($savedTopics as $saved)
+                                        @if ($saved->type === 'ecoAction')
+                                            <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item hover:scale-[1.02] transition min-w-0"
+                                                data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
+                                                data-category="{{ $saved->category }}">
+                                                <div class="flex items-center gap-3 flex-1 min-w-0">
+                                                    <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
+                                                        alt="{{ $saved->title }}"
+                                                        class="w-10 h-10 object-cover rounded-md flex-shrink-0">
+                                                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                                        onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
+                                                        {{ $saved->title }}
+                                                    </h4>
+                                                </div>
+                                                <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}"
+                                                    method="POST">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit"
+                                                        class="unsave-btn text-yellow-500 hover:text-red-500 ml-2">
+                                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    {{-- 4 or more saved actions - just show the list with scroll --}}
+                                    @foreach ($savedTopics as $saved)
+                                        @if ($saved->type === 'ecoAction')
+                                            <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item hover:scale-[1.02] transition min-w-0"
+                                                data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
+                                                data-category="{{ $saved->category }}">
+                                                <div class="flex items-center gap-3 flex-1 min-w-0">
+                                                    <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
+                                                        alt="{{ $saved->title }}"
+                                                        class="w-10 h-10 object-cover rounded-md flex-shrink-0">
+                                                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                                        onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
+                                                        {{ $saved->title }}
+                                                    </h4>
+                                                </div>
+                                                <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}"
+                                                    method="POST">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit"
+                                                        class="unsave-btn text-yellow-500 hover:text-red-500 ml-2">
+                                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            @endif
                         </div>
-                    @endif
-                @endforeach
-            @endif
-        @else
-            {{-- For Eco-actions --}}
-            @if($savedEcoActionsCount === 0)
-                <div class="text-center py-8 h-full flex flex-col items-center justify-center">
-                    <div class="mx-auto w-20 h-20 bg-[#E0E9D6] rounded-full flex items-center justify-center mb-4">
-                        <svg class="w-10 h-10 text-[#7A8C4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                        </svg>
                     </div>
-                    <h3 class="text-gray-600 font-medium mb-2">No saved actions yet</h3>
-                    <p class="text-sm text-gray-500 mb-4">Discover and save actionable eco tips!</p>
-                    <div class="bg-[#F0F5E9] p-4 rounded-lg w-full">
-                        <p class="text-xs text-[#5C7919] italic">💡 Tip: Browse actions and click the bookmark icon to save them here</p>
-                    </div>
-                </div>
-            @elseif($savedEcoActionsCount < 4)
-                {{-- Show saved actions with filler encouragement --}}
-                @foreach ($savedTopics as $saved)
-                    @if ($saved->type === 'ecoAction')
-                        <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item hover:scale-[1.02] transition min-w-0"
-                            data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
-                            data-category="{{ $saved->category }}">
-                            <div class="flex items-center gap-3 flex-1 min-w-0">
-                                <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
-                                    alt="{{ $saved->title }}" class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                                <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
-                                    onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
-                                    {{ $saved->title }}
-                                </h4>
-                            </div>
-                            <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500 ml-2">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
-                    @endif
-                @endforeach
-                
-            @else
-                {{-- 4 or more saved actions - just show the list with scroll --}}
-                @foreach ($savedTopics as $saved)
-                    @if ($saved->type === 'ecoAction')
-                        <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item hover:scale-[1.02] transition min-w-0"
-                            data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
-                            data-category="{{ $saved->category }}">
-                            <div class="flex items-center gap-3 flex-1 min-w-0">
-                                <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
-                                    alt="{{ $saved->title }}" class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                                <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
-                                    onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
-                                    {{ $saved->title }}
-                                </h4>
-                            </div>
-                            <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500 ml-2">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
-                    @endif
-                @endforeach
-            @endif
-        @endif
-    </div>
-</div>
 
                     {{-- Mobile Sidebar Overlay --}}
                     <div id="mobileOverlayLifestyle"
@@ -297,7 +316,7 @@
                             </button>
                         </div>
                         <hr class="border-[#5C7919]">
-                        
+
                         {{-- Mobile Content --}}
                         <div class="p-4 overflow-y-auto h-[calc(100%-4rem)]">
                             <div class="space-y-3" id="mobileSavedList">
@@ -306,15 +325,18 @@
                                     $savedEcoTopicsCount = count($savedTopics->where('type', 'ecoTopic'));
                                     $savedEcoActionsCount = count($savedTopics->where('type', 'ecoAction'));
                                 @endphp
-                                
+
                                 {{-- Check if current tab is Topics or Actions --}}
                                 @if (($currentTab ?? 'topics') === 'topics')
                                     {{-- For Eco-topics --}}
-                                    @if($savedEcoTopicsCount === 0)
+                                    @if ($savedEcoTopicsCount === 0)
                                         <div class="text-center py-8">
-                                            <div class="mx-auto w-16 h-16 bg-[#E0E9D6] rounded-full flex items-center justify-center mb-4">
-                                                <svg class="w-8 h-8 text-[#7A8C4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                            <div
+                                                class="mx-auto w-16 h-16 bg-[#E0E9D6] rounded-full flex items-center justify-center mb-4">
+                                                <svg class="w-8 h-8 text-[#7A8C4F]" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                                                 </svg>
                                             </div>
                                             <h3 class="text-gray-600 font-medium mb-2">No saved topics yet</h3>
@@ -325,8 +347,8 @@
                                         @foreach ($savedTopics as $saved)
                                             @if ($saved->type === 'ecoTopic')
                                                 <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item active:scale-[0.98] transition"
-                                                    data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
-                                                    data-category="{{ $saved->category }}">
+                                                    data-type="{{ $saved->type ?? 'ecoTopic' }}"
+                                                    data-id="{{ $saved->id }}" data-category="{{ $saved->category }}">
                                                     <div class="flex items-center gap-3 flex-1 min-w-0">
                                                         <img src="{{ $saved->image ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : asset('storage/default.png') }}"
                                                             alt="{{ $saved->title }}"
@@ -340,9 +362,11 @@
                                                                 {{ $saved->category ?? 'Uncategorized' }}</p>
                                                         </div>
                                                     </div>
-                                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}"
+                                                        method="POST">
                                                         @csrf @method('DELETE')
-                                                        <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500 p-1">
+                                                        <button type="submit"
+                                                            class="unsave-btn text-yellow-500 hover:text-red-500 p-1">
                                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                                 <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                                                             </svg>
@@ -351,14 +375,13 @@
                                                 </div>
                                             @endif
                                         @endforeach
-                                        
                                     @else
                                         {{-- 4 or more saved topics - just show the list --}}
                                         @foreach ($savedTopics as $saved)
                                             @if ($saved->type === 'ecoTopic')
                                                 <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item active:scale-[0.98] transition"
-                                                    data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
-                                                    data-category="{{ $saved->category }}">
+                                                    data-type="{{ $saved->type ?? 'ecoTopic' }}"
+                                                    data-id="{{ $saved->id }}" data-category="{{ $saved->category }}">
                                                     <div class="flex items-center gap-3 flex-1 min-w-0">
                                                         <img src="{{ $saved->image ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : asset('storage/default.png') }}"
                                                             alt="{{ $saved->title }}"
@@ -372,9 +395,11 @@
                                                                 {{ $saved->category ?? 'Uncategorized' }}</p>
                                                         </div>
                                                     </div>
-                                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}"
+                                                        method="POST">
                                                         @csrf @method('DELETE')
-                                                        <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500 p-1">
+                                                        <button type="submit"
+                                                            class="unsave-btn text-yellow-500 hover:text-red-500 p-1">
                                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                                 <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                                                             </svg>
@@ -386,11 +411,14 @@
                                     @endif
                                 @else
                                     {{-- For Eco-actions --}}
-                                    @if($savedEcoActionsCount === 0)
+                                    @if ($savedEcoActionsCount === 0)
                                         <div class="text-center py-8">
-                                            <div class="mx-auto w-16 h-16 bg-[#E0E9D6] rounded-full flex items-center justify-center mb-4">
-                                                <svg class="w-8 h-8 text-[#7A8C4F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                            <div
+                                                class="mx-auto w-16 h-16 bg-[#E0E9D6] rounded-full flex items-center justify-center mb-4">
+                                                <svg class="w-8 h-8 text-[#7A8C4F]" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                                                 </svg>
                                             </div>
                                             <h3 class="text-gray-600 font-medium mb-2">No saved actions yet</h3>
@@ -401,8 +429,8 @@
                                         @foreach ($savedTopics as $saved)
                                             @if ($saved->type === 'ecoAction')
                                                 <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item active:scale-[0.98] transition"
-                                                    data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
-                                                    data-category="{{ $saved->category }}">
+                                                    data-type="{{ $saved->type ?? 'ecoTopic' }}"
+                                                    data-id="{{ $saved->id }}" data-category="{{ $saved->category }}">
                                                     <div class="flex items-center gap-3 flex-1 min-w-0">
                                                         <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
                                                             alt="{{ $saved->title }}"
@@ -416,9 +444,11 @@
                                                                 {{ $saved->category ?? 'Uncategorized' }}</p>
                                                         </div>
                                                     </div>
-                                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}"
+                                                        method="POST">
                                                         @csrf @method('DELETE')
-                                                        <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500 p-1">
+                                                        <button type="submit"
+                                                            class="unsave-btn text-yellow-500 hover:text-red-500 p-1">
                                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                                 <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                                                             </svg>
@@ -427,16 +457,21 @@
                                                 </div>
                                             @endif
                                         @endforeach
-                                        
+
                                         {{-- Filler encouragement --}}
-                                        <div class="bg-gradient-to-r from-[#F0F5E9] to-[#E8F0E1] p-4 rounded-lg border-2 border-dashed border-[#7A8C4F]/30 mt-4">
+                                        <div
+                                            class="bg-gradient-to-r from-[#F0F5E9] to-[#E8F0E1] p-4 rounded-lg border-2 border-dashed border-[#7A8C4F]/30 mt-4">
                                             <div class="text-center">
-                                                <div class="w-10 h-10 bg-[#7A8C4F]/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                                                    <svg class="w-5 h-5 text-[#5C7919]" fill="currentColor" viewBox="0 0 24 24">
-                                                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                                                <div
+                                                    class="w-10 h-10 bg-[#7A8C4F]/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <svg class="w-5 h-5 text-[#5C7919]" fill="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
                                                     </svg>
                                                 </div>
-                                                <h4 class="font-medium text-[#5C7919] text-sm mb-1">Save {{ 4 - $savedEcoActionsCount }} more!</h4>
+                                                <h4 class="font-medium text-[#5C7919] text-sm mb-1">Save
+                                                    {{ 4 - $savedEcoActionsCount }} more!</h4>
                                                 <p class="text-xs text-gray-600">Build your actionable eco tips collection</p>
                                             </div>
                                         </div>
@@ -445,8 +480,8 @@
                                         @foreach ($savedTopics as $saved)
                                             @if ($saved->type === 'ecoAction')
                                                 <div class="flex items-center justify-between p-3 bg-white rounded-lg saved-item active:scale-[0.98] transition"
-                                                    data-type="{{ $saved->type ?? 'ecoTopic' }}" data-id="{{ $saved->id }}"
-                                                    data-category="{{ $saved->category }}">
+                                                    data-type="{{ $saved->type ?? 'ecoTopic' }}"
+                                                    data-id="{{ $saved->id }}" data-category="{{ $saved->category }}">
                                                     <div class="flex items-center gap-3 flex-1 min-w-0">
                                                         <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
                                                             alt="{{ $saved->title }}"
@@ -460,9 +495,11 @@
                                                                 {{ $saved->category ?? 'Uncategorized' }}</p>
                                                         </div>
                                                     </div>
-                                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}" method="POST">
+                                                    <form action="{{ route('libraries.unsave', ['id' => $saved->id]) }}"
+                                                        method="POST">
                                                         @csrf @method('DELETE')
-                                                        <button type="submit" class="unsave-btn text-yellow-500 hover:text-red-500 p-1">
+                                                        <button type="submit"
+                                                            class="unsave-btn text-yellow-500 hover:text-red-500 p-1">
                                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                                 <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                                                             </svg>
@@ -478,7 +515,7 @@
                     </div>
                 @endauth
             </div> {{-- This closes the flex container --}}
-            
+
             {{-- Motivational Quote (centered) --}}
             <div class="mt-6 text-center text-sm text-gray-500 italic">
                 "You don't have to know everything today — one tip at a time is enough."
@@ -631,7 +668,7 @@
             </div>
             @endif
         @endforeach`;
-                
+
                 // Add empty state if no saved topics
                 const savedTopicsCount = @json(count($savedTopics->where('type', 'ecoTopic')));
                 if (savedTopicsCount === 0) {
@@ -761,7 +798,7 @@
             </div>
             @endif
         @endforeach`;
-                
+
                 // Add empty state if no saved actions
                 const savedActionsCount = @json(count($savedTopics->where('type', 'ecoAction')));
                 if (savedActionsCount === 0) {
@@ -904,4 +941,4 @@
             applyCategoryFilter();
         });
     </script>
-@endsectionx
+    @endsectionx
