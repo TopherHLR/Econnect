@@ -21,244 +21,248 @@
             </div>
         </div>
         <div class="flex flex-col lg:flex-row gap-6 w-full">
-            <!-- SIDEBAR NAVIGATION -->
-            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full h-[640px] lg:w-1/5">
-                <aside class="w-full">
-                    <!-- Active Quests Header -->
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans">Active Quests</h2>
-                    </div>
+            <div class="flex gap-6 w-full items-stretch">
+                <!-- SIDEBAR -->
+                <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full lg:w-1/5">
+                    <aside class="w-full">
+                        <!-- Active Quests Header -->
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-semibold text-[#4F6B3F] font-sans">Active Quests</h2>
+                        </div>
 
-                    <!-- Quest Navigation - RESTORED UL/LI STRUCTURE -->
-                    <ul class="space-y-2 mb-6">
+                        <!-- Quest Navigation - RESTORED UL/LI STRUCTURE -->
+                        <ul class="space-y-2 mb-6">
 
-                        <!-- Quest Collection -->
-                        <li data-quest="collection" class="tab-eco cursor-pointer">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-layer-group text-[#7F8A4F]"></i>
-                                <span>Quest Collection</span>
-                            </div>
-                        </li>
-                        <hr class="border-[#E6EAD7] my-4">
-                        <div class="max-h-[350px] overflow-y-auto pr-1">
-                            <ul id="questList" class="space-y-2 mb-2">
-                                @foreach ($questsList->whereIn('status', ['active', 'ending_soon']) as $quest)
-                                    <li data-quest="{{ $quest->quest_id }}"
-                                        class="tab-eco cursor-pointer {{ $loop->first ? 'bg-[#E9F0E1] font-semibold' : '' }}">
-                                        <div class="flex justify-between items-center">
-                                            <span class="truncate">{{ $quest->title }}</span>
+                            <!-- Quest Collection -->
+                            <li data-quest="collection" class="tab-eco cursor-pointer">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-layer-group text-[#7F8A4F]"></i>
+                                    <span>Quest Collection</span>
+                                </div>
+                            </li>
+                            <hr class="border-[#E6EAD7] my-4">
+                            <div class="max-h-[350px] overflow-y-auto pr-1">
+                                <ul id="questList" class="space-y-2 mb-2">
+                                    @foreach ($questsList->whereIn('status', ['active', 'ending_soon']) as $quest)
+                                        <li data-quest="{{ $quest->quest_id }}"
+                                            class="tab-eco cursor-pointer {{ $loop->first ? 'bg-[#E9F0E1] font-semibold' : '' }}">
+                                            <div class="flex justify-between items-center">
+                                                <span class="truncate">{{ $quest->title }}</span>
 
-                                            <div class="flex items-center gap-2">
-                                                @if ($quest->status === 'ending_soon')
-                                                    <span
-                                                        class="text-xs bg-[#FEF3C7] text-[#D97706] px-2 py-1 rounded-md">Soon</span>
-                                                @endif
+                                                <div class="flex items-center gap-2">
+                                                    @if ($quest->status === 'ending_soon')
+                                                        <span
+                                                            class="text-xs bg-[#FEF3C7] text-[#D97706] px-2 py-1 rounded-md">Soon</span>
+                                                    @endif
 
-                                                @if ($quest->submissions->where('status', 'pending')->count() > 0)
-                                                    <div
-                                                        class="flex items-center gap-1.5 px-2 py-.5 rounded-full bg-rose-100 border border-rose-300 text-rose-700 text-xs font-semibold">
-                                                        <div class="relative">
-                                                            <div
-                                                                class="w-1 h-1 bg-rose-500 rounded-full animate-ping absolute">
+                                                    @if ($quest->submissions->where('status', 'pending')->count() > 0)
+                                                        <div
+                                                            class="flex items-center gap-1.5 px-2 py-.5 rounded-full bg-rose-100 border border-rose-300 text-rose-700 text-xs font-semibold">
+                                                            <div class="relative">
+                                                                <div
+                                                                    class="w-1 h-1 bg-rose-500 rounded-full animate-ping absolute">
+                                                                </div>
+                                                                <div class="w-1 h-1 bg-rose-500 rounded-full"></div>
                                                             </div>
-                                                            <div class="w-1 h-1 bg-rose-500 rounded-full"></div>
+                                                            <span>{{ $quest->submissions->where('status', 'pending')->count() }}
+                                                                pending</span>
                                                         </div>
-                                                        <span>{{ $quest->submissions->where('status', 'pending')->count() }}
-                                                            pending</span>
-                                                    </div>
-                                                @endif
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+
+                                    @if ($quests->whereIn('status', ['active', 'ending_soon'])->count() === 0)
+                                        <li class="text-center py-4 text-[#6A8A52] text-sm">
+                                            <i class="fa-solid fa-inbox mb-2 text-2xl opacity-50"></i>
+                                            <div>No active quests</div>
+                                        </li>
+                                    @endif
+                                </ul>
+
+
+                                <!-- Pagination buttons -->
+                                <div id="questPagination" class="flex justify-center items-center gap-2 mt-2">
+                                    <button id="prevPage" class="px-2 py-1 border rounded-md text-xs">&laquo;</button>
+
+                                    <div id="pageNumbers" class="flex gap-2">
+                                        @php
+                                            $perPage = 5;
+                                            $activeQuests = $questsList->whereIn('status', ['active', 'ending_soon']);
+                                            $totalPages = ceil($activeQuests->count() / $perPage);
+                                        @endphp
+
+                                        @for ($i = 1; $i <= min(5, $totalPages); $i++)
+                                            <button
+                                                class="page-btn px-3 py-1 border rounded-md text-xs {{ $i === 1 ? 'bg-[#E9F0E1] font-semibold' : '' }}"
+                                                data-page="{{ $i }}">
+                                                {{ $i }}
+                                            </button>
+                                        @endfor
+                                    </div>
+
+                                    <button id="nextPage" class="px-2 py-1 border rounded-md text-xs">&raquo;</button>
+                                </div>
+
+                            </div>
+
+                            <hr class="border-[#E6EAD7] my-4">
+                            <!-- Archive Tab -->
+                            <li data-quest="archived" class="tab-eco cursor-pointer">
+                                <div class="flex justify-between items-center">
+                                    <span class="truncate">Archived Quests</span>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </aside>
+                </div>
+                <!-- MAIN CONTENT AREA -->
+                 <main class="flex-1 space-y-6 w-full lg:w-4/5 bg-white rounded-2xl shadow p-6 border border-[#E6EAD7]">
+                    <!-- Quest Tables Container -->
+                    <div id="questTables" class="space-y-6">
+                        <!-- Individual Quest Tables -->
+                        @foreach ($questsList as $quest)
+                            <!-- Table Header Container -->
+                            <div id="questHeader-{{ $quest->quest_id }}"
+                                class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden }}">
+
+                                <!-- Table Header with Alerts & Search -->
+                                <div class="overflow-x-auto">
+                                    <div class="flex flex-col lg:flex-row gap-4 items-center">
+                                        <!-- Table Title -->
+                                        <div class="flex items-center gap-2 shrink-0">
+                                            <i class="fa-solid fa-users text-[#7F8A4F] text-lg"></i>
+                                            <h2 class="text-xl font-bold text-[#4F6B3F] font-serif whitespace-nowrap">
+                                                {{ $quest->title }} <span
+                                                    class="text-[#6A8A52]">({{ $quest->submissions->count() }})</span>
+                                            </h2>
+                                        </div>
+
+                                        <!-- 🚨 URGENT ALERTS -->
+                                        <div class="bg-[#FEF2F2] border border-[#FECACA] rounded-xl px-3 py-2 shrink-0">
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-2 h-2 bg-[#DC2626] rounded-full animate-pulse"></div>
+                                                <span class="font-semibold text-[#DC2626] text-sm whitespace-nowrap">
+                                                    {{ $quest->submissions->where('status', 'pending')->count() }} pending
+                                                </span>
                                             </div>
                                         </div>
-                                    </li>
-                                @endforeach
 
-                                @if ($quests->whereIn('status', ['active', 'ending_soon'])->count() === 0)
-                                    <li class="text-center py-4 text-[#6A8A52] text-sm">
-                                        <i class="fa-solid fa-inbox mb-2 text-2xl opacity-50"></i>
-                                        <div>No active quests</div>
-                                    </li>
-                                @endif
-                            </ul>
+                                        <!-- Search Input -->
+                                        <div class="relative flex-1 min-w-[250px]">
+                                            <input type="text" placeholder="Search participants..."
+                                                class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full 
+                                       focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#3B3B3B] font-sans table-search"
+                                                data-table-id="questTable-{{ $quest->quest_id }}">
+                                            <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F] text-sm"></i>
+                                        </div>
 
+                                        <!-- Filter Dropdowns -->
 
-                            <!-- Pagination buttons -->
-                            <div id="questPagination" class="flex justify-center items-center gap-2 mt-2">
-                                <button id="prevPage" class="px-2 py-1 border rounded-md text-xs">&laquo;</button>
+                                        <div class="flex gap-2 shrink-0">
+                                            <select
+                                                class="status-filter bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] font-sans whitespace-nowrap">
+                                                <option value="">All Status</option>
+                                                <option value="pending">Pending</option>
+                                                <option value="completed">Completed</option>
+                                                <option value="rejected">Rejected</option>
+                                            </select>
 
-                                <div id="pageNumbers" class="flex gap-2">
-                                    @php
-                                        $perPage = 5;
-                                        $activeQuests = $questsList->whereIn('status', ['active', 'ending_soon']);
-                                        $totalPages = ceil($activeQuests->count() / $perPage);
-                                    @endphp
-
-                                    @for ($i = 1; $i <= min(5, $totalPages); $i++)
-                                        <button
-                                            class="page-btn px-3 py-1 border rounded-md text-xs {{ $i === 1 ? 'bg-[#E9F0E1] font-semibold' : '' }}"
-                                            data-page="{{ $i }}">
-                                            {{ $i }}
-                                        </button>
-                                    @endfor
-                                </div>
-
-                                <button id="nextPage" class="px-2 py-1 border rounded-md text-xs">&raquo;</button>
-                            </div>
-
-                        </div>
-
-                        <hr class="border-[#E6EAD7] my-4">
-                        <!-- Archive Tab -->
-                        <li data-quest="archived" class="tab-eco cursor-pointer">
-                            <div class="flex justify-between items-center">
-                                <span class="truncate">Archived Quests</span>
-                            </div>
-                        </li>
-
-                    </ul>
-                </aside>
-            </div>
-            <!-- MAIN CONTENT AREA -->
-            <main class="flex-1 space-y-6 w-full h-[500px] lg:w-4/5">
-                <!-- Quest Tables Container -->
-                <div id="questTables" class="space-y-6">
-                    <!-- Individual Quest Tables -->
-                    @foreach ($questsList as $quest)
-                        <!-- Table Header Container -->
-                        <div id="questHeader-{{ $quest->quest_id }}"
-                            class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden }}">
-
-                            <!-- Table Header with Alerts & Search -->
-                            <div class="overflow-x-auto">
-                                <div class="flex flex-col lg:flex-row gap-4 items-center">
-                                    <!-- Table Title -->
-                                    <div class="flex items-center gap-2 shrink-0">
-                                        <i class="fa-solid fa-users text-[#7F8A4F] text-lg"></i>
-                                        <h2 class="text-xl font-bold text-[#4F6B3F] font-serif whitespace-nowrap">
-                                            {{ $quest->title }} <span
-                                                class="text-[#6A8A52]">({{ $quest->submissions->count() }})</span>
-                                        </h2>
-                                    </div>
-
-                                    <!-- 🚨 URGENT ALERTS -->
-                                    <div class="bg-[#FEF2F2] border border-[#FECACA] rounded-xl px-3 py-2 shrink-0">
-                                        <div class="flex items-center gap-2">
-                                            <div class="w-2 h-2 bg-[#DC2626] rounded-full animate-pulse"></div>
-                                            <span class="font-semibold text-[#DC2626] text-sm whitespace-nowrap">
-                                                {{ $quest->submissions->where('status', 'pending')->count() }} pending
-                                            </span>
+                                            <select
+                                                class="sort-by bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] font-sans whitespace-nowrap">
+                                                <option value="name-asc">Name (A to Z)</option>
+                                                <option value="name-desc">Name (Z to A)</option>
+                                                <option value="date-desc" selected>Date (Newest First)</option>
+                                                <option value="date-asc">Date (Oldest First)</option>
+                                                <option value="status-pending">Status: Pending First</option>
+                                                <option value="status-completed">Status: Completed First</option>
+                                                <option value="status-rejected">Status: Rejected First</option>
+                                            </select>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
 
-                                    <!-- Search Input -->
-                                    <div class="relative flex-1 min-w-[250px]">
-                                        <input type="text" placeholder="Search participants..."
-                                            class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full 
-                                       focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#3B3B3B] font-sans table-search"
-                                            data-table-id="questTable-{{ $quest->quest_id }}">
-                                        <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F] text-sm"></i>
-                                    </div>
+                            <!-- Main Table Container -->
+                            <div id="questTable-{{ $quest->quest_id }}"
+                                class="hidden">
 
-                                    <!-- Filter Dropdowns -->
-
-                                    <div class="flex gap-2 shrink-0">
-                                        <select
-                                            class="status-filter bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] font-sans whitespace-nowrap">
-                                            <option value="">All Status</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="completed">Completed</option>
-                                            <option value="rejected">Rejected</option>
-                                        </select>
-
-                                        <select
-                                            class="sort-by bg-[#E0E9D6] border border-[#7A8C4F] text-sm text-[#3B3B3B] rounded-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] font-sans whitespace-nowrap">
-                                            <option value="name-asc">Name (A to Z)</option>
-                                            <option value="name-desc">Name (Z to A)</option>
-                                            <option value="date-desc" selected>Date (Newest First)</option>
-                                            <option value="date-asc">Date (Oldest First)</option>
-                                            <option value="status-pending">Status: Pending First</option>
-                                            <option value="status-completed">Status: Completed First</option>
-                                            <option value="status-rejected">Status: Rejected First</option>
-                                        </select>
+                                <!-- Participants Table -->
+                                <div class="overflow-x-auto" id="table-data-participants">
+                                    <div class="text-center py-16 text-[#6A8A52]">
+                                        <i class="fa-solid fa-spinner fa-spin text-4xl mb-4"></i>
+                                        <p>Loading participants...</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
 
-                        <!-- Main Table Container -->
-                        <div id="questTable-{{ $quest->quest_id }}"
-                            class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden }}">
-
-                            <!-- Participants Table -->
-                            <div class="overflow-x-auto" id="table-data-participants">
-                                <div class="text-center py-16 text-[#6A8A52]">
-                                    <i class="fa-solid fa-spinner fa-spin text-4xl mb-4"></i>
-                                    <p>Loading participants...</p>
+                        <!-- Quest Collection Table Header -->
+                        <div id="collectionHeader" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] ">
+                            <!-- Table Header -->
+                            <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-layer-group text-[#7F8A4F] text-lg"></i>
+                                    <h2 class="text-xl font-bold text-[#4F6B3F] font-serif">
+                                        Quest Collection <span
+                                            class="text-[#6A8A52]">({{ $questsList->where('status', '!=', 'archived')->count() }})</span>
+                                    </h2>
                                 </div>
-                            </div>
-                        </div>
-                    @endforeach
 
-                    <!-- Quest Collection Table Header -->
-                    <div id="collectionHeader" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] ">
-                        <!-- Table Header -->
-                        <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-layer-group text-[#7F8A4F] text-lg"></i>
-                                <h2 class="text-xl font-bold text-[#4F6B3F] font-serif">
-                                    Quest Collection <span
-                                        class="text-[#6A8A52]">({{ $questsList->where('status', '!=', 'archived')->count() }})</span>
-                                </h2>
-                            </div>
-
-                            <!-- Search -->
-                            <div class="relative flex-1 min-w-[250px] max-w-md">
-                                <input type="text" placeholder="Search quests..."
-                                    class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-xl 
+                                <!-- Search -->
+                                <div class="relative flex-1 min-w-[250px] max-w-md">
+                                    <input type="text" placeholder="Search quests..."
+                                        class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-xl 
                                focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#3B3B3B] font-sans collection-search"
-                                    data-table-id="collectionTable">
-                                <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F] text-sm"></i>
+                                        data-table-id="collectionTable">
+                                    <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F] text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quest Collection Main Table -->
+                        <div id="collectionTable">
+                            <!-- Quest Collection Table -->
+                            <div class="overflow-x-auto" id="table-data">
+
+                                @include('admin.partials.quest_collection_table')
+                            </div>
+                        </div>
+
+                        <!-- Archived Quests Main Table -->
+                        <div id="archiveMain" class=" hidden">
+                            <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between mb-6">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-archive text-[#7F8A4F] text-lg"></i>
+                                    <h2 class="text-xl font-bold text-[#4F6B3F] font-serif">
+                                        Archived Quests <span
+                                            class="text-[#6A8A52]">({{ $archivedQuests->total() }})</span>
+                                    </h2>
+                                </div>
+
+                                <div class="relative flex-1 min-w-[250px] max-w-md">
+                                    <input type="text" placeholder="Search archived quests..." id="archive-search"
+                                        class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full 
+                                            focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#3B3B3B] font-sans">
+                                    <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F] text-sm"></i>
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <!-- This div will be replaced entirely on pagination -->
+                                <div id="archive-table-container">
+                                    @include('admin.partials.quest_archive_table', [
+                                        'archivedQuests' => $archivedQuests,
+                                    ])
+                                </div>
                             </div>
                         </div>
                     </div>
+                </main>
+            </div>
 
-                    <!-- Quest Collection Main Table -->
-                    <div id="collectionTable" class="bg-white rounded-2xl shadow p-6 border  border-[#E6EAD7] ">
-                        <!-- Quest Collection Table -->
-                        <div class="overflow-x-auto" id="table-data">
-
-                            @include('admin.partials.quest_collection_table')
-                        </div>
-                    </div>
-
-                    <!-- Archived Quests Main Table -->
-                    <div id="archiveMain" class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] hidden">
-                        <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between mb-6">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-archive text-[#7F8A4F] text-lg"></i>
-                                <h2 class="text-xl font-bold text-[#4F6B3F] font-serif">
-                                    Archived Quests <span class="text-[#6A8A52]">({{ $archivedQuests->total() }})</span>
-                                </h2>
-                            </div>
-
-                            <div class="relative flex-1 min-w-[250px] max-w-md">
-                                <input type="text" placeholder="Search archived quests..." id="archive-search"
-                                    class="bg-[#E0E9D6] w-full pl-4 pr-10 py-2.5 border border-[#7A8C4F] rounded-full 
-                       focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] text-sm text-[#3B3B3B] font-sans">
-                                <i class="fa-solid fa-search absolute right-3 top-3 text-[#7A8C4F] text-sm"></i>
-                            </div>
-                        </div>
-
-                        <div class="overflow-x-auto">
-                            <!-- This div will be replaced entirely on pagination -->
-                            <div id="archive-table-container">
-                                @include('admin.partials.quest_archive_table', [
-                                    'archivedQuests' => $archivedQuests,
-                                ])
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
         </div>
     </div>
 
@@ -564,9 +568,9 @@
                                 Pending
                             </option>
                             ${newStatus === 'pending' && hasProof ? `
-                                                                    <option value="pending" selected class="font-medium text-amber-700">
-                                                                        Submitted (Has Proof)
-                                                                    </option>` : ''}
+                                                                            <option value="pending" selected class="font-medium text-amber-700">
+                                                                                Submitted (Has Proof)
+                                                                            </option>` : ''}
                             <option value="completed" ${newStatus === 'completed' ? 'selected' : ''} class="font-medium text-green-700">
                                 Completed
                             </option>

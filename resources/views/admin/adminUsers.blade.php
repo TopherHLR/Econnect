@@ -21,7 +21,7 @@
             </div>
         </div>
         <!-- 🔍 TABLE HEADER WITH TITLE, ALERTS & SEARCH -->
-        <section class="bg-white rounded-lg shadow p-6 border border-[#E6EAD7]">
+        <section class="bg-white rounded-lg shadow p-6 border h-full border-[#E6EAD7]">
             <div class="flex flex-col lg:flex-row gap-4 items-center">
                 <!-- Table Title -->
                 <div class="flex items-center gap-2 shrink-0">
