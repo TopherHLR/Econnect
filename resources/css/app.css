@@ -470,21 +470,16 @@ html, body {
 /* =========================================================== ECO WIDGETS ================================================================== */
 .eco-widgets-container {
     position: absolute;
-    bottom: 13rem;
-    /* moved up slightly from bottom: 1rem → 2rem */
+    bottom: 15rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
-    /* center widgets with less space between them */
-    width: auto;
-    /* adjust to fit content rather than full width */
-    max-width: 72rem;
+    width: 100%;
+    max-width: 90rem; /* Increased */
     z-index: 40;
     padding: 0 2rem;
-    /* reduce padding for closer placement */
-    gap: 22rem;
-    /* smaller gap between widgets */
+    gap: 37vw; /* Responsive gap based on viewport width */
 }
 
 @media (max-width: 768px) {
@@ -494,6 +489,7 @@ html, body {
         width: 100%;
         gap: 3rem;
         padding: 0;
+        max-width: 100%;
     }
 }
 
@@ -511,10 +507,9 @@ html, body {
     align-items: center;
     justify-content: flex-end;
     z-index: 30;
-    /* Clear floating animation */
     animation: cloudFloat 10s ease-in-out infinite;
+    flex-shrink: 0; /* Important: prevents shrinking */
 }
-
 /* Different timing for natural cloud movement */
 .eco-actions {
     animation-delay: 0s;

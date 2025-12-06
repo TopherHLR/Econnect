@@ -26,56 +26,77 @@ Alpine.start();
     let ticking = false;
     let hasAnimated = false; // run animation only once
 
-    const onScroll = () => {
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const pastThreshold = scrollY > windowHeight * 0.3;
+   const onScroll = () => {
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const pastThreshold = scrollY > windowHeight * 0.3;
 
-        if (!ticking && pastThreshold && !hasAnimated) {
-            window.requestAnimationFrame(() => {
-                // ---- Panels ----
-                if (leftPanel) leftPanel.classList.add('show');
-                if (rightPanel) rightPanel.classList.add('show');
+    if (!ticking && pastThreshold && !hasAnimated) {
+        window.requestAnimationFrame(() => {
+            // ---- Panels ----
+            if (leftPanel) leftPanel.classList.add('show');
+            if (rightPanel) rightPanel.classList.add('show');
 
-                // ---- Plant ----
-                if (plant) {
-                    const scaleFactor = window.innerWidth > 768 ? 1.3 : 0.9;
-                    const moveY = window.innerHeight * 0.6;
-                    plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
-                    plant.style.willChange = 'transform';
-                }
+            // ---- Plant ----
+            if (plant) {
+                const scaleFactor = window.innerWidth > 768 ? 1.3 : 0.9;
+                const moveY = window.innerHeight * 0.6;
+                plant.style.transform = `translateY(${moveY}px) scale(${scaleFactor})`;
+                plant.style.willChange = 'transform';
+            }
 
-                // ---- Progress bar ----
-                if (progressBar) {
-                    progressBar.style.opacity = '1';
-                    progressBar.style.transform =
-                        window.innerWidth > 768
-                            ? 'scale(0.7) translateY(-15%)'
-                            : 'scale(0.55) translateY(-18%)';
-                    progressBar.style.willChange = 'transform, opacity';
-                }
+            // ---- Progress bar ----
+            if (progressBar) {
+                progressBar.style.opacity = '1';
+                progressBar.style.transform =
+                    window.innerWidth > 768
+                        ? 'scale(0.7) translateY(-15%)'
+                        : 'scale(0.55) translateY(-18%)';
+                progressBar.style.willChange = 'transform, opacity';
+            }
 
-                // ---- Plant image ----
-                if (plantImg && typeof plantBasePath !== 'undefined' && typeof stage !== 'undefined') {
-                    plantImg.src = `${plantBasePath}/${stage}.gif`;
-                }
+            // ---- Plant image ----
+            if (plantImg && typeof plantBasePath !== 'undefined' && typeof stage !== 'undefined') {
+                plantImg.src = `${plantBasePath}/${stage}.gif`;
+            }
 
-                // ---- Text ----
-                if (textDiv && textEl) {
-                    textDiv.style.top = `${window.innerHeight * 0.59}px`;
-                    textEl.textContent = 'We all yearn to make a difference...';
-                    textEl.classList.add('fade-text'); // CSS handles fade
-                }
+// ---- Text ----
+if (textDiv && textEl) {
+    textDiv.style.top = `${window.innerHeight * 0.59}px`;
+    textEl.innerHTML = '<strong>Grow with us</strong> on a sustainable journey <br>' +
+                    'where <strong>every small action blooms into impact</strong><br>' +
+                    'and every quest brings meaningful rewards.';
+    textEl.classList.add('fade-text');
+    
+    // Add inline styles for text size and other properties
+    textEl.style.fontSize = 'clamp(0.9rem, 1.8vw, 1.3rem)'; // Much smaller
+    textEl.style.lineHeight = '1.3'; // Tighter line height
+    textDiv.style.top = `${window.innerHeight * 0.57}px`; // Near the top
+    textEl.style.textAlign = 'center';
+    textEl.style.color = '#556037ff';
+    textEl.style.fontWeight = '500';
+    textEl.style.maxWidth = '500px'; // Smaller max width
+    textEl.style.margin = '0 auto';
 
-                hasAnimated = true; // prevent further animation
-                ticking = false;
-            });
+}
+            // ---- GLOW ANIMATION ----
+            // Find the glow container and add the activation class
+            const glowContainers = document.querySelectorAll('.absolute.top-1\\/4.flex.items-center.justify-center');
+            if (glowContainers.length > 0) {
+                glowContainers.forEach(container => {
+                    container.classList.add('glow-active');
+                });
+            }
 
-            ticking = true;
-        }
-    };
+            hasAnimated = true; // prevent further animation
+            ticking = false;
+        });
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+        ticking = true;
+    }
+};
+
+window.addEventListener('scroll', onScroll, { passive: true });
 })();
 
 //======================================================================================= PROFILE DROPDOWN ======================================================================================
@@ -95,7 +116,6 @@ Alpine.start();
         }
     });
 })();
-
 //======================================================================================= SIGN-IN / SIGN-UP OVERLAY ======================================================================================
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('container');
