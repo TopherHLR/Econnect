@@ -1050,10 +1050,6 @@
                         <i class="fa-solid fa-lock text-4xl text-[#4A6613] mb-3"></i>
                         <p class="text-[#4A6613] font-semibold text-lg mb-2">Join the Conversation</p>
                         <p class="text-[#4E3A2E] mb-4">Sign in to share your sustainable journey with our community</p>
-                        <a href="{{ route('login') }}"
-                            class="inline-block bg-[#4A6613] text-white px-8 py-3 rounded-xl hover:bg-[#3a5010] transition-colors duration-300 font-semibold">
-                            Sign in to Contribute
-                        </a>
                     </div>
 
                     <div class="text-sm text-[#4E3A2E]/70">

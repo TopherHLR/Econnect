@@ -131,13 +131,16 @@
     }
 
     function stopScanner() {
-        if (html5QrCode) {
-            html5QrCode.stop().catch(() => {});
-            html5QrCode.clear();
-            html5QrCode = null;
-        }
-    }
+        if (!html5QrCode) return; // prevent calling stop if nothing running
 
+        if (html5QrCode._isScanning) {
+            html5QrCode.stop()
+                .then(() => html5QrCode.clear())
+                .catch(() => {});
+        }
+
+        html5QrCode = null;
+    }
     let qrCooldown = false; // prevents multiple scans in short time
 
     function startQrScanner() {
@@ -150,61 +153,36 @@
         qrReaderEl.style.filter = "brightness(0.8) contrast(1.1)";
 
         html5QrCode.start({
-                facingMode: "environment"
-            }, {
-                fps: 20,
-                qrbox: 250
-            },
-            qrCodeMessage => {
-                if (qrMode === "verify") {
-                    handleUserVerification(qrCodeMessage);
-                } else {
-                    handleQrCode(qrCodeMessage);
-                }
-            }
-        ).catch(err => console.error("QR start failed:", err));
-
-
-        // Handle file input scanning
-        const fileInput = document.getElementById('qr-file-input');
-        fileInput.onchange = async e => {
-            if (e.target.files.length === 0) return;
-            const file = e.target.files[0];
-
-            // Stop camera before scanning file
-            await html5QrCode.stop().catch(() => {});
-
-            try {
-                const qrCodeMessage = await html5QrCode.scanFile(file, true);
-
-                if (qrMode === "verify") {
-                    handleUserVerification(qrCodeMessage);
-                } else {
-                    handleQrCode(qrCodeMessage);
-                }
-
-            } catch (err) {
-                resultEl.textContent = `Error reading image: ${err}`;
-            } finally {
-                // Restart camera scan after file scan
-                html5QrCode.start({
-                        facingMode: "environment"
-                    }, {
-                        fps: 20,
-                        qrbox: 250
-                    },
-                    qrCodeMessage => {
-                        if (qrMode === "verify") {
-                            handleUserVerification(qrCodeMessage);
-                        } else {
-                            handleQrCode(qrCodeMessage);
-                        }
+                    facingMode: "environment"
+                }, {
+                    fps: 20,
+                    qrbox: 250
+                },
+                qrCodeMessage => {
+                    if (qrMode === "verify") {
+                        handleUserVerification(qrCodeMessage);
+                    } else {
+                        handleQrCode(qrCodeMessage);
                     }
+                }
+            )
+            .catch(err => {
+                console.error("QR start failed:", err);
 
-                ).catch(() => {});
-            }
-        };
+                if (err.name === "NotFoundError") {
+                    showToast("No camera device found.", "error");
+                } else if (err.name === "NotAllowedError") {
+                    showToast("Camera access denied. Please allow camera permission.", "error");
+                } else if (err.name === "NotReadableError") {
+                    showToast("Camera is already in use by another application.", "error");
+                } else if (err.name === "OverconstrainedError") {
+                    showToast("Requested camera not available.", "error");
+                } else {
+                    showToast("Failed to start scanner. Please check device.", "error");
+                }
+            });
     }
+
     // Open Verify User Modal
     function openVerifyModal() {
         document.getElementById("verifyUserModal").classList.remove("hidden");
@@ -367,19 +345,32 @@
             await html5UserQrCode.stop().catch(() => {});
 
             try {
-                const qrCodeMessage = await html5UserQrCode.scanFile(file, true);
-                handleUserQrScan(qrCodeMessage);
+                const qrCodeMessage = await html5QrCode.scanFile(file, true);
+                if (qrMode === "verify") {
+                    handleUserVerification(qrCodeMessage);
+                } else {
+                    handleQrCode(qrCodeMessage);
+                }
             } catch (err) {
+                showToast("Error reading QR from image.", "error");
                 resultEl.textContent = `Error reading image: ${err}`;
             } finally {
-                html5UserQrCode.start({
+                html5QrCode.start({
                         facingMode: "environment"
                     }, {
                         fps: 20,
                         qrbox: 250
                     },
-                    qrCodeMessage => handleUserQrScan(qrCodeMessage)
-                ).catch(() => {});
+                    qrCodeMessage => {
+                        if (qrMode === "verify") {
+                            handleUserVerification(qrCodeMessage);
+                        } else {
+                            handleQrCode(qrCodeMessage);
+                        }
+                    }
+                ).catch(err => {
+                    showToast("Camera failed to restart.", "error");
+                });
             }
         };
     }
@@ -443,44 +434,55 @@
         btn.disabled = true; // prevent double clicks
 
         fetch(`/submissions/${submissionId}/update-status`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({ status: newStatus }),
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                showMessage(`Submission marked as ${newStatus}`, 'success');
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify({
+                    status: newStatus
+                }),
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage(`Submission marked as ${newStatus}`, 'success');
 
-                // Disable buttons
-                const buttonContainer = btn.parentElement;
-                buttonContainer.querySelectorAll('button').forEach(b => b.disabled = true);
+                    // Disable buttons
+                    const buttonContainer = btn.parentElement;
+                    buttonContainer.querySelectorAll('button').forEach(b => b.disabled = true);
 
-                // **Update the text in the modal dynamically**
-                // We'll append a small status label or replace buttons
-                const statusLabel = document.createElement('span');
-                statusLabel.classList.add('text-sm', 'font-semibold', newStatus === 'completed' ? 'text-green-600' : 'text-red-600');
-                statusLabel.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+                    // **Update the text in the modal dynamically**
+                    // We'll append a small status label or replace buttons
+                    const statusLabel = document.createElement('span');
+                    statusLabel.classList.add('text-sm', 'font-semibold', newStatus === 'completed' ?
+                        'text-green-600' : 'text-red-600');
+                    statusLabel.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
 
-                // Replace buttons with status label
-                buttonContainer.innerHTML = '';
-                buttonContainer.appendChild(statusLabel);
+                    // Replace buttons with status label
+                    buttonContainer.innerHTML = '';
+                    buttonContainer.appendChild(statusLabel);
 
-            } else {
-                showMessage('Failed to update submission', 'error');
-            }
-        })
-        .catch(err => {
-            showMessage('Something went wrong', 'error');
-        })
-        .finally(() => {
-            btn.disabled = false;
-        });
+                } else {
+                    showMessage('Failed to update submission', 'error');
+                }
+            })
+            .catch(err => {
+                showMessage('Something went wrong', 'error');
+            })
+            .finally(() => {
+                btn.disabled = false;
+            });
     }
 
+    function showToast(message, type = "error") {
+        const toast = document.createElement("div");
+        toast.textContent = message;
+        toast.className = `fixed top-5 right-5 px-4 py-2 rounded shadow-lg text-white z-[9999] 
+        ${type === "success" ? "bg-green-600" : "bg-red-600"}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
 
 
     function closeUserPendingQuestsModal() {
