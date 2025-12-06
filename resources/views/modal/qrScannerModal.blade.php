@@ -339,13 +339,10 @@
             qrCodeMessage => handleUserQrScan(qrCodeMessage)
         ).catch(err => console.error("User QR start failed:", err));
 
-        fileInput.onchange = async e => {
+        document.getElementById('qr-file-input').onchange = async e => {
             if (!e.target.files.length) return;
             const file = e.target.files[0];
-
-            if (html5QrCode._isScanning) {
-                await html5QrCode.stop().catch(() => {});
-            }
+            await html5UserQrCode.stop().catch(() => {});
 
             try {
                 const qrCodeMessage = await html5QrCode.scanFile(file, true);
@@ -376,7 +373,6 @@
                 });
             }
         };
-
     }
 
     function handleUserQrScan(qrCodeMessage) {
