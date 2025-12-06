@@ -53,7 +53,8 @@ class AuthController extends Controller
                 ]);
             }
 
-            $recaptchaResponse = Http::asForm()->post(
+            // Replace this:
+            $recaptchaResponse = Http::withoutVerifying()->asForm()->post(
                 'https://www.google.com/recaptcha/api/siteverify',
                 [
                     'secret'   => $secretKey,
@@ -70,6 +71,9 @@ class AuthController extends Controller
                     'g-recaptcha-response' => 'ReCAPTCHA verification failed. Please try again.'
                 ]);
             }
+
+            Log::info('✅ STEP 2.1: reCAPTCHA PASSED');
+
 
             Log::info('✅ STEP 2.1: reCAPTCHA PASSED');
 
