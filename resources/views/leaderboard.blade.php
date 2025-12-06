@@ -246,7 +246,7 @@
 
                 <div class="mb-5 overflow-hidden bg-gradient-to-r from-[#5E7345] to-[#7A8F55] rounded-2xl shadow-lg">
                     <div class="py-3 px-6 text-white font-semibold flex items-center gap-4">
-                        <span class="flex-shrink-0 animate-pulse bg-[#F8F2E6]/20 px-4 py-1 rounded-full text-sm">LIVE
+                        <span class="flex-shrink-0 animate-pulse bg-[#F8F2E6]/20 px-4 py-1 rounded-xl text-sm">LIVE
                             TOP
                             PERFORMERS</span>
                         <div class="ticker-wrapper whitespace-nowrap">
