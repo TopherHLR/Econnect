@@ -4,7 +4,7 @@
     <main class="pt-12 px-6 flex min-h-screen space-x-6">
 
         {{-- 🌿 Sidebar --}}
-        <aside class="w-80 bg-[#FCF9EF] rounded-3xl shadow-md p-6 h-fit max-w-3xl">
+        <aside class="w-110 bg-[#FCF9EF] rounded-3xl shadow-md p-6 h-[857px] max-w-3xl">
 
             @php
                 $user = auth()->user();
@@ -63,10 +63,10 @@
                 $treeGif = Vite::asset("resources/images/tree/{$stageIndex}.gif");
             @endphp
 
-            <h2 class="text-lg font-semibold text-[#4F6B3F] mb-4">Profile</h2>
+            <h2 class="text-3xl font-bold text-green-900 mt-5 mb-4">Profile</h2>
 
             {{-- Profile Card --}}
-            <div class="bg-white rounded-2xl shadow p-5 mb-5">
+            <div class="bg-white rounded-2xl shadow p-5 mb-5 min-h-[735px]">
                 <div class="flex items-center justify-between mb-2">
                     <a href="{{ route('account.show') }}">
                         <div class="flex items-center justify-between">
@@ -79,12 +79,12 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-gray-800">{{ $user->name ?? 'Guest User' }}</h3>
+                                    <h3 class="font-bold text-2xl text-gray-800">{{ $user->name ?? 'Guest User' }}</h3>
                                     <p class="text-sm text-gray-500">{{ $badgeLevel }}</p>
                                 </div>
                             </div>
 
-                            <button class="text-[#4F6B3F] hover:text-[#3B541F] transition ml-12 cursor-pointer"
+                            <button class="text-[#4F6B3F] hover:text-[#3B541F] transition ml-32 cursor-pointer"
                                 title="Edit Profile">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
@@ -98,14 +98,14 @@
 
                 {{-- Dynamic Stats --}}
                 <div class="text-sm text-gray-700 space-y-1 mt-3">
-                    <p><span class="font-semibold text-[#4F6B3F]">Total Eco-points:</span> {{ $progressPoints }} pts</p>
-                    <p><span class="font-semibold text-[#4F6B3F]">Current Points:</span> {{ $currentPoints }} pts</p>
-                    <p><span class="font-semibold text-[#4F6B3F]">Earned badges:</span> {{ $earnedBadges }}</p>
-                    <p><span class="font-semibold text-[#4F6B3F]">Quests completed:</span> {{ $completedQuests }}</p>
+                    <p><span class="text-xl font-semibold text-[#4F6B3F]">Total Eco-points:</span> {{ $progressPoints }} pts</p>
+                    <p><span class="text-xl font-semibold text-[#4F6B3F]">Current Points:</span> {{ $currentPoints }} pts</p>
+                    <p><span class="text-xl font-semibold text-[#4F6B3F]">Earned badges:</span> {{ $earnedBadges }}</p>
+                    <p><span class="text-xl font-semibold text-[#4F6B3F]">Quests completed:</span> {{ $completedQuests }}</p>
                 </div>
                 {{-- Tree Display --}}
-                <div class="mt-5 mb-4 text-center">
-                    <h4 class="text-sm text-gray-600 mb-2">Your Tree Stage: {{ $currentTreeStage['name'] ?? 'Seed' }}
+                <div class="mt-10 mb-4 text-center">
+                    <h4 class="text-lg text-gray-600 mb-2">Your Tree Stage: {{ $currentTreeStage['name'] ?? 'Seed' }}
                         {{ $currentTreeStage['icon'] ?? '🌱' }}</h4>
 
                     <img id="plant-image" src="{{ $treeGif }}" alt="Plant"
@@ -130,7 +130,7 @@
 
                 {{-- Buttons --}}
                 <a href="/myprogress"
-                    class="block w-full text-center bg-[#4F6B3F] text-white mt-2 py-2 rounded-xl hover:bg-[#3B541F] transition">
+                    class="block w-full text-center bg-[#4F6B3F] text-white mt-15 py-2 rounded-xl hover:bg-[#3B541F] transition">
                     View Progress
                 </a>
                 <a href="/rewards"
@@ -138,21 +138,11 @@
                     View Rewards
                 </a>
             </div>
-
-            {{-- Settings --}}
-            <div class="bg-white rounded-2xl shadow p-3 space-y-3">
-                <a href="#" class="flex items-center justify-between text-[#4F6B3F] font-medium hover:text-[#3B541F]">
-                    <span>Settings and Privacy</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
-            </div>
         </aside>
 
         {{-- 🌱 Main Account Content --}}
         <section
-            class="bg-[#FCFFF6] w-full max-w-[1400px] rounded-3xl shadow-md p-10 space-y-8 min-h-[600px] max-h-[90vh] overflow-y-auto mx-auto">
+            class="bg-[#FCF9EF] w-full max-w-[1400px] rounded-3xl shadow-md p-10 space-y-8 min-h-[600px] max-h-[90vh] overflow-y-auto mx-auto">
             @yield('account_content')
         </section>
 

@@ -23,7 +23,7 @@
         <div class="flex flex-col lg:flex-row gap-6 w-full">
             <div class="flex gap-6 w-full items-stretch">
                 <!-- SIDEBAR -->
-                <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full lg:w-1/5">
+                <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] h-full w-full lg:w-1/5">
                     <aside class="w-full">
                         <!-- Active Quests Header -->
                         <div class="flex justify-between items-center mb-6">
@@ -119,7 +119,7 @@
                     </aside>
                 </div>
                 <!-- MAIN CONTENT AREA -->
-                 <main class="flex-1 space-y-6 w-full lg:w-4/5 bg-white rounded-2xl shadow p-6 border border-[#E6EAD7]">
+                 <main class="flex-1 space-y-6 w-full lg:w-4/5 bg-white rounded-2xl shadow h-full p-6 border border-[#E6EAD7]">
                     <!-- Quest Tables Container -->
                     <div id="questTables" class="space-y-6">
                         <!-- Individual Quest Tables -->

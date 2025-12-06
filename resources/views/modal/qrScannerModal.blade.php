@@ -153,35 +153,66 @@
         qrReaderEl.style.filter = "brightness(0.8) contrast(1.1)";
 
         html5QrCode.start({
-                    facingMode: "environment"
-                }, {
-                    fps: 20,
-                    qrbox: 250
-                },
-                qrCodeMessage => {
-                    if (qrMode === "verify") {
-                        handleUserVerification(qrCodeMessage);
-                    } else {
-                        handleQrCode(qrCodeMessage);
-                    }
-                }
-            )
-            .catch(err => {
-                console.error("QR start failed:", err);
-
-                if (err.name === "NotFoundError") {
-                    showToast("No camera device found.", "error");
-                } else if (err.name === "NotAllowedError") {
-                    showToast("Camera access denied. Please allow camera permission.", "error");
-                } else if (err.name === "NotReadableError") {
-                    showToast("Camera is already in use by another application.", "error");
-                } else if (err.name === "OverconstrainedError") {
-                    showToast("Requested camera not available.", "error");
+                facingMode: "environment"
+            }, {
+                fps: 20,
+                qrbox: 250
+            },
+            qrCodeMessage => {
+                if (qrMode === "verify") {
+                    handleUserVerification(qrCodeMessage);
                 } else {
-                    showToast("Failed to start scanner. Please check device.", "error");
+                    handleQrCode(qrCodeMessage);
                 }
-            });
+            }
+        ).catch(err => {
+            console.error("QR start failed:", err);
+            // your toast error handling
+        });
+
+        // 📌 PLACE IT RIGHT HERE
+        const fileInput = document.getElementById('qr-file-input');
+        fileInput.onchange = async e => {
+            if (!e.target.files.length) return;
+            const file = e.target.files[0];
+
+            if (html5QrCode._isScanning) {
+                await html5QrCode.stop().catch(() => {});
+            }
+
+            try {
+                const qrCodeMessage = await html5QrCode.scanFile(file, true);
+
+                if (qrMode === "verify") {
+                    handleUserVerification(qrCodeMessage);
+                } else {
+                    handleQrCode(qrCodeMessage);
+                }
+
+            } catch (err) {
+                showToast("Error reading QR from image.", "error");
+                resultEl.textContent = `Error reading image: ${err}`;
+            } finally {
+                html5QrCode.start({
+                        facingMode: "environment"
+                    }, {
+                        fps: 20,
+                        qrbox: 250
+                    },
+                    qrCodeMessage => {
+                        if (qrMode === "verify") {
+                            handleUserVerification(qrCodeMessage);
+                        } else {
+                            handleQrCode(qrCodeMessage);
+                        }
+                    }
+                ).catch(() => {
+                    showToast("Camera failed to restart.", "error");
+                });
+            }
+        };
     }
+
 
     // Open Verify User Modal
     function openVerifyModal() {
@@ -330,6 +361,7 @@
     function startUserQrScanner() {
         if (!html5UserQrCode) html5UserQrCode = new Html5Qrcode("qr-reader");
 
+        // Try to start camera
         html5UserQrCode.start({
                 facingMode: "environment"
             }, {
@@ -337,43 +369,27 @@
                 qrbox: 250
             },
             qrCodeMessage => handleUserQrScan(qrCodeMessage)
-        ).catch(err => console.error("User QR start failed:", err));
+        ).catch(err => {
+            console.warn("User QR camera start failed:", err);
+            showToast("Camera unavailable. You can use QR image upload.", "error");
+        });
 
-        document.getElementById('qr-file-input').onchange = async e => {
+        // File input will always work
+        const fileInput = document.getElementById('qr-file-input');
+        fileInput.onchange = async e => {
             if (!e.target.files.length) return;
             const file = e.target.files[0];
-            await html5UserQrCode.stop().catch(() => {});
 
             try {
-                const qrCodeMessage = await html5QrCode.scanFile(file, true);
-                if (qrMode === "verify") {
-                    handleUserVerification(qrCodeMessage);
-                } else {
-                    handleQrCode(qrCodeMessage);
-                }
+                const qrCodeMessage = await html5UserQrCode.scanFile(file, true);
+                handleUserQrScan(qrCodeMessage);
             } catch (err) {
                 showToast("Error reading QR from image.", "error");
                 resultEl.textContent = `Error reading image: ${err}`;
-            } finally {
-                html5QrCode.start({
-                        facingMode: "environment"
-                    }, {
-                        fps: 20,
-                        qrbox: 250
-                    },
-                    qrCodeMessage => {
-                        if (qrMode === "verify") {
-                            handleUserVerification(qrCodeMessage);
-                        } else {
-                            handleQrCode(qrCodeMessage);
-                        }
-                    }
-                ).catch(err => {
-                    showToast("Camera failed to restart.", "error");
-                });
             }
         };
     }
+
 
     function handleUserQrScan(qrCodeMessage) {
         if (userQrCooldown) return;

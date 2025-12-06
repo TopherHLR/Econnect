@@ -16,6 +16,16 @@
 
             <!-- ALL Quick Actions - Compact, beside header -->
             <div class="flex flex-wrap gap-2 justify-end">
+                <!-- Secondary Actions -->
+                <button onclick="openUserQrScanner()" class="btn-eco btn-sand compact" title="Verify User">
+                    <i class="fa-solid fa-user-check"></i>
+
+                    <span class="hidden xl:inline">Verify User</span>
+                </button>
+                <button onclick="openUserQrScannerModal()" class="btn-eco btn-leaf compact" title="Scan User QR">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span class="hidden xl:inline">QR Quests</span>
+                </button>
                 <!-- Primary Actions -->
                 <button onclick="openQuestModal()" class="btn-eco btn-mint compact" title="Create New Quest">
                     <i class="fa-solid fa-circle-plus"></i>
@@ -30,15 +40,9 @@
                     <span class="hidden lg:inline">Eco Action</span>
                 </button>
 
-                <!-- Secondary Actions -->
-                <button onclick="openUserQrScanner()" class="btn-eco btn-sand compact" title="Verify User">
-                    <i class="fa-solid fa-qrcode"></i>
-                    <span class="hidden xl:inline">Verify</span>
-                </button>
-                <button onclick="openUserQrScannerModal()" class="btn-eco btn-leaf compact" title="Scan User QR">
-                    <i class="fa-solid fa-user-check"></i>
-                    <span class="hidden xl:inline">Scan QR</span>
-                </button>
+
+
+
             </div>
         </div>
 
@@ -133,7 +137,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">   
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                 <!-- 🟢 HIGH PRIORITY CARDS (Top Row) -->
                 @if ($mostDeserving && $mostDeserving->pointsEarned > 0)
                     <div class="metric-card">
@@ -503,7 +507,7 @@
                 font-weight: 600;
             }
 
-     
+
 
             /* Responsive Design */
             @media (max-width: 768px) {
