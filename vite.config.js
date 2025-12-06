@@ -18,12 +18,12 @@ export default defineConfig({
     tailwindcss(),
   ],
 
-  // Optional server config
-   server: {
-     host: '0.0.0.0',
-     port: 5173,
-     hmr: {
-      host: '192.168.114.41',
-     },
-   },
+  // // Optional server config
+  //  server: {
+  //    host: '0.0.0.0',
+  //    port: 5173,
+  //    hmr: {
+  //     host: '192.168.114.41',
+  //    },
+  //  },
 })
