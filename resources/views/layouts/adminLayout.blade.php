@@ -49,6 +49,12 @@
             display: flex;
             flex-direction: column;
         }
+        .content-scroll-main {
+            height: 100%;
+            overflow-y: auto;  /* scrolls vertically */
+            overflow-x: hidden; /* prevents sideways scroll */
+            padding-right: 6px; /* so scrollbar doesn’t overlap content */
+        }
 
         /* Sidebar Collapsed State */
         aside.mainsidebar.collapsed {
@@ -279,14 +285,16 @@
             margin-left: var(--sidebar-width-expanded);
             margin-top: 125px;
             margin-right: 24px;
+  
             background: #FCF9EF;
             border-radius: 2rem;
+            overflow: hidden;
             box-shadow: 0 8px 32px rgba(79, 107, 63, 0.08);
             border: 1px solid rgba(79, 107, 63, 0.06);
             transition: var(--sidebar-transition);
             font-family: 'Nunito Sans', sans-serif;
-            padding: 30px;
-            min-height: calc(100vh - 160px);
+            padding: 35px;
+            height: calc(100vh - 160px);
         }
 
         /* 📱 Mobile adjustments */
@@ -445,10 +453,12 @@
     </aside>
 
     <!-- 🌾 Main Content -->
-    <main class="mainonly overflow-hidden">
-        @include('modal.qrScannerModal')
-        @include('modal.ecoTopics_ecoActionModal')
-        @yield('content')
+    <main class="mainonly ">
+        <div class="content-scroll-main">
+            @include('modal.qrScannerModal')
+            @include('modal.ecoTopics_ecoActionModal')
+            @yield('content')
+        </div>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>

@@ -27,7 +27,7 @@
 
         <div class="flex flex-col lg:flex-row gap-6 w-full">
             <!-- SIDEBAR -->
-            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full h-[690px] lg:w-1/5">
+            <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7] w-full h-[662px] lg:w-1/5">
                 <aside>
                     <h2 class="text-xl font-semibold text-[#4F6B3F] mb-6">Library Sections</h2>
                     <div class="space-y-2">
@@ -75,7 +75,7 @@
             </div>
 
             <!-- MAIN CONTENT -->
-            <main class="flex-1 space-y-6 w-full lg:w-4/5">
+            <main class="flex-1 space-y-6 w-full h-[620px] lg:w-4/5">
                 <!-- Search + Add Button -->
                 <div class="bg-white rounded-2xl shadow p-6 border border-[#E6EAD7]">
                     <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
@@ -94,7 +94,7 @@
                 </div>
 
                 <!-- ECO TOPICS -->
-                <div id="topicsTable" class="bg-white rounded-2xl shadow p-6 border h-[570px] border-[#E6EAD7]">
+                <div id="topicsTable" class="bg-white rounded-2xl shadow p-6 border h-[550px] border-[#E6EAD7]">
                     <div class="flex items-center gap-3 mb-6">
                         <i class="fa-solid fa-book text-[#7F8A4F] text-xl"></i>
                         <h2 class="text-xl font-semibold text-[#4F6B3F]">Eco Topics <span
