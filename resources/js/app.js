@@ -3,13 +3,15 @@ import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 
-// Define stores BEFORE start
-Alpine.store("authModal", {
-    open: false,
-    mode: "signin", // or 'signup'
+document.addEventListener("alpine:init", () => {
+    Alpine.store("authModal", {
+        open: Boolean(window.authModalOpen),   // read from backend
+        mode: window.authModalMode || "signin"
+    });
 });
 
 Alpine.start();
+
 
 //======================================================================================= NAVBAR ======================================================================================
 (() => {
