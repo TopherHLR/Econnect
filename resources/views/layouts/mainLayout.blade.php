@@ -14,9 +14,6 @@
 </head>
 
 <body class="flex flex-col min-h-screen">
-
-    @include('modal.notificationModal')
-
     <nav id="navbar"
         class="navbar {{ !Request::is('/') && !Request::is('home') ? 'navbar-scrolled navbar-green-shadow' : '' }}">
         <div class="navbar-container">
@@ -28,7 +25,7 @@
                 </a>
 
                 <!-- Hamburger (Mobile) -->
-                <button id="menu-toggle" class="block md:hidden mr-5 text-green-900 focus:outline-none">
+                <button id="menu-toggle" class="block md:hidden text-green-900 focus:outline-none">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -65,6 +62,7 @@
                     @endguest
 
                     @auth
+                        @include('modal.notificationModal')
                         <div class="flex items-center space-x-3 relative ms-5">
                             <!-- Notification Bell -->
                             <!-- Notification Bell -->
@@ -189,7 +187,7 @@
 
     <!-- Sidebar -->
     <aside id="sidebar"
-        class="fixed top-0 right-0 h-full w-64 bg-[#F7F3E7] shadow-lg transform translate-x-full transition-transform duration-300 z-[1200]">
+        class="fixed top-0 left-0 h-full w-64 bg-[#F7F3E7] shadow-lg transform -translate-x-full transition-transform duration-300 z-[1200]">
         <div class="flex items-center justify-between p-4 border-b border-gray-200">
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo" class="h-10">
             <button id="close-sidebar" class="text-green-900">
@@ -198,105 +196,16 @@
                 </svg>
             </button>
         </div>
-        <!-- Sidebar Auth / Profile Section -->
-        <div class=" pt-4 px-4">
 
-            @guest
-                <!-- When NOT logged in -->
-                <div x-data class="flex flex-col space-y-3">
-                    <button @click="$store.authModal.open = true; $store.authModal.mode = 'signin'"
-                        class="text-green-900 font-semibold hover:text-green-800 transition w-full text-left">
-                        Log In
-                    </button>
-
-                    <button @click="$store.authModal.open = true; $store.authModal.mode = 'signup'"
-                        class="text-green-900 font-semibold hover:text-green-800 transition w-full text-left">
-                        Sign Up
-                    </button>
-                </div>
-            @endguest
-
-
-            @auth
-                <div class="flex items-center justify-between mt-3">
-
-                    <!-- Notification bell -->
-                    <button id="notification-btn-sidebar"
-                        class="relative text-[#6A8A52] hover:text-[#4F6B3F] focus:outline-none">
-                        <i class="fa-solid fa-bell text-2xl"></i>
-
-                        @if (App\Models\Notification::where('user_id', Auth::id())->whereNull('read_at')->exists())
-                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-                        @endif
-                    </button>
-
-                    <!-- Profile dropdown -->
-                    <div x-data="{ open: false }" class="relative">
-
-                        <!-- Profile button -->
-                        <button @click="open = !open"
-                            class="flex items-center justify-center w-11 h-11 bg-[#E0E9D6] border-2 border-[#6A8A52] rounded-full 
-                    hover:bg-[#C8D5B9] hover:border-[#4F6B3F] transition shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" stroke-width="2.5" class="w-6 h-6 text-[#4F6B3F]">
-                                <circle cx="12" cy="8" r="4" />
-                                <path d="M4 20c0-4 4-7 8-7s8 3 8 7" />
-                            </svg>
-                        </button>
-
-                        <!-- Dropdown -->
-                        <div x-show="open" @click.away="open = false" x-transition
-                            class="absolute right-0 mt-3 w-52 bg-[#F9F8F4] border border-[#BFD1B0] rounded-xl shadow-lg z-50">
-
-                            <ul class="py-2 text-sm text-[#4F6B3F]">
-
-                                <li>
-                                    <a href="{{ route('account.show') }}"
-                                        class="flex items-center gap-3 px-4 py-2 hover:bg-[#E5EED3] rounded-lg">
-                                        My Account
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="/myprogress"
-                                        class="flex items-center gap-3 px-4 py-2 hover:bg-[#E5EED3] rounded-lg">
-                                        My Progress
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="/rewards"
-                                        class="flex items-center gap-3 px-4 py-2 hover:bg-[#E5EED3] rounded-lg">
-                                        My Rewards
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit"
-                                            class="flex items-center gap-3 px-4 py-2 w-full text-left hover:bg-[#F4D4D4] hover:text-[#642B2B] rounded-lg">
-                                            Logout
-                                        </button>
-                                    </form>
-                                </li>
-
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-            @endauth
-
-        </div>
         <div class="flex flex-col mt-4 space-y-2 p-4">
             <a href="/" class="nav-link">HOME</a>
             <a href="/lifestyle" class="nav-link">LIFESTYLE</a>
             <a href="/quests" class="nav-link">QUESTS</a>
             <a href="/about" class="nav-link">ABOUT</a>
+            <a href="/myprogress" class="nav-link">PROGRESS</a>
+            <a href="/rewards" class="nav-link">REWARDS</a>
+            <a href="/profile" class="nav-link">ACCOUNT</a>
         </div>
-
-
     </aside>
 
     <!-- Overlay -->
@@ -413,12 +322,12 @@
         const overlay = document.getElementById('overlay');
 
         function openSidebar() {
-            sidebar.classList.remove('translate-x-full');
+            sidebar.classList.remove('-translate-x-full');
             overlay.classList.remove('hidden');
         }
 
         function closeSidebarFunc() {
-            sidebar.classList.add('translate-x-full');
+            sidebar.classList.add('-translate-x-full');
             overlay.classList.add('hidden');
         }
 
