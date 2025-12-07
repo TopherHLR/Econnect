@@ -11,124 +11,191 @@
         </svg>
         <span>Please select a star rating before submitting.</span>
     </div>
-    <section class="relative overflow-hidden min-h-screen flex items-center justify-center viewport1BG">
-        <div class="overlay"></div>
-        <!-- Left Branch -->
-        <img src="{{ Vite::asset('resources/images/viewport1/branch-leftt.svg') }}" alt="Left branch"
-            class="opacity-100 absolute top-[10%] right-0 z-[40] animate-sway-left" style="width: 80vh; left: -12%;" />
-
-        <!-- Right Branch -->
-        <img src="{{ Vite::asset('resources/images/viewport1/branch-right_.svg') }}" alt="Right branch"
-            class="opacity-100 absolute top-[8%] z-[40] animate-sway-right" style="width: 98vh; right: -10%;" />
-
-
-        <!-- 🌍 Globe (enlarged) -->
-        <img src="{{ Vite::asset('resources/images/viewport1/store2.webp') }}" alt="Globe"
-            class="absolute top-90 left-1/2 -translate-x-1/2 w-[1100px] z-[4]
-            max-lg:w-[1150px] max-md:w-[900px] max-md:bottom-[-50px]
-            opacity-100" />
-        <!-- 🌫️ Soft Fog Layer -->
-        <div
-            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
+   <section class="relative overflow-hidden min-h-screen flex items-center justify-center viewport1BG">
+    <div class="overlay"></div>
+    <!-- In your layout file or body tag -->
+<body class="overflow-x-hidden">
+    <!-- Your entire page content -->
+    
+    <!-- Branches without wrapper -->
+    <img src="{{ Vite::asset('resources/images/viewport1/branch-leftt.svg') }}" alt="Left branch"
+        class="opacity-100 absolute z-[40] animate-sway-left
+               w-[36vh] top-[2%] left-[-43%]
+               md:w-[60vh] md:top-[25%] md:left-[-10%]
+               lg:w-[80vh] lg:top-[10%] lg:left-[-12%]" />
+    
+    <img src="{{ Vite::asset('resources/images/viewport1/branch-right_.svg') }}" alt="Right branch"
+        class="opacity-100 absolute z-[40] animate-sway-right
+               w-[45vh] top-[0%] right-[-30%]
+               md:w-[70vh] md:top-[20%] md:right-[-10%]
+               lg:w-[98vh] lg:top-[8%] lg:right-[-10%]" />
+</body>
+    <!-- 🌍 Globe (Mobile Optimized) -->
+    <img src="{{ Vite::asset('resources/images/viewport1/store2.webp') }}" alt="Globe"
+        class="absolute left-1/2 -translate-x-1/2 z-[4] opacity-100
+               /* Mobile (default) - positioned in lower half */
+               w-[900px] top-[55%]
+               /* Small mobile */
+               xs:w-[350px]
+               /* Tablet */
+               md:w-[700px] md:top-[40%]
+               /* Desktop */
+               lg:w-[1100px] lg:top-90" />
+    
+    <!-- 🌫️ Soft Fog Layer - Mobile Optimized -->
+    <div class="absolute bottom-0 left-0 w-full z-[5]
+                /* Mobile - full width but properly cropped */
+                h-[100px]
+                /* Desktop */
+                md:h-[150px]
+                bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent">
+    </div>
+    
+    <!-- 🌏 Centered Text - Mobile Optimized -->
+    <div class="absolute left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full
+                /* Mobile - upper half positioning */
+                top-[18%] max-w-[95vw]
+                /* Tablet */
+                md:top-[17%] md:max-w-[85vw]
+                /* Desktop */
+                lg:top-[17%] lg:max-w-[70vw]">
+        
+        <!-- Main Title - Mobile Optimized -->
+  <!-- 🌏 Centered Text with Position Controllers -->
+<div class="absolute left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full
+            /* Mobile positioning controller */
+            top-[8%]
+            /* Small phones adjustment */
+            xs:top-[14%]
+            /* Tablet positioning */
+            md:top-[16%]
+            /* Desktop positioning */
+            lg:top-[17%]
+            /* Width controllers */
+            max-w-[95vw]
+            md:max-w-[85vw]
+            lg:max-w-[70vw]">
+    
+    <!-- Main Title with Vertical Spacing Controller -->
+    <h1 class="italic font-serif font-bold text-[#758848] leading-tight 
+               drop-shadow-[0_2px_3px_rgba(255,255,255,0.8)]
+               /* Mobile font sizing */
+               text-2xl
+               /* Small mobile */
+               xs:text-3xl
+               /* Tablet */
+               md:text-4xl
+               /* Desktop */
+               lg:text-6xl xl:text-8xl
+               /* Vertical spacing controller */
+               mb-3
+               xs:mb-4
+               md:mb-5
+               lg:mb-6">
+        <span class="word-emphasis youre">A cafe</span>
+        <span class="word-emphasis here">on a mission</span>
+    </h1>
+    
+    <!-- Subtext Container with Position Adjuster -->
+    <div class="subtext-container
+                /* Mobile vertical spacing */
+                mt-3
+                xs:mt-4
+                md:mt-5
+                lg:mt-6
+                /* Position from bottom adjuster */
+                pb-2
+                md:pb-4
+                lg:pb-6">
+        <p class="italic font-sans-serif font-bold text-[#758848] leading-snug
+                  drop-shadow-[0_2px_2px_rgba(255,255,255,0.6)]
+                  /* Mobile font sizing */
+                  text-sm
+                  xs:text-base
+                  md:text-lg
+                  lg:text-xl xl:text-2xl
+                  /* Line spacing controller */
+                  leading-relaxed
+                  md:leading-snug
+                  /* Max width for better mobile readability */
+                  max-w-[90vw] mx-auto
+                  md:max-w-none">
+            <span class="glow-word word-1">we</span>
+            <span class="glow-word word-2">donate</span>
+            <span class="glow-word word-3">5%,</span>
+            <span class="glow-word word-4">of</span>
+            <span class="glow-word word-5">our</span>
+            <span class="glow-word word-6">revenue</span>
+            <span class="glow-word word-7">to</span>
+            <span class="glow-word word-8">environmental</span>
+            <span class="glow-word word-9">causes.</span>
+        </p>
+    </div>
+</div>
+</section>
+    <!-- Spacer for mobile (adjusts based on content) -->
+    <div class="mt-6 md:mt-8 lg:mt-12"></div>
+<!-- 🌿 Widgets for Logged-in Users - Side by Side -->
+@include('modal.userQuestModal')
+@include('modal.ecoDetailModal')
+@auth
+    <div class="eco-widgets-container">
+        <!-- 🌱 Saved Eco-Actions Widget -->
+        <div class="eco-widget eco-actions"
+            style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+            <button class="eco-widget-btn">My Eco-actions</button>
+            <p id="eco-action-text" class="eco-widget-text">Loading...</p>
+            <a href="/lifestyle?tab=actions" class="eco-widget-link">
+                View saved &gt;
+            </a>
         </div>
 
-
-        <!-- 🌏 Centered Text (top-most) -->
-        <div
-            class="absolute top-[17%] left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full max-w-[90vw] md:max-w-[70vw] lg:max-w-[50vw]">
-            <!-- Main Title -->
-            <h1
-                class="italic text-5xl md:text-8xl font-serif font-bold text-[#758848] leading-tight drop-shadow-[0_2px_3px_rgba(255,255,255,0.8)]">
-                <span class="word-emphasis youre">A</span>
-                <span class="word-emphasis here">CAFE</span>
-            </h1>
-
-            <!-- Subtext with word-by-word glow -->
-            <div class="subtext-container">
-                <p
-                    class="italic text-2xl md:text-2xl font-sans-serif font-bold text-[#758848] leading-snug drop-shadow-[0_2px_2px_rgba(255,255,255,0.6)] ">
-                    <span class="glow-word word-1">on</span>
-                    <span class="glow-word word-2">a</span>
-                    <span class="glow-word word-3">mission</span>
-                    <span class="glow-word word-4">,</span>
-                    <span class="glow-word word-5">5%</span>
-                    <span class="glow-word word-6">goes</span>
-                    <span class="glow-word word-7">to</span>
-                    <span class="glow-word word-8">the</span>
-                    <span class="glow-word word-9">environment.</span>
-                </p>
-            </div>
+        <!-- 🌎 Saved Eco-Topics Widget -->
+        <div class="eco-widget eco-topics"
+            style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+            <button class="eco-widget-btn">Saved Topics</button>
+            <p id="eco-topic-text" class="eco-widget-text">Loading...</p>
+            <a href="javascript:void(0);" id="ecoTopicLink" class="eco-widget-link">
+                Continue &gt;
+            </a>
         </div>
+    </div>
 
-        <div class="mt-6"></div>
+    {{-- 🔄 Auto-refresh widget texts --}}
+    <script>
+        async function updateWidgets() {
+            try {
+                const response = await fetch("{{ route('widgets.random') }}");
+                const data = await response.json();
 
+                // Update action text
+                document.getElementById('eco-action-text').textContent =
+                    data.eco_action?.title ?? '"No saved actions yet"';
 
-    </section>
-    <!-- 🌿 Widgets for Logged-in Users -->
-    @include('modal.userQuestModal')
-    @include('modal.ecoDetailModal')
-    @auth
-        <div class="eco-widgets-container">
-            <!-- 🌱 Saved Eco-Actions Widget -->
-            <div class="eco-widget eco-actions"
-                style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-                <button class="eco-widget-btn">My Eco-actions</button>
-                <p id="eco-action-text" class="eco-widget-text">Loading...</p>
-                <a href="/lifestyle?tab=actions" class="eco-widget-link">
-                    View saved eco-actions &gt;
-                </a>
+                // Update topic text and link
+                const topicText = document.getElementById('eco-topic-text');
+                const topicLink = document.getElementById('ecoTopicLink');
 
-            </div>
-            <!-- 🌎 Saved Eco-Topics Widget -->
-            <div class="eco-widget eco-topics"
-                style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-                <button class="eco-widget-btn">Saved Eco-topics</button>
-                <p id="eco-topic-text" class="eco-widget-text">Loading...</p>
-                <a href="javascript:void(0);" id="ecoTopicLink" class="eco-widget-link">
-                    Continue reading &gt;
-                </a>
-
-            </div>
-
-        </div>
-
-        {{-- 🔄 Auto-refresh widget texts --}}
-        <script>
-            async function updateWidgets() {
-                try {
-                    const response = await fetch("{{ route('widgets.random') }}");
-                    const data = await response.json();
-
-                    // Update action text
-                    document.getElementById('eco-action-text').textContent =
-                        data.eco_action?.title ?? '"No saved actions yet"';
-
-                    // Update topic text and link
-                    const topicText = document.getElementById('eco-topic-text');
-                    const topicLink = document.getElementById('ecoTopicLink');
-
-                    if (data.eco_topic) {
-                        topicText.textContent = `"${data.eco_topic.title}"`;
-                        topicLink.onclick = () => openEcoModal('ecoTopic', data.eco_topic.id);
-                    } else {
-                        topicText.textContent = '"No saved topics yet"';
-                        topicLink.onclick = null;
-                    }
-
-
-                } catch (error) {
-                    console.error('Error updating widgets:', error);
+                if (data.eco_topic) {
+                    topicText.textContent = `"${data.eco_topic.title}"`;
+                    topicLink.onclick = () => openEcoModal('ecoTopic', data.eco_topic.id);
+                } else {
+                    topicText.textContent = '"No saved topics yet"';
+                    topicLink.onclick = null;
                 }
 
-                // Change every 5–10 seconds
-                const nextUpdate = Math.floor(Math.random() * 5000) + 5000;
-                setTimeout(updateWidgets, nextUpdate);
+            } catch (error) {
+                console.error('Error updating widgets:', error);
             }
 
-            updateWidgets();
-        </script>
-    @endauth
+            // Change every 5–10 seconds
+            const nextUpdate = Math.floor(Math.random() * 5000) + 5000;
+            setTimeout(updateWidgets, nextUpdate);
+        }
 
+        updateWidgets();
+    </script>
+@endauth
     <section
         style="position: relative; top: -75px; min-height: 110vh; display: flex; align-items: center; justify-content: center;"
         class="viewport2BG">
