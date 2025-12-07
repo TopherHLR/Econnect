@@ -27,7 +27,7 @@
 
         <div class="flex flex-col md:items-end space-y-3 w-full md:w-auto">
             <div
-                class="bg-gradient-to-r from-[#F2E8D5] to-[#F8F2E6] text-[#4F6B3F] rounded-full px-5 py-2 font-semibold shadow-md border border-[#E8DBC7]">
+                class="bg-gradient-to-r from-[#F2E8D5] to-[#F8F2E6] text-[#4F6B3F] rounded-xl px-5 py-2 font-semibold shadow-md border border-[#E8DBC7]">
                 <p class="text-[#6B665E] text-lg">Track your growth, achievements, and daily impact.</p>
             </div>
         </div>
@@ -102,7 +102,7 @@
     <div class="bg-gradient-to-r from-[#FDFCF8] to-[#FCFFF6] p-6 rounded-2xl shadow-md mb-8 border border-[#F2E8D5]">
         <div class="flex flex-col md:flex-row justify-between items-center mb-4">
             <h2 class="text-xl font-semibold text-[#4B3F2F]">Consistency Tracker</h2>
-            <div class="mt-2 md:mt-0 bg-[#4F6B3F] text-white rounded-full px-4 py-1 text-sm font-medium">
+            <div class="mt-2 md:mt-0 bg-[#4F6B3F] text-white rounded-xl px-4 py-1 text-sm font-medium">
                 Current Streak: {{ $currentStreak ?? 0 }} days
             </div>
         </div>
