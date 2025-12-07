@@ -26,6 +26,10 @@
                     <i class="fa-solid fa-qrcode"></i>
                     <span class="hidden xl:inline">QR Quests</span>
                 </button>
+                <button onclick="openQrScanner()" class="btn-eco btn-leaf compact" title="Scan QR Code">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span class="hidden xl:inline">Scan Voucher</span>
+                </button>
                 <!-- Primary Actions -->
                 <button onclick="openQuestModal()" class="btn-eco btn-mint compact" title="Create New Quest">
                     <i class="fa-solid fa-circle-plus"></i>

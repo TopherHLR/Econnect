@@ -94,7 +94,10 @@
             <p class="text-sm text-[#6b665e] mb-1">Voucher Code</p>
             <p id="voucherCode" class="text-lg font-mono font-bold text-[#4b3f2f]">sample</p>
         </div>
-
+        <div class="bg-[#f9f8f4] rounded-lg p-4 text-center mb-4">
+            <p class="text-sm text-[#6b665e] mb-1">QR Code</p>
+            <p id="qrCodeText" class="text-lg font-mono font-bold text-[#4b3f2f]">sample</p>
+        </div>
         <!-- Voucher Info -->
         <div class="space-y-2 text-sm text-[#6b665e] mb-6">
             <div class="flex justify-between">
@@ -191,6 +194,7 @@
 
         document.getElementById('usageVoucherTitle').textContent = uv.voucher.title;
         document.getElementById('voucherCode').textContent = uv.voucher_code;
+        document.getElementById('qrCodeText').textContent = uv.qr_code;
 
         // Format expiry date
         const expiryDate = new Date(uv.voucher.expiry_date);

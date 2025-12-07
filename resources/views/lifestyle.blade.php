@@ -1,5 +1,5 @@
 @extends('layouts.mainLayout')
-
+@section('title', 'lifestyle')
 @section('content')
     <div class="min-h-screen  bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">
         <div class="bg-[#F7F3E7] mt-2 rounded-2xl sm:rounded-4xl shadow-sm overflow-hidden p-4 sm:p-8">

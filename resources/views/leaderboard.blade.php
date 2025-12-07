@@ -1,5 +1,5 @@
 @extends('layouts.mainLayout')
-
+@section('title', 'Leaderboards')
 @section('content')
 
     <div class="min-h-screen bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">

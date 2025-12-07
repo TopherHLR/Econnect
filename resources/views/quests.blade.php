@@ -1,5 +1,5 @@
 @extends('layouts.mainLayout')
-
+@section('title', 'Quests')
 @section('content')
     @if (Auth::check())
         @if (auth()->user()->user_type === 'verified_user')

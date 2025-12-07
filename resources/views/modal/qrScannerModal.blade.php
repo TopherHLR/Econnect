@@ -24,6 +24,17 @@
                 <input type="file" id="qr-file-input" accept="image/*"
                     class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
             </div>
+            <!-- Inside the QR Scanner Modal body, right after the file-upload block -->
+            <div id="manual-entry-container" class="mt-4">
+                <label class="block text-[#4F6B3F] font-medium mb-1">Or Enter Code Manually</label>
+                <div class="flex gap-2">
+                    <input type="text" id="manual-qr-input" placeholder="Enter voucher or user QR"
+                        class="flex-1 rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+                    <button id="manual-qr-submit" class="btn-eco btn-mint">Submit</button>
+                </div>
+                <p id="manual-error" class="text-red-600 text-sm mt-1 hidden"></p>
+            </div>
+
 
             <p id="qr-result" class="text-center text-md text-[#4F3B2C]">Scan QR Code</p>
 
@@ -109,6 +120,7 @@
     let qrMode = "voucher"; // default
     let html5QrCode = null;
     const resultEl = document.getElementById('qr-result');
+
 
     function openQrScanner() {
         const scannerTitle = document.getElementById('qr-scanner-title');
@@ -273,12 +285,19 @@
                     return;
                 }
 
+                // ✅ Check if user is already verified
+                if (data.user.user_type === "verified_user") {
+                    resultEl.textContent = "User is already verified!";
+                    closeVerifyModal();
+                    openViewUserModal(data.user);
+                    return;
+                }
+
                 resultEl.textContent = "User verified successfully!";
 
-                // 🔥 ADD IT HERE — THIS IS WHAT YOU NEED
+                // Close modal and open user details
                 closeVerifyModal();
                 openViewUserModal(data.user);
-
 
             })
             .catch(err => resultEl.textContent = `Error for User: ${err}`)
@@ -336,12 +355,37 @@
             overlay.remove();
         }, 3000);
     }
+    document.getElementById('manual-qr-submit').addEventListener('click', () => {
+        const code = document.getElementById('manual-qr-input').value.trim();
+        const errorEl = document.getElementById('manual-error');
+
+        if (!code) {
+            errorEl.textContent = "Please enter a code.";
+            errorEl.classList.remove('hidden');
+            return;
+        }
+
+        errorEl.classList.add('hidden'); // hide error
+
+        if (qrMode === "verify") {
+            handleUserVerification(code);
+        }
+        if (qrMode === "voucher") {
+            handleQrCode(code);
+        } else {
+            if (qrMode === "quests") {
+                handleUserQrScan(code)
+            }
+
+        }
+    });
 
     // FETCHING PENDING QUEST VIA QR 
     let userQrCooldown = false;
     let html5UserQrCode = null;
 
     function openUserQrScannerModal() {
+        qrMode = "quests";
         const scannerTitle = document.getElementById('qr-scanner-title');
 
         scannerTitle.textContent = "Scan User QR Code";

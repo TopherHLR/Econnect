@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/webp" href="{{ Vite::asset('resources/images/viewport1/store2.webp') }}" />
+
     <title>@yield('title', 'Admin Dashboard') - {{ config('app.name', 'Econnect') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('styles')

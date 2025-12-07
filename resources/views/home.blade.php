@@ -1,5 +1,5 @@
 @extends('layouts.mainLayout')
-
+@section('title', 'Home')
 @section('content')
     <section class="relative overflow-hidden min-h-screen flex items-center justify-center viewport1BG">
         <div class="overlay"></div>
