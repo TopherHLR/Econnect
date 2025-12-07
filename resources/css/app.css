@@ -481,6 +481,36 @@ button{
 /* =========================================================== ECO WIDGETS - HIGH POSITION ON MOBILE ONLY =========================================================== */
 
 /* =========================================================== ECO WIDGETS - EXTREME HIGH TEXT POSITIONING =========================================================== */
+/* In your app.css or main CSS file */
+@media (max-width: 768px) {
+    /* Make navbar full width on mobile */
+    .navbar {
+        width: 100vw !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    
+    /* Remove container restrictions */
+    .navbar .max-w-7xl {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    /* Ensure solid navbar states are also full width */
+    .navbar.navbar-solid,
+    .navbar.navbar-green-shadow {
+        width: 100vw !important;
+        left: 0 !important;
+        right: 0 !important;
+    }
+}
+
 
 /* Widget Container - Side by side on ALL screens */
 .eco-widgets-container {
@@ -638,103 +668,102 @@ button{
         top: 4rem;
     }
 }
-
-/* Text - EXTREME HIGH POSITION (almost touching button) */
+/* Text - VERY HIGH POSITION (just below touching button) */
 .eco-widget-text {
     color: #625237;
     font-family: 'Nunito', sans-serif;
     font-weight: 600;
-    margin-bottom: 0rem; /* NO spacing */
+    margin-bottom: 0rem;
     
-    /* MOBILE - EXTREME HIGH (right under button) */
+    /* MOBILE - VERY HIGH (just below button) */
     @media (max-width: 800px) {
         font-size: 0.75rem;
-        transform: translateY(0.1rem); /* EXTREME HIGH - positive moves it DOWN slightly from button */
+        transform: translateY(-0.1rem) !important; /* MOVED DOWN a little from -0.3rem */
         line-height: 1.1;
-        margin-top: 0.5rem; /* Pushes text down from button */
+        margin-top: 0.4rem !important; /* Increased a little from 0.2rem */
     }
     
     /* Small mobile */
     @media (min-width: 375px) and (max-width: 800px) {
         font-size: 0.8rem;
-        transform: translateY(0.3rem); /* EXTREME HIGH */
+        transform: translateY(0.1rem) !important; /* MOVED DOWN a little from -0.1rem */
         line-height: 1.1;
-        margin-top: 1.6rem;
+        margin-top: 1.4rem !important; /* Increased a little from 1.2rem */
     }
     
-    /* TABLET - Extreme high position */
+    /* TABLET - Very high position */
     @media (min-width: 768px) {
         font-size: 1.05rem;
-        transform: translateY(0.8rem); /* EXTREME HIGH */
+        transform: translateY(0.6rem) !important; /* MOVED DOWN a little from 0.4rem */
         line-height: 1.2;
-        margin-top: 2rem;
+        margin-top: 1.8rem !important; /* Increased a little from 1.5rem */
         margin-bottom: 0rem;
     }
     
     /* Desktop - Medium */
     @media (min-width: 1024px) {
         font-size: 1.25rem;
-        transform: translateY(1rem); /* EXTREME HIGH */
+        transform: translateY(0.8rem) !important; /* MOVED DOWN a little from 0.6rem */
         line-height: 1.2;
-        margin-top: 2.5rem;
+        margin-top: 2.2rem !important; /* Increased a little from 1.8rem */
         margin-bottom: 0rem;
     }
     
     /* Large desktop */
     @media (min-width: 1280px) {
         font-size: 1.7rem;
-        transform: translateY(1.5rem); /* EXTREME HIGH */
+        transform: translateY(1.3rem) !important; /* MOVED DOWN a little from 1rem */
         line-height: 1.3;
-        margin-top: 3rem;
+        margin-top: 2.8rem !important; /* Increased a little from 2.2rem */
         margin-bottom: 0rem;
     }
 }
 
-/* Link - EXTREME HIGH POSITION (right under text) */
+/* Link - VERY HIGH POSITION (just below text) */
 .eco-widget-link {
     margin-top: 0rem;
     color: #63522c;
     text-decoration: underline;
     transition: color 0.3s ease;
-    margin-bottom: 0.1rem; /* MINIMAL spacing */
+    margin-bottom: 0.08rem; /* Increased a little from 0.05rem */
     font-family: 'Crimson Text', serif;
     
-    /* MOBILE - EXTREME HIGH (right under text) */
+    /* MOBILE - VERY HIGH (just below text) */
     @media (max-width: 800px) {
         font-size: 0.6rem;
-        transform: translateY(0.6rem); /* EXTREME HIGH */
+        transform: translateY(0.3rem) !important; /* MOVED DOWN a little from 0.1rem */
         line-height: 1;
     }
     
     /* Small mobile */
     @media (min-width: 375px) and (max-width: 800px) {
         font-size: 0.65rem;
-        transform: translateY(0.7rem); /* EXTREME HIGH */
+        transform: translateY(0.4rem) !important; /* MOVED DOWN a little from 0.2rem */
         line-height: 1;
     }
     
-    /* TABLET - Extreme high position */
+    /* TABLET - Very high position */
     @media (min-width: 768px) {
         font-size: 0.75rem;
-        transform: translateY(1.2rem); /* EXTREME HIGH */
+        transform: translateY(0.7rem) !important; /* MOVED DOWN a little from 0.5rem */
         line-height: 1.1;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.15rem; /* Increased a little from 0.1rem */
     }
     
     /* Desktop - Medium */
     @media (min-width: 1024px) {
         font-size: 0.8rem;
-        transform: translateY(1.5rem); /* EXTREME HIGH */
+        transform: translateY(0.9rem) !important; /* MOVED DOWN a little from 0.7rem */
         line-height: 1.1;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.2rem; /* Increased a little from 0.15rem */
     }
     
     /* Large desktop */
     @media (min-width: 1280px) {
         font-size: 0.9rem;
-        transform: translateY(2.2rem); /* EXTREME HIGH */
+        transform: translateY(1.3rem) !important; /* MOVED DOWN a little from 1rem */
         line-height: 1.2;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.25rem; /* Increased a little from 0.2rem */
     }
 }
 
@@ -742,16 +771,16 @@ button{
     color: #342912;
 }
 
-/* EXTREMELY small spacing between text and link */
+/* Very small spacing between text and link - slightly separated */
 .eco-widget-text + .eco-widget-link {
-    margin-top: 0.01rem; /* Almost touching */
+    margin-top: -0.08rem !important; /* Slightly less negative from -0.15rem */
     
     @media (min-width: 768px) {
-        margin-top: 0.02rem;
+        margin-top: -0.05rem !important; /* Slightly less negative from -0.1rem */
     }
     
     @media (min-width: 1024px) {
-        margin-top: 0.03rem;
+        margin-top: -0.02rem !important; /* Slightly less negative from -0.05rem */
     }
 }
 
@@ -766,7 +795,7 @@ button{
     .eco-widget {
         width: 175px;
         height: 130px;
-        padding: 2.2rem 0.4rem 0.2rem 0.4rem; /* EXTREME minimal */
+        padding: 2.2rem 0.4rem 0.15rem 0.4rem; /* Slightly more bottom padding */
     }
     
     .eco-widget-btn {
@@ -777,16 +806,47 @@ button{
     
     .eco-widget-text {
         font-size: 0.7rem;
-        transform: translateY(0.1rem); /* EXTREME HIGH */
-        margin-top: 1.3rem;
+        transform: translateY(-0.1rem) !important; /* MOVED DOWN a little from -0.3rem */
+        margin-top: 1rem !important; /* Increased a little from 0.8rem */
         margin-bottom: 0rem;
     }
     
     .eco-widget-link {
         font-size: 0.55rem;
-        transform: translateY(0.4rem); /* EXTREME HIGH */
-        margin-bottom: 0.15rem;
+        transform: translateY(0.1rem) !important; /* MOVED DOWN from -0.1rem to positive */
+        margin-bottom: 0.12rem; /* Increased a little from 0.1rem */
     }
+    
+    .eco-widget-text + .eco-widget-link {
+        margin-top: -0.15rem !important; /* Slightly less negative from -0.2rem */
+    }
+}
+
+/* Additional mobile tweaks for slightly lower positioning */
+@media (max-width: 800px) {
+    /* Slightly more widget padding */
+    .eco-widget {
+        padding: 2.6rem 0.5rem 0.15rem 0.5rem !important; /* Slightly more padding */
+    }
+    
+    /* Move button slightly higher to create more space below */
+    .eco-widget-btn {
+        top: 2.4rem !important; /* Slightly higher from 2.3rem */
+    }
+    
+    /* Pull text and link up a little less */
+    .eco-widget-text,
+    .eco-widget-link {
+        position: relative;
+        top: -0.4rem !important; /* Less pull up from -0.5rem */
+    }
+}
+
+/* Ensure text doesn't get cut off */
+.eco-widget-text {
+    overflow: visible !important;
+    white-space: normal !important;
+    max-height: none !important;
 }
 
 /* Keep your existing cloud animation */
