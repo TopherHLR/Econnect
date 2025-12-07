@@ -13,8 +13,8 @@
 
 
         <!-- 🌍 Globe (enlarged) -->
-      <img src="{{ Vite::asset('resources/images/viewport1/store2.webp') }}" alt="Globe"
-     class="absolute top-90 left-1/2 -translate-x-1/2 w-[1100px] z-[4]
+        <img src="{{ Vite::asset('resources/images/viewport1/store2.webp') }}" alt="Globe"
+            class="absolute top-90 left-1/2 -translate-x-1/2 w-[1100px] z-[4]
             max-lg:w-[1150px] max-md:w-[900px] max-md:bottom-[-50px]
             opacity-100" />
         <!-- 🌫️ Soft Fog Layer -->
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-<div class="mt-6"></div>
+        <div class="mt-6"></div>
 
 
     </section>
@@ -403,7 +403,7 @@
             0 0 40px rgba(255, 255, 180, 0.7),
             0 0 50px rgba(255, 255, 180, 0.5);">
                 <h1 class="md:text-3xl font-serif font-semibold text-[#5e471dff] leading-snug whitespace-nowrap">
-                    
+
                 </h1>
             </div>
 
@@ -419,20 +419,23 @@
                 <!-- Inner soft white glow -->
                 <div class="absolute top-0 w-[300px] h-[400px] rounded-full bg-white/0 blur-2xl"></div>
             </div>
-            <style>.animate-float/* Glow activation styles */
-.glow-active .w-\[500px\].h-\[650px\] {
-    background-image: linear-gradient(to bottom, 
-        rgb(254 240 138 / 0.3) 0%, 
-        rgb(254 249 195 / 0.2) 50%, 
-        transparent 100%) !important;
-    transition: background-image 1s ease-out;
-}
+            <style>
+                .animate-float
 
-.glow-active .absolute.top-0.w-\[300px\].h-\[400px\] {
-    background-color: rgb(255 255 255 / 0.4) !important;
-    transition: background-color 1s ease-out;
-}
-</style>
+                /* Glow activation styles */
+                .glow-active .w-\[500px\].h-\[650px\] {
+                    background-image: linear-gradient(to bottom,
+                            rgb(254 240 138 / 0.3) 0%,
+                            rgb(254 249 195 / 0.2) 50%,
+                            transparent 100%) !important;
+                    transition: background-image 1s ease-out;
+                }
+
+                .glow-active .absolute.top-0.w-\[300px\].h-\[400px\] {
+                    background-color: rgb(255 255 255 / 0.4) !important;
+                    transition: background-color 1s ease-out;
+                }
+            </style>
 
             <!-- 🌟 Hint Message -->
             <!-- 🌟 Hint Message -->
@@ -456,8 +459,8 @@
                     <!-- Particle effect container -->
                     <div id="plant-particle-container" class="absolute inset-0 z-30 pointer-events-none"></div>
 
-     
-<img id="plant-image">
+
+                    <img id="plant-image">
 
                     <!-- Interactive tap hint (optional - can be removed) -->
                     <div
@@ -749,12 +752,12 @@
     </section>
 
 
-   
-<section class="relative text-center py-27 px-6 overflow-hidden mb-[96px] min-h-screen"> <!-- min-h-screen = 100vh -->
-    <!-- Background image that scrolls with content -->
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
-         style="background-image: url('{{ Vite::asset('resources/images/viewport1/bgstatic.webp') }}');">
-    </div>
+
+    <section class="relative text-center py-27 px-6 overflow-hidden mb-[96px] min-h-screen"> <!-- min-h-screen = 100vh -->
+        <!-- Background image that scrolls with content -->
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+            style="background-image: url('{{ Vite::asset('resources/images/viewport1/bgstatic.webp') }}');">
+        </div>
         <!-- Content -->
         <div class="relative flex flex-col items-center justify-center space-y-10 z-20 -mt-20 md:-mt-23">
             <h2
@@ -764,16 +767,18 @@
                 The passion of <span class="text-[#fff8b0] drop-shadow-[0_0_20px_rgba(255,248,176,0.6)]">Ecobrew</span>
             </h2>
             <!-- Text Box -->
-<div class="bg-gradient-to-br from-[#6b4f37]/90 via-[#5a402c] to-[#3a2a1c]/90 
+            <div
+                class="bg-gradient-to-br from-[#6b4f37]/90 via-[#5a402c] to-[#3a2a1c]/90 
             text-amber-50 text-2xl md:text-3xl px-15 py-8 rounded-[2rem] max-w-6xl mx-auto
             leading-relaxed shadow-[0_25px_50px_-12px_rgba(111,78,55,0.5)]
             border border-amber-900/30 backdrop-blur-md
-            font-serif text-center mt-130 mb-20"> <!-- Changed mt-20 to mt-40 -->
-                   
-                    Ecobrew shares simple ways to live more sustainably—at no cost.
-                    
-                </div>
+            font-serif text-center mt-130 mb-20">
+                <!-- Changed mt-20 to mt-40 -->
+
+                Ecobrew shares simple ways to live more sustainably—at no cost.
+
             </div>
+        </div>
     </section>
 
 
@@ -992,288 +997,303 @@
                 </div>
             @endauth
 
-      <!-- FEEDBACK CARDS -->
-<div class="mt-16">
-    <h4 class="text-[#4A6613] font-semibold text-2xl mb-8 text-center">Community Stories</h4>
+            <!-- FEEDBACK CARDS -->
+            <div class="mt-16">
+                <h4 class="text-[#4A6613] font-semibold text-2xl mb-8 text-center">Community Stories</h4>
 
-    @php $feedbackCount = $feedback->count(); @endphp
+                @php $feedbackCount = $feedback->count(); @endphp
 
-    @if ($feedbackCount === 0)
-        <div class="bg-[#F8F4E7] rounded-2xl p-10 text-center max-w-md mx-auto">
-            <i class="fa-solid fa-comments text-5xl text-[#4A6613] opacity-70 mb-4"></i>
-            <h5 class="text-[#4A6613] font-semibold text-xl mb-2">No stories yet</h5>
-            <p class="text-[#4E3A2E] mb-4">Be the first to share your sustainable journey</p>
-            @auth
-                <p class="text-sm text-[#4E3A2E]/70">Use the form above to share your experience</p>
-            @else
-                <a href="{{ route('login') }}"
-                    class="text-[#4A6613] font-semibold hover:text-[#3a5010] transition-colors">
-                    Sign in to get started →
-                </a>
-            @endauth
-        </div>
-    @elseif ($feedbackCount === 1)
-        <div class="flex justify-center">
-            @php $item = $feedback->first(); @endphp
-            <div
-                class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative w-full max-w-md feedback-card">
-                <div class="flex items-center gap-3 mb-4 mt-8">
-                    <div class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
-                        <i class="fa-solid fa-user text-[#4A6613]"></i>
+                @if ($feedbackCount === 0)
+                    <div class="bg-[#F8F4E7] rounded-2xl p-10 text-center max-w-md mx-auto">
+                        <i class="fa-solid fa-comments text-5xl text-[#4A6613] opacity-70 mb-4"></i>
+                        <h5 class="text-[#4A6613] font-semibold text-xl mb-2">No stories yet</h5>
+                        <p class="text-[#4E3A2E] mb-4">Be the first to share your sustainable journey</p>
+                        @auth
+                            <p class="text-sm text-[#4E3A2E]/70">Use the form above to share your experience</p>
+                        @else
+                            <a href="{{ route('login') }}"
+                                class="text-[#4A6613] font-semibold hover:text-[#3a5010] transition-colors">
+                                Sign in to get started →
+                            </a>
+                        @endauth
                     </div>
-                    <div>
-                        <p class="font-semibold text-[#4A6613] text-sm">
-                            {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
-                        </p>
-                        <p class="text-xs text-[#4E3A2E]/60">{{ $item->created_at->format('M d, Y') }}</p>
-                    </div>
-                </div>
-                <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">"{{ $item->content }}"</p>
-                <div class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
-                    <div class="flex gap-1">
-                        <span class="text-yellow-500">{!! str_repeat('<i class="fa-solid fa-star"></i>', $item->rating) !!}</span>
-                        <span class="text-gray-300">{!! str_repeat('<i class="fa-solid fa-star"></i>', 5 - $item->rating) !!}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @else
-        <!-- Leaf decorations -->
-        <div class="relative mb-8 z-70">
-            <img src="{{ Vite::asset('resources/images/viewport1/3leaves-left.png') }}" alt="Leaf Cluster"
-                class="absolute right-0 top-1/2 transform translate-x-[85%] -translate-y-[30%] w-90 h-auto filter brightness-[0.85] opacity-70"
-                loading="lazy">
-            <img src="{{ Vite::asset('resources/images/viewport1/3leaves-right.png') }}" alt="Leaf Cluster"
-                class="absolute left-0 top-1/2 transform -translate-x-[85%] -translate-y-[30%] w-90 h-auto filter brightness-[0.85] opacity-70"
-                loading="lazy">
-        </div>
-
-        <!-- Single Row Slider -->
-        <div class="relative max-w-6xl mx-auto px-8">
-            <!-- Cards Container -->
-            <div class="overflow-hidden">
-                <div id="feedback-slider" class="flex gap-6 transition-transform duration-300 ease-in-out">
-                    @foreach ($feedback as $index => $item)
-                        <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2">
-                            <div class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative feedback-card h-full">
-                                <div class="flex items-center gap-3 mb-4 mt-8">
-                                    <div class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
-                                        <i class="fa-solid fa-user text-[#4A6613]"></i>
-                                    </div>
-                                    <div>
-                                        <p class="font-semibold text-[#4A6613] text-sm">
-                                            {{ $item->user->first_name ?? 'Anonymous' }}
-                                            {{ $item->user->last_name ?? '' }}
-                                        </p>
-                                        <p class="text-xs text-[#4E3A2E]/60">{{ $item->created_at->format('M d, Y') }}</p>
-                                    </div>
+                @elseif ($feedbackCount === 1)
+                    <div class="flex justify-center">
+                        @php $item = $feedback->first(); @endphp
+                        <div
+                            class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative w-full max-w-md feedback-card">
+                            <div class="flex items-center gap-3 mb-4 mt-8">
+                                <div class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
+                                    <i class="fa-solid fa-user text-[#4A6613]"></i>
                                 </div>
-                                <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">"{{ $item->content }}"</p>
-                                <div class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
-                                    <div class="flex gap-1">
-                                        <span class="text-yellow-500">{!! str_repeat('<i class="fa-solid fa-star"></i>', $item->rating) !!}</span>
-                                        <span class="text-gray-300">{!! str_repeat('<i class="fa-solid fa-star"></i>', 5 - $item->rating) !!}</span>
-                                    </div>
+                                <div>
+                                    <p class="font-semibold text-[#4A6613] text-sm">
+                                        {{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}
+                                    </p>
+                                    <p class="text-xs text-[#4E3A2E]/60">{{ $item->created_at->format('M d, Y') }}</p>
+                                </div>
+                            </div>
+                            <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">"{{ $item->content }}"</p>
+                            <div class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
+                                <div class="flex gap-1">
+                                    <span class="text-yellow-500">{!! str_repeat('<i class="fa-solid fa-star"></i>', $item->rating) !!}</span>
+                                    <span class="text-gray-300">{!! str_repeat('<i class="fa-solid fa-star"></i>', 5 - $item->rating) !!}</span>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @else
+                    <!-- Leaf decorations -->
+                    <div class="relative mb-8 z-70">
+                        <img src="{{ Vite::asset('resources/images/viewport1/3leaves-left.png') }}" alt="Leaf Cluster"
+                            class="absolute right-0 top-1/2 transform translate-x-[85%] -translate-y-[30%] w-90 h-auto filter brightness-[0.85] opacity-70"
+                            loading="lazy">
+                        <img src="{{ Vite::asset('resources/images/viewport1/3leaves-right.png') }}" alt="Leaf Cluster"
+                            class="absolute left-0 top-1/2 transform -translate-x-[85%] -translate-y-[30%] w-90 h-auto filter brightness-[0.85] opacity-70"
+                            loading="lazy">
+                    </div>
+
+                    <!-- Single Row Slider -->
+                    <div class="relative max-w-6xl mx-auto px-8">
+                        <!-- Cards Container -->
+                        <div class="overflow-hidden">
+                            <div id="feedback-slider" class="flex gap-6 transition-transform duration-300 ease-in-out">
+                                @foreach ($feedback as $index => $item)
+                                    <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2">
+                                        <div
+                                            class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative feedback-card h-full">
+                                            <div class="flex items-center gap-3 mb-4 mt-8">
+                                                <div
+                                                    class="w-10 h-10 rounded-full bg-[#4A6613]/10 flex items-center justify-center">
+                                                    <i class="fa-solid fa-user text-[#4A6613]"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-semibold text-[#4A6613] text-sm">
+                                                        {{ $item->user->first_name ?? 'Anonymous' }}
+                                                        {{ $item->user->last_name ?? '' }}
+                                                    </p>
+                                                    <p class="text-xs text-[#4E3A2E]/60">
+                                                        {{ $item->created_at->format('M d, Y') }}</p>
+                                                </div>
+                                            </div>
+                                            <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">
+                                                "{{ $item->content }}"</p>
+                                            <div
+                                                class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
+                                                <div class="flex gap-1">
+                                                    <span class="text-yellow-500">{!! str_repeat('<i class="fa-solid fa-star"></i>', $item->rating) !!}</span>
+                                                    <span class="text-gray-300">{!! str_repeat('<i class="fa-solid fa-star"></i>', 5 - $item->rating) !!}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <button id="prev-btn"
+                            class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 w-10 h-10 rounded-full bg-white/80 shadow-md hover:bg-white hover:shadow-lg transition-all duration-300 z-10 flex items-center justify-center text-[#4A6613]">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button id="next-btn"
+                            class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 w-10 h-10 rounded-full bg-white/80 shadow-md hover:bg-white hover:shadow-lg transition-all duration-300 z-10 flex items-center justify-center text-[#4A6613]">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Single Row Slider Dots -->
+                    <div class="flex justify-center items-center gap-3 mt-8">
+                        @php
+                            $totalSlides = ceil($feedbackCount / 4); // 4 cards per slide on large screens
+                            if ($totalSlides < 1) {
+                                $totalSlides = 1;
+                            }
+                        @endphp
+
+                        @for ($i = 0; $i < $totalSlides; $i++)
+                            <button
+                                class="slider-dot w-3 h-3 rounded-full transition-all duration-300 {{ $i === 0 ? 'bg-[#4A6613] scale-125' : 'bg-[#8A9A7B]/40' }}"
+                                data-slide="{{ $i }}"></button>
+                        @endfor
+                    </div>
+                @endif
             </div>
 
-            <!-- Navigation Buttons -->
-            <button id="prev-btn" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 w-10 h-10 rounded-full bg-white/80 shadow-md hover:bg-white hover:shadow-lg transition-all duration-300 z-10 flex items-center justify-center text-[#4A6613]">
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <button id="next-btn" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 w-10 h-10 rounded-full bg-white/80 shadow-md hover:bg-white hover:shadow-lg transition-all duration-300 z-10 flex items-center justify-center text-[#4A6613]">
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
-        </div>
+            <style>
+                .line-clamp-3 {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
 
-        <!-- Single Row Slider Dots -->
-        <div class="flex justify-center items-center gap-3 mt-8">
-            @php
-                $totalSlides = ceil($feedbackCount / 4); // 4 cards per slide on large screens
-                if ($totalSlides < 1) $totalSlides = 1;
-            @endphp
-            
-            @for ($i = 0; $i < $totalSlides; $i++)
-                <button class="slider-dot w-3 h-3 rounded-full transition-all duration-300 {{ $i === 0 ? 'bg-[#4A6613] scale-125' : 'bg-[#8A9A7B]/40' }}" 
-                        data-slide="{{ $i }}"></button>
-            @endfor
-        </div>
-    @endif
-</div>
+                .feedback-card::before {
+                    content: "“";
+                    font-size: 1.5rem;
+                    color: #4A6613;
+                    position: absolute;
+                    top: 1rem;
+                    left: 1rem;
+                    opacity: 0.7;
+                }
 
-<style>
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+                .slider-dot:hover {
+                    background-color: #4A6613 !important;
+                    transform: scale(1.2);
+                }
 
-    .feedback-card::before {
-        content: "“";
-        font-size: 1.5rem;
-        color: #4A6613;
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        opacity: 0.7;
-    }
+                @media (max-width: 768px) {
+                    #feedback-slider>div {
+                        width: 50% !important;
+                        /* 2 cards per slide on mobile */
+                    }
+                }
 
-    .slider-dot:hover {
-        background-color: #4A6613 !important;
-        transform: scale(1.2);
-    }
+                @media (max-width: 640px) {
+                    #feedback-slider>div {
+                        width: 100% !important;
+                        /* 1 card per slide on small mobile */
+                    }
 
-    @media (max-width: 768px) {
-        #feedback-slider > div {
-            width: 50% !important; /* 2 cards per slide on mobile */
-        }
-    }
+                    .relative.max-w-6xl.mx-auto.px-8 {
+                        padding-left: 1rem;
+                        padding-right: 1rem;
+                    }
 
-    @media (max-width: 640px) {
-        #feedback-slider > div {
-            width: 100% !important; /* 1 card per slide on small mobile */
-        }
-        
-        .relative.max-w-6xl.mx-auto.px-8 {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-        
-        #prev-btn, #next-btn {
-            display: none; /* Hide arrows on very small screens */
-        }
-    }
-</style>
+                    #prev-btn,
+                    #next-btn {
+                        display: none;
+                        /* Hide arrows on very small screens */
+                    }
+                }
+            </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const slider = document.getElementById('feedback-slider');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const dots = document.querySelectorAll('.slider-dot');
-    
-    if (!slider) return;
-    
-    // Calculate cards per slide based on screen width
-    function getCardsPerSlide() {
-        if (window.innerWidth < 640) return 1;
-        if (window.innerWidth < 768) return 2;
-        return 4; // Default for desktop
-    }
-    
-    let cardsPerSlide = getCardsPerSlide();
-    let currentSlide = 0;
-    const totalCards = {{ $feedbackCount }};
-    let totalSlides = Math.ceil(totalCards / cardsPerSlide);
-    
-    function updateTotalSlides() {
-        cardsPerSlide = getCardsPerSlide();
-        totalSlides = Math.ceil(totalCards / cardsPerSlide);
-        if (currentSlide >= totalSlides) {
-            currentSlide = totalSlides - 1;
-        }
-        updateSlider();
-        updateDots();
-    }
-    
-    function updateSlider() {
-        const slideWidth = 100 / cardsPerSlide;
-        const translateX = currentSlide * slideWidth * cardsPerSlide;
-        slider.style.transform = `translateX(-${translateX}%)`;
-    }
-    
-    function updateDots() {
-        dots.forEach((dot, index) => {
-            if (index === currentSlide) {
-                dot.classList.add('bg-[#4A6613]', 'scale-125');
-                dot.classList.remove('bg-[#8A9A7B]/40');
-            } else {
-                dot.classList.remove('bg-[#4A6613]', 'scale-125');
-                dot.classList.add('bg-[#8A9A7B]/40');
-            }
-        });
-        
-        // Show/hide navigation buttons
-        if (prevBtn) {
-            prevBtn.style.opacity = currentSlide === 0 ? '0.5' : '1';
-            prevBtn.style.cursor = currentSlide === 0 ? 'not-allowed' : 'pointer';
-        }
-        if (nextBtn) {
-            nextBtn.style.opacity = currentSlide === totalSlides - 1 ? '0.5' : '1';
-            nextBtn.style.cursor = currentSlide === totalSlides - 1 ? 'not-allowed' : 'pointer';
-        }
-    }
-    
-    // Navigation buttons
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateSlider();
-                updateDots();
-            }
-        });
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-                updateSlider();
-                updateDots();
-            }
-        });
-    }
-    
-    // Dot navigation
-    dots.forEach(dot => {
-        dot.addEventListener('click', function() {
-            currentSlide = parseInt(this.getAttribute('data-slide'));
-            updateSlider();
-            updateDots();
-        });
-    });
-    
-    // Auto-advance slider (optional)
-    let autoSlideInterval;
-    function startAutoSlide() {
-        autoSlideInterval = setInterval(() => {
-            if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-            } else {
-                currentSlide = 0;
-            }
-            updateSlider();
-            updateDots();
-        }, 5000);
-    }
-    
-    function stopAutoSlide() {
-        clearInterval(autoSlideInterval);
-    }
-    
-    // Start auto-slide and pause on hover
-    if (totalCards > cardsPerSlide) {
-        startAutoSlide();
-        
-        slider.parentElement.addEventListener('mouseenter', stopAutoSlide);
-        slider.parentElement.addEventListener('mouseleave', startAutoSlide);
-    }
-    
-    // Handle window resize
-    window.addEventListener('resize', function() {
-        updateTotalSlides();
-    });
-    
-    // Initialize
-    updateTotalSlides();
-});
-</script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const slider = document.getElementById('feedback-slider');
+                    const prevBtn = document.getElementById('prev-btn');
+                    const nextBtn = document.getElementById('next-btn');
+                    const dots = document.querySelectorAll('.slider-dot');
+
+                    if (!slider) return;
+
+                    // Calculate cards per slide based on screen width
+                    function getCardsPerSlide() {
+                        if (window.innerWidth < 640) return 1;
+                        if (window.innerWidth < 768) return 2;
+                        return 4; // Default for desktop
+                    }
+
+                    let cardsPerSlide = getCardsPerSlide();
+                    let currentSlide = 0;
+                    const totalCards = {{ $feedbackCount }};
+                    let totalSlides = Math.ceil(totalCards / cardsPerSlide);
+
+                    function updateTotalSlides() {
+                        cardsPerSlide = getCardsPerSlide();
+                        totalSlides = Math.ceil(totalCards / cardsPerSlide);
+                        if (currentSlide >= totalSlides) {
+                            currentSlide = totalSlides - 1;
+                        }
+                        updateSlider();
+                        updateDots();
+                    }
+
+                    function updateSlider() {
+                        const slideWidth = 100 / cardsPerSlide;
+                        const translateX = currentSlide * slideWidth * cardsPerSlide;
+                        slider.style.transform = `translateX(-${translateX}%)`;
+                    }
+
+                    function updateDots() {
+                        dots.forEach((dot, index) => {
+                            if (index === currentSlide) {
+                                dot.classList.add('bg-[#4A6613]', 'scale-125');
+                                dot.classList.remove('bg-[#8A9A7B]/40');
+                            } else {
+                                dot.classList.remove('bg-[#4A6613]', 'scale-125');
+                                dot.classList.add('bg-[#8A9A7B]/40');
+                            }
+                        });
+
+                        // Show/hide navigation buttons
+                        if (prevBtn) {
+                            prevBtn.style.opacity = currentSlide === 0 ? '0.5' : '1';
+                            prevBtn.style.cursor = currentSlide === 0 ? 'not-allowed' : 'pointer';
+                        }
+                        if (nextBtn) {
+                            nextBtn.style.opacity = currentSlide === totalSlides - 1 ? '0.5' : '1';
+                            nextBtn.style.cursor = currentSlide === totalSlides - 1 ? 'not-allowed' : 'pointer';
+                        }
+                    }
+
+                    // Navigation buttons
+                    if (prevBtn) {
+                        prevBtn.addEventListener('click', () => {
+                            if (currentSlide > 0) {
+                                currentSlide--;
+                                updateSlider();
+                                updateDots();
+                            }
+                        });
+                    }
+
+                    if (nextBtn) {
+                        nextBtn.addEventListener('click', () => {
+                            if (currentSlide < totalSlides - 1) {
+                                currentSlide++;
+                                updateSlider();
+                                updateDots();
+                            }
+                        });
+                    }
+
+                    // Dot navigation
+                    dots.forEach(dot => {
+                        dot.addEventListener('click', function() {
+                            currentSlide = parseInt(this.getAttribute('data-slide'));
+                            updateSlider();
+                            updateDots();
+                        });
+                    });
+
+                    // Auto-advance slider (optional)
+                    let autoSlideInterval;
+
+                    function startAutoSlide() {
+                        autoSlideInterval = setInterval(() => {
+                            if (currentSlide < totalSlides - 1) {
+                                currentSlide++;
+                            } else {
+                                currentSlide = 0;
+                            }
+                            updateSlider();
+                            updateDots();
+                        }, 5000);
+                    }
+
+                    function stopAutoSlide() {
+                        clearInterval(autoSlideInterval);
+                    }
+
+                    // Start auto-slide and pause on hover
+                    if (totalCards > cardsPerSlide) {
+                        startAutoSlide();
+
+                        slider.parentElement.addEventListener('mouseenter', stopAutoSlide);
+                        slider.parentElement.addEventListener('mouseleave', startAutoSlide);
+                    }
+
+                    // Handle window resize
+                    window.addEventListener('resize', function() {
+                        updateTotalSlides();
+                    });
+
+                    // Initialize
+                    updateTotalSlides();
+                });
+            </script>
 
 
     </section>

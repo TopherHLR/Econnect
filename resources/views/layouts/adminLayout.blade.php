@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" type="image/webp" href="{{ Vite::asset('resources/images/viewport1/store2.webp') }}" />
+    <link rel="icon" type="image/webp" href="{{ Vite::asset('resources/images/viewport1/store2.webp') }}" />
 
     <title>{{ config('app.name', 'Econnect') }} | @yield('title', 'Admin Dashboard') </title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -353,17 +353,29 @@
         <!-- 🌿 Feedback Notification -->
         @if (session('success'))
             <div id="feedback-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
-                🌱 {{ session('success') }}
+                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
+                <!-- Success Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{{ session('success') }}</span>
             </div>
         @endif
 
-        @if (session('error'))
+        @if (session('error') || $errors->any())
             <div id="error-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100">
-                ❌ {{ session('error') }}
+                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
+                <!-- Error Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <span>{{ session('error') ?? $errors->first() }}</span>
             </div>
         @endif
+
+
 
 
 
