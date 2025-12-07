@@ -214,15 +214,14 @@ class AuthController extends Controller
             $user = Auth::user();
 
             try {
-                Mail::to($validated['email'])->queue(new VerificationCodeMail((object)[
-                    'first_name'        => $validated['first_name'],
-                    'verification_code' => $code,
-                ]));
+                Mail::to($user->email)->send(new LoginNotificationMail($user));
+
 
                 Log::info("📧 Login notification email sent to {$user->email}");
             } catch (\Throwable $e) {
                 Log::error("❌ Failed to send login notification email: " . $e->getMessage());
             }
+
 
             if ($user->user_type === 'admin') {
                 Log::info("👑 Admin {$user->email} logged in successfully.");
