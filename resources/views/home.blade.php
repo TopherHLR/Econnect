@@ -1,6 +1,16 @@
 @extends('layouts.mainLayout')
 @section('title', 'Home')
 @section('content')
+    <!-- ⭐ Rating Required Toast -->
+    <div id="rating-toast"
+        class="fixed top-6 left-1/2 hidden -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
+        <!-- Error Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>Please select a star rating before submitting.</span>
+    </div>
     <section class="relative overflow-hidden min-h-screen flex items-center justify-center viewport1BG">
         <div class="overlay"></div>
         <!-- Left Branch -->
@@ -230,7 +240,8 @@
                             <div style="font-size: 2.5rem; color: rgba(195, 122, 73, 0.3); margin-bottom: 0.75rem;">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <p style="color: rgba(90, 74, 54, 0.7); font-size: 0.875rem; font-style: italic;">No pending tasks ✨
+                            <p style="color: rgba(90, 74, 54, 0.7); font-size: 0.875rem; font-style: italic;">No pending tasks
+                                ✨
                             </p>
                         </div>
                     @else
@@ -964,7 +975,7 @@
                         @for ($i = 1; $i <= 5; $i++)
                             <label class="cursor-pointer">
                                 <input type="radio" name="rating" value="{{ $i }}" class="hidden"
-                                    x-model="rating" required>
+                                    x-model="rating">
                                 <i class="fa-solid fa-star text-2xl transition-colors duration-300"
                                     :class="rating >= {{ $i }} ? 'text-yellow-500' : 'text-gray-300'"
                                     @click="rating = {{ $i }}"></i>
@@ -973,7 +984,7 @@
                     </div>
 
                     <button type="submit"
-                        class="bg-[#4A6613] text-white px-8 py-3 rounded-xl hover:bg-[#3a5010] transition-colors duration-300 font-semibold">
+                        class="bg-[#4A6613] cursor-pointer text-white px-8 py-3 rounded-xl hover:bg-[#3a5010] transition-colors duration-300 font-semibold">
                         Submit Feedback
                     </button>
                 </form>
@@ -1053,13 +1064,15 @@
                             loading="lazy">
                     </div>
 
-                    <!-- Single Row Slider -->
-                    <div class="relative max-w-6xl mx-auto px-8">
-                        <!-- Cards Container -->
-                        <div class="overflow-hidden">
-                            <div id="feedback-slider" class="flex gap-6 transition-transform duration-300 ease-in-out">
-                                @foreach ($feedback as $index => $item)
-                                    <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2">
+                    <!-- Horizontal Scrolling Container -->
+                    <div class="relative max-w-6xl mx-auto">
+                        <!-- Scroll Container with Custom Scrollbar -->
+                        <div class="relative">
+                            <!-- Cards Container -->
+                            <div id="feedback-scroll-container"
+                                class="flex gap-6 pb-8 overflow-x-auto scrollbar-hide hover:scrollbar-default">
+                                @foreach ($feedback as $item)
+                                    <div class="flex-shrink-0 w-80">
                                         <div
                                             class="bg-[#F8F4E7] rounded-2xl shadow-md p-6 hover:shadow-lg transition-shadow duration-300 relative feedback-card h-full">
                                             <div class="flex items-center gap-3 mb-4 mt-8">
@@ -1089,215 +1102,231 @@
                                     </div>
                                 @endforeach
                             </div>
+
+                            <!-- Custom Scrollbar -->
+                            <div class="scrollbar-track relative h-2 mt-4 bg-[#E8E4D7] rounded-full overflow-hidden">
+                                <div id="scrollbar-thumb"
+                                    class="absolute left-0 h-full bg-[#4A6613] rounded-full transition-all duration-300"
+                                    style="width: 33.33%"></div>
+                            </div>
                         </div>
-
-                        <!-- Navigation Buttons -->
-                        <button id="prev-btn"
-                            class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 w-10 h-10 rounded-full bg-white/80 shadow-md hover:bg-white hover:shadow-lg transition-all duration-300 z-10 flex items-center justify-center text-[#4A6613]">
-                            <i class="fa-solid fa-chevron-left"></i>
-                        </button>
-                        <button id="next-btn"
-                            class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 w-10 h-10 rounded-full bg-white/80 shadow-md hover:bg-white hover:shadow-lg transition-all duration-300 z-10 flex items-center justify-center text-[#4A6613]">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
-                    </div>
-
-                    <!-- Single Row Slider Dots -->
-                    <div class="flex justify-center items-center gap-3 mt-8">
-                        @php
-                            $totalSlides = ceil($feedbackCount / 4); // 4 cards per slide on large screens
-                            if ($totalSlides < 1) {
-                                $totalSlides = 1;
-                            }
-                        @endphp
-
-                        @for ($i = 0; $i < $totalSlides; $i++)
-                            <button
-                                class="slider-dot w-3 h-3 rounded-full transition-all duration-300 {{ $i === 0 ? 'bg-[#4A6613] scale-125' : 'bg-[#8A9A7B]/40' }}"
-                                data-slide="{{ $i }}"></button>
-                        @endfor
                     </div>
                 @endif
             </div>
+        </div>
 
-            <style>
-                .line-clamp-3 {
-                    display: -webkit-box;
-                    -webkit-line-clamp: 3;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
+        <style>
+            .line-clamp-3 {
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .feedback-card::before {
+                content: "“";
+                font-size: 1.5rem;
+                color: #4A6613;
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+                opacity: 0.7;
+            }
+
+            /* Custom Scrollbar Styles */
+            .scrollbar-hide {
+                scrollbar-width: none;
+                /* Firefox */
+                -ms-overflow-style: none;
+                /* IE and Edge */
+            }
+
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+                /* Chrome, Safari, Opera */
+            }
+
+            .scrollbar-default::-webkit-scrollbar {
+                display: block;
+                height: 6px;
+            }
+
+            .scrollbar-default::-webkit-scrollbar-track {
+                background: #E8E4D7;
+                border-radius: 10px;
+            }
+
+            .scrollbar-default::-webkit-scrollbar-thumb {
+                background: #4A6613;
+                border-radius: 10px;
+            }
+
+            .scrollbar-default::-webkit-scrollbar-thumb:hover {
+                background: #3a5010;
+            }
+
+            @media (max-width: 768px) {
+                #feedback-scroll-container>div {
+                    width: 300px !important;
+                }
+            }
+
+            @media (max-width: 640px) {
+                #feedback-scroll-container>div {
+                    width: 280px !important;
                 }
 
-                .feedback-card::before {
-                    content: "“";
-                    font-size: 1.5rem;
-                    color: #4A6613;
-                    position: absolute;
-                    top: 1rem;
-                    left: 1rem;
-                    opacity: 0.7;
+                .scrollbar-track {
+                    margin-left: 1rem;
+                    margin-right: 1rem;
                 }
+            }
+        </style>
 
-                .slider-dot:hover {
-                    background-color: #4A6613 !important;
-                    transform: scale(1.2);
-                }
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const form = document.querySelector('form[action="{{ route('feedback.store') }}"]');
+                const ratingToast = document.getElementById('rating-toast');
 
-                @media (max-width: 768px) {
-                    #feedback-slider>div {
-                        width: 50% !important;
-                        /* 2 cards per slide on mobile */
+                form.addEventListener('submit', function(e) {
+                    const ratingSelected = form.querySelector('input[name="rating"]:checked');
+
+                    if (!ratingSelected) {
+                        e.preventDefault(); // stop form submission
+                        showRatingToast();
                     }
-                }
-
-                @media (max-width: 640px) {
-                    #feedback-slider>div {
-                        width: 100% !important;
-                        /* 1 card per slide on small mobile */
-                    }
-
-                    .relative.max-w-6xl.mx-auto.px-8 {
-                        padding-left: 1rem;
-                        padding-right: 1rem;
-                    }
-
-                    #prev-btn,
-                    #next-btn {
-                        display: none;
-                        /* Hide arrows on very small screens */
-                    }
-                }
-            </style>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const slider = document.getElementById('feedback-slider');
-                    const prevBtn = document.getElementById('prev-btn');
-                    const nextBtn = document.getElementById('next-btn');
-                    const dots = document.querySelectorAll('.slider-dot');
-
-                    if (!slider) return;
-
-                    // Calculate cards per slide based on screen width
-                    function getCardsPerSlide() {
-                        if (window.innerWidth < 640) return 1;
-                        if (window.innerWidth < 768) return 2;
-                        return 4; // Default for desktop
-                    }
-
-                    let cardsPerSlide = getCardsPerSlide();
-                    let currentSlide = 0;
-                    const totalCards = {{ $feedbackCount }};
-                    let totalSlides = Math.ceil(totalCards / cardsPerSlide);
-
-                    function updateTotalSlides() {
-                        cardsPerSlide = getCardsPerSlide();
-                        totalSlides = Math.ceil(totalCards / cardsPerSlide);
-                        if (currentSlide >= totalSlides) {
-                            currentSlide = totalSlides - 1;
-                        }
-                        updateSlider();
-                        updateDots();
-                    }
-
-                    function updateSlider() {
-                        const slideWidth = 100 / cardsPerSlide;
-                        const translateX = currentSlide * slideWidth * cardsPerSlide;
-                        slider.style.transform = `translateX(-${translateX}%)`;
-                    }
-
-                    function updateDots() {
-                        dots.forEach((dot, index) => {
-                            if (index === currentSlide) {
-                                dot.classList.add('bg-[#4A6613]', 'scale-125');
-                                dot.classList.remove('bg-[#8A9A7B]/40');
-                            } else {
-                                dot.classList.remove('bg-[#4A6613]', 'scale-125');
-                                dot.classList.add('bg-[#8A9A7B]/40');
-                            }
-                        });
-
-                        // Show/hide navigation buttons
-                        if (prevBtn) {
-                            prevBtn.style.opacity = currentSlide === 0 ? '0.5' : '1';
-                            prevBtn.style.cursor = currentSlide === 0 ? 'not-allowed' : 'pointer';
-                        }
-                        if (nextBtn) {
-                            nextBtn.style.opacity = currentSlide === totalSlides - 1 ? '0.5' : '1';
-                            nextBtn.style.cursor = currentSlide === totalSlides - 1 ? 'not-allowed' : 'pointer';
-                        }
-                    }
-
-                    // Navigation buttons
-                    if (prevBtn) {
-                        prevBtn.addEventListener('click', () => {
-                            if (currentSlide > 0) {
-                                currentSlide--;
-                                updateSlider();
-                                updateDots();
-                            }
-                        });
-                    }
-
-                    if (nextBtn) {
-                        nextBtn.addEventListener('click', () => {
-                            if (currentSlide < totalSlides - 1) {
-                                currentSlide++;
-                                updateSlider();
-                                updateDots();
-                            }
-                        });
-                    }
-
-                    // Dot navigation
-                    dots.forEach(dot => {
-                        dot.addEventListener('click', function() {
-                            currentSlide = parseInt(this.getAttribute('data-slide'));
-                            updateSlider();
-                            updateDots();
-                        });
-                    });
-
-                    // Auto-advance slider (optional)
-                    let autoSlideInterval;
-
-                    function startAutoSlide() {
-                        autoSlideInterval = setInterval(() => {
-                            if (currentSlide < totalSlides - 1) {
-                                currentSlide++;
-                            } else {
-                                currentSlide = 0;
-                            }
-                            updateSlider();
-                            updateDots();
-                        }, 5000);
-                    }
-
-                    function stopAutoSlide() {
-                        clearInterval(autoSlideInterval);
-                    }
-
-                    // Start auto-slide and pause on hover
-                    if (totalCards > cardsPerSlide) {
-                        startAutoSlide();
-
-                        slider.parentElement.addEventListener('mouseenter', stopAutoSlide);
-                        slider.parentElement.addEventListener('mouseleave', startAutoSlide);
-                    }
-
-                    // Handle window resize
-                    window.addEventListener('resize', function() {
-                        updateTotalSlides();
-                    });
-
-                    // Initialize
-                    updateTotalSlides();
                 });
-            </script>
 
+                function showRatingToast() {
+                    ratingToast.classList.remove('hidden');
+                    ratingToast.classList.add('opacity-100');
+
+                    setTimeout(() => {
+                        ratingToast.classList.add('opacity-0');
+                    }, 2000);
+
+                    setTimeout(() => {
+                        ratingToast.classList.add('hidden');
+                        ratingToast.classList.remove('opacity-0');
+                    }, 2500);
+                }
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+                const scrollContainer = document.getElementById('feedback-scroll-container');
+                const scrollbarThumb = document.getElementById('scrollbar-thumb');
+
+                if (!scrollContainer) return;
+
+                // Calculate scroll amount (80% of container width)
+                function getScrollAmount() {
+                    return scrollContainer.clientWidth * 0.8;
+                }
+
+                // Update scrollbar position
+                function updateScrollbar() {
+                    const scrollWidth = scrollContainer.scrollWidth;
+                    const clientWidth = scrollContainer.clientWidth;
+                    const scrollLeft = scrollContainer.scrollLeft;
+                    const maxScroll = scrollWidth - clientWidth;
+
+                    if (maxScroll > 0) {
+                        const thumbWidth = (clientWidth / scrollWidth) * 100;
+                        const thumbPosition = (scrollLeft / maxScroll) * (100 - thumbWidth);
+
+                        scrollbarThumb.style.width = `${thumbWidth}%`;
+                        scrollbarThumb.style.left = `${thumbPosition}%`;
+                    } else {
+                        scrollbarThumb.style.width = '100%';
+                        scrollbarThumb.style.left = '0';
+                    }
+                }
+
+
+                // Update scrollbar on scroll
+                scrollContainer.addEventListener('scroll', updateScrollbar);
+
+                // Update scrollbar on resize
+                window.addEventListener('resize', updateScrollbar);
+
+                // Initial update
+                updateScrollbar();
+
+                // Optional: Drag functionality for scrollbar
+                let isDragging = false;
+
+                scrollbarThumb.parentElement.addEventListener('mousedown', function(e) {
+                    isDragging = true;
+                    handleScrollbarDrag(e);
+                    e.preventDefault();
+                });
+
+                document.addEventListener('mousemove', function(e) {
+                    if (isDragging) {
+                        handleScrollbarDrag(e);
+                    }
+                });
+
+                document.addEventListener('mouseup', function() {
+                    isDragging = false;
+                });
+
+                function handleScrollbarDrag(e) {
+                    const scrollbarTrack = scrollbarThumb.parentElement;
+                    const trackRect = scrollbarTrack.getBoundingClientRect();
+                    const trackWidth = trackRect.width;
+                    const thumbWidth = scrollbarThumb.offsetWidth;
+
+                    let mouseX = e.clientX - trackRect.left;
+                    mouseX = Math.max(0, Math.min(mouseX, trackWidth - thumbWidth));
+
+                    const thumbPosition = mouseX / (trackWidth - thumbWidth);
+
+                    const scrollWidth = scrollContainer.scrollWidth;
+                    const clientWidth = scrollContainer.clientWidth;
+                    const maxScroll = scrollWidth - clientWidth;
+
+                    scrollContainer.scrollLeft = thumbPosition * maxScroll;
+                }
+
+                // Touch support for mobile
+                scrollbarThumb.parentElement.addEventListener('touchstart', function(e) {
+                    isDragging = true;
+                    handleScrollbarTouch(e);
+                    e.preventDefault();
+                });
+
+                document.addEventListener('touchmove', function(e) {
+                    if (isDragging) {
+                        handleScrollbarTouch(e);
+                    }
+                });
+
+                document.addEventListener('touchend', function() {
+                    isDragging = false;
+                });
+
+                function handleScrollbarTouch(e) {
+                    const touch = e.touches[0];
+                    const scrollbarTrack = scrollbarThumb.parentElement;
+                    const trackRect = scrollbarTrack.getBoundingClientRect();
+                    const trackWidth = trackRect.width;
+                    const thumbWidth = scrollbarThumb.offsetWidth;
+
+                    let touchX = touch.clientX - trackRect.left;
+                    touchX = Math.max(0, Math.min(touchX, trackWidth - thumbWidth));
+
+                    const thumbPosition = touchX / (trackWidth - thumbWidth);
+
+                    const scrollWidth = scrollContainer.scrollWidth;
+                    const clientWidth = scrollContainer.clientWidth;
+                    const maxScroll = scrollWidth - clientWidth;
+
+                    scrollContainer.scrollLeft = thumbPosition * maxScroll;
+                }
+            });
+        </script>
 
     </section>
-
 
     <section class="relative text-center py-8px-6 overflow-hidden">
         <!-- Background overlay image with exact opacity and pointer-events -->
@@ -1858,7 +1887,7 @@
 
                 // Base styling matching your feedback toast
                 let baseClasses =
-                    'fixed top-6 left-1/2 -translate-x-1/2 font-sans-serif font-bold italic text-lg shadow-md px-6 py-3 rounded-full z-[99999] transition-opacity duration-1000 ease-in-out opacity-100 backdrop-blur-sm';
+                    'fixed top-6 left-1/2 -translate-x-1/2 font-sans-serif font-bold italic text-lg shadow-md px-6 py-3 rounded-2xl z-[99999] transition-opacity duration-1000 ease-in-out opacity-100 backdrop-blur-sm';
 
                 // Type-specific styling
                 let typeClasses = '';
