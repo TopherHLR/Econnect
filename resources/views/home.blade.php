@@ -20,13 +20,13 @@
 
             <!-- Branches without wrapper -->
             <img src="{{ Vite::asset('resources/images/viewport1/branch-leftt.svg') }}" alt="Left branch"
-                class="opacity-100 absolute z-[40] animate-sway-left
+                class="opacity-100 absolute z-[10] animate-sway-left
                w-[36vh] top-[2%] left-[-43%]
                md:w-[60vh] md:top-[25%] md:left-[-10%]
                lg:w-[80vh] lg:top-[10%] lg:left-[-12%]" />
 
             <img src="{{ Vite::asset('resources/images/viewport1/branch-right_.svg') }}" alt="Right branch"
-                class="opacity-100 absolute z-[40] animate-sway-right
+                class="opacity-100 absolute z-[10] animate-sway-right
                w-[45vh] top-[0%] right-[-30%]
                md:w-[70vh] md:top-[20%] md:right-[-10%]
                lg:w-[98vh] lg:top-[8%] lg:right-[-10%]" />
@@ -171,19 +171,19 @@
         @else
             <!-- Guests see engagement widgets -->
             <!-- 🌱 Join Community Widget -->
-            <div class="eco-widget eco-join"
+            <div x-data class="eco-widget eco-join"
                 style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-                <button class="eco-widget-btn" onclick="window.location.href='/register'">Join Our Community</button>
+                <button @click="$store.authModal.open = true; $store.authModal.mode = 'signup'" class="eco-widget-btn">Join Our Community</button>
                 <p class="eco-widget-text">"Start your sustainable journey with us"</p>
-                <a href="/register" class="eco-widget-link">
-                    Sign up free &gt;
-                </a>
+                <button @click="$store.authModal.open = true; $store.authModal.mode = 'signin'"  class="eco-widget-link">
+                    Login Now &gt;
+                </button>
             </div>
 
             <!-- 🌎 Explore Features Widget -->
             <div class="eco-widget eco-explore"
                 style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-                <button class="eco-widget-btn" onclick="window.location.href='/quests'">Learn Sustainable Lifestyle</button>
+                <button class="eco-widget-btn" onclick="window.location.href='/lifestyle'">Learn Sustainable Lifestyle</button>
                 <p class="eco-widget-text">"Eco-topics and actions that you can apply anytime"</p>
                 <a href="/quests" class="eco-widget-link">
                     Browse quests &gt;
@@ -2074,7 +2074,7 @@
                             let subtitle = 'Verify your account to nurture your eco-tree and earn points';
 
                             if (isGuest) {
-                                message = '🌱 Welcome to our growing community';
+                                message = 'Welcome to our growing community';
                                 subtitle = 'Please log in to start nurturing your personal eco-tree';
                             }
 
