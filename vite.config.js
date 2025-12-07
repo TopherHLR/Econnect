@@ -15,11 +15,11 @@ export default defineConfig({
   ],
 
 
-  server: {
-  host: '0.0.0.0',
-   port: 5173,
-   hmr: {
-    host: '192.168.114.41',
-    },
-   },
+  // server: {
+  // host: '0.0.0.0',
+  //  port: 5173,
+  //  hmr: {
+  //   host: '192.168.114.41',
+  //   },
+  //  },
 })
