@@ -40,12 +40,10 @@
                         <a href="/quests" class="nav-link {{ request()->is('quests') ? 'active' : '' }}">QUESTS</a>
                     @endauth
                     <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">ABOUT</a>
-                    <!-- nav-highlight will be inserted here by JavaScript -->
                     <a href="{{ route('leaderboard') }}"
-                        class="nav-link {{ request()->is('leaderboard') ? 'active' : '' }}">
-                        LEADERBOARD
-                    </a>
+                        class="nav-link {{ request()->is('leaderboard') ? 'active' : '' }}">LEADERBOARD</a>
                 </div>
+
                 <!-- Right: Profile / Auth Buttons -->
                 <div x-data class="hidden md:flex items-center relative" id="profileDropdown">
                     @guest
@@ -82,7 +80,8 @@
 
                             <div x-data="{ open: false }" class="relative">
                                 <!-- Profile Button -->
-                                <button @click="open = !open" class="flex items-center justify-center w-11 h-11 bg-[#E0E9D6] border-2 border-[#6A8A52] rounded-full 
+                                <button @click="open = !open"
+                                    class="flex items-center justify-center w-11 h-11 bg-[#E0E9D6] border-2 border-[#6A8A52] rounded-full 
                                                     hover:bg-[#C8D5B9] hover:border-[#4F6B3F] transition-all duration-300 shadow-sm focus:outline-none group
                                                     z-50 relative">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
@@ -113,8 +112,8 @@
                                                 <!-- Rectangle icon -->
                                                 <span
                                                     class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2"
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2"
                                                         class="w-4 h-4 text-[#4F6B3F]">
                                                         <circle cx="12" cy="8" r="4" />
                                                         <path d="M4 20c0-4 4-7 8-7s8 3 8 7" />
@@ -129,8 +128,8 @@
                                                 class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
                                                 <span
                                                     class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor" stroke-width="2"
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
                                                         class="w-4 h-4 text-[#4F6B3F]">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M3 17l6-6 4 4 8-8" />
@@ -145,8 +144,8 @@
                                                 class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
                                                 <span
                                                     class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor" stroke-width="2"
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
                                                         class="w-4 h-4 text-[#4F6B3F]">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M12 8v8m0 0l-3-3m3 3l3-3m-3-7v7" />
@@ -187,8 +186,9 @@
 
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar">
-        <div class="sidebar-header">
+    <aside id="sidebar"
+        class="fixed top-0 left-0 h-full w-64 bg-[#F7F3E7] shadow-lg transform -translate-x-full transition-transform duration-300 z-[1200]">
+        <div class="flex items-center justify-between p-4 border-b border-gray-200">
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo" class="h-10">
             <button id="close-sidebar" class="text-green-900">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -197,23 +197,20 @@
             </button>
         </div>
 
-        <div class="sidebar-links">
+        <div class="flex flex-col mt-4 space-y-2 p-4">
             <a href="/" class="nav-link">HOME</a>
             <a href="/lifestyle" class="nav-link">LIFESTYLE</a>
             <a href="/quests" class="nav-link">QUESTS</a>
             <a href="/about" class="nav-link">ABOUT</a>
             <a href="/myprogress" class="nav-link">PROGRESS</a>
             <a href="/rewards" class="nav-link">REWARDS</a>
-        </div>
-
-        <div class="sidebar-footer">
-            <img src="{{ Vite::asset('resources/images/icons/icon_acc.png') }}" alt="Profile">
-            <span class="italic text-green-900 font-semibold">Hi, Allen</span>
+             <a href="/profile" class="nav-link">ACCOUNT</a>
         </div>
     </aside>
 
     <!-- Overlay -->
-    <div id="overlay"></div>
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40"></div>
+
     <!-- 🌿 Feedback Notification -->
     @if (session('success'))
         <div id="feedback-toast"
@@ -310,6 +307,25 @@
     </div>
 
     <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const overlay = document.getElementById('overlay');
+
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+        }
+
+        function closeSidebarFunc() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        menuToggle.addEventListener('click', openSidebar);
+        closeSidebar.addEventListener('click', closeSidebarFunc);
+        overlay.addEventListener('click', closeSidebarFunc);
+
         setTimeout(() => {
             const toast = document.getElementById('feedback-toast');
             const errorToast = document.getElementById('error-toast');
@@ -321,62 +337,10 @@
             });
         }, 3000);
 
-        // Navbar scroll effect - should run on ALL pages
-        document.addEventListener('DOMContentLoaded', function () {
-            const navbar = document.getElementById('navbar');
-            if (!navbar) return;
 
-            function updateNavbar() {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('navbar-solid');
-                } else {
-                    navbar.classList.remove('navbar-solid');
-                }
-            }
-
-            // Initial check
-            updateNavbar();
-
-            // Throttled scroll event
-            let scrollTimeout;
-            window.addEventListener('scroll', function () {
-                if (!scrollTimeout) {
-                    scrollTimeout = setTimeout(function () {
-                        scrollTimeout = null;
-                        updateNavbar();
-                    }, 10);
-                }
-            });
-
-            // Also check on resize
-            window.addEventListener('resize', updateNavbar);
-        });
-
-        // Nav highlight - should run on ALL pages
-        // Navbar scroll effect - should be on every page
-        document.addEventListener('DOMContentLoaded', function () {
-            const navbar = document.getElementById('navbar');
-            if (!navbar) return;
-
-            function updateNavbar() {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('navbar-solid');
-                } else {
-                    navbar.classList.remove('navbar-solid');
-                }
-            }
-
-            // Initial check
-            updateNavbar();
-
-            // Scroll event
-            window.addEventListener('scroll', function () {
-                updateNavbar();
-            });
-        });
 
         // Navbar with permanent green shadow for non-home pages (full width)
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const navbar = document.getElementById('navbar');
             if (!navbar) return;
 
@@ -404,10 +368,10 @@
 
             // Only listen to scroll for home page
             let scrollTimeout;
-            window.addEventListener('scroll', function () {
+            window.addEventListener('scroll', function() {
                 const isHomePage = window.location.pathname === '/';
                 if (isHomePage && !scrollTimeout) {
-                    scrollTimeout = setTimeout(function () {
+                    scrollTimeout = setTimeout(function() {
                         scrollTimeout = null;
                         updateNavbar();
                     }, 10);

@@ -68,7 +68,6 @@ html, body {
 /* Navigation Links Container - Clean */
 .nav-links {
     position: relative;
-    display: flex;
     align-items: center;
     justify-content: center;
     gap: 2.5rem;
