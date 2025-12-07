@@ -14,21 +14,24 @@
 
         <form id="questForm" class="p-6 space-y-4" method="POST" action="{{ route('quests.store') }}">
             @csrf
-            <!-- Title -->
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Quest Title</label>
-                <input type="text" name="title" maxlength="150" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
-                    placeholder="Enter quest title">
-            </div>
 
-            <!-- Description -->
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Description</label>
-                <textarea name="description" rows="4" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
-                    placeholder="Describe the quest"></textarea>
-            </div>
+            <div class="grid grid-cols-1 w-auto md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+                <!-- Title -->
+                <div class="col-span-1 lg:col-span-3">
+                    <label class="block text-[#4F6B3F] font-medium mb-1">Quest Title</label>
+                    <input type="text" name="title" maxlength="150" required
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                        placeholder="Enter quest title">
+                </div>
+
+                <!-- Description (full width) -->
+                <div class="col-span-1 lg:col-span-3">
+                    <label class="block text-[#4F6B3F] font-medium mb-1">Description</label>
+                    <textarea name="description" rows="3" required
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                        placeholder="Describe the quest"></textarea>
+                </div>
 
             <!-- Category -->
             <div x-data="{ custom: false }">
@@ -36,9 +39,9 @@
 
                 <select id="categorySelect" x-show="!custom" name="category"
                     x-on:change="
-            custom = ($event.target.value === '__custom');
-            if (!custom) applyCategoryPoints($event.target.value);
-        "
+                            custom = ($event.target.value === '__custom');
+                            if (!custom) applyCategoryPoints($event.target.value);
+                        "
                     class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
 
                     <option value="">Select Category</option>
@@ -63,57 +66,61 @@
                 </div>
             </div>
 
+                <!-- Points Reward -->
+                <div>
+                    <label class="block text-[#4F6B3F] font-medium mb-1">Points Reward</label>
+                    <input type="number" name="points_reward" min="1" required
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                        placeholder="Enter points awarded">
+                </div>
 
-            <!-- Points Reward -->
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Points Reward</label>
-                <input type="number" name="points_reward" min="1" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
-                    placeholder="Enter points awarded">
+                <!-- Required Points -->
+                <div>
+                    <label class="block text-[#4F6B3F] font-medium mb-1">Required Points</label>
+                    <input type="number" name="required_points" min="0" value="0"
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                        placeholder="Enter minimum points to unlock quest">
+                </div>
+
+                <!-- Start Date -->
+                <div>
+                    <label class="block text-[#4F6B3F] font-medium mb-1">Start Date</label>
+                    <input type="date" name="start_date" required
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+                </div>
+
+                <!-- End Date -->
+                <div>
+                    <label class="block text-[#4F6B3F] font-medium mb-1">End Date</label>
+                    <input type="date" name="end_date" required
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <label class="block text-[#4F6B3F] font-medium mb-1">Status</label>
+                    <select name="status" required
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+                        <option value="active">Active</option>
+                        <option value="ending_soon">Ending Soon</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+
             </div>
 
-            <!-- Required Points -->
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Required Points</label>
-                <input type="number" name="required_points" min="0" value="0"
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
-                    placeholder="Enter minimum points to unlock quest">
-            </div>
-
-            <!-- Start & End Date -->
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Start Date</label>
-                <input type="date" name="start_date" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
-            </div>
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">End Date</label>
-                <input type="date" name="end_date" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
-            </div>
-
-            <!-- Status -->
-            <div>
-                <label class="block text-[#4F6B3F] font-medium mb-1">Status</label>
-                <select name="status" required
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
-                    <option value="active">Active</option>
-                    <option value="ending_soon">Ending Soon</option>
-                    <option value="closed">Closed</option>
-                </select>
-            </div>
-
-            <!-- Buttons -->
-            <div class="flex justify-end gap-3 pt-3">
+            <!-- Buttons (full width) -->
+            <div class="flex justify-end gap-3 pt-3 mt-4">
                 <button type="button" onclick="closeQuestModal()" class="btn-eco btn-sand">
                     Cancel
                 </button>
-
                 <button type="submit" id="questSubmitBtn" class="btn-eco btn-leaf">
                     <i class="fa-solid fa-plus"></i> Create Quest
                 </button>
             </div>
+
         </form>
+
     </div>
 </div>
 <!-- Submission Modal -->
@@ -245,16 +252,25 @@
     // VERIFY & REJECT BUTTONS
     document.getElementById('btnVerify').addEventListener('click', () => processSubmission('completed'));
     document.getElementById('btnReject').addEventListener('click', () => processSubmission('rejected'));
-    
+
     function applyCategoryPoints(category) {
         const pointsReward = document.querySelector('input[name="points_reward"]');
         const requiredPoints = document.querySelector('input[name="required_points"]');
 
         // Default values for each category
         const preset = {
-            "Small Quest": { reward: 10, required: 0 },
-            "Medium Quest": { reward: 25, required: 10 },
-            "Big Quest": { reward: 50, required: 20 }
+            "Small Quest": {
+                reward: 10,
+                required: 0
+            },
+            "Medium Quest": {
+                reward: 25,
+                required: 10
+            },
+            "Big Quest": {
+                reward: 50,
+                required: 20
+            }
         };
 
         if (preset[category]) {
@@ -262,6 +278,7 @@
             requiredPoints.value = preset[category].required;
         }
     }
+
     function processSubmission(newStatus) {
         if (!currentSubmissionId) return;
 

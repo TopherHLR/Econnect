@@ -59,7 +59,7 @@ class QuestSubmissionController extends Controller
             $request->validate([
                 'submission_id' => 'required|exists:quest_submissions,submission_id',
                 'proof_link' => 'nullable|url',
-                'proof_image' => 'nullable|image|max:5120', // 5MB
+                'proof_image' => 'nullable|image|max:2120', // 5MB
             ]);
 
             $submission = QuestSubmission::findOrFail($request->submission_id);
@@ -95,8 +95,12 @@ class QuestSubmissionController extends Controller
 
             return redirect()->back()->with('success', 'Quest progress submitted successfully!');
 
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to submit quest progress. Error: ' . $e->getMessage());
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->with('error', 'Failed to submit quest progress.')
+                    ->withInput()
+                    ->with('quest_modal_open', true)
+                    ->with('quest_submission_id', $request->submission_id);
         }
     }
 }

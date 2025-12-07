@@ -115,6 +115,19 @@
 
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            @if (session('quest_modal_open'))
+                const submissionId = "{{ session('quest_submission_id') }}";
+
+                // Re-open modal with last data
+                openAcceptedQuestModal(submissionId);
+
+                // Restore old input
+                @if (old('proof_link'))
+                    document.getElementById('proofLink').value = "{{ old('proof_link') }}";
+                @endif
+            @endif
+        });
         // Updated Helper function to parse and split description
         function parseQuestDescription(raw) {
             if (!raw) return {
