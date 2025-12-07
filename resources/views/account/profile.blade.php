@@ -1,5 +1,5 @@
 @extends('layouts.accountLayout')
-
+@section('title', 'Profile')
 @section('account_content')
     <div class="space-y-6">
         <!-- Page Header -->

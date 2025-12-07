@@ -1,5 +1,5 @@
 @extends('layouts.accountLayout')
-
+@section('title', 'Rewards')
 @section('account_content')
     @include('modal.userVoucherModal')
     <script>
