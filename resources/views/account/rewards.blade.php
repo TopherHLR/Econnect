@@ -32,20 +32,22 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-[#4b3f2f]">Available Rewards</h2>
                 <div class="flex space-x-2">
-                    <button onclick="showAll()"
-                        class="filter-btn bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#d8d6cc] transition-colors">
-                        All
-                    </button>
+                    @if ($availableVouchers->isNotEmpty())
+                        <button onclick="showAll()"
+                            class="filter-btn bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#d8d6cc] transition-colors">
+                            All
+                        </button>
 
-                    <button onclick="showAffordable()"
-                        class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
-                        Affordable
-                    </button>
+                        <button onclick="showAffordable()"
+                            class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                            Affordable
+                        </button>
 
-                    <button onclick="showPopular()"
-                        class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
-                        Popular
-                    </button>
+                        <button onclick="showPopular()"
+                            class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                            Popular
+                        </button>
+                    @endif
                 </div>
             </div>
 
@@ -109,69 +111,74 @@
         </div>
 
         <!-- My Vouchers Section -->
+
         <div
-            class="bg-gradient-to-b from-[#fdfcf8] to-[#f8f6f0] rounded-2xl shadow-lg p-6 flex flex-col border border-[#e8e6dc] h-fit">
+            class="bg-gradient-to-b from-[#fdfcf8] to-[#f8f6f0] rounded-2xl shadow-lg p-6 flex flex-col border border-[#e8e6dc] h-full">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-[#4b3f2f]">My Vouchers</h2>
                 <span class="bg-[#e8e6dc] text-[#4b3f2f] rounded-xl px-3 py-1 text-sm font-semibold">
                     {{ $myVouchers->count() }} Active
                 </span>
             </div>
+            @if ($myVouchers->isNotEmpty())
+                <div class="space-y-4 flex-1">
+                    @foreach ($myVouchers as $uv)
+                        @php
+                            $used = $uv->status === 'used';
+                            $expired = $uv->status === 'expired';
 
-            <div class="space-y-4 flex-1">
-                @foreach ($myVouchers as $uv)
-                    @php
-                        $used = $uv->status === 'used';
-                        $expired = $uv->status === 'expired';
+                            // Both behave like "used"
+                            $notActive = $used || $expired;
+                        @endphp
 
-                        // Both behave like "used"
-                        $notActive = $used || $expired;
-                    @endphp
+                        <div @unless ($notActive) onclick="openVoucherUsageModal('{{ $uv->voucher_code }}')" @endunless
+                            class="rounded-xl p-4 shadow-md transform transition
+                            {{ $notActive
+                                ? 'bg-gray-300 cursor-not-allowed opacity-70'
+                                : 'bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-lg hover:scale-[1.02] cursor-pointer' }}">
 
-                    <div @unless ($notActive) onclick="openVoucherUsageModal('{{ $uv->voucher_code }}')" @endunless
-                        class="rounded-xl p-4 shadow-md transform transition
-                        {{ $notActive
-                            ? 'bg-gray-300 cursor-not-allowed opacity-70'
-                            : 'bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-lg hover:scale-[1.02] cursor-pointer' }}">
-
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="font-bold text-lg {{ $notActive ? 'text-gray-700' : '' }}">
-                                {{ $uv->voucher->title }}
-                            </span>
-
-                            {{-- EXPIRATION BADGE (special color for expired) --}}
-                            <span
-                                class="rounded-full px-2 py-1 text-xs font-semibold
-                                @if ($expired) bg-red-300 text-red-800
-                                @elseif ($used)
-                                    bg-gray-400 text-gray-700
-                                @else
-                        bg-white/20 @endif">
-                                {{ ucfirst($uv->status) }}
-                            </span>
-                        </div>
-
-                        <p class="text-sm mb-3 {{ $notActive ? 'text-gray-600' : 'text-white/90' }}">
-                            {{ $uv->voucher->description }}
-                        </p>
-
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="{{ $notActive ? 'text-gray-700' : '' }}">
-                                Expires: {{ \Carbon\Carbon::parse($uv->voucher->expiry_date)->format('M d, Y') }}
-                            </span>
-
-                            {{-- "Tap to use" only shown when voucher is active & not expired & not used --}}
-                            @if (!$expired && !$used && !$notActive)
-                                <span class="rounded px-2 py-1 bg-white/20">
-                                    Tap to use
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="font-bold text-lg {{ $notActive ? 'text-gray-700' : '' }}">
+                                    {{ $uv->voucher->title }}
                                 </span>
-                            @endif
+
+                                {{-- EXPIRATION BADGE (special color for expired) --}}
+                                <span
+                                    class="rounded-full px-2 py-1 text-xs font-semibold
+                                    @if ($expired) bg-red-300 text-red-800
+                                    @elseif ($used)
+                                        bg-gray-400 text-gray-700
+                                    @else
+                            bg-white/20 @endif">
+                                    {{ ucfirst($uv->status) }}
+                                </span>
+                            </div>
+
+                            <p class="text-sm mb-3 {{ $notActive ? 'text-gray-600' : 'text-white/90' }}">
+                                {{ $uv->voucher->description }}
+                            </p>
+
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="{{ $notActive ? 'text-gray-700' : '' }}">
+                                    Expires: {{ \Carbon\Carbon::parse($uv->voucher->expiry_date)->format('M d, Y') }}
+                                </span>
+
+                                {{-- "Tap to use" only shown when voucher is active & not expired & not used --}}
+                                @if (!$expired && !$used && !$notActive)
+                                    <span class="rounded px-2 py-1 bg-white/20">
+                                        Tap to use
+                                    </span>
+                                @endif
+                            </div>
+
                         </div>
-
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
+            @else
+            <div class="justify-center mt-25 flex items-center">
+              <p class="text-lg text-[#4b3f2f]">Rdemeem Vouchers</p>
             </div>
-
+            @endif
         </div>
 
     </div>

@@ -83,7 +83,7 @@
 
                     {{-- Scrollable Eco Content --}}
                     <div id="ecoContent"
-                        class="space-y-4 w-full overflow-y-auto pr-2 custom-scroll max-h-[55vh] sm:max-h-[65vh]">
+                        class="space-y-4 w-full  max-h-[55vh] sm:max-h-[65vh]">
                         @foreach ($ecoTopics as $topic)
                             <div class="eco-card flex flex-col sm:flex-row items-start gap-4 p-4 bg-[#FCF9EF] rounded-xl  hover:bg-white shadow-[0_8px_20px_#7A8C4F]/70 hover:scale-[1.02] transform-gpu transition-all"
                                 data-type="ecoTopic" data-id="{{ $topic->library_id }}"

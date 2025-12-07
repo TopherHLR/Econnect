@@ -67,11 +67,12 @@ class AuthController extends Controller
 
             if (!isset($recaptchaResult['success']) || $recaptchaResult['success'] !== true) {
                 Log::warning('❌ RECAPTCHA FAILED', $recaptchaResult);
-                return back()->withErrors([
-                    'g-recaptcha-response' => 'ReCAPTCHA verification failed. Please try again.'
-                ]);
+                return back()
+                ->withErrors(['g-recaptcha-response' => 'ReCAPTCHA verification failed. Please try again.'])
+                ->withInput()
+                ->with('auth_modal_open', true)
+                ->with('auth_mode', 'signup');
             }
-
             Log::info('✅ STEP 2.1: reCAPTCHA PASSED');
 
 
@@ -103,11 +104,21 @@ class AuthController extends Controller
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::warning('❌ VALIDATION FAILED', ['errors' => $e->errors()]);
-            throw $e;
 
-        } catch (\Illuminate\Mail\Mailable $e) {
+            return back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('auth_modal_open', true)
+                ->with('auth_mode', 'signup');
+
+
+        } catch (\Exception $e) {
             Log::error('📮 MAIL ERROR', ['error' => $e->getMessage()]);
-            return back()->with('error', 'Failed to send verification email. Please try again.');
+            return back()
+                ->with('error', 'Failed to send verification email. Please try again.')
+                ->with('auth_modal_open', true)
+                ->with('auth_mode', 'signup')
+                ->withInput();
 
         } catch (\Throwable $e) {
             Log::error('💥 UNEXPECTED ERROR', [
@@ -115,7 +126,11 @@ class AuthController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
 
-            return back()->with('error', 'Something went wrong during registration.');
+            return back()
+            ->with('error', 'Something went wrong during registration.')
+            ->with('auth_modal_open', true)
+            ->with('auth_mode', 'signup')
+            ->withInput();
         }
     }
 
@@ -214,15 +229,14 @@ class AuthController extends Controller
             $user = Auth::user();
 
             try {
-                Mail::to($validated['email'])->queue(new VerificationCodeMail((object)[
-                    'first_name'        => $validated['first_name'],
-                    'verification_code' => $code,
-                ]));
+                Mail::to($user->email)->send(new LoginNotificationMail($user));
+
 
                 Log::info("📧 Login notification email sent to {$user->email}");
             } catch (\Throwable $e) {
                 Log::error("❌ Failed to send login notification email: " . $e->getMessage());
             }
+
 
             if ($user->user_type === 'admin') {
                 Log::info("👑 Admin {$user->email} logged in successfully.");
@@ -236,9 +250,11 @@ class AuthController extends Controller
         Log::warning("⚠️ Failed login attempt for email: {$request->input('email')}");
 
         return back()
-            ->withErrors(['email' => 'Invalid email or password.'])
-            ->with('error', 'Invalid email or password.')
-            ->onlyInput('email');
+            ->withErrors(['login_error' => 'Invalid email or password.'])
+            ->withInput()
+            ->with('auth_modal_open', true)
+            ->with('auth_mode', 'signin');
+
     }
 
     /**
