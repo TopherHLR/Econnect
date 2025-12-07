@@ -121,7 +121,7 @@
                         <!-- Password -->
                         <div class="infield relative">
                             <input :type="showPass ? 'text' : 'password'" name="password" placeholder="Password"
-                                required
+                                required minlength="8"
                                 class="text-[13px] py-1 px-2 pr-11 border border-gray-300 rounded 
                                        focus:ring-green-600 focus:border-green-600 outline-none w-full 
                                        transition-all duration-200" />
@@ -152,7 +152,7 @@
                         <!-- Confirm Password -->
                         <div class="infield relative">
                             <input :type="showConfirm ? 'text' : 'password'" name="password_confirmation"
-                                placeholder="Confirm Password" required
+                                placeholder="Confirm Password" required  minlength="8"
                                 class="text-[13px] py-1 px-2 pr-11 border border-gray-300 rounded 
                                        focus:ring-green-600 focus:border-green-600 outline-none w-full 
                                        transition-all duration-200" />
@@ -182,7 +182,7 @@
                     </div>
 
                     <div class="pt-1">
-                        <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+                        <div class="g-recaptcha" required data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
                         @error('g-recaptcha-response')
                             <span class="text-red-600 text-xs">{{ $message }}</span>
                         @enderror
