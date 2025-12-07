@@ -3,13 +3,87 @@
     window.authModalOpen = {{ session('auth_modal_open') ? 'true' : 'false' }};
     window.authModalMode = "{{ session('auth_mode') ?? '' }}";
 </script>
+<style>
+    /* MOBILE LAYOUT FIX (full-width form, no blank space) */
+    @media (max-width: 768px) {
+
+        /* 1. Remove the overlay fully */
+        .overlay-container {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+        }
+
+        /* 2. Convert modal to 1-column layout */
+        #container {
+            display: flex !important;
+            flex-direction: column !important;
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        /* 3. Make both form panels take full width */
+        .form-container {
+            top: 12px;
+            width: 100% !important;
+            position: relative !important;
+            left: 0 !important;
+            right: 0 !important;
+            transform: none !important;
+            opacity: 1 !important;
+            display: block !important;
+        }
+
+        /* 4. Undo the translate/slide animations */
+        .sign-in-container,
+        .sign-up-container {
+            transform: none !important;
+            position: relative !important;
+        }
+
+        /* 5. Make modal resize naturally */
+        #authModalContainer {
+            width: 95% !important;
+            height: auto !important;
+            max-height: 90vh !important;
+        }
+    }
+
+    /* 6. Only show ONE form on mobile */
+    @media (max-width: 768px) {
+
+        /* Default: hide both (we reveal the active one using Alpine) */
+        .sign-in-container,
+        .sign-up-container {
+            display: none !important;
+        }
+
+        /* Show login when mode = signin */
+        #container:not(.right-panel-active) .sign-in-container {
+            display: block !important;
+        }
+
+        /* Show signup when mode = signup */
+        #container.right-panel-active .sign-up-container {
+            display: block !important;
+        }
+    }
+</style>
 
 <div x-data x-show="$store.authModal.open" @keydown.escape.window="$store.authModal.open = false" x-transition.opacity
     x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1200]">
 
     <!-- Modal Container -->
     <div @click.outside="$store.authModal.open = false" id="authModalContainer"
-        class="relative w-[850px] h-[470px] bg-white rounded-2xl shadow-xl overflow-hidden">
+        class=" relative bg-white rounded-2xl shadow-xl overflow-hidden 
+        w-[850px] h-[470px]
+        max-w-[95%] max-h-[90vh]
+        md:w-[850px] md:h-[470px]
+        flex flex-col md:block
+        transition-all">
 
         <div class="container text-sm" id="container"
             :class="{ 'right-panel-active': $store.authModal.mode === 'signup' }">
@@ -22,15 +96,18 @@
 
                     <div class="grid grid-cols-3 gap-2">
                         <div class="infield">
-                            <input type="text" name="first_name" placeholder="First Name" required value="{{ old('first_name') }}"
+                            <input type="text" name="first_name" placeholder="First Name" required
+                                value="{{ old('first_name') }}"
                                 class="text-[13px] py-1 px-2 border border-gray-300 rounded focus:ring-green-600 focus:border-green-600 outline-none w-full" />
                         </div>
                         <div class="infield">
-                            <input type="text" name="middle_name" placeholder="Middle Name" value="{{ old('middle_name') }}"
+                            <input type="text" name="middle_name" placeholder="Middle Name"
+                                value="{{ old('middle_name') }}"
                                 class="text-[13px] py-1 px-2 border border-gray-300 rounded focus:ring-green-600 focus:border-green-600 outline-none w-full" />
                         </div>
                         <div class="infield">
-                            <input type="text" name="last_name" placeholder="Last Name" required value="{{ old('last_name') }}"
+                            <input type="text" name="last_name" placeholder="Last Name" required
+                                value="{{ old('last_name') }}"
                                 class="text-[13px] py-1 px-2 border border-gray-300 rounded focus:ring-green-600 focus:border-green-600 outline-none w-full" />
                         </div>
                     </div>
@@ -124,7 +201,7 @@
                             class="text-green-700 hover:underline">Login</a>
                     </p>
                 </form>
-   
+
             </div>
 
             <!-- Sign In -->
@@ -136,7 +213,8 @@
 
                     <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                     <div class="infield">
-                        <input type="email" name="email" placeholder="Email" required   value="{{ old('email') }}"
+                        <input type="email" name="email" placeholder="Email" required
+                            value="{{ old('email') }}"
                             class="text-[13px] py-1 px-2 border border-gray-300 rounded focus:ring-green-600 focus:border-green-600 outline-none w-full" />
                     </div>
 
