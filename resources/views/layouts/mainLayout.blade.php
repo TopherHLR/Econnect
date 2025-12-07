@@ -14,6 +14,9 @@
 </head>
 
 <body class="flex flex-col min-h-screen">
+
+    @include('modal.notificationModal')
+
     <nav id="navbar"
         class="navbar {{ !Request::is('/') && !Request::is('home') ? 'navbar-scrolled navbar-green-shadow' : '' }}">
         <div class="navbar-container">
@@ -25,7 +28,7 @@
                 </a>
 
                 <!-- Hamburger (Mobile) -->
-                <button id="menu-toggle" class="block md:hidden text-green-900 focus:outline-none">
+                <button id="menu-toggle" class="block md:hidden mr-5 text-green-900 focus:outline-none">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -62,7 +65,6 @@
                     @endguest
 
                     @auth
-                        @include('modal.notificationModal')
                         <div class="flex items-center space-x-3 relative ms-5">
                             <!-- Notification Bell -->
                             <!-- Notification Bell -->
@@ -196,15 +198,8 @@
                 </svg>
             </button>
         </div>
-
-        <div class="flex flex-col mt-4 space-y-2 p-4">
-            <a href="/" class="nav-link">HOME</a>
-            <a href="/lifestyle" class="nav-link">LIFESTYLE</a>
-            <a href="/quests" class="nav-link">QUESTS</a>
-            <a href="/about" class="nav-link">ABOUT</a>
-        </div>
         <!-- Sidebar Auth / Profile Section -->
-        <div class="mt-6 border-t border-gray-200 pt-4 px-4">
+        <div class=" pt-4 px-4">
 
             @guest
                 <!-- When NOT logged in -->
@@ -223,13 +218,11 @@
 
 
             @auth
-                <!-- When logged in -->
-                @include('modal.notificationModal')
-
                 <div class="flex items-center justify-between mt-3">
 
                     <!-- Notification bell -->
-                    <button id="notification-btn" class="relative text-[#6A8A52] hover:text-[#4F6B3F] focus:outline-none">
+                    <button id="notification-btn-sidebar"
+                        class="relative text-[#6A8A52] hover:text-[#4F6B3F] focus:outline-none">
                         <i class="fa-solid fa-bell text-2xl"></i>
 
                         @if (App\Models\Notification::where('user_id', Auth::id())->whereNull('read_at')->exists())
@@ -296,6 +289,13 @@
             @endauth
 
         </div>
+        <div class="flex flex-col mt-4 space-y-2 p-4">
+            <a href="/" class="nav-link">HOME</a>
+            <a href="/lifestyle" class="nav-link">LIFESTYLE</a>
+            <a href="/quests" class="nav-link">QUESTS</a>
+            <a href="/about" class="nav-link">ABOUT</a>
+        </div>
+
 
     </aside>
 

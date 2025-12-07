@@ -11,28 +11,29 @@
         </svg>
         <span>Please select a star rating before submitting.</span>
     </div>
-   <section class="relative overflow-hidden min-h-screen flex items-center justify-center viewport1BG">
-    <div class="overlay"></div>
-    <!-- In your layout file or body tag -->
-<body class="overflow-x-hidden">
-    <!-- Your entire page content -->
-    
-    <!-- Branches without wrapper -->
-    <img src="{{ Vite::asset('resources/images/viewport1/branch-leftt.svg') }}" alt="Left branch"
-        class="opacity-100 absolute z-[40] animate-sway-left
+    <section class="relative overflow-hidden min-h-screen flex items-center justify-center viewport1BG">
+        <div class="overlay"></div>
+        <!-- In your layout file or body tag -->
+
+        <body class="overflow-x-hidden">
+            <!-- Your entire page content -->
+
+            <!-- Branches without wrapper -->
+            <img src="{{ Vite::asset('resources/images/viewport1/branch-leftt.svg') }}" alt="Left branch"
+                class="opacity-100 absolute z-[10] animate-sway-left
                w-[36vh] top-[2%] left-[-43%]
                md:w-[60vh] md:top-[25%] md:left-[-10%]
                lg:w-[80vh] lg:top-[10%] lg:left-[-12%]" />
-    
-    <img src="{{ Vite::asset('resources/images/viewport1/branch-right_.svg') }}" alt="Right branch"
-        class="opacity-100 absolute z-[40] animate-sway-right
+
+            <img src="{{ Vite::asset('resources/images/viewport1/branch-right_.svg') }}" alt="Right branch"
+                class="opacity-100 absolute z-[10] animate-sway-right
                w-[45vh] top-[0%] right-[-30%]
                md:w-[70vh] md:top-[20%] md:right-[-10%]
                lg:w-[98vh] lg:top-[8%] lg:right-[-10%]" />
-</body>
-    <!-- 🌍 Globe (Mobile Optimized) -->
-    <img src="{{ Vite::asset('resources/images/viewport1/store2.webp') }}" alt="Globe"
-        class="absolute left-1/2 -translate-x-1/2 z-[4] opacity-100
+        </body>
+        <!-- 🌍 Globe (Mobile Optimized) -->
+        <img src="{{ Vite::asset('resources/images/viewport1/store2.webp') }}" alt="Globe"
+            class="absolute left-1/2 -translate-x-1/2 z-[4] opacity-100
                /* Mobile (default) - positioned in lower half */
                w-[900px] top-[55%]
                /* Small mobile */
@@ -41,28 +42,31 @@
                md:w-[700px] md:top-[40%]
                /* Desktop */
                lg:w-[1100px] lg:top-90" />
-    
-    <!-- 🌫️ Soft Fog Layer - Mobile Optimized -->
-    <div class="absolute bottom-0 left-0 w-full z-[5]
+
+        <!-- 🌫️ Soft Fog Layer - Mobile Optimized -->
+        <div
+            class="absolute bottom-0 left-0 w-full z-[5]
                 /* Mobile - full width but properly cropped */
                 h-[100px]
                 /* Desktop */
                 md:h-[150px]
                 bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent">
-    </div>
-    
-    <!-- 🌏 Centered Text - Mobile Optimized -->
-    <div class="absolute left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full
+        </div>
+
+        <!-- 🌏 Centered Text - Mobile Optimized -->
+        <div
+            class="absolute left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full
                 /* Mobile - upper half positioning */
                 top-[18%] max-w-[95vw]
                 /* Tablet */
                 md:top-[17%] md:max-w-[85vw]
                 /* Desktop */
                 lg:top-[17%] lg:max-w-[70vw]">
-        
-        <!-- Main Title - Mobile Optimized -->
-  <!-- 🌏 Centered Text with Position Controllers -->
-<div class="absolute left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full
+
+            <!-- Main Title - Mobile Optimized -->
+            <!-- 🌏 Centered Text with Position Controllers -->
+            <div
+                class="absolute left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full
             /* Mobile positioning controller */
             top-[8%]
             /* Small phones adjustment */
@@ -75,9 +79,10 @@
             max-w-[95vw]
             md:max-w-[85vw]
             lg:max-w-[70vw]">
-    
-    <!-- Main Title with Vertical Spacing Controller -->
-    <h1 class="italic font-serif font-bold text-[#758848] leading-tight 
+
+                <!-- Main Title with Vertical Spacing Controller -->
+                <h1
+                    class="italic font-serif font-bold text-[#758848] leading-tight 
                drop-shadow-[0_2px_3px_rgba(255,255,255,0.8)]
                /* Mobile font sizing */
                text-2xl
@@ -92,12 +97,13 @@
                xs:mb-4
                md:mb-5
                lg:mb-6">
-        <span class="word-emphasis youre">A cafe</span>
-        <span class="word-emphasis here">on a mission</span>
-    </h1>
-    
-    <!-- Subtext Container with Position Adjuster -->
-    <div class="subtext-container
+                    <span class="word-emphasis youre">A cafe</span>
+                    <span class="word-emphasis here">on a mission</span>
+                </h1>
+
+                <!-- Subtext Container with Position Adjuster -->
+                <div
+                    class="subtext-container
                 /* Mobile vertical spacing */
                 mt-3
                 xs:mt-4
@@ -107,7 +113,8 @@
                 pb-2
                 md:pb-4
                 lg:pb-6">
-        <p class="italic font-sans-serif font-bold text-[#758848] leading-snug
+                    <p
+                        class="italic font-sans-serif font-bold text-[#758848] leading-snug
                   drop-shadow-[0_2px_2px_rgba(255,255,255,0.6)]
                   /* Mobile font sizing */
                   text-sm
@@ -120,107 +127,107 @@
                   /* Max width for better mobile readability */
                   max-w-[90vw] mx-auto
                   md:max-w-none">
-            <span class="glow-word word-1">we</span>
-            <span class="glow-word word-2">donate</span>
-            <span class="glow-word word-3">5%,</span>
-            <span class="glow-word word-4">of</span>
-            <span class="glow-word word-5">our</span>
-            <span class="glow-word word-6">revenue</span>
-            <span class="glow-word word-7">to</span>
-            <span class="glow-word word-8">environmental</span>
-            <span class="glow-word word-9">causes.</span>
-        </p>
-    </div>
-</div>
-</section>
+                        <span class="glow-word word-1">we</span>
+                        <span class="glow-word word-2">donate</span>
+                        <span class="glow-word word-3">5%,</span>
+                        <span class="glow-word word-4">of</span>
+                        <span class="glow-word word-5">our</span>
+                        <span class="glow-word word-6">revenue</span>
+                        <span class="glow-word word-7">to</span>
+                        <span class="glow-word word-8">environmental</span>
+                        <span class="glow-word word-9">causes.</span>
+                    </p>
+                </div>
+            </div>
+    </section>
     <!-- Spacer for mobile (adjusts based on content) -->
     <div class="mt-6 md:mt-8 lg:mt-12"></div>
-<!-- 🌿 Widgets for ALL Users (Guests see different content) -->
-@include('modal.userQuestModal')
-@include('modal.ecoDetailModal')
+    <!-- 🌿 Widgets for ALL Users (Guests see different content) -->
+    @include('modal.userQuestModal')
+    @include('modal.ecoDetailModal')
 
-<div class="eco-widgets-container">
+    <div class="eco-widgets-container">
+        @auth
+            <!-- Logged-in users see personalized widgets -->
+            <!-- 🌱 Saved Eco-Actions Widget -->
+            <div class="eco-widget eco-actions"
+                style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+                <button class="eco-widget-btn">My Eco-actions</button>
+                <p id="eco-action-text" class="eco-widget-text">Loading...</p>
+                <a href="/lifestyle?tab=actions" class="eco-widget-link">
+                    View saved &gt;
+                </a>
+            </div>
+
+            <!-- 🌎 Saved Eco-Topics Widget -->
+            <div class="eco-widget eco-topics"
+                style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+                <button class="eco-widget-btn">Saved Topics</button>
+                <p id="eco-topic-text" class="eco-widget-text">Loading...</p>
+                <a href="javascript:void(0);" id="ecoTopicLink" class="eco-widget-link">
+                    Continue &gt;
+                </a>
+            </div>
+        @else
+            <!-- Guests see engagement widgets -->
+            <!-- 🌱 Join Community Widget -->
+            <div x-data class="eco-widget eco-join"
+                style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+                <button @click="$store.authModal.open = true; $store.authModal.mode = 'signup'" class="eco-widget-btn">Join Our Community</button>
+                <p class="eco-widget-text">"Start your sustainable journey with us"</p>
+                <button @click="$store.authModal.open = true; $store.authModal.mode = 'signin'"  class="eco-widget-link">
+                    Login Now &gt;
+                </button>
+            </div>
+
+            <!-- 🌎 Explore Features Widget -->
+            <div class="eco-widget eco-explore"
+                style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+                <button class="eco-widget-btn" onclick="window.location.href='/lifestyle'">Learn Sustainable Lifestyle</button>
+                <p class="eco-widget-text">"Eco-topics and actions that you can apply anytime"</p>
+                <a href="/quests" class="eco-widget-link">
+                    Browse quests &gt;
+                </a>
+            </div>
+        @endauth
+    </div>
+
     @auth
-        <!-- Logged-in users see personalized widgets -->
-        <!-- 🌱 Saved Eco-Actions Widget -->
-        <div class="eco-widget eco-actions"
-            style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-            <button class="eco-widget-btn">My Eco-actions</button>
-            <p id="eco-action-text" class="eco-widget-text">Loading...</p>
-            <a href="/lifestyle?tab=actions" class="eco-widget-link">
-                View saved &gt;
-            </a>
-        </div>
+        {{-- 🔄 Auto-refresh widget texts only for logged-in users --}}
+        <script>
+            async function updateWidgets() {
+                try {
+                    const response = await fetch("{{ route('widgets.random') }}");
+                    const data = await response.json();
 
-        <!-- 🌎 Saved Eco-Topics Widget -->
-        <div class="eco-widget eco-topics"
-            style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-            <button class="eco-widget-btn">Saved Topics</button>
-            <p id="eco-topic-text" class="eco-widget-text">Loading...</p>
-            <a href="javascript:void(0);" id="ecoTopicLink" class="eco-widget-link">
-                Continue &gt;
-            </a>
-        </div>
-    @else
-        <!-- Guests see engagement widgets -->
-        <!-- 🌱 Join Community Widget -->
-        <div class="eco-widget eco-join"
-            style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-            <button class="eco-widget-btn" onclick="window.location.href='/register'">Join Our Community</button>
-            <p class="eco-widget-text">"Start your sustainable journey with us"</p>
-            <a href="/register" class="eco-widget-link">
-                Sign up free &gt;
-            </a>
-        </div>
+                    // Update action text
+                    document.getElementById('eco-action-text').textContent =
+                        data.eco_action?.title ?? '"No saved actions yet"';
 
-        <!-- 🌎 Explore Features Widget -->
-        <div class="eco-widget eco-explore"
-            style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-            <button class="eco-widget-btn" onclick="window.location.href='/quests'">Learn Sustainable Lifestyle</button>
-            <p class="eco-widget-text">"Eco-topics and actions that you can apply anytime"</p>
-            <a href="/quests" class="eco-widget-link">
-                Browse quests &gt;
-            </a>
-        </div>
-    @endauth
-</div>
+                    // Update topic text and link
+                    const topicText = document.getElementById('eco-topic-text');
+                    const topicLink = document.getElementById('ecoTopicLink');
 
-@auth
-    {{-- 🔄 Auto-refresh widget texts only for logged-in users --}}
-    <script>
-        async function updateWidgets() {
-            try {
-                const response = await fetch("{{ route('widgets.random') }}");
-                const data = await response.json();
+                    if (data.eco_topic) {
+                        topicText.textContent = `"${data.eco_topic.title}"`;
+                        topicLink.onclick = () => openEcoModal('ecoTopic', data.eco_topic.id);
+                    } else {
+                        topicText.textContent = '"No saved topics yet"';
+                        topicLink.onclick = null;
+                    }
 
-                // Update action text
-                document.getElementById('eco-action-text').textContent =
-                    data.eco_action?.title ?? '"No saved actions yet"';
-
-                // Update topic text and link
-                const topicText = document.getElementById('eco-topic-text');
-                const topicLink = document.getElementById('ecoTopicLink');
-
-                if (data.eco_topic) {
-                    topicText.textContent = `"${data.eco_topic.title}"`;
-                    topicLink.onclick = () => openEcoModal('ecoTopic', data.eco_topic.id);
-                } else {
-                    topicText.textContent = '"No saved topics yet"';
-                    topicLink.onclick = null;
+                } catch (error) {
+                    console.error('Error updating widgets:', error);
                 }
 
-            } catch (error) {
-                console.error('Error updating widgets:', error);
+                // Change every 5–10 seconds
+                const nextUpdate = Math.floor(Math.random() * 5000) + 5000;
+                setTimeout(updateWidgets, nextUpdate);
             }
 
-            // Change every 5–10 seconds
-            const nextUpdate = Math.floor(Math.random() * 5000) + 5000;
-            setTimeout(updateWidgets, nextUpdate);
-        }
-
-        updateWidgets();
-    </script>
-@endauth
+            updateWidgets();
+        </script>
+    @endauth
     <section
         style="position: relative; top: -75px; min-height: 110vh; display: flex; align-items: center; justify-content: center;"
         class="viewport2BG">
@@ -560,7 +567,7 @@
                     </div>
 
                     <!-- Particle effect container -->
-                    <div id="plant-particle-container" class="absolute inset-0 z-30 pointer-events-none"></div>
+                    <div id="plant-particle-container" class="absolute inset-0 z-20 pointer-events-none"></div>
 
 
                     <img id="plant-image">
@@ -1587,8 +1594,8 @@
 
             const leafImages = [
                 "{{ Vite::asset('resources/images/leaves/leaf1.svg') }}",
-                "{{ Vite::asset('resources/images/leaves/leaf2.svg') }}",
-                "{{ Vite::asset('resources/images/leaves/leaf3.svg') }}"
+                "{{ Vite::asset('resources/images/leaves/coffee-bean.png') }}",
+                "{{ Vite::asset('resources/images/leaves/coffee-bean2.png') }}"
             ];
 
             plantTop.addEventListener('click', (e) => {
@@ -1988,22 +1995,26 @@
                 switch (type) {
                     case 'verification':
                         typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
-                        icon = '🌿';
+                        icon = `<svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"> <path d="M10 2a1 1 0 01.894.553l2.764 5.598 6.18.898a1 1 0 01.554 1.706l-4.472 4.356 1.055 6.16a1 1 0 01-1.451 1.054L10 18.347l-5.525 2.908a1 1 0 01-1.451-1.054l1.055-6.16L-.02 10.755a1 1 0 01.553-1.706l6.18-.898L9.105 2.553A1 1 0 0110 2z"/></svg>`;
                         break;
+
                     case 'success':
                         typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
-                        icon = '🌱';
+                        icon = ` <svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414-1.414L8 11.172 4.707 7.879A1 1 0 103.293 9.293l4 4a1 1 0 001.414 0l8-8z" clip-rule="evenodd"/></svg>`;
                         break;
+
                     case 'error':
                     case 'warning':
                         typeClasses = 'bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]';
-                        icon = '❌';
+                        icon = `<svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-5a1 1 0 112 0 1 1 0 01-2 0zm0-6a1 1 0 112 0v4a1 1 0 01-2 0V7z" clip-rule="evenodd"/></svg> `;
                         break;
+
                     case 'info':
                     default:
                         typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
-                        icon = '💡';
+                        icon = ` <svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10A8 8 0 112 10a8 8 0 0116 0zM9 9a1 1 0 100 2h1v3a1 1 0 102 0V9a1 1 0 00-1-1H9zm1-4a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/></svg> `;
                 }
+
 
                 toast.className = `${baseClasses} ${typeClasses}`;
 
@@ -2063,7 +2074,7 @@
                             let subtitle = 'Verify your account to nurture your eco-tree and earn points';
 
                             if (isGuest) {
-                                message = '🌱 Welcome to our growing community';
+                                message = 'Welcome to our growing community';
                                 subtitle = 'Please log in to start nurturing your personal eco-tree';
                             }
 

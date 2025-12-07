@@ -353,7 +353,7 @@
         <!-- 🌿 Feedback Notification -->
         @if (session('success'))
             <div id="feedback-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
+                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
                 <!-- Success Icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
@@ -365,7 +365,7 @@
 
         @if (session('error') || $errors->any())
             <div id="error-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-full z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
+                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
                 <!-- Error Icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">

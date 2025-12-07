@@ -1,7 +1,7 @@
                 <div class="relative">
                     <!-- Notification Modal / Dropdown -->
                     <div id="notification-modal"
-                        class="hidden absolute right-0 mt-2 w-80 bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden z-50">
+                        class="hidden fixed top-16 right-65 mt-2 w-80 bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden z-[1300]">
                         <div class="p-4 border-b border-gray-100 font-semibold bg-[#f5f8ef]">
                             Notifications
                         </div>
@@ -55,23 +55,33 @@
                 <script src="//unpkg.com/alpinejs" defer></script>
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
+
                         const modal = document.getElementById('notification-modal');
                         const notificationList = document.getElementById('notification-list');
                         const markAllBtn = document.getElementById('mark-all-read');
-                        const notificationBtn = document.getElementById('notification-btn');
+                        const notificationBtn = document.getElementById('notification-btn'); // navbar
+                        const sidebarNotificationBtn = document.getElementById('notification-btn-sidebar'); // sidebar
                         const globalDot = document.getElementById('notification-dot');
 
-                        // CSRF token
                         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                        // Toggle modal visibility
-                        notificationBtn.addEventListener('click', () => {
+                        // OPEN modal from navbar
+                        notificationBtn?.addEventListener('click', () => {
                             modal.classList.toggle('hidden');
                         });
 
-                        // Close modal if clicking outside
+                        // OPEN modal from sidebar
+                        sidebarNotificationBtn?.addEventListener('click', () => {
+                            modal.classList.toggle('hidden');
+                        });
+
+                        // CLICK OUTSIDE TO CLOSE
                         document.addEventListener('click', function(event) {
-                            if (!notificationBtn.contains(event.target) && !modal.contains(event.target)) {
+                            if (
+                                !notificationBtn?.contains(event.target) &&
+                                !sidebarNotificationBtn?.contains(event.target) &&
+                                !modal.contains(event.target)
+                            ) {
                                 modal.classList.add('hidden');
                             }
                         });
@@ -81,39 +91,9 @@
                             li.addEventListener('click', async () => {
                                 const id = li.dataset.id;
 
-                                // Skip if already read
                                 if (!li.querySelector('span')) return;
 
-                                try {
-                                    const res = await fetch(`/notifications/mark-read/${id}`, {
-                                        method: 'POST',
-                                        headers: {
-                                            'X-CSRF-TOKEN': csrfToken,
-                                            'Content-Type': 'application/json'
-                                        }
-                                    });
-
-                                    if (res.ok) {
-                                        li.querySelector('span')?.remove();
-
-                                        // Hide global dot if no unread notifications left
-                                        if (notificationList.querySelectorAll('li span').length === 0 &&
-                                            globalDot) {
-                                            globalDot.style.display = 'none';
-                                        }
-                                    } else {
-                                        console.error('Failed to mark as read', res.status);
-                                    }
-                                } catch (err) {
-                                    console.error('Error marking notification as read:', err);
-                                }
-                            });
-                        });
-
-                        // Mark all notifications as read
-                        markAllBtn.addEventListener('click', async () => {
-                            try {
-                                const res = await fetch('/notifications/mark-all-read', {
+                                const res = await fetch(`/notifications/mark-read/${id}`, {
                                     method: 'POST',
                                     headers: {
                                         'X-CSRF-TOKEN': csrfToken,
@@ -122,17 +102,30 @@
                                 });
 
                                 if (res.ok) {
-                                    // Remove all red dots in list
-                                    notificationList.querySelectorAll('li span').forEach(el => el.remove());
-
-                                    // Hide global red dot
-                                    if (globalDot) globalDot.style.display = 'none';
-                                } else {
-                                    console.error('Failed to mark all as read', res.status);
+                                    li.querySelector('span')?.remove();
+                                    if (notificationList.querySelectorAll('li span').length === 0 &&
+                                        globalDot) {
+                                        globalDot.style.display = 'none';
+                                    }
                                 }
-                            } catch (err) {
-                                console.error('Error marking all notifications as read:', err);
+                            });
+                        });
+
+                        // Mark all as read
+                        markAllBtn.addEventListener('click', async () => {
+                            const res = await fetch('/notifications/mark-all-read', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken,
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+
+                            if (res.ok) {
+                                notificationList.querySelectorAll('li span').forEach(el => el.remove());
+                                if (globalDot) globalDot.style.display = 'none';
                             }
                         });
+
                     });
                 </script>
