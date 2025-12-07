@@ -483,6 +483,8 @@ button{
 
 /* =========================================================== ECO WIDGETS - EXTREME HIGH TEXT POSITIONING =========================================================== */
 
+/* =========================================================== ECO WIDGETS - ULTRA HIGH TEXT WITH SMALLER FONT =========================================================== */
+
 /* Widget Container - Side by side on ALL screens */
 .eco-widgets-container {
     position: absolute;
@@ -496,7 +498,7 @@ button{
     
     /* MOBILE ONLY - 40% from top */
     @media (max-width: 800px) {
-        top: 40%;
+        top: 42%;
         bottom: auto;
         flex-direction: row;
         gap: 1rem;
@@ -526,7 +528,7 @@ button{
     }
 }
 
-/* Widget Sizing - LARGER images with EXTREME high text positioning */
+/* Widget Sizing - ULTRA minimal bottom padding */
 .eco-widget {
     position: relative;
     text-align: center;
@@ -536,44 +538,44 @@ button{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* CHANGED: Start from top instead of bottom */
+    justify-content: flex-start;
     z-index: 25;
     animation: cloudFloat 10s ease-in-out infinite;
     flex-shrink: 0;
     
-    /* Mobile - EXTREME minimal bottom padding */
+    /* Mobile - ULTRA minimal bottom padding */
     @media (max-width: 800px) {
         width: 190px;
         height: 140px;
-        padding: 2.8rem 0.5rem 0.2rem 0.5rem; /* EXTREME minimal bottom padding */
+        padding: 2.8rem 0.5rem 0rem 0.5rem; /* ZERO bottom padding */
     }
     
     /* Small mobile adjustment */
     @media (min-width: 375px) and (max-width: 800px) {
         width: 200px;
         height: 150px;
-        padding: 3rem 0.6rem 0.3rem 0.6rem; /* EXTREME minimal bottom padding */
+        padding: 3rem 0.6rem 0.1rem 0.6rem; /* Almost zero bottom padding */
     }
     
-    /* TABLET - Extreme minimal padding */
+    /* TABLET - Ultra minimal padding */
     @media (min-width: 768px) {
         width: 320px;
         height: 230px;
-        padding: 3.8rem 1.25rem 0.5rem 1.25rem; /* EXTREME minimal bottom padding */
+        padding: 3.8rem 1.25rem 0.2rem 1.25rem; /* Ultra minimal bottom padding */
     }
     
     /* Desktop - Medium */
     @media (min-width: 1024px) {
         width: 380px;
         height: 280px;
-        padding: 4.8rem 1.5rem 0.8rem 1.5rem; /* EXTREME minimal bottom padding */
+        padding: 4.8rem 1.5rem 0.5rem 1.5rem; /* Ultra minimal bottom padding */
     }
     
-    /* Large desktop - Original size */
+    /* Large desktop */
     @media (min-width: 1280px) {
         width: 500px;
         height: 360px;
-        padding: 5.8rem 2rem 1rem 2rem; /* EXTREME minimal bottom padding */
+        padding: 5.8rem 2rem 0.8rem 2rem; /* Ultra minimal bottom padding */
     }
 }
 
@@ -592,7 +594,7 @@ button{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #6b5338;
+    background-color:#836239;
     color: #ffffff;
     border-radius: 9999px;
     font-style: italic;
@@ -640,119 +642,119 @@ button{
     }
 }
 
-/* Text - EXTREME HIGH POSITION (almost touching button) */
+/* Text - ULTRA HIGH POSITION with SMALLER FONT */
 .eco-widget-text {
     color: #625237;
     font-family: 'Nunito', sans-serif;
     font-weight: 600;
     margin-bottom: 0rem; /* NO spacing */
     
-    /* MOBILE - EXTREME HIGH (right under button) */
+    /* MOBILE - ULTRA HIGH with SMALLER font */
     @media (max-width: 800px) {
-        font-size: 0.75rem;
-        transform: translateY(0.2rem); /* EXTREME HIGH - positive moves it DOWN slightly from button */
+        font-size: 0.65rem; /* SMALLER from 0.75rem */
+        transform: translateY(-0.2rem); /* ULTRA HIGH - negative moves it UP */
         line-height: 1.1;
-        margin-top: 1.5rem; /* Pushes text down from button */
+        margin-top: 0.8rem; /* Reduced from 1.5rem */
     }
     
     /* Small mobile */
     @media (min-width: 375px) and (max-width: 800px) {
-        font-size: 0.8rem;
-        transform: translateY(0.3rem); /* EXTREME HIGH */
+        font-size: 0.7rem; /* SMALLER from 0.8rem */
+        transform: translateY(-0.1rem); /* ULTRA HIGH */
         line-height: 1.1;
-        margin-top: 1.6rem;
+        margin-top: 1.2rem; /* Reduced from 1.6rem */
     }
     
-    /* TABLET - Extreme high position */
+    /* TABLET - Ultra high with smaller font */
     @media (min-width: 768px) {
-        font-size: 1.05rem;
-        transform: translateY(0.8rem); /* EXTREME HIGH */
+        font-size: 0.9rem; /* SMALLER from 1.05rem */
+        transform: translateY(0.3rem); /* ULTRA HIGH */
         line-height: 1.2;
-        margin-top: 2rem;
+        margin-top: 1.5rem; /* Reduced from 2rem */
         margin-bottom: 0rem;
     }
     
     /* Desktop - Medium */
     @media (min-width: 1024px) {
-        font-size: 1.25rem;
-        transform: translateY(1rem); /* EXTREME HIGH */
+        font-size: 1.1rem; /* SMALLER from 1.25rem */
+        transform: translateY(0.5rem); /* ULTRA HIGH */
         line-height: 1.2;
-        margin-top: 2.5rem;
+        margin-top: 2rem; /* Reduced from 2.5rem */
         margin-bottom: 0rem;
     }
     
     /* Large desktop */
     @media (min-width: 1280px) {
-        font-size: 1.7rem;
-        transform: translateY(1.5rem); /* EXTREME HIGH */
+        font-size: 1.5rem; /* SMALLER from 1.7rem */
+        transform: translateY(1rem); /* ULTRA HIGH */
         line-height: 1.3;
-        margin-top: 3rem;
+        margin-top: 2.5rem; /* Reduced from 3rem */
         margin-bottom: 0rem;
     }
 }
 
-/* Link - EXTREME HIGH POSITION (right under text) */
+/* Link - ULTRA HIGH POSITION */
 .eco-widget-link {
     margin-top: 0rem;
-    color: #63522c;
+    color: #2e452b;
     text-decoration: underline;
     transition: color 0.3s ease;
-    margin-bottom: 0.1rem; /* MINIMAL spacing */
+    margin-bottom: 0.05rem; /* MINIMAL spacing */
     font-family: 'Crimson Text', serif;
     
-    /* MOBILE - EXTREME HIGH (right under text) */
+    /* MOBILE - ULTRA HIGH */
     @media (max-width: 800px) {
-        font-size: 0.6rem;
-        transform: translateY(0.6rem); /* EXTREME HIGH */
+        font-size: 0.55rem; /* SMALLER from 0.6rem */
+        transform: translateY(0.2rem); /* ULTRA HIGH */
         line-height: 1;
     }
     
     /* Small mobile */
     @media (min-width: 375px) and (max-width: 800px) {
-        font-size: 0.65rem;
-        transform: translateY(0.7rem); /* EXTREME HIGH */
+        font-size: 0.6rem; /* SMALLER from 0.65rem */
+        transform: translateY(0.3rem); /* ULTRA HIGH */
         line-height: 1;
     }
     
-    /* TABLET - Extreme high position */
+    /* TABLET - Ultra high position */
     @media (min-width: 768px) {
-        font-size: 0.75rem;
-        transform: translateY(1.2rem); /* EXTREME HIGH */
+        font-size: 0.7rem; /* SMALLER from 0.75rem */
+        transform: translateY(0.7rem); /* ULTRA HIGH */
+        line-height: 1.1;
+        margin-bottom: 0.1rem;
+    }
+    
+    /* Desktop - Medium */
+    @media (min-width: 1024px) {
+        font-size: 0.75rem; /* SMALLER from 0.8rem */
+        transform: translateY(1rem); /* ULTRA HIGH */
         line-height: 1.1;
         margin-bottom: 0.2rem;
     }
     
-    /* Desktop - Medium */
-    @media (min-width: 1024px) {
-        font-size: 0.8rem;
-        transform: translateY(1.5rem); /* EXTREME HIGH */
-        line-height: 1.1;
-        margin-bottom: 0.3rem;
-    }
-    
     /* Large desktop */
     @media (min-width: 1280px) {
-        font-size: 0.9rem;
-        transform: translateY(2.2rem); /* EXTREME HIGH */
+        font-size: 0.85rem; /* SMALLER from 0.9rem */
+        transform: translateY(1.7rem); /* ULTRA HIGH */
         line-height: 1.2;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.3rem;
     }
 }
 
 .eco-widget-link:hover {
-    color: #342912;
+    color: #3c562e;
 }
 
-/* EXTREMELY small spacing between text and link */
+/* ALMOST NO spacing between text and link */
 .eco-widget-text + .eco-widget-link {
-    margin-top: 0.01rem; /* Almost touching */
+    margin-top: 0rem; /* NO gap - touching */
     
     @media (min-width: 768px) {
-        margin-top: 0.02rem;
+        margin-top: 0.01rem;
     }
     
     @media (min-width: 1024px) {
-        margin-top: 0.03rem;
+        margin-top: 0.02rem;
     }
 }
 
@@ -767,7 +769,7 @@ button{
     .eco-widget {
         width: 175px;
         height: 130px;
-        padding: 2.2rem 0.4rem 0.2rem 0.4rem; /* EXTREME minimal */
+        padding: 2.2rem 0.4rem 0rem 0.4rem; /* ZERO bottom padding */
     }
     
     .eco-widget-btn {
@@ -777,16 +779,16 @@ button{
     }
     
     .eco-widget-text {
-        font-size: 0.7rem;
-        transform: translateY(0.1rem); /* EXTREME HIGH */
-        margin-top: 1.3rem;
+        font-size: 0.6rem; /* SMALLER from 0.7rem */
+        transform: translateY(-0.1rem); /* ULTRA HIGH */
+        margin-top: 0.8rem; /* Reduced from 1.3rem */
         margin-bottom: 0rem;
     }
     
     .eco-widget-link {
-        font-size: 0.55rem;
-        transform: translateY(0.4rem); /* EXTREME HIGH */
-        margin-bottom: 0.15rem;
+        font-size: 0.5rem; /* SMALLER from 0.55rem */
+        transform: translateY(0.2rem); /* ULTRA HIGH */
+        margin-bottom: 0.1rem;
     }
 }
 

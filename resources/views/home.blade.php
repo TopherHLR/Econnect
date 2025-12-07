@@ -135,11 +135,13 @@
 </section>
     <!-- Spacer for mobile (adjusts based on content) -->
     <div class="mt-6 md:mt-8 lg:mt-12"></div>
-<!-- 🌿 Widgets for Logged-in Users - Side by Side -->
+<!-- 🌿 Widgets for ALL Users (Guests see different content) -->
 @include('modal.userQuestModal')
 @include('modal.ecoDetailModal')
-@auth
-    <div class="eco-widgets-container">
+
+<div class="eco-widgets-container">
+    @auth
+        <!-- Logged-in users see personalized widgets -->
         <!-- 🌱 Saved Eco-Actions Widget -->
         <div class="eco-widget eco-actions"
             style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
@@ -159,9 +161,32 @@
                 Continue &gt;
             </a>
         </div>
-    </div>
+    @else
+        <!-- Guests see engagement widgets -->
+        <!-- 🌱 Join Community Widget -->
+        <div class="eco-widget eco-join"
+            style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+            <button class="eco-widget-btn" onclick="window.location.href='/register'">Join Our Community</button>
+            <p class="eco-widget-text">"Start your sustainable journey with us"</p>
+            <a href="/register" class="eco-widget-link">
+                Sign up free &gt;
+            </a>
+        </div>
 
-    {{-- 🔄 Auto-refresh widget texts --}}
+        <!-- 🌎 Explore Features Widget -->
+        <div class="eco-widget eco-explore"
+            style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
+            <button class="eco-widget-btn" onclick="window.location.href='/quests'">Learn Sustainable Lifestyle</button>
+            <p class="eco-widget-text">"Eco-topics and actions that you can apply anytime"</p>
+            <a href="/quests" class="eco-widget-link">
+                Browse quests &gt;
+            </a>
+        </div>
+    @endauth
+</div>
+
+@auth
+    {{-- 🔄 Auto-refresh widget texts only for logged-in users --}}
     <script>
         async function updateWidgets() {
             try {
