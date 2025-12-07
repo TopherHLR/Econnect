@@ -187,7 +187,7 @@
 
     <!-- Sidebar -->
     <aside id="sidebar"
-        class="fixed top-0 left-0 h-full w-64 bg-[#F7F3E7] shadow-lg transform -translate-x-full transition-transform duration-300 z-[1200]">
+        class="fixed top-0 right-0 h-full w-64 bg-[#F7F3E7] shadow-lg transform translate-x-full transition-transform duration-300 z-[1200]">
         <div class="flex items-center justify-between p-4 border-b border-gray-200">
             <img src="{{ Vite::asset('resources/images/logo/realLogo.png') }}" alt="EcoConnect Logo" class="h-10">
             <button id="close-sidebar" class="text-green-900">
@@ -322,12 +322,12 @@
         const overlay = document.getElementById('overlay');
 
         function openSidebar() {
-            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.remove('translate-x-full');
             overlay.classList.remove('hidden');
         }
 
         function closeSidebarFunc() {
-            sidebar.classList.add('-translate-x-full');
+            sidebar.classList.add('translate-x-full');
             overlay.classList.add('hidden');
         }
 
