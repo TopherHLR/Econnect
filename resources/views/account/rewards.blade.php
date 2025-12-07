@@ -20,7 +20,7 @@
             </p>
         </div>
         <div
-            class="bg-gradient-to-r from-[#a86f46] to-[#bd845a] text-white rounded-full px-6 py-3 flex items-center space-x-3 shadow-lg">
+            class="bg-gradient-to-r from-[#a86f46] to-[#bd845a] text-white rounded-xl px-6 py-3 flex items-center space-x-3 shadow-lg">
             <span class="font-bold text-xl">{{ $currentPoints }} Eco Points</span>
         </div>
     </div>
@@ -33,17 +33,17 @@
                 <h2 class="text-2xl font-bold text-[#4b3f2f]">Available Rewards</h2>
                 <div class="flex space-x-2">
                     <button onclick="showAll()"
-                        class="filter-btn bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-full text-sm font-medium hover:bg-[#d8d6cc] transition-colors">
+                        class="filter-btn bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#d8d6cc] transition-colors">
                         All
                     </button>
 
                     <button onclick="showAffordable()"
-                        class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-full text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                        class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
                         Affordable
                     </button>
 
                     <button onclick="showPopular()"
-                        class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-full text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                        class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
                         Popular
                     </button>
                 </div>
@@ -113,7 +113,7 @@
             class="bg-gradient-to-b from-[#fdfcf8] to-[#f8f6f0] rounded-2xl shadow-lg p-6 flex flex-col border border-[#e8e6dc] h-fit">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-[#4b3f2f]">My Vouchers</h2>
-                <span class="bg-[#e8e6dc] text-[#4b3f2f] rounded-full px-3 py-1 text-sm font-semibold">
+                <span class="bg-[#e8e6dc] text-[#4b3f2f] rounded-xl px-3 py-1 text-sm font-semibold">
                     {{ $myVouchers->count() }} Active
                 </span>
             </div>
