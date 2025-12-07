@@ -24,7 +24,7 @@
                         </div>
 
                         <!-- Three side-by-side containers with fixed total height -->
-                        <div class="flex gap-6" style="height: 600px;">
+                        <div class="flex gap-6" style="height: 670px;">
 
                             <!-- Left Container: Accepted Quests (Fixed height) -->
                             <div class="bg-white rounded-2xl shadow-md p-5 h-full flex flex-col">

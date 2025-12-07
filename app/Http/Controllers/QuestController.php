@@ -20,12 +20,12 @@ class QuestController extends Controller
         $quests = Quest::with('submissions.user')
             ->whereIn('status', ['active', 'ending_soon'])
             ->orderBy('start_date', 'desc')
-            ->paginate(1);
+            ->paginate(5);
 
         $archivedQuests = Quest::with('submissions.user')
             ->whereIn('status', ['archived', 'closed'])
             ->orderBy('end_date', 'desc')
-            ->paginate(3); // or 5, 15 — whatever you prefer
+            ->paginate(5); // or 5, 15 — whatever you prefer
 
         $questsList = Quest::with('submissions.user')
             ->orderBy('start_date', 'desc')

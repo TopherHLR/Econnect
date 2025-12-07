@@ -152,6 +152,9 @@
         qrReaderEl.style.transform = "scaleX(-1)";
         qrReaderEl.style.filter = "brightness(0.8) contrast(1.1)";
 
+        let cameraActive = false;
+
+        // Try camera
         html5QrCode.start({
                 facingMode: "environment"
             }, {
@@ -159,60 +162,63 @@
                 qrbox: 250
             },
             qrCodeMessage => {
-                if (qrMode === "verify") {
-                    handleUserVerification(qrCodeMessage);
-                } else {
-                    handleQrCode(qrCodeMessage);
-                }
+                if (qrMode === "verify") handleUserVerification(qrCodeMessage);
+                else handleQrCode(qrCodeMessage);
             }
-        ).catch(err => {
-            console.error("QR start failed:", err);
-            // your toast error handling
+        ).then(() => {
+            cameraActive = true;
+        }).catch(err => {
+            console.warn("Camera unavailable, file-only mode.", err);
+            cameraActive = false;
         });
 
-        // 📌 PLACE IT RIGHT HERE
+        // ---------- FILE INPUT ----------
         const fileInput = document.getElementById('qr-file-input');
         fileInput.onchange = async e => {
             if (!e.target.files.length) return;
             const file = e.target.files[0];
 
-            if (html5QrCode._isScanning) {
-                await html5QrCode.stop().catch(() => {});
+            // 🔥 FORCE STOP CAMERA SAFELY 🔥
+            if (cameraActive) {
+                try {
+                    await html5QrCode.stop();
+                } catch (_) {}
+
+                // WAIT until scanner is truly stopped
+                await new Promise(resolve => setTimeout(resolve, 150));
             }
 
             try {
                 const qrCodeMessage = await html5QrCode.scanFile(file, true);
 
-                if (qrMode === "verify") {
-                    handleUserVerification(qrCodeMessage);
-                } else {
-                    handleQrCode(qrCodeMessage);
-                }
+                if (qrMode === "verify") handleUserVerification(qrCodeMessage);
+                else handleQrCode(qrCodeMessage);
 
             } catch (err) {
-                showToast("Error reading QR from image.", "error");
-                resultEl.textContent = `Error reading image: ${err}`;
+                console.error("Image scan error", err);
+                showToast("Error reading QR code.", "error");
             } finally {
-                html5QrCode.start({
-                        facingMode: "environment"
-                    }, {
-                        fps: 20,
-                        qrbox: 250
-                    },
-                    qrCodeMessage => {
-                        if (qrMode === "verify") {
-                            handleUserVerification(qrCodeMessage);
-                        } else {
-                            handleQrCode(qrCodeMessage);
-                        }
-                    }
-                ).catch(() => {
-                    showToast("Camera failed to restart.", "error");
-                });
+                // Restart ONLY if camera was originally working
+                if (cameraActive) {
+                    setTimeout(() => {
+                        html5QrCode.start({
+                                facingMode: "environment"
+                            }, {
+                                fps: 20,
+                                qrbox: 250
+                            },
+                            qrCodeMessage => {
+                                if (qrMode === "verify") handleUserVerification(qrCodeMessage);
+                                else handleQrCode(qrCodeMessage);
+                            }
+                        ).catch(err => {
+                            console.warn("Camera failed to restart:", err);
+                        });
+                    }, 200);
+                }
             }
         };
     }
-
 
     // Open Verify User Modal
     function openVerifyModal() {
@@ -359,7 +365,11 @@
     }
 
     function startUserQrScanner() {
-        if (!html5UserQrCode) html5UserQrCode = new Html5Qrcode("qr-reader");
+        if (!html5UserQrCode) {
+            html5UserQrCode = new Html5Qrcode("qr-reader");
+        }
+
+        let cameraActive = false;
 
         // Try to start camera
         html5UserQrCode.start({
@@ -369,23 +379,52 @@
                 qrbox: 250
             },
             qrCodeMessage => handleUserQrScan(qrCodeMessage)
-        ).catch(err => {
+        ).then(() => {
+            cameraActive = true;
+        }).catch(err => {
             console.warn("User QR camera start failed:", err);
+            cameraActive = false;
             showToast("Camera unavailable. You can use QR image upload.", "error");
         });
 
-        // File input will always work
+        // File input
         const fileInput = document.getElementById('qr-file-input');
         fileInput.onchange = async e => {
             if (!e.target.files.length) return;
             const file = e.target.files[0];
 
+            // 🔥 Force-stop camera safely before scanning file
+            if (cameraActive) {
+                try {
+                    await html5UserQrCode.stop();
+                } catch (_) {}
+
+                // wait until scanner is fully idle
+                await new Promise(resolve => setTimeout(resolve, 150));
+            }
+
             try {
                 const qrCodeMessage = await html5UserQrCode.scanFile(file, true);
                 handleUserQrScan(qrCodeMessage);
             } catch (err) {
+                console.error("User QR image scan error:", err);
                 showToast("Error reading QR from image.", "error");
-                resultEl.textContent = `Error reading image: ${err}`;
+            } finally {
+                // restart camera only if previously active
+                if (cameraActive) {
+                    setTimeout(() => {
+                        html5UserQrCode.start({
+                                facingMode: "environment"
+                            }, {
+                                fps: 20,
+                                qrbox: 250
+                            },
+                            qrCodeMessage => handleUserQrScan(qrCodeMessage)
+                        ).catch(err => {
+                            console.warn("User camera failed to restart:", err);
+                        });
+                    }, 200);
+                }
             }
         };
     }

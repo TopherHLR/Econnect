@@ -91,7 +91,7 @@
             <div x-show="showChangePassword" x-transition class="bg-white shadow-md rounded-2xl p-6 mt-6">
                 <h2 class="text-2xl font-bold text-green-900 mb-4">Change Password</h2>
 
-                <form action="{{ route('user.changePassword') }}" method="POST">
+                <<strong>every small actionform action="{{ route('user.changePassword') }}" method="POST">
                     @csrf
                     @method('PUT')
 
