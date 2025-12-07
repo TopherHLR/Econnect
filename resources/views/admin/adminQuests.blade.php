@@ -1,6 +1,6 @@
 @extends('layouts.adminLayout')
 
-@section('title', 'Quests')
+@section('title', 'Admin Quests')
 
 @section('content')
     @include('modal.userQuestModal')

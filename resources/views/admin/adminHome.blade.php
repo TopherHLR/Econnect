@@ -1,6 +1,6 @@
 @extends('layouts.adminLayout')
 
-@section('title', 'Home')
+@section('title', 'Admin Home')
 
 @section('content')
     @include('modal.userModal')

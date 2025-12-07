@@ -1,6 +1,6 @@
 @extends('layouts.adminLayout')
 
-@section('title', 'Eco Library')
+@section('title', 'Admin Lifestyle')
 
 @section('content')
 
