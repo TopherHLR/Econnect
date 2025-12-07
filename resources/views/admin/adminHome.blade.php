@@ -69,7 +69,13 @@
 
                                 // Top Points
                                 foreach ($topByPoints->take(3) as $i => $u) {
+                                    // ✅ Skip admins, only show verified users
+                                    if ($u->user->user_type !== 'verified_user') {
+                                        continue;
+                                    }
+
                                     $isYou = $currentUserId && $u->user->user_id == $currentUserId;
+
                                     $items->push([
                                         'icon' => $isYou ? 'star' : 'trophy',
                                         'label' => '#' . ($i + 1) . ' Points',
@@ -81,7 +87,13 @@
 
                                 // Top Quests
                                 foreach ($topByQuests->take(3) as $i => $u) {
+                                    // ✅ Skip admins
+                                    if ($u->user->user_type !== 'verified_user') {
+                                        continue;
+                                    }
+
                                     $isYou = $currentUserId && $u->user->user_id == $currentUserId;
+
                                     $items->push([
                                         'icon' => $isYou ? 'star' : 'check',
                                         'label' => '#' . ($i + 1) . ' Quests',
@@ -93,7 +105,13 @@
 
                                 // Top Eco-Taps
                                 foreach ($topDailyActions->take(3) as $i => $u) {
+                                    // ✅ Skip admins
+                                    if ($u->user->user_type !== 'verified_user') {
+                                        continue;
+                                    }
+
                                     $isYou = $currentUserId && $u->user->user_id == $currentUserId;
+
                                     $items->push([
                                         'icon' => $isYou ? 'star' : 'globe',
                                         'label' => '#' . ($i + 1) . ' Eco-Taps',
@@ -103,8 +121,6 @@
                                     ]);
                                 }
                             @endphp
-
-
 
                             <!-- Render items twice for seamless loop -->
                             @foreach ([$items, $items] as $set)

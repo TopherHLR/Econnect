@@ -17,7 +17,7 @@
                 <p><strong>Title:</strong> <span id="modalQuestTitle"></span></p>
                 <p><strong>Description:</strong> <span id="modalQuestDescription"></span></p>
                 <p><strong>Category:</strong> <span id="modalQuestCategory"></span></p>
-                <p><strong>Points Reward:</strong> <span id="modalQuestPoints"></span> pts 🌱</p>
+                <p><strong>Points Reward:</strong> <span id="modalQuestPoints"></span> pts </p>
                 <p><strong>Status:</strong> <span id="modalQuestStatus"></span></p>
                 <p><strong>Start Date:</strong> <span id="modalQuestStart"></span></p>
                 <p><strong>End Date:</strong> <span id="modalQuestEnd"></span></p>

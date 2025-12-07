@@ -8,7 +8,6 @@
         const progressPoints = {{ $progressPoints }};
         const currentPoints = {{ $currentPoints }};
     </script>
-
     <!-- Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div class="flex flex-col">
@@ -189,6 +188,7 @@
             "Every eco-action brings us closer to a sustainable future. Thank you for making a difference!"
         </p>
     </div>
+
     <script>
         const currentPointsUser = {{ $currentPoints ?? 0 }}; // user points from PHP
 

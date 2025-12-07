@@ -360,9 +360,12 @@
                         </div>
                         @forelse($topByPoints as $index => $user)
                             @php $isYou = $currentUserId && $user->user_id == $currentUserId; @endphp
-                            <div class="grid grid-cols-3 text-center py-4 border-b border-[#D7E2C3] transition cursor-pointer
-                                {{ $isYou ? 'bg-gradient-to-r from-yellow-50 to-green-50 border-l-4 border-l-[#7A8F55] shadow-md font-bold' : 'hover:bg-green-50' }}"
-                                onclick="window.location='{{ route('myprogress') }}'">
+                            <div class="grid grid-cols-3 text-center py-4 border-b border-[#D7E2C3] transition
+                                {{ $isYou
+                                    ? 'cursor-pointer bg-gradient-to-r from-yellow-50 to-green-50 border-l-4 border-l-[#7A8F55] shadow-md font-bold'
+                                    : 'hover:bg-green-50 cursor-default' }}"
+                                @if ($isYou) onclick="window.location='{{ route('myprogress') }}'" @endif>
+
                                 <p class="text-[#5E7345]">
                                     {{ $index + 1 }} @if ($isYou)
                                     @endif
@@ -391,9 +394,12 @@
                         </div>
                         @forelse($topByQuests as $index => $user)
                             @php $isYou = $currentUserId && $user->user_id == $currentUserId; @endphp
-                            <div class="grid grid-cols-3 text-center py-4 border-b border-[#D7E2C3] transition cursor-pointer
-                                {{ $isYou ? 'bg-gradient-to-r from-yellow-50 to-green-50 border-l-4 border-l-[#7A8F55] shadow-md font-bold' : 'hover:bg-green-50' }}"
-                                onclick="window.location='{{ route('myprogress') }}'">
+                            <div class="grid grid-cols-3 text-center py-4 border-b border-[#D7E2C3] transition
+                                {{ $isYou
+                                    ? 'cursor-pointer bg-gradient-to-r from-yellow-50 to-green-50 border-l-4 border-l-[#7A8F55] shadow-md font-bold'
+                                    : 'hover:bg-green-50 cursor-default' }}"
+                                @if ($isYou) onclick="window.location='{{ route('myprogress') }}'" @endif>
+
                                 <p class="text-[#5E7345]">
                                     {{ $index + 1 }} @if ($isYou)
                                     @endif
@@ -422,9 +428,12 @@
                         </div>
                         @forelse($topDailyTaps as $index => $user)
                             @php $isYou = $currentUserId && $user->user_id == $currentUserId; @endphp
-                            <div class="grid grid-cols-3 text-center py-4 border-b border-[#D7E2C3] transition cursor-pointer
-                                {{ $isYou ? 'bg-gradient-to-r from-yellow-50 to-green-50 border-l-4 border-l-[#7A8F55] shadow-md font-bold' : 'hover:bg-green-50' }}"
-                                onclick="window.location='{{ route('myprogress') }}'">
+                            <div class="grid grid-cols-3 text-center py-4 border-b border-[#D7E2C3] transition
+                                {{ $isYou
+                                    ? 'cursor-pointer bg-gradient-to-r from-yellow-50 to-green-50 border-l-4 border-l-[#7A8F55] shadow-md font-bold'
+                                    : 'hover:bg-green-50 cursor-default' }}"
+                                @if ($isYou) onclick="window.location='{{ route('myprogress') }}'" @endif>
+
                                 <p class="text-[#5E7345]">
                                     {{ $index + 1 }} @if ($isYou)
                                     @endif

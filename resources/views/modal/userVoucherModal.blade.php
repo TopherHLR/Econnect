@@ -117,7 +117,7 @@
         <!-- Usage Instructions -->
         <div class="bg-[#ecf4e7] rounded-lg p-3 mb-4">
             <p class="text-xs text-[#4b3f2f] text-center">
-                📱 Present this QR code at any partner cafe to redeem your voucher
+                 Present this QR code at to the cashier to use your redemeed voucher.
             </p>
         </div>
 

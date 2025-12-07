@@ -1,11 +1,27 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-    <main class="pt-12 px-6 flex min-h-screen space-x-6">
+    <style>
+        /* Default for large screens */
+        .content-scroll-main {
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 6px;
+        }
 
-        {{-- 🌿 Sidebar --}}
-        <aside class="w-110 bg-[#FCF9EF] rounded-3xl shadow-md p-6 h-[857px] max-w-3xl">
+        /* Smaller screens (mobile + small tablets) */
+        @media (max-width: 768px) {
+            .content-scroll-main {
+                height: 93%;
+            }
+        }
+    </style>
+    <main class="pt-12 px-6 flex min-h-screen ">
 
+        <aside id="profileSidebarAccount"
+            class="fixed md:static top-10 md:top-0 left-0 h-full mr-5 md:h-[calc(100vh-7rem)] w-80 md:w-110 bg-[#FCF9EF] overflow-y-auto   md:rounded-3xl shadow-md p-6 
+           transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-[500]">
             @php
                 $user = auth()->user();
 
@@ -62,11 +78,9 @@
 
                 $treeGif = Vite::asset("resources/images/tree/{$stageIndex}.gif");
             @endphp
-
-            <h2 class="text-3xl font-bold text-green-900 mt-5 mb-4">Profile</h2>
-
+            <h2 class="text-3xl font-bold text-green-900  mb-4">Profile</h2>
             {{-- Profile Card --}}
-            <div class="bg-white rounded-2xl shadow p-5 mb-5 min-h-[735px]">
+            <div class="bg-white rounded-2xl shadow p-5  h-auto">
                 <div class="flex items-center justify-between mb-2">
 
                     <div class="flex items-center justify-between">
@@ -100,8 +114,7 @@
                 </div>
                 {{-- Tree Display --}}
                 <div class="mt-10 mb-4 text-center">
-                    <h4 class="text-lg text-gray-600 mb-2">Your Tree Stage: {{ $currentTreeStage['name'] ?? 'Seed' }}
-                        {{ $currentTreeStage['icon'] ?? '🌱' }}</h4>
+                    <h4 class="text-lg text-gray-600 mb-2">Your Tree Stage: 
 
                     <img id="plant-image" src="{{ $treeGif }}" alt="Plant"
                         class="mx-auto z-20 w-full max-w-[200px] transition-all duration-700 select-none
@@ -137,12 +150,45 @@
                 </a>
             </div>
         </aside>
-
+        {{-- Overlay (mobile only) --}}
+        <div id="profileOverlaySidebar" class="fixed inset-0 bg-black/40 hidden md:hidden z-[200]">
+        </div>
         {{-- 🌱 Main Account Content --}}
+        <!-- Mobile Toggle Button -->
+        <!-- Mobile Toggle Button -->
+
         <section
-            class="bg-[#FCF9EF] w-full max-w-[1400px] rounded-3xl shadow-md p-10 space-y-8 min-h-[600px] max-h-[90vh] overflow-y-auto mx-auto">
-            @yield('account_content')
+            class="bg-[#FCF9EF] w-full max-w-[1400px] rounded-3xl shadow-md p-6 space-y-4 h-[calc(100vh-7rem)] overflow-y-auto     mx-auto">
+            <button id="profileSidebarToggle"
+                class="md:hidden block w-full sticky top-0 bg-[#4F6B3F] text-white px-2 py-2
+               rounded-lg shadow z-[80]">
+                ☰ Profile Details
+            </button>
+            <!-- Scroll Padding Wrapper -->
+            <div class="content-scroll-main">
+                @yield('account_content')
+            </div>
+
         </section>
+        <script>
+            const profileSidebar = document.getElementById("profileSidebarAccount");
+            const profileOverlay = document.getElementById("profileOverlaySidebar");
+            const profileSidebarToggle = document.getElementById("profileSidebarToggle");
+
+            function openProfileSidebar() {
+                profileSidebar.classList.remove("-translate-x-full");
+                profileOverlay.classList.remove("hidden");
+            }
+
+            function closeProfileSidebar() {
+                profileSidebar.classList.add("-translate-x-full");
+                profileOverlay.classList.add("hidden");
+            }
+
+            profileSidebarToggle.addEventListener("click", openProfileSidebar);
+            profileOverlay.addEventListener("click", closeProfileSidebar);
+        </script>
+
 
     </main>
 @endsection

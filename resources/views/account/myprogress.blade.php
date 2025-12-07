@@ -4,7 +4,7 @@
 
 @section('account_content')
     <!-- Progress Bar -->
-    <div class="bg-white rounded-2xl p-5 shadow-sm border border-[#e8e6dc] mt-4">
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-[#e8e6dc] ">
         <div class="flex justify-between items-center mb-3">
             <span class="text-[#4b3f2f] font-medium">Your Overall Progress points:</span>
             <span class="text-[#6b665e] text-sm">
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0">
+    <div class="flex flex-col md:flex-row justify-between mt-6 items-start md:items-center mb-4 space-y-4 md:space-y-0">
 
         <div>
             <h1 class="text-3xl font-bold text-[#4F6B3F] flex items-center">
@@ -266,6 +266,10 @@
     <div class="bg-gradient-to-br from-[#FCFFF6] to-[#FDFCF8] p-6 rounded-2xl shadow-md mb-8 border border-[#ECF4E7]">
         <h2 class="text-2xl font-bold text-[#4F6B3F] mb-4">Top Progress Leaderboard</h2>
 
+        @php
+            $currentUserId = auth()->check() ? auth()->user()->user_id : null;
+        @endphp
+
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
@@ -277,22 +281,30 @@
                 </thead>
                 <tbody>
                     @foreach ($leaderboard as $index => $user)
-                        <tr class="border-b border-[#F2E8D5] hover:bg-[#FCFFF6] transition cursor-pointer"
-                            onclick="window.location='{{ route('leaderboard') }}'">
+                        @php
+                            $isYou = $currentUserId && $user->user_id == $currentUserId;
+                        @endphp
+
+                        <tr class="border-b border-[#F2E8D5] transition 
+                        {{ $isYou ? 'cursor-pointer hover:bg-[#FCFFF6]' : 'cursor-default' }}"
+                            @if ($isYou) onclick="window.location='{{ route('leaderboard') }}'" @endif>
                             <td class="py-2 font-semibold">{{ $index + 1 }}</td>
-                            <td class="py-2">{{ $user->first_name }} {{ $user->last_name }}</td>
+                            <td class="py-2">
+                                {{ $user->first_name }} {{ $user->last_name }}
+                                @if ($isYou)
+                                    <span class="text-xs text-[#7A8F55] font-bold">(You)</span>
+                                @endif
+                            </td>
                             <td class="py-2 font-semibold text-[#4F6B3F]">{{ $user->progressPoints }}</td>
                         </tr>
                     @endforeach
                 </tbody>
-
-
             </table>
         </div>
     </div>
 
     <!-- History Table -->
-    <div class="bg-gradient-to-br from-[#FDFCF8] to-[#FCFFF6] p-6 rounded-2xl shadow-md border">
+    <div class="bg-gradient-to-br from-[#FDFCF8] to-[#FCFFF6] p-6 rounded-2xl shadow-md ">
         <h2 class="text-xl font-semibold text-[#4B3F2F] mb-4">Recent Activity History</h2>
 
         <div class="overflow-x-auto">
