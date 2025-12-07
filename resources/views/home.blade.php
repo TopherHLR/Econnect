@@ -5,11 +5,11 @@
         <div class="overlay"></div>
         <!-- Left Branch -->
         <img src="{{ Vite::asset('resources/images/viewport1/branch-leftt.svg') }}" alt="Left branch"
-            class="opacity-100 absolute top-[10%] right-0 z-[30] animate-sway-left" style="width: 80vh; left: -12%;" />
+            class="opacity-100 absolute top-[10%] right-0 z-[40] animate-sway-left" style="width: 80vh; left: -12%;" />
 
         <!-- Right Branch -->
         <img src="{{ Vite::asset('resources/images/viewport1/branch-right_.svg') }}" alt="Right branch"
-            class="opacity-100 absolute top-[8%] z-[30] animate-sway-right" style="width: 98vh; right: -10%;" />
+            class="opacity-100 absolute top-[8%] z-[40] animate-sway-right" style="width: 98vh; right: -10%;" />
 
 
         <!-- 🌍 Globe (enlarged) -->
@@ -28,48 +28,27 @@
             class="absolute top-[17%] left-1/2 -translate-x-1/2 text-center px-4 z-20 w-full max-w-[90vw] md:max-w-[70vw] lg:max-w-[50vw]">
             <!-- Main Title -->
             <h1
-                class="italic text-4xl md:text-8xl font-serif font-bold text-[#758848] leading-tight drop-shadow-[0_2px_3px_rgba(255,255,255,0.8)]">
-                <span class="word-emphasis youre">You're</span>
-                <span class="word-emphasis here">here</span>
+                class="italic text-5xl md:text-8xl font-serif font-bold text-[#758848] leading-tight drop-shadow-[0_2px_3px_rgba(255,255,255,0.8)]">
+                <span class="word-emphasis youre">A</span>
+                <span class="word-emphasis here">CAFE</span>
             </h1>
 
             <!-- Subtext with word-by-word glow -->
             <div class="subtext-container">
                 <p
                     class="italic text-2xl md:text-2xl font-sans-serif font-bold text-[#758848] leading-snug drop-shadow-[0_2px_2px_rgba(255,255,255,0.6)] ">
-                    <span class="glow-word word-1">because</span>
-                    <span class="glow-word word-2">you</span>
-                    <span class="glow-word word-3">care</span>
-                    <span class="glow-word word-4">about</span>
-                    <span class="glow-word word-5">the</span>
-                    <span class="glow-word word-6">planet</span>
-                    <span class="glow-word word-7">we</span>
-                    <span class="glow-word word-8">call</span>
-                    <span class="glow-word word-9">home.</span>
+                    <span class="glow-word word-1">on</span>
+                    <span class="glow-word word-2">a</span>
+                    <span class="glow-word word-3">mission</span>
+                    <span class="glow-word word-4">,</span>
+                    <span class="glow-word word-5">5%</span>
+                    <span class="glow-word word-6">goes</span>
+                    <span class="glow-word word-7">to</span>
+                    <span class="glow-word word-8">the</span>
+                    <span class="glow-word word-9">environment.</span>
                 </p>
             </div>
         </div>
-<!-- Centered: A cafe on a mission -->
-<p class="absolute
-           top-[55%]
-           left-1/2 -translate-x-1/2
-           italic text-2xl md:text-4xl
-           font-serif font-semibold
-           text-[#e5edd0ff]
-           z-40
-           [text-shadow:0_0_12px_rgba(101,67,33,1),0_0_30px_rgba(101,67,33,0.8)]">
-    A cafe on a mission,
-</p>
-<!-- Centered: invites you to -->
-<p class="absolute
-           top-[89%]
-           left-1/2 -translate-x-1/2
-           italic text-2xl md:text-4xl
-           font-serif font-semibold
-           text-[#556037ff]
-           z-40">
-    invites you to
-</p>
 
 <div class="mt-6"></div>
 
