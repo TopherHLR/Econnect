@@ -203,7 +203,8 @@
                         <h3 class="metric-title">Active Quests</h3>
                         <i class="fa-solid fa-bullseye text-[#7F8A4F] text-lg"></i>
                     </div>
-                    <div class="metric-value text-[#4F6B3F] mt-2" id="totalQuestsCount">{{ $totalQuests }}</div>
+
+                    <div class="metric-value text-[#4F6B3F] mt-2" id="totalQuestsCount">{{ $liveQuests }}</div>
                 </div>
 
                 <!-- Vouchers Redeemed -->

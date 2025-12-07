@@ -45,7 +45,7 @@ class AdminController extends Controller
             : $verifiedLast7;
 
         // ======== QUESTS ========
-        $liveQuests = Quest::where('status', 'live')->count();
+        $liveQuests = Quest::whereIn('status', ['active', 'ending_soon'])->count();
         $upcomingQuests = Quest::where('status', 'upcoming')->count();
         $totalQuests = Quest::count();
         $pendingSubmissions = QuestSubmission::where('status', 'pending')->count();
@@ -393,7 +393,7 @@ class AdminController extends Controller
             : $verifiedLast7;
 
         // ======== QUESTS ========
-        $liveQuests = Quest::where('status', 'live')->count();
+        $liveQuests = Quest::where('status', 'active')->count();
         $upcomingQuests = Quest::where('status', 'upcoming')->count();
         $totalQuests = Quest::count();
         $pendingSubmissions = QuestSubmission::where('status', 'pending')->count();

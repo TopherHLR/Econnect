@@ -81,30 +81,46 @@
                                     @endif
                                 </ul>
 
+                                @if ($questsList->whereIn('status', ['active', 'ending_soon'])->count() >= 5)
+                                    <!-- Pagination buttons -->
+                                    <div id="questPagination" class="flex justify-center items-center gap-2 mt-2">
+                                        <button id="prevPage" class="px-2 py-1 border rounded-md text-xs">&laquo;</button>
 
-                                <!-- Pagination buttons -->
-                                <div id="questPagination" class="flex justify-center items-center gap-2 mt-2">
-                                    <button id="prevPage" class="px-2 py-1 border rounded-md text-xs">&laquo;</button>
+                                        <div id="pageNumbers" class="flex gap-2">
+                                            @php
+                                                $perPage = 5;
+                                                $activeQuests = $questsList->whereIn('status', [
+                                                    'active',
+                                                    'ending_soon',
+                                                ]);
+                                                $totalPages = ceil($activeQuests->count() / $perPage);
+                                            @endphp
 
-                                    <div id="pageNumbers" class="flex gap-2">
-                                        @php
-                                            $perPage = 5;
-                                            $activeQuests = $questsList->whereIn('status', ['active', 'ending_soon']);
-                                            $totalPages = ceil($activeQuests->count() / $perPage);
-                                        @endphp
 
-                                        @for ($i = 1; $i <= min(5, $totalPages); $i++)
-                                            <button
-                                                class="page-btn px-3 py-1 border rounded-md text-xs {{ $i === 1 ? 'bg-[#E9F0E1] font-semibold' : '' }}"
-                                                data-page="{{ $i }}">
-                                                {{ $i }}
-                                            </button>
-                                        @endfor
+                                            <!-- Pagination buttons -->
+                                            <div id="questPagination" class="flex justify-center items-center gap-2 mt-2">
+                                                <button id="prevPage"
+                                                    class="px-2 py-1 border rounded-md text-xs">&laquo;</button>
+
+                                                <div id="pageNumbers" class="flex gap-2">
+                                                    @for ($i = 1; $i <= min(5, $totalPages); $i++)
+                                                        <button
+                                                            class="page-btn px-3 py-1 border rounded-md text-xs {{ $i === 1 ? 'bg-[#E9F0E1] font-semibold' : '' }}"
+                                                            data-page="{{ $i }}">
+                                                            {{ $i }}
+                                                        </button>
+                                                    @endfor
+                                                </div>
+
+                                                <button id="nextPage"
+                                                    class="px-2 py-1 border rounded-md text-xs">&raquo;</button>
+                                            </div>
+
+                                        </div>
+
+                                        <button id="nextPage" class="px-2 py-1 border rounded-md text-xs">&raquo;</button>
                                     </div>
-
-                                    <button id="nextPage" class="px-2 py-1 border rounded-md text-xs">&raquo;</button>
-                                </div>
-
+                                @endif
                             </div>
 
                             <hr class="border-[#E6EAD7] my-4">
@@ -119,7 +135,8 @@
                     </aside>
                 </div>
                 <!-- MAIN CONTENT AREA -->
-                 <main class="flex-1 space-y-6 w-full lg:w-4/5 bg-white rounded-2xl shadow h-full p-6 border border-[#E6EAD7]">
+                <main
+                    class="flex-1 space-y-6 w-full lg:w-4/5 bg-white rounded-2xl shadow h-full p-6 border border-[#E6EAD7]">
                     <!-- Quest Tables Container -->
                     <div id="questTables" class="space-y-6">
                         <!-- Individual Quest Tables -->
@@ -186,8 +203,7 @@
                             </div>
 
                             <!-- Main Table Container -->
-                            <div id="questTable-{{ $quest->quest_id }}"
-                                class="hidden">
+                            <div id="questTable-{{ $quest->quest_id }}" class="hidden">
 
                                 <!-- Participants Table -->
                                 <div class="overflow-x-auto" id="table-data-participants">
@@ -568,9 +584,9 @@
                                 Pending
                             </option>
                             ${newStatus === 'pending' && hasProof ? `
-                                                                            <option value="pending" selected class="font-medium text-amber-700">
-                                                                                Submitted (Has Proof)
-                                                                            </option>` : ''}
+                                                                                        <option value="pending" selected class="font-medium text-amber-700">
+                                                                                            Submitted (Has Proof)
+                                                                                        </option>` : ''}
                             <option value="completed" ${newStatus === 'completed' ? 'selected' : ''} class="font-medium text-green-700">
                                 Completed
                             </option>
