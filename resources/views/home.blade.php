@@ -173,9 +173,10 @@
             <!-- 🌱 Join Community Widget -->
             <div x-data class="eco-widget eco-join"
                 style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
-                <button @click="$store.authModal.open = true; $store.authModal.mode = 'signup'" class="eco-widget-btn">Join Our Community</button>
+                <button @click="$store.authModal.open = true; $store.authModal.mode = 'signup'" class="eco-widget-btn">Join Our
+                    Community</button>
                 <p class="eco-widget-text">"Start your sustainable journey with us"</p>
-                <button @click="$store.authModal.open = true; $store.authModal.mode = 'signin'"  class="eco-widget-link">
+                <button @click="$store.authModal.open = true; $store.authModal.mode = 'signin'" class="eco-widget-link">
                     Login Now &gt;
                 </button>
             </div>
@@ -235,7 +236,7 @@
         @auth
             @if (auth()->user()->user_type === 'verified_user')
                 <!-- 🌿 LEFT MODAL PANEL -->
-                <div id="left-panel" class="fade-in-panel"
+                <div id="left-panel" class="fade-in-panel hidden lg:block"
                     style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                     <!-- Title + View More Link -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
@@ -314,10 +315,11 @@
                             @endforeach
                         </div>
                     @endif
+
                 </div>
 
                 <!-- 🌿 RIGHT MODAL PANEL -->
-                <div id="right-panel" class="fade-in-panel"
+                <div id="right-panel" class="fade-in-panel hidden lg:block"
                     style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                     <!-- Title + View More Link -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
@@ -400,7 +402,7 @@
                 </div>
             @else
                 <!-- 🌿 LEFT MODAL PANEL LOCKED -->
-                <div id="left-panel" class="fade-in-panel"
+                <div id="left-panel" class="fade-in-panel hidden lg:block"
                     style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                         <!-- 🔒 Overlay Lock -->
@@ -431,7 +433,7 @@
                 </div>
 
                 <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
-                <div id="right-panel" class="fade-in-panel"
+                <div id="right-panel" class="fade-in-panel hidden lg:block"
                     style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                         <!-- 🔒 Overlay Lock -->
@@ -464,9 +466,21 @@
         @endauth
 
 
+
         <div id="plant-container"
             class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
-
+            <!-- Mobile Main Toggle Button -->
+            <button id="mobile-panels-toggle"
+                class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 btn-eco
+           px-5 py-3  z-[999]">
+                Show Available Quests
+            </button>
+            <!-- Switch button inside panels -->
+            <button id="mobile-switch-panel"
+                class="hidden lg:hidden fixed -top-5 left-1/2 -translate-x-1/2 btn-eco
+                            px-4 py-2 z-[999]">
+                Go to Pending Submissions
+            </button>
             <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
             <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
             <div id="fallen-leaves" class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
@@ -1995,24 +2009,28 @@
                 switch (type) {
                     case 'verification':
                         typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
-                        icon = `<svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"> <path d="M10 2a1 1 0 01.894.553l2.764 5.598 6.18.898a1 1 0 01.554 1.706l-4.472 4.356 1.055 6.16a1 1 0 01-1.451 1.054L10 18.347l-5.525 2.908a1 1 0 01-1.451-1.054l1.055-6.16L-.02 10.755a1 1 0 01.553-1.706l6.18-.898L9.105 2.553A1 1 0 0110 2z"/></svg>`;
+                        icon =
+                            `<svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"> <path d="M10 2a1 1 0 01.894.553l2.764 5.598 6.18.898a1 1 0 01.554 1.706l-4.472 4.356 1.055 6.16a1 1 0 01-1.451 1.054L10 18.347l-5.525 2.908a1 1 0 01-1.451-1.054l1.055-6.16L-.02 10.755a1 1 0 01.553-1.706l6.18-.898L9.105 2.553A1 1 0 0110 2z"/></svg>`;
                         break;
 
                     case 'success':
                         typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
-                        icon = ` <svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414-1.414L8 11.172 4.707 7.879A1 1 0 103.293 9.293l4 4a1 1 0 001.414 0l8-8z" clip-rule="evenodd"/></svg>`;
+                        icon =
+                            ` <svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414-1.414L8 11.172 4.707 7.879A1 1 0 103.293 9.293l4 4a1 1 0 001.414 0l8-8z" clip-rule="evenodd"/></svg>`;
                         break;
 
                     case 'error':
                     case 'warning':
                         typeClasses = 'bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f]';
-                        icon = `<svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-5a1 1 0 112 0 1 1 0 01-2 0zm0-6a1 1 0 112 0v4a1 1 0 01-2 0V7z" clip-rule="evenodd"/></svg> `;
+                        icon =
+                            `<svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-5a1 1 0 112 0 1 1 0 01-2 0zm0-6a1 1 0 112 0v4a1 1 0 01-2 0V7z" clip-rule="evenodd"/></svg> `;
                         break;
 
                     case 'info':
                     default:
                         typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
-                        icon = ` <svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10A8 8 0 112 10a8 8 0 0116 0zM9 9a1 1 0 100 2h1v3a1 1 0 102 0V9a1 1 0 00-1-1H9zm1-4a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/></svg> `;
+                        icon =
+                            ` <svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10A8 8 0 112 10a8 8 0 0116 0zM9 9a1 1 0 100 2h1v3a1 1 0 102 0V9a1 1 0 00-1-1H9zm1-4a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/></svg> `;
                 }
 
 
@@ -2266,6 +2284,73 @@
                     tapMessage.classList.add('opacity-0', 'translate-y-2');
                 }, 3000);
             }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const left = document.getElementById("left-panel");
+            const right = document.getElementById("right-panel");
+
+            const btnToggle = document.getElementById("mobile-panels-toggle");
+            const btnSwitch = document.getElementById("mobile-switch-panel");
+
+            let activePanel = null; // "left" or "right"
+
+            // Reset both panels
+            function hideAll() {
+                left.classList.add("hidden");
+                right.classList.add("hidden");
+            }
+
+            // Show LEFT panel
+            function showLeft() {
+                hideAll();
+                left.classList.remove("hidden");
+                left.style.zIndex = "2000";
+
+                btnToggle.textContent = "Hide Panels";
+                btnSwitch.textContent = "Go to Pending Submissions";
+                btnSwitch.classList.remove("hidden");
+
+                activePanel = "left";
+            }
+
+            // Show RIGHT panel
+            function showRight() {
+                hideAll();
+                right.classList.remove("hidden");
+                right.style.zIndex = "2000";
+
+                btnToggle.textContent = "Hide Panels";
+                btnSwitch.textContent = "Go to Available Quests";
+                btnSwitch.classList.remove("hidden");
+
+                activePanel = "right";
+            }
+
+            // Toggle button (bottom main button)
+            btnToggle.addEventListener("click", () => {
+                // If nothing is open → show left panel by default
+                if (activePanel === null) {
+                    showLeft();
+                    return;
+                }
+
+                // If a panel is open → hide all
+                hideAll();
+                activePanel = null;
+
+                btnToggle.textContent = "Show Available Quests";
+                btnSwitch.classList.add("hidden");
+            });
+
+            // Switch button
+            btnSwitch.addEventListener("click", () => {
+                if (activePanel === "left") {
+                    showRight();
+                } else {
+                    showLeft();
+                }
+            });
         });
     </script>
 @endsection

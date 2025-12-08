@@ -1509,3 +1509,11 @@ button{
     transform: translateY(0); /* slide up into position */
 }
 
+.mobile-slide-in {
+    animation: slideInUp 0.35s ease-out forwards;
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
