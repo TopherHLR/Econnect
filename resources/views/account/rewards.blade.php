@@ -33,20 +33,24 @@
                 <div class="flex space-x-2">
                     @if ($availableVouchers->isNotEmpty())
                         <button onclick="showAll()"
-                            class="filter-btn bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#d8d6cc] transition-colors">
+                            class="filter-btn relative bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#d8d6cc] transition-colors">
                             All
+                            <span class="counter-badge">{{ $availableVouchers->count() }}</span>
                         </button>
 
                         <button onclick="showAffordable()"
-                            class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                            class="filter-btn relative bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
                             Affordable
+                            <span class="counter-badge">{{ $affordableCount ?? 0 }}</span>
                         </button>
 
                         <button onclick="showPopular()"
-                            class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                            class="filter-btn relative bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
                             Popular
+                            <span class="counter-badge">{{ $popularCount ?? 0 }}</span>
                         </button>
                     @endif
+
                 </div>
             </div>
 
@@ -174,9 +178,9 @@
                     @endforeach
                 </div>
             @else
-            <div class="justify-center mt-25 flex items-center">
-              <p class="text-lg text-[#4b3f2f]">Rdemeem Vouchers</p>
-            </div>
+                <div class="justify-center mt-25 flex items-center">
+                    <p class="text-lg text-[#4b3f2f]">Rdemeem Vouchers</p>
+                </div>
             @endif
         </div>
 
