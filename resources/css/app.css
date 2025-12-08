@@ -1590,28 +1590,6 @@ button{
     from { transform: translateY(40px); opacity: 0; }
     to   { transform: translateY(0); opacity: 1; }
 }
-<<<<<<< HEAD
-
-
-#mobile-button-wrapper {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    pointer-events: none; /* hidden state should not block touch */
-}
-
-#mobile-button-wrapper.show-mobile-buttons {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-#mobile-button-wrapper.hide-mobile-buttons {
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
-}
-=======
 /* =========================================================== */
 /* MOBILE SCROLLING FIXES FOR LIFESTYLE PAGE                  */
 /* =========================================================== */
@@ -1660,4 +1638,3 @@ button{
         overflow-y: scroll !important;
     }
 }
->>>>>>> 55e1cac1683d4f8503c33133a77036d568ad0512
