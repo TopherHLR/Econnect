@@ -467,7 +467,7 @@
             class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
             @auth
                     <div id="mobile-button-wrapper"
-                        class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 
+                        class="lg:hidden fixed top-4 left-1/2 -translate-x-1/2 
                   flex items-center justify-center gap-6 z-[999]">
                         <!-- Left Arrow -->
                         <button id="mobile-switch-left"
