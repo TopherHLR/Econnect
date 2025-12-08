@@ -2,7 +2,8 @@
 <div id="viewEcoModal"
     class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 overflow-y-auto">
     <div
-        class="bg-white rounded-3xl shadow-2xl border border-green-100 max-w-4xl w-full mx-4 my-8 relative animate-fadeIn">
+        class="rounded-3xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB max-w-4xl w-full mx-4 my-8 relative animate-fadeIn">
         <!-- Close Button -->
         <button onclick="closeViewModal()"
             class="absolute top-6 right-6 text-gray-400 hover:text-[#5C7919] transition text-2xl z-10">

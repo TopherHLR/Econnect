@@ -1,8 +1,9 @@
 <!-- Reward Voucher Modal -->
 <div id="voucherModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+    <div class="bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex justify-between items-center bg-[#4A6613] mb-4">
             <h3 class="text-xl font-bold text-[#4b3f2f]">Redeem Voucher</h3>
             <button onclick="closeVoucherModal()" class="text-[#6b665e] hover:text-[#4b3f2f] text-2xl">&times;</button>
         </div>
@@ -66,9 +67,10 @@
 <!-- My Vouchers Usage Modal -->
 <div id="voucherUsageModal"
     class="fixed inset-0 h-screen w-screen bg-black bg-opacity-50 flex items-center justify-center z-100 hidden">
-    <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl">
+    <div class="bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex bg-[#4A6613] justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-[#4b3f2f]">Use Voucher</h3>
             <button onclick="closeVoucherUsageModal()"
                 class="text-[#6b665e] hover:text-[#4b3f2f] text-2xl">&times;</button>
