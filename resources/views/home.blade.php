@@ -469,42 +469,47 @@
 
         <div id="plant-container"
             class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
-               <div id="mobile-button-wrapper"
-                class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 
+            @auth
+                @if (auth()->user()->user_type === 'verified_user')
+                    <div id="mobile-button-wrapper"
+                        class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 
                   flex items-center justify-center gap-6 z-[999]">
 
-                <!-- Left Arrow -->
-                <button id="mobile-switch-left"
-                    class="w-10 h-10 flex items-center justify-center
+                        <!-- Left Arrow -->
+                        <button id="mobile-switch-left"
+                            class="w-10 h-10 flex items-center justify-center
                         rounded-full bg-[#F7F6EB]/80 backdrop-blur-md
                         shadow-[0_4px_12px_rgba(0,0,0,0.15)]
                         border border-[#e6e4cf]
                         text-[#4B4A2E]
                         hover:bg-[#FFFDF4] active:scale-95 transition-all duration-300">
-                    <!-- SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                        <path fill="currentColor" d="M15.5 19 8.5 12l7-7" />
-                    </svg>
-                </button>
+                            <!-- SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                <path fill="currentColor" d="M15.5 19 8.5 12l7-7" />
+                            </svg>
+                        </button>
 
-                <!-- Center main toggle button -->
-         <button id="mobile-panels-toggle"
-                class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 btn-eco
+                        <!-- Center main toggle button -->
+                        <button id="mobile-panels-toggle"
+                            class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 btn-eco
            px-5 py-3  z-[999]">
-                Show Available Quests
-            </button>
-            <!-- Switch button inside panels -->
-            <button id="mobile-switch-panel"
-                class="hidden lg:hidden fixed -top-5 left-1/2 -translate-x-1/2 btn-eco
+                            Show Available Quests
+                        </button>
+                        <!-- Switch button inside panels -->
+                        <button id="mobile-switch-panel"
+                            class="hidden lg:hidden fixed -top-5 left-1/2 -translate-x-1/2 btn-eco
                             px-4 py-2 z-[999]">
-                Go to Pending Submissions
-            </button>
-            </div>
+                            Go to Pending Submissions
+                        </button>
+                    </div>
+                    @endif
+                @endauth
 
-            <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
-            <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
-            <div id="fallen-leaves" class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
-                style="
+
+                <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
+                <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
+                <div id="fallen-leaves" class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
+                    style="
         mask-image: 
             /* Top soft fade */
             linear-gradient(
@@ -536,149 +541,149 @@
                 transparent 100%
             );
      ">
-            </div>
-            <!-- Rest of your HTML remains the same... -->
+                </div>
+                <!-- Rest of your HTML remains the same... -->
 
-     <div id="plant-text" class="absolute top-[15rem] left-1/2 z-70 -translate-x-1/2 w-max text-center"
-                style="text-shadow: 
+                <div id="plant-text" class="absolute top-[15rem] left-1/2 z-70 -translate-x-1/2 w-max text-center"
+                    style="text-shadow: 
             0 0 10px rgba(255, 255, 200, 1),
             0 0 20px rgba(255, 255, 200, 0.95),
             0 0 30px rgba(255, 255, 180, 0.85),
             0 0 40px rgba(255, 255, 180, 0.7),
             0 0 50px rgba(255, 255, 180, 0.5);">
-                <h1 class="md:text-3xl font-serif font-semibold text-[#5e471dff] leading-snug whitespace-nowrap">
-                </h1>
-            </div>
+                    <h1 class="md:text-3xl font-serif font-semibold text-[#5e471dff] leading-snug whitespace-nowrap">
+                    </h1>
+                </div>
 
 
-            <!-- 🌾 Glow Background -->
-        <div class="absolute top-1/5 flex items-center justify-center"> 
-                <!-- Outer glow -->
-                <div
-                    class="w-[500px] h-[650px] rounded-full bg-gradient-to-b 
+                <!-- 🌾 Glow Background -->
+                <div class="absolute top-1/5 flex items-center justify-center">
+                    <!-- Outer glow -->
+                    <div
+                        class="w-[500px] h-[650px] rounded-full bg-gradient-to-b 
                 from-yellow-200/0 via-yellow-100/0 to-transparent 
                 blur-3xl scale-125">
+                    </div>
+                    <!-- Inner soft white glow -->
+                    <div class="absolute top-0 w-[300px] h-[400px] rounded-full bg-white/0 blur-2xl"></div>
                 </div>
-                <!-- Inner soft white glow -->
-                <div class="absolute top-0 w-[300px] h-[400px] rounded-full bg-white/0 blur-2xl"></div>
-            </div>
-            <style>
-                .animate-float
+                <style>
+                    .animate-float
 
-                /* Glow activation styles */
-                .glow-active .w-\[500px\].h-\[650px\] {
-                    background-image: linear-gradient(to bottom,
-                            rgb(254 240 138 / 0.3) 0%,
-                            rgb(254 249 195 / 0.2) 50%,
-                            transparent 100%) !important;
-                    transition: background-image 1s ease-out;
-                }
+                    /* Glow activation styles */
+                    .glow-active .w-\[500px\].h-\[650px\] {
+                        background-image: linear-gradient(to bottom,
+                                rgb(254 240 138 / 0.3) 0%,
+                                rgb(254 249 195 / 0.2) 50%,
+                                transparent 100%) !important;
+                        transition: background-image 1s ease-out;
+                    }
 
-                .glow-active .absolute.top-0.w-\[300px\].h-\[400px\] {
-                    background-color: rgb(255 255 255 / 0.4) !important;
-                    transition: background-color 1s ease-out;
-                }
-            </style>
+                    .glow-active .absolute.top-0.w-\[300px\].h-\[400px\] {
+                        background-color: rgb(255 255 255 / 0.4) !important;
+                        transition: background-color 1s ease-out;
+                    }
+                </style>
 
-            <!-- 🌟 Hint Message -->
-            <!-- 🌟 Hint Message -->
-            <div id="tap-message"
-                class="absolute left-full ml-3 top-1/2 -translate-y-1/2 
+                <!-- 🌟 Hint Message -->
+                <!-- 🌟 Hint Message -->
+                <div id="tap-message"
+                    class="absolute left-full ml-3 top-1/2 -translate-y-1/2 
            text-xs italic text-[#6B5840] opacity-0 transition-opacity duration-500
            bg-gradient-to-r from-[#E8E2D5]/90 to-[#D8D1C1]/90
            px-3 py-2 rounded-lg border border-[#B8A992]/30 shadow-md">
-            </div>
+                </div>
 
-            @auth
-                <!-- Plant Container with Glow Effects -->
-                <div class="relative">
-                    <!-- Background glow aura -->
-                    <div
-                        class="absolute inset-0 bg-gradient-to-b from-[#5C7919]/10 via-transparent to-[#9f8f6a]/5 
+                @auth
+                    <!-- Plant Container with Glow Effects -->
+                    <div class="relative">
+                        <!-- Background glow aura -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-[#5C7919]/10 via-transparent to-[#9f8f6a]/5 
                     blur-[30px] -z-10 w-[110%] h-[110%] -left-[5%] -top-[5%] 
                     opacity-60 group-hover:opacity-80 transition-opacity duration-500">
-                    </div>
+                        </div>
 
-                    <!-- Particle effect container -->
-                    <div id="plant-particle-container" class="absolute inset-0 z-20 pointer-events-none"></div>
+                        <!-- Particle effect container -->
+                        <div id="plant-particle-container" class="absolute inset-0 z-20 pointer-events-none"></div>
 
 
-                    <img id="plant-image">
+                        <img id="plant-image">
 
-                    <!-- Interactive tap hint (optional - can be removed) -->
-                    <div
-                        class="absolute -bottom-6 left-1/2 -translate-x-1/2 z-30
+                        <!-- Interactive tap hint (optional - can be removed) -->
+                        <div
+                            class="absolute -bottom-6 left-1/2 -translate-x-1/2 z-30
                     text-xs text-[#9f8f6a] font-medium tracking-wide
                     opacity-0 group-hover:opacity-100 transition-opacity duration-300
                     whitespace-nowrap">
-                        👆 Tap to grow your tree
+                            👆 Tap to grow your tree
+                        </div>
                     </div>
-                </div>
 
-                <!-- 🌾 Horizontal Progress Bar -->
-                <div id="growth-bar"
-                    class="absolute opacity-0 flex flex-col items-center gap-2 md:gap-3 z-70 transition-opacity duration-700 ease-out
+                    <!-- 🌾 Horizontal Progress Bar -->
+                    <div id="growth-bar"
+                        class="absolute opacity-0 flex flex-col items-center gap-2 md:gap-3 z-70 transition-opacity duration-700 ease-out
                 w-full px-4 top-105"
-                    style="bottom: 50px;">
+                        style="bottom: 50px;">
 
-                    <!-- Enhanced glow container with bright center -->
-                    <div class="relative top-0">
-                        <!-- Outer golden glow -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Enhanced glow container with bright center -->
+                        <div class="relative top-0">
+                            <!-- Outer golden glow -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffacd]/60 via-[#fff8b0]/80 to-[#fff695]/80 
                             blur-[10px] md:blur-[15px] -z-10 w-[130%] -left-[15%]
                             opacity-80">
-                        </div>
+                            </div>
 
-                        <!-- Middle bright yellow layer -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
+                            <!-- Middle bright yellow layer -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffee0]/70 via-[#fffdc2]/65 to-[#fffb9d]/60 
                             blur-[6px] md:blur-[10px] -z-10 w-[115%] -left-[7.5%]
                             opacity-90 mix-blend-overlay">
-                        </div>
+                            </div>
 
-                        <!-- Center intense yellow core -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
+                            <!-- Center intense yellow core -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r 
                             from-[#ffffe0] via-[#ffffb5] to-[#ffff8f] 
                             blur-[3px] md:blur-[5px] -z-10 w-[105%] -left-[2.5%]
                             opacity-70 mix-blend-screen">
-                        </div>
+                            </div>
 
-                        <!-- Subtle yellow shimmer effect -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
+                            <!-- Subtle yellow shimmer effect -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r 
                             from-transparent via-[#ffffd0]/30 to-transparent 
                             blur-[2px] -z-10 w-[102%] -left-[1%]
                             opacity-100 mix-blend-lighten">
+                            </div>
+                            <p
+                                class="text-[#553722ff] text-base md:text-3xl font-serif italic tracking-wide text-center relative font-medium">
+                                Your personal growth tree
+                            </p>
                         </div>
-                        <p
-                            class="text-[#553722ff] text-base md:text-3xl font-serif italic tracking-wide text-center relative font-medium">
-                            Your personal growth tree
-                        </p>
-                    </div>
 
-                    <!-- Enhanced Progress Bar with Interactive Features -->
-                    <div class="relative group">
-                        <!-- Outer glow effect -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r from-[#9f8f6a]/40 via-[#bfae7c]/30 to-[#f2e9c2]/20 
+                        <!-- Enhanced Progress Bar with Interactive Features -->
+                        <div class="relative group">
+                            <!-- Outer glow effect -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-[#9f8f6a]/40 via-[#bfae7c]/30 to-[#f2e9c2]/20 
                 blur-[10px] -z-10 w-[105%] -left-[2.5%] scale-y-125 
                 group-hover:blur-[12px] transition-all duration-300">
-                        </div>
+                            </div>
 
-                        <!-- Progress bar container -->
-                        <div
-                            class="relative w-[260px] sm:w-[320px] md:w-[480px] lg:w-[520px]
+                            <!-- Progress bar container -->
+                            <div
+                                class="relative w-[260px] sm:w-[320px] md:w-[480px] lg:w-[520px]
                 h-[14px] md:h-[16px] rounded-full bg-[#d6cbb7]/40 overflow-hidden 
                 shadow-inner border border-[#cbbfa8]/40 shadow-lg shadow-[#9f8f6a]/25
                 group-hover:shadow-[#9f8f6a]/35 transition-all duration-300">
 
-                            <!-- Interactive progress fill -->
-                            <div id="growth-fill"
-                                class="absolute left-0 bottom-0 h-full bg-gradient-to-r
+                                <!-- Interactive progress fill -->
+                                <div id="growth-fill"
+                                    class="absolute left-0 bottom-0 h-full bg-gradient-to-r
                     from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2]
                     rounded-full transition-all duration-700 ease-out
                     shadow-[0_0_20px_5px_rgba(159,143,106,0.5)]
@@ -689,37 +694,37 @@
                     after:absolute after:right-0 after:top-0 after:h-full 
                     after:w-[3px] after:bg-white/90 after:blur-[2px] relative
                     hover:scale-y-110 transition-transform duration-300"
-                                style="width: {{ $growthPercent }}%;">
+                                    style="width: {{ $growthPercent }}%;">
 
-                                <!-- Percentage indicator on hover -->
-                                <span
-                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-white/90 
+                                    <!-- Percentage indicator on hover -->
+                                    <span
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-white/90 
                           mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    {{ $growthPercent }}%
-                                </span>
-                            </div>
+                                        {{ $growthPercent }}%
+                                    </span>
+                                </div>
 
-                            <!-- Stage markers with status distinction -->
-                            <div class="absolute inset-0 flex justify-between items-center px-2">
-                                @php
-                                    $stages = $treeStages;
-                                    $currentStage = $stage;
-                                    $progressPerStage = 100 / $stages;
-                                @endphp
-                                @for ($i = 1; $i <= $stages; $i++)
+                                <!-- Stage markers with status distinction -->
+                                <div class="absolute inset-0 flex justify-between items-center px-2">
                                     @php
-                                        $isCurrentStage = $i == $currentStage;
-                                        $isUnlocked = $i <= $currentStage;
-                                        $isFutureStage = $i > $currentStage;
-                                        $positionPercent = ($i - 1) * $progressPerStage;
+                                        $stages = $treeStages;
+                                        $currentStage = $stage;
+                                        $progressPerStage = 100 / $stages;
                                     @endphp
+                                    @for ($i = 1; $i <= $stages; $i++)
+                                        @php
+                                            $isCurrentStage = $i == $currentStage;
+                                            $isUnlocked = $i <= $currentStage;
+                                            $isFutureStage = $i > $currentStage;
+                                            $positionPercent = ($i - 1) * $progressPerStage;
+                                        @endphp
 
-                                    <div class="relative group/marker"
-                                        style="left: {{ $positionPercent }}%; transform: translateX(-50%);">
+                                        <div class="relative group/marker"
+                                            style="left: {{ $positionPercent }}%; transform: translateX(-50%);">
 
-                                        <!-- Dot marker with status styles -->
-                                        <div
-                                            class="w-[8px] h-[8px] rounded-full transition-all duration-300
+                                            <!-- Dot marker with status styles -->
+                                            <div
+                                                class="w-[8px] h-[8px] rounded-full transition-all duration-300
                                 @if ($isCurrentStage) bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a]
                                     shadow-[0_0_8px_2px_rgba(159,143,106,0.6)]
                                     ring-2 ring-white/50
@@ -731,11 +736,11 @@
                                     border border-[#cbbfa8]/50 @endif
                                 group-hover/marker:scale-150 
                                 group-hover/marker:shadow-[0_0_10px_3px_rgba(159,143,106,0.8)]">
-                                        </div>
+                                            </div>
 
-                                        <!-- Stage label -->
-                                        <span
-                                            class="absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] font-medium
+                                            <!-- Stage label -->
+                                            <span
+                                                class="absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] font-medium
                                  opacity-0 group-hover/marker:opacity-100 
                                  transition-opacity duration-300 whitespace-nowrap
                                  @if ($isCurrentStage) text-[#5C7919] font-bold
@@ -743,125 +748,126 @@
                                     text-[#9f8f6a]
                                  @else
                                     text-[#cbbfa8]/70 @endif">
-                                            @if ($isCurrentStage)
-                                                ⭐ Stage {{ $i }}
-                                            @elseif($isUnlocked)
-                                                ✓ Stage {{ $i }}
-                                            @else
-                                                Stage {{ $i }}
-                                            @endif
-                                        </span>
-                                    </div>
-                                @endfor
+                                                @if ($isCurrentStage)
+                                                    ⭐ Stage {{ $i }}
+                                                @elseif($isUnlocked)
+                                                    ✓ Stage {{ $i }}
+                                                @else
+                                                    Stage {{ $i }}
+                                                @endif
+                                            </span>
+                                        </div>
+                                    @endfor
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    @auth
-                        @if (auth()->user()->user_type === 'verified_user')
-                            <!-- ====================== VERIFIED USER: FULL PROGRESS INFO ====================== -->
-                            <p id="growth-label"
-                                class="text-[#5e471dff] text-lg md:text-lg font-medium tracking-wide text-center
+                        @auth
+                            @if (auth()->user()->user_type === 'verified_user')
+                                <!-- ====================== VERIFIED USER: FULL PROGRESS INFO ====================== -->
+                                <p id="growth-label"
+                                    class="text-[#5e471dff] text-lg md:text-lg font-medium tracking-wide text-center
                                     bg-gradient-to-r from-[#fffacd] via-[#f0edcaff] to-[#ebe7c0ff]
                                     px-4 py-2 rounded-[1.4rem] border border-[#fff695]/60 shadow-sm
                                     shadow-[0_0_15px_rgba(255,246,149,0.3)]
                                     group-hover:bg-gradient-to-r group-hover:from-[#fffee0] group-hover:to-[#fff695]/80
                                     group-hover:border-[#fff695] transition-all duration-300">
-                                Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} / {{ $growthMax }}
-                                points
-                                <span class="block text-lg text-[#885b2eff]/90 font-normal mt-1">
-                                    {{ $treeStages - $stage }} stages remaining
-                                </span>
-                            </p>
-                        @else
-                            <!-- ====================== AUTHENTICATED BUT NOT VERIFIED: RESTRICTED MESSAGE ====================== -->
-                            <p id="growth-label"
-                                class="text-[#594422ff] text-lg md:text-lg font-medium tracking-wide text-center
+                                    Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} /
+                                    {{ $growthMax }}
+                                    points
+                                    <span class="block text-lg text-[#885b2eff]/90 font-normal mt-1">
+                                        {{ $treeStages - $stage }} stages remaining
+                                    </span>
+                                </p>
+                            @else
+                                <!-- ====================== AUTHENTICATED BUT NOT VERIFIED: RESTRICTED MESSAGE ====================== -->
+                                <p id="growth-label"
+                                    class="text-[#594422ff] text-lg md:text-lg font-medium tracking-wide text-center
                                     bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-[1.3rem]
                                     border border-[#cbbfa8] shadow-sm">
-                                Please verify your account to grow your tree and earn points
-                            </p>
-                        @endif
-                    @else
-                        <!-- ====================== GUEST: LOGIN PROMPT ====================== -->
-                        <p id="growth-label"
-                            class="text-[#594422ff] text-lg md:text-lg font-medium tracking-wide text-center
+                                    Please verify your account to grow your tree and earn points
+                                </p>
+                            @endif
+                        @else
+                            <!-- ====================== GUEST: LOGIN PROMPT ====================== -->
+                            <p id="growth-label"
+                                class="text-[#594422ff] text-lg md:text-lg font-medium tracking-wide text-center
                                 bg-gradient-to-r from-[#0048ffff] to-transparent px-4 py-2 rounded-[1.3rem]
                                 border border-[#cbbfa8] shadow-sm">
-                            Please log in to see your personalized growth tree
-                        </p>
-                    @endauth
-                </div>
+                                Please log in to see your personalized growth tree
+                            </p>
+                        @endauth
+                    </div>
 
-            @endauth
+                @endauth
 
 
-            @guest
+                @guest
 
-                <img id="plant-image">
+                    <img id="plant-image">
 
-                <!-- 🌾 Horizontal Progress Bar -->
-                <div id="growth-bar"
-                    class="absolute opacity-0 flex flex-col items-center gap-2 md:gap-3 z-70 transition-opacity duration-700 ease-out w-full px-4 top-90"
-                    style="bottom: 50px;">
+                    <!-- 🌾 Horizontal Progress Bar -->
+                    <div id="growth-bar"
+                        class="absolute opacity-0 flex flex-col items-center gap-2 md:gap-3 z-70 transition-opacity duration-700 ease-out w-full px-4 top-90"
+                        style="bottom: 50px;">
 
-                    <!-- Enhanced glow container with bright center -->
-                    <div class="relative top-0">
-                        <!-- Outer golden glow -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Enhanced glow container with bright center -->
+                        <div class="relative top-0">
+                            <!-- Outer golden glow -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffacd]/60 via-[#fff8b0]/80 to-[#fff695]/80 
                             blur-[10px] md:blur-[15px] -z-10 w-[130%] -left-[15%]
                             opacity-80">
-                        </div>
+                            </div>
 
-                        <!-- Middle bright yellow layer -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
+                            <!-- Middle bright yellow layer -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffee0]/70 via-[#fffdc2]/65 to-[#fffb9d]/60 
                             blur-[6px] md:blur-[10px] -z-10 w-[115%] -left-[7.5%]
                             opacity-90 mix-blend-overlay">
-                        </div>
+                            </div>
 
-                        <!-- Center intense yellow core -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
+                            <!-- Center intense yellow core -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r 
                             from-[#ffffe0] via-[#ffffb5] to-[#ffff8f] 
                             blur-[3px] md:blur-[5px] -z-10 w-[105%] -left-[2.5%]
                             opacity-70 mix-blend-screen">
-                        </div>
+                            </div>
 
-                        <!-- Subtle yellow shimmer effect -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r 
+                            <!-- Subtle yellow shimmer effect -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r 
                             from-transparent via-[#ffffd0]/30 to-transparent 
                             blur-[2px] -z-10 w-[102%] -left-[1%]
                             opacity-100 mix-blend-lighten">
+                            </div>
+
+                            <p
+                                class="text-[#553722ff] text-base md:text-2xl font-sans-serif italic tracking-wide text-center relative font-medium">
+                                Your personal growth tree
+                            </p>
                         </div>
 
-                        <p
-                            class="text-[#553722ff] text-base md:text-2xl font-sans-serif italic tracking-wide text-center relative font-medium">
-                            Your personal growth tree
-                        </p>
-                    </div>
-
-                    <!-- Enhanced Progress Bar with Glow -->
-                    <div class="relative">
-                        <!-- Outer glow effect -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r from-[#9f8f6a]/40 via-[#bfae7c]/30 to-[#f2e9c2]/20 
+                        <!-- Enhanced Progress Bar with Glow -->
+                        <div class="relative">
+                            <!-- Outer glow effect -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-[#9f8f6a]/40 via-[#bfae7c]/30 to-[#f2e9c2]/20 
                         blur-[10px] -z-10 w-[105%] -left-[2.5%] scale-y-125">
-                        </div>
+                            </div>
 
-                        <!-- Progress bar container -->
-                        <div
-                            class="relative w-[260px] sm:w-[320px] md:w-[480px] lg:w-[520px]
+                            <!-- Progress bar container -->
+                            <div
+                                class="relative w-[260px] sm:w-[320px] md:w-[480px] lg:w-[520px]
                         h-[14px] md:h-[16px] rounded-full bg-[#d6cbb7]/80 overflow-hidden 
                         shadow-inner border border-[#cbbfa8]/80 shadow-lg shadow-[#9f8f6a]/25">
 
-                            <!-- Progress fill with enhanced glow -->
-                            <div id="growth-fill"
-                                class="absolute left-0 bottom-0 h-full bg-gradient-to-r
+                                <!-- Progress fill with enhanced glow -->
+                                <div id="growth-fill"
+                                    class="absolute left-0 bottom-0 h-full bg-gradient-to-r
                             from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2]
                             rounded-full transition-all duration-700 ease-out
                             shadow-[0_0_20px_5px_rgba(159,143,106,0.5)]
@@ -870,31 +876,31 @@
                             before:translate-x-[-100%] before:animate-shimmer
                             after:absolute after:right-0 after:top-0 after:h-full 
                             after:w-[3px] after:bg-white/70 after:blur-[2px] relative"
-                                style="width: 0%;">
-                            </div>
+                                    style="width: 0%;">
+                                </div>
 
-                            <!-- Progress markers (subtle) -->
-                            <div class="absolute inset-0 flex justify-between px-1">
-                                <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
-                                <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
-                                <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
-                                <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
+                                <!-- Progress markers (subtle) -->
+                                <div class="absolute inset-0 flex justify-between px-1">
+                                    <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
+                                    <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
+                                    <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
+                                    <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <p id="growth-label"
-                        class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
+                        <p id="growth-label"
+                            class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
                   bg-gradient-to-r from-[#d6cbb7]/30 to-transparent px-4 py-2 rounded-full
                   border border-[#cbbfa8]/30 shadow-sm">
-                        Please log in to see your personalized growth tree
-                    </p>
-                </div>
-            @endguest
+                            Please log in to see your personalized growth tree
+                        </p>
+                    </div>
+                @endguest
         </div>
     </section>
-<section class="relative text-center overflow-hidden min-h-screen"
-    style="
+    <section class="relative text-center overflow-hidden min-h-screen"
+        style="
         padding-top: 6.75rem;
         padding-bottom: 6.75rem;
         padding-left: 1.5rem;
@@ -930,19 +936,19 @@
         }
     ">
 
-    <!-- FIXED: Desktop/Laptop background (768px and above) -->
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 hidden md:block"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/bgstatic.webp') }}');">
-    </div>
+        <!-- FIXED: Desktop/Laptop background (768px and above) -->
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 hidden md:block"
+            style="background-image: url('{{ Vite::asset('resources/images/viewport1/bgstatic.webp') }}');">
+        </div>
 
-    <!-- FIXED: Mobile background (less than 768px) -->
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 block md:hidden"
-        style="background-image: url('{{ Vite::asset('resources/images/viewport1/smallerbgstatic.webp') }}');">
-    </div>
+        <!-- FIXED: Mobile background (less than 768px) -->
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 block md:hidden"
+            style="background-image: url('{{ Vite::asset('resources/images/viewport1/smallerbgstatic.webp') }}');">
+        </div>
 
-    <!-- Content container -->
-    <div class="relative flex flex-col items-center justify-center space-y-10 z-20"
-        style="
+        <!-- Content container -->
+        <div class="relative flex flex-col items-center justify-center space-y-10 z-20"
+            style="
             margin-top: 2rem;
             
             @media (max-width: 640px) {
@@ -962,23 +968,26 @@
                 margin-top: 4rem;
             }
         ">
-        
-        
-        <h2 class="text-white font-serif italic font-bold text-5xl md:text-6xl lg:text-7xl 
+
+
+            <h2
+                class="text-white font-serif italic font-bold text-5xl md:text-6xl lg:text-7xl 
             drop-shadow-[0_4px_8px_rgba(111,78,55,0.65),0_8px_24px_rgba(89,63,44,0.55),0_0_35px_rgba(255,252,225,0.25)]
             tracking-wider leading-snug text-center px-4 relative z-30
             [@media(max-width:640px)]:text-3xl [@media(max-width:640px)]:leading-tight [@media(max-width:640px)]:tracking-normal
             [@media(max-width:480px)]:text-2xl [@media(max-width:480px)]:px-2">
-            The passion of 
-            <span class="text-[#fff8b0] drop-shadow-[0_0_20px_rgba(255,248,176,0.6)]
+                The passion of
+                <span
+                    class="text-[#fff8b0] drop-shadow-[0_0_20px_rgba(255,248,176,0.6)]
                 [@media(max-width:640px)]:text-[#fff8b0]/95
                 [@media(max-width:640px)]:drop-shadow-[0_0_10px_rgba(255,248,176,0.4)]">
-                Ecobrew
-            </span>
-        </h2>
-        
-        <!-- PUSHED MORE TO BOTTOM - Increased mt values -->
-        <div class="bg-gradient-to-br from-[#6b4f37]/90 via-[#5a402c] to-[#3a2a1c]/90 
+                    Ecobrew
+                </span>
+            </h2>
+
+            <!-- PUSHED MORE TO BOTTOM - Increased mt values -->
+            <div
+                class="bg-gradient-to-br from-[#6b4f37]/90 via-[#5a402c] to-[#3a2a1c]/90 
             text-amber-50 text-[clamp(1rem,3.5vw,2rem)] md:text-2xl lg:text-3xl
             px-[clamp(1rem,6vw,3.75rem)] py-[clamp(1rem,3vw,2rem)] rounded-[clamp(1.25rem,2.5vw,2rem)]
             max-w-[95%] md:max-w-5xl lg:max-w-6xl mx-auto leading-relaxed
@@ -993,205 +1002,222 @@
             [@media(max-width:480px)]:leading-snug
             [@media(max-width:640px)]:mt-[15rem]  /* Extra push for mobile */
             [@media(min-width:768px)]:mt-[35rem]  /* Extra push for laptop/desktop */">
-            
-            Ecobrew shares simple ways to live more sustainably—at no cost.
-        </div>
-    </div>
-</section>
 
-   <section class="py-20 px-8 overflow-hidden relative
+                Ecobrew shares simple ways to live more sustainably—at no cost.
+            </div>
+        </div>
+    </section>
+
+    <section
+        class="py-20 px-8 overflow-hidden relative
     [@media(max-width:640px)]:py-10 [@media(max-width:640px)]:px-4">
 
-    <!-- Background overlay image -->
-    <div
-        class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat opacity-15">
-    </div>
+        <!-- Background overlay image -->
+        <div
+            class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat opacity-15">
+        </div>
 
-    <!-- 🌫️ Soft Fog Layer -->
-    <div
-        class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]
+        <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]
         [@media(max-width:640px)]:h-[80px]">
-    </div>
+        </div>
 
-    <!-- 🌫️ Soft Fog Layer -->
-    <div
-        class="absolute top-[-3rem] left-0 w-full h-[150px] bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]
+        <!-- 🌫️ Soft Fog Layer -->
+        <div
+            class="absolute top-[-3rem] left-0 w-full h-[150px] bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]
         [@media(max-width:640px)]:top-[-1.5rem] [@media(max-width:640px)]:h-[80px]">
-    </div>
+        </div>
 
-    <!-- Cards Container - Stack vertically on mobile -->
-    <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10
+        <!-- Cards Container - Stack vertically on mobile -->
+        <div
+            class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10
         [@media(max-width:640px)]:items-center [@media(max-width:640px)]:gap-12 [@media(max-width:640px)]:mt-6 [@media(max-width:640px)]:max-w-full">
 
-        <!-- 🌱 Card 1 -->
-        <div class="fade-card
+            <!-- 🌱 Card 1 -->
+            <div class="fade-card
             [@media(max-width:640px)]:w-full">
-            <div
-                class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20
+                <div
+                    class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20
                 [@media(max-width:640px)]:flex-col [@media(max-width:640px)]:w-full [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:p-6 [@media(max-width:640px)]:min-h-auto [@media(max-width:640px)]:rounded-2xl">
-                
-                <!-- Left side image -->
-                <div class="w-64 h-64 mr-8 flex-shrink-0
-                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:h-48 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:mb-6">
-                    <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}"
-                        alt="People collaborating on sustainability"
-                        class="w-full h-full object-cover rounded-2xl shadow-md
-                        [@media(max-width:640px)]:rounded-xl">
-                </div>
 
-                <!-- Content on right -->
-                <div class="flex-1
+                    <!-- Left side image -->
+                    <div
+                        class="w-64 h-64 mr-8 flex-shrink-0
+                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:h-48 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:mb-6">
+                        <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}"
+                            alt="People collaborating on sustainability"
+                            class="w-full h-full object-cover rounded-2xl shadow-md
+                        [@media(max-width:640px)]:rounded-xl">
+                    </div>
+
+                    <!-- Content on right -->
+                    <div
+                        class="flex-1
                     [@media(max-width:640px)]:w-full [@media(max-width:640px)]:text-center">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]
+                        <h3
+                            class="text-[#4A6613] italic font-semibold text-[40px]
                         [@media(max-width:640px)]:text-2xl [@media(max-width:640px)]:leading-tight">
-                        Discover people who want to contribute more
-                    </h3>
-                    <p class="text-gray-700 mt-1 text-[20px]
+                            Discover people who want to contribute more
+                        </h3>
+                        <p
+                            class="text-gray-700 mt-1 text-[20px]
                         [@media(max-width:640px)]:text-base [@media(max-width:640px)]:mt-2">
-                        EcoBrew shares simple ways to live more sustainably—at no cost.
-                    </p>
-                    <div class="flex justify-end
+                            EcoBrew shares simple ways to live more sustainably—at no cost.
+                        </p>
+                        <div
+                            class="flex justify-end
                         [@media(max-width:640px)]:justify-center [@media(max-width:640px)]:mt-6">
-                        <a href="/leaderboard"
-                            class="mt-10 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300
+                            <a href="/leaderboard"
+                                class="mt-10 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300
                             [@media(max-width:640px)]:mt-4 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:px-6 [@media(max-width:640px)]:py-3">
-                            Explore Leaderboards
-                        </a>
+                                Explore Leaderboards
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 🌿 Card 2 -->
-        <div class="fade-card
+            <!-- 🌿 Card 2 -->
+            <div class="fade-card
             [@media(max-width:640px)]:w-full">
-            <div
-                class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[300px] min-h-[300px] backdrop-blur-sm border border-white/20
+                <div
+                    class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[300px] min-h-[300px] backdrop-blur-sm border border-white/20
                 [@media(max-width:640px)]:flex-col [@media(max-width:640px)]:w-full [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:p-6 [@media(max-width:640px)]:min-h-auto [@media(max-width:640px)]:rounded-2xl">
-                
-                <!-- Content on left -->
-                <div class="flex-1
+
+                    <!-- Content on left -->
+                    <div
+                        class="flex-1
                     [@media(max-width:640px)]:w-full [@media(max-width:640px)]:text-center [@media(max-width:640px)]:order-2">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]
+                        <h3
+                            class="text-[#4A6613] italic font-semibold text-[40px]
                         [@media(max-width:640px)]:text-2xl [@media(max-width:640px)]:leading-tight">
-                        Take on fun eco-quests
-                    </h3>
-                    <p class="text-gray-700 mt-2 text-[20px]
+                            Take on fun eco-quests
+                        </h3>
+                        <p
+                            class="text-gray-700 mt-2 text-[20px]
                         [@media(max-width:640px)]:text-base [@media(max-width:640px)]:mt-2">
-                        Turn small actions into meaningful impact.
-                    </p>
-                    <div class="flex justify-start
+                            Turn small actions into meaningful impact.
+                        </p>
+                        <div
+                            class="flex justify-start
                         [@media(max-width:640px)]:justify-center [@media(max-width:640px)]:mt-6">
-                        <a href="/quests"
-                            class="mt-20 ml-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300
+                            <a href="/quests"
+                                class="mt-20 ml-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300
                             [@media(max-width:640px)]:mt-4 [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:px-6 [@media(max-width:640px)]:py-3">
-                            Explore quests
-                        </a>
+                                Explore quests
+                            </a>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Right side image -->
-                <div class="w-64 h-64 ml-8 flex-shrink-0
+                    <!-- Right side image -->
+                    <div
+                        class="w-64 h-64 ml-8 flex-shrink-0
                     [@media(max-width:640px)]:w-full [@media(max-width:640px)]:h-48 [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:mb-6 [@media(max-width:640px)]:order-1">
-                    <img src="{{ Vite::asset('resources/images/viewport1/quest.jpg') }}"
-                        alt="Eco quests and challenges" 
-                        class="w-full h-full object-cover rounded-2xl shadow-md
+                        <img src="{{ Vite::asset('resources/images/viewport1/quest.jpg') }}"
+                            alt="Eco quests and challenges"
+                            class="w-full h-full object-cover rounded-2xl shadow-md
                         [@media(max-width:640px)]:rounded-xl">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- ☕ Card 3 -->
-        <div class="fade-card
+            <!-- ☕ Card 3 -->
+            <div class="fade-card
             [@media(max-width:640px)]:w-full">
-            <div
-                class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20
+                <div
+                    class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20
                 [@media(max-width:640px)]:flex-col [@media(max-width:640px)]:w-full [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:p-6 [@media(max-width:640px)]:min-h-auto [@media(max-width:640px)]:rounded-2xl">
-                
-                <!-- Left side image -->
-                <div class="w-64 h-64 mr-8 flex-shrink-0
-                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:h-48 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:mb-6">
-                    <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}"
-                        alt="Sustainable café inspiration" 
-                        class="w-full h-full object-cover rounded-2xl shadow-md
-                        [@media(max-width:640px)]:rounded-xl">
-                </div>
 
-                <!-- Content on right -->
-                <div class="flex-1
+                    <!-- Left side image -->
+                    <div
+                        class="w-64 h-64 mr-8 flex-shrink-0
+                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:h-48 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:mb-6">
+                        <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}"
+                            alt="Sustainable café inspiration"
+                            class="w-full h-full object-cover rounded-2xl shadow-md
+                        [@media(max-width:640px)]:rounded-xl">
+                    </div>
+
+                    <!-- Content on right -->
+                    <div
+                        class="flex-1
                     [@media(max-width:640px)]:w-full [@media(max-width:640px)]:text-center">
-                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]
+                        <h3
+                            class="text-[#4A6613] italic font-semibold text-[40px]
                         [@media(max-width:640px)]:text-2xl [@media(max-width:640px)]:leading-tight">
-                        Be inspired by Ecobrew
-                    </h3>
-                    <p class="text-gray-700 mt-2 text-[20px]
+                            Be inspired by Ecobrew
+                        </h3>
+                        <p
+                            class="text-gray-700 mt-2 text-[20px]
                         [@media(max-width:640px)]:text-base [@media(max-width:640px)]:mt-2">
-                        See how one café walks its sustainability talk.
-                    </p>
-                    <div class="flex justify-end
+                            See how one café walks its sustainability talk.
+                        </p>
+                        <div
+                            class="flex justify-end
                         [@media(max-width:640px)]:justify-center [@media(max-width:640px)]:mt-6">
-                        <a href="/about"
-                            class="mt-15 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300
+                            <a href="/about"
+                                class="mt-15 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300
                             [@media(max-width:640px)]:mt-4 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:px-6 [@media(max-width:640px)]:py-3">
-                            Explore About Us
-                        </a>
+                                Explore About Us
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<style>
-    /* Simple fade animation */
-    .fade-card {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .fade-card.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    /* Smooth scrolling */
-    html {
-        scroll-behavior: smooth;
-    }
-    
-    /* Mobile specific animations */
-    @media (max-width: 640px) {
+    <style>
+        /* Simple fade animation */
         .fade-card {
-            transform: translateY(10px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
-    }
-</style>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const cards = document.querySelectorAll('.fade-card');
+        .fade-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-        // Simple Intersection Observer
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                } else {
-                    entry.target.classList.remove('show');
-                }
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Mobile specific animations */
+        @media (max-width: 640px) {
+            .fade-card {
+                transform: translateY(10px);
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.fade-card');
+
+            // Simple Intersection Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    } else {
+                        entry.target.classList.remove('show');
+                    }
+                });
+            }, {
+                threshold: 0.1, // Trigger when 10% of card is visible
+                rootMargin: '0px 0px -50px 0px' // Slight offset for smoothness
             });
-        }, {
-            threshold: 0.1, // Trigger when 10% of card is visible
-            rootMargin: '0px 0px -50px 0px' // Slight offset for smoothness
-        });
 
-        // Start observing each card
-        cards.forEach(card => {
-            observer.observe(card);
+            // Start observing each card
+            cards.forEach(card => {
+                observer.observe(card);
+            });
         });
-    });
-</script>
+    </script>
 
     <section class="relative py-48 px-8 overflow-hidden pattern-bg">
 
@@ -2162,7 +2188,7 @@
                     case 'success':
                         typeClasses = 'bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919]';
                         icon =
-                            ` <svg class="w-5 h-5 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414-1.414L8 11.172 4.707 7.879A1 1 0 103.293 9.293l4 4a1 1 0 001.414 0l8-8z" clip-rule="evenodd"/></svg>`;
+                            ` <svg class="w-3 h-3 inline-block"" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414-1.414L8 11.172 4.707 7.879A1 1 0 103.293 9.293l4 4a1 1 0 001.414 0l8-8z" clip-rule="evenodd"/></svg>`;
                         break;
 
                     case 'error':
@@ -2234,7 +2260,7 @@
 
                         if (isGuest || isUnverified || data.message === 'Only verified users') {
                             // Determine message based on user status
-                            let message = '🌿 Only verified users can grow their tree';
+                            let message = 'Only verified users can grow their tree';
                             let subtitle = 'Verify your account to nurture your eco-tree and earn points';
 
                             if (isGuest) {
@@ -2466,7 +2492,7 @@
                 rightPanel.classList.remove("hidden");
                 activePanel = "right";
                 btnToggle.textContent = "Hide Panels";
-                
+
             }
 
             btnToggle.addEventListener("click", () => {

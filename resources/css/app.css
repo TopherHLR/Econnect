@@ -299,7 +299,7 @@ button {
 
 .viewport2BG {
     position: relative;
-    background-image: url('/resources/images/backgrounds/viewport2_bg.webp');
+    background-image: url('/resources/images/backgrounds/viewport2_bg_coffee.png');
     background-repeat: no-repeat;
     background-position: center top;
     background-size: cover;
@@ -317,7 +317,6 @@ button {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/resources/images/viewport1/patter.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
