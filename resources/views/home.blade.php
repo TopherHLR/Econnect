@@ -469,18 +469,45 @@
 
         <div id="plant-container"
             class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
-            <!-- Mobile Main Toggle Button -->
-            <button id="mobile-panels-toggle"
-                class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 btn-eco
-           px-5 py-3  z-[999]">
-                Show Available Quests
-            </button>
-            <!-- Switch button inside panels -->
-            <button id="mobile-switch-panel"
-                class="hidden lg:hidden fixed -top-5 left-1/2 -translate-x-1/2 btn-eco
-                            px-4 py-2 z-[999]">
-                Go to Pending Submissions
-            </button>
+            <div id="mobile-button-wrapper"
+                class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 
+                  flex items-center justify-center gap-6 z-[999]">
+
+                <!-- Left Arrow -->
+                <button id="mobile-switch-left"
+                    class="w-10 h-10 flex items-center justify-center
+                        rounded-full bg-[#F7F6EB]/80 backdrop-blur-md
+                        shadow-[0_4px_12px_rgba(0,0,0,0.15)]
+                        border border-[#e6e4cf]
+                        text-[#4B4A2E]
+                        hover:bg-[#FFFDF4] active:scale-95 transition-all duration-300">
+                    <!-- SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                        <path fill="currentColor" d="M15.5 19 8.5 12l7-7" />
+                    </svg>
+                </button>
+
+                <!-- Center main toggle button -->
+                <button id="mobile-panels-toggle"
+                    class="btn-eco">
+                    Show Available Quests
+                </button>
+
+                <!-- Right Arrow -->
+                <button id="mobile-switch-right"
+                    class="w-10 h-10 flex items-center justify-center
+                    rounded-full bg-[#F7F6EB]/80 backdrop-blur-md
+                    shadow-[0_4px_12px_rgba(0,0,0,0.15)]
+                    border border-[#e6e4cf]
+                    text-[#4B4A2E]
+                    hover:bg-[#FFFDF4] active:scale-95 transition-all duration-300">
+                    <!-- SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                        <path fill="currentColor" d="m8.5 19 7-7-7-7" />
+                    </svg>
+                </button>
+            </div>
+
             <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
             <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
             <div id="fallen-leaves" class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
@@ -2287,70 +2314,46 @@
         });
 
         document.addEventListener("DOMContentLoaded", () => {
-            const left = document.getElementById("left-panel");
-            const right = document.getElementById("right-panel");
+            const btnLeft = document.getElementById("mobile-switch-left");
+            const btnRight = document.getElementById("mobile-switch-right");
 
             const btnToggle = document.getElementById("mobile-panels-toggle");
-            const btnSwitch = document.getElementById("mobile-switch-panel");
 
-            let activePanel = null; // "left" or "right"
+            const leftPanel = document.getElementById("left-panel");
+            const rightPanel = document.getElementById("right-panel");
 
-            // Reset both panels
-            function hideAll() {
-                left.classList.add("hidden");
-                right.classList.add("hidden");
-            }
+            let activePanel = null;
 
-            // Show LEFT panel
-            function showLeft() {
-                hideAll();
-                left.classList.remove("hidden");
-                left.style.zIndex = "2000";
-
-                btnToggle.textContent = "Hide Panels";
-                btnSwitch.textContent = "Go to Pending Submissions";
-                btnSwitch.classList.remove("hidden");
-
-                activePanel = "left";
-            }
-
-            // Show RIGHT panel
-            function showRight() {
-                hideAll();
-                right.classList.remove("hidden");
-                right.style.zIndex = "2000";
-
-                btnToggle.textContent = "Hide Panels";
-                btnSwitch.textContent = "Go to Available Quests";
-                btnSwitch.classList.remove("hidden");
-
-                activePanel = "right";
-            }
-
-            // Toggle button (bottom main button)
-            btnToggle.addEventListener("click", () => {
-                // If nothing is open → show left panel by default
-                if (activePanel === null) {
-                    showLeft();
-                    return;
-                }
-
-                // If a panel is open → hide all
-                hideAll();
+            function hidePanels() {
+                leftPanel.classList.add("hidden");
+                rightPanel.classList.add("hidden");
                 activePanel = null;
-
                 btnToggle.textContent = "Show Available Quests";
-                btnSwitch.classList.add("hidden");
+            }
+
+            function showLeft() {
+                hidePanels();
+                leftPanel.style.zIndex = "2000";
+                leftPanel.classList.remove("hidden");
+                activePanel = "left";
+                btnToggle.textContent = "Hide Panels";
+            }
+
+            function showRight() {
+                hidePanels();
+                rightPanel.style.zIndex = "2000";
+                rightPanel.classList.remove("hidden");
+                activePanel = "right";
+                btnToggle.textContent = "Hide Panels";
+            }
+
+            btnToggle.addEventListener("click", () => {
+                if (activePanel === null) showLeft();
+                else hidePanels();
             });
 
-            // Switch button
-            btnSwitch.addEventListener("click", () => {
-                if (activePanel === "left") {
-                    showRight();
-                } else {
-                    showLeft();
-                }
-            });
+            btnLeft.addEventListener("click", () => showLeft());
+            btnRight.addEventListener("click", () => showRight());
         });
     </script>
 @endsection
