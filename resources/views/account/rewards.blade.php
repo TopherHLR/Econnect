@@ -29,24 +29,28 @@
         <!-- Rewards Section -->
         <div class="lg:col-span-2">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-[#4b3f2f]">Available Rewards</h2>
+                <h2 class="md:text-2xl text-xl font-bold text-[#4b3f2f]">Rewards</h2>
                 <div class="flex space-x-2">
                     @if ($availableVouchers->isNotEmpty())
                         <button onclick="showAll()"
-                            class="filter-btn bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#d8d6cc] transition-colors">
+                            class="filter-btn relative bg-[#e8e6dc] text-[#4b3f2f] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#d8d6cc] transition-colors">
                             All
+                            <span class="counter-badge">{{ $availableVouchers->count() }}</span>
                         </button>
 
                         <button onclick="showAffordable()"
-                            class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                            class="filter-btn relative bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
                             Affordable
+                            <span class="counter-badge">{{ $affordableCount ?? 0 }}</span>
                         </button>
 
                         <button onclick="showPopular()"
-                            class="filter-btn bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
+                            class="filter-btn relative bg-white text-[#6b665e] px-3 py-1 rounded-xl text-sm font-medium hover:bg-[#e8e6dc] transition-colors">
                             Popular
+                            <span class="counter-badge">{{ $popularCount ?? 0 }}</span>
                         </button>
                     @endif
+
                 </div>
             </div>
 
@@ -59,7 +63,7 @@
 
 
                     <div class="voucher-card rounded-2xl p-6 flex flex-col justify-between shadow-lg transform transition-all duration-300
-                    {{ $redeemed ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-gradient-to-br from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-xl hover:scale-[1.02]' }}"
+                    {{ $redeemed ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-gradient-to-br  from-[#4A6613] to-[#8aa87a] text-white hover:shadow-xl hover:scale-[1.02]' }}"
                         data-points="{{ $voucher->required_points }}"
                         data-popular="{{ $voucher->user_vouchers_count == $maxRedemptions ? '1' : '0' }}">
                         <div>
@@ -72,11 +76,6 @@
                                         Most Popular
                                     </span>
                                 @endif
-
-
-                                <span class="text-sm {{ $redeemed ? 'text-gray-600' : 'text-white/80' }}">
-                                    {{ $voucher->category ?? 'General' }}
-                                </span>
                             </div>
 
                             <h2
@@ -174,9 +173,9 @@
                     @endforeach
                 </div>
             @else
-            <div class="justify-center mt-25 flex items-center">
-              <p class="text-lg text-[#4b3f2f]">Rdemeem Vouchers</p>
-            </div>
+                <div class="justify-center mt-25 flex items-center">
+                    <p class="text-lg text-[#4b3f2f]">Rdemeem Vouchers</p>
+                </div>
             @endif
         </div>
 
@@ -198,18 +197,29 @@
                 console.log('Card points:', requiredPoints, 'User points:', currentPointsUser); // debug
                 card.style.display = requiredPoints <= currentPointsUser ? 'block' : 'none';
             });
+                setActiveButton(event.currentTarget);
         }
 
         function showAll() {
             document.querySelectorAll('.voucher-card').forEach(card => {
                 card.style.display = 'block';
             });
+            setActiveButton(event.currentTarget);
         }
 
         function showPopular() {
             document.querySelectorAll('.voucher-card').forEach(card => {
                 card.style.display = card.dataset.popular === '1' ? 'block' : 'none';
             });
+                setActiveButton(event.currentTarget);
+        }
+
+        function setActiveButton(button) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('filter-btn-active');
+            });
+
+            button.classList.add('filter-btn-active');
         }
     </script>
 @endsection

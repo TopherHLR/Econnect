@@ -1,6 +1,8 @@
                         <table class="min-w-full">
                             <thead class="bg-[#FCF9EF]">
                                 <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">#
+                                    </th>
                                     <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Image
                                     </th>
                                     <th class="px-6 py-4 text-left text-xs font-medium text-[#6A8A52] uppercase">Topic
@@ -12,6 +14,7 @@
                             <tbody class="divide-y divide-[#E6EAD7]">
                                 @forelse($ecoTopics as $topic)
                                     <tr class="hover:bg-[#FAF8ED] group">
+                                        <td class="px-4 py-2">{{ $loop->iteration }}</td>
                                         <td class="px-6 py-5">
                                             <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('images/default.jpg') }}"
                                                 alt="{{ $topic->title }}"

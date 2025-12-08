@@ -21,7 +21,7 @@ class VoucherController extends Controller
         // Default: active vouchers (paginated)
         $vouchers = Voucher::where('is_active', true)
             ->orderBy('voucher_id', 'DESC')
-            ->paginate(5);
+            ->paginate(6);
 
         $archived = Voucher::where('is_active', 0)->paginate(5);
 

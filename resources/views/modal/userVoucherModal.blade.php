@@ -1,16 +1,16 @@
 <!-- Reward Voucher Modal -->
-<div id="voucherModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+<div id="voucherModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000] hidden">
     <div class="bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB] rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
         <!-- Header -->
-        <div class="flex justify-between items-center bg-[#4A6613] mb-4">
+        <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-bold text-[#4b3f2f]">Redeem Voucher</h3>
             <button onclick="closeVoucherModal()" class="text-[#6b665e] hover:text-[#4b3f2f] text-2xl">&times;</button>
         </div>
 
         <!-- Voucher Details -->
         <div class="space-y-4">
-            <div class="bg-gradient-to-r from-[#9bb48b] to-[#8aa87a] rounded-xl p-4 text-white">
+            <div class="bg-gradient-to-r from-[#4A6613] to-[#8aa87a] rounded-xl p-4 text-white">
                 <h4 id="modalVoucherTitle" class="text-lg font-bold mb-2">One Free Coffee</h4>
                 <p id="modalVoucherDesc" class="text-sm opacity-90">Enjoy a complimentary coffee at our partner
                     eco-cafes</p>
@@ -34,7 +34,7 @@
                     <p id="modalStatus" class="font-semibold text-green-600">Active</p>
                 </div>
             </div>
-            <div class="bg-[#f9f8f4] rounded-lg p-4">
+            <div class="bg-[#f1f1f1] rounded-lg p-4">
                 <p class="text-sm text-[#6b665e] mb-2">
                     You currently have:
                     <span class="font-semibold text-[#4b3f2f]" id="userCurrentPoints">{{ $currentPoints }} points</span>

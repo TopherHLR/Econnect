@@ -213,7 +213,7 @@
         if (!row) return;
 
         const submissionId = row.dataset.submissionId;
-        const user = row.dataset.user || 'Unknown User';
+        const userFull = row.dataset.userFull || 'Unknown User';
         const status = row.dataset.status || 'pending';
         const proofLink = row.dataset.proofLink;
         const proofImage = row.dataset.proofImage;
@@ -223,7 +223,7 @@
         // Build content
         let html = `
         <div class="space-y-4">
-            <p><strong>User:</strong> ${user}</p>
+            <p><strong>User:</strong> ${userFull}</p>
             <p><strong>Status:</strong> 
                 <span class="px-3 py-1 rounded text-sm font-medium
                     ${status === 'completed' ? 'bg-green-100 text-green-700' :

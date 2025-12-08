@@ -123,6 +123,7 @@
                                                         <span class="w-2 h-2 rounded-full bg-green-500"></span>
                                                         {{ $quest->title }}
                                                     </span>
+
                                                     <small>{{ optional($submission->date_completed)->format('d/m/Y') }}</small>
                                                 </div>
                                             @endif
@@ -150,12 +151,15 @@
                                             @if ($submission && $submission->status === 'rejected')
                                                 <div class="flex justify-between items-center text-sm text-red-500 cursor-pointer rejected-quest p-2 hover:bg-red-50 rounded-lg"
                                                     data-submission-id="{{ $submission->submission_id }}"
-                                                    data-description="{{ $quest->description }}">
+                                                    data-title="{{ $quest->title }}"
+                                                    data-description="{{ $quest->description }}"
+                                                    data-points="{{ $quest->points_reward }}"
+                                                    data-date="{{ optional($submission->date_completed)->format('d/m/Y') }}">
                                                     <span class="flex items-center gap-2">
                                                         <span class="w-2 h-2 rounded-full bg-red-400"></span>
                                                         {{ $quest->title }}
                                                     </span>
-                                                    <small>{{ optional($submission->date_rejected)->format('d/m/Y') }}</small>
+                                                    <small>{{ optional($submission->date_completed)->format('d/m/Y') }}</small>
                                                 </div>
                                             @endif
                                         @endforeach
@@ -332,7 +336,7 @@
                                     <!-- Mobile Sidebar Button -->
                                     <button onclick="toggleMobileQuestSidebar()"
                                         class="lg:hidden p-3 rounded-xl bg-[#5C7919] text-white shadow-md hover:bg-[#4a5f2f] transition">
-                                               Your Quests
+                                        Your Quests
                                     </button>
                                 </div>
                             </div>

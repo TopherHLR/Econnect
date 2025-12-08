@@ -20,16 +20,20 @@ class QuestController extends Controller
         $quests = Quest::with('submissions.user')
             ->whereIn('status', ['active', 'ending_soon'])
             ->orderBy('start_date', 'desc')
-            ->paginate(5);
+            ->paginate(4);
 
         $archivedQuests = Quest::with('submissions.user')
             ->whereIn('status', ['archived', 'closed'])
             ->orderBy('end_date', 'desc')
             ->paginate(5); // or 5, 15 — whatever you prefer
 
-        $questsList = Quest::with('submissions.user')
-            ->orderBy('start_date', 'desc')
-            ->get();
+        $questsList = Quest::with('submissions')
+            ->get()
+            ->sortByDesc(function ($quest) {
+                // Returns number of pending submissions → higher = goes first
+                return $quest->submissions->where('status', 'pending')->count();
+            })
+            ->values(); // Reset array keys
 
         $categories = $quests->pluck('category')->filter()->unique()->values();
         // ————————————————————————
@@ -371,7 +375,7 @@ class QuestController extends Controller
             'custom_category' => 'nullable|string',
             'points_reward' => 'required|integer|min:1',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'end_date' => 'required|date|after:start_date',
             'status' => 'required|in:active,ending_soon,closed',
             'required_points' => 'nullable|integer|min:0',
         ]);
