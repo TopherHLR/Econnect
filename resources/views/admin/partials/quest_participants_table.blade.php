@@ -19,6 +19,7 @@
         @else
             @foreach ($quest->submissions as $index => $submission)
                 <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition participant-row cursor-pointer"
+                    data-user-full="{{ ($submission->user->first_name ?? '') . ' ' . ($submission->user->last_name ?? '') }}"
                     data-submission-id="{{ $submission->submission_id }}" data-status="{{ $submission->status }}"
                     data-proof-link="{{ $submission->proof_link ?? '' }}"
                     data-proof-image="{{ $submission->proof_image ?? '' }}"

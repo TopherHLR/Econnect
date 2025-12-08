@@ -64,7 +64,8 @@
                                                                 </div>
                                                                 <div class="w-1 h-1 bg-rose-500 rounded-full"></div>
                                                             </div>
-                                                            <span class="text-[10px]">{{ $quest->submissions->where('status', 'pending')->count() }}
+                                                            <span
+                                                                class="text-[10px]">{{ $quest->submissions->where('status', 'pending')->count() }}
                                                                 pending</span>
                                                         </div>
                                                     @endif
@@ -97,7 +98,6 @@
                                             @endphp
 
 
-                                            <!-- Pagination buttons -->
                                             <div id="questPagination" class="flex justify-center items-center gap-2 mt-2">
                                                 <button id="prevPage"
                                                     class="px-2 py-1 border rounded-md text-xs">&laquo;</button>
@@ -112,9 +112,8 @@
                                                     @endfor
                                                 </div>
 
-                                                <button id="nextPage"
-                                                    class="px-2 py-1 border rounded-md text-xs">&raquo;</button>
                                             </div>
+
 
                                         </div>
 
@@ -584,9 +583,9 @@
                                 Pending
                             </option>
                             ${newStatus === 'pending' && hasProof ? `
-                                                                                        <option value="pending" selected class="font-medium text-amber-700">
-                                                                                            Submitted (Has Proof)
-                                                                                        </option>` : ''}
+                                                                                            <option value="pending" selected class="font-medium text-amber-700">
+                                                                                                Submitted (Has Proof)
+                                                                                            </option>` : ''}
                             <option value="completed" ${newStatus === 'completed' ? 'selected' : ''} class="font-medium text-green-700">
                                 Completed
                             </option>

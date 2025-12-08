@@ -27,9 +27,13 @@ class QuestController extends Controller
             ->orderBy('end_date', 'desc')
             ->paginate(5); // or 5, 15 — whatever you prefer
 
-        $questsList = Quest::with('submissions.user')
-            ->orderBy('start_date', 'desc')
-            ->get();
+        $questsList = Quest::with('submissions')
+            ->get()
+            ->sortByDesc(function ($quest) {
+                // Returns number of pending submissions → higher = goes first
+                return $quest->submissions->where('status', 'pending')->count();
+            })
+            ->values(); // Reset array keys
 
         $categories = $quests->pluck('category')->filter()->unique()->values();
         // ————————————————————————
