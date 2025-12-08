@@ -150,7 +150,7 @@
         @auth
             <!-- Logged-in users see personalized widgets -->
             <!-- 🌱 Saved Eco-Actions Widget -->
-            <div class="eco-widget eco-actions"
+            <div class="eco-widget eco-actions mr-7"
                 style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
                 <button class="eco-widget-btn">My Eco-actions</button>
                 <p id="eco-action-text" class="eco-widget-text">Loading...</p>
@@ -171,7 +171,7 @@
         @else
             <!-- Guests see engagement widgets -->
             <!-- 🌱 Join Community Widget -->
-            <div x-data class="eco-widget eco-join"
+            <div x-data class="eco-widget eco-join mr-7"
                 style="background-image: url('{{ Vite::asset('resources/images/viewport1/widgetcloudb.png') }}');">
                 <button @click="$store.authModal.open = true; $store.authModal.mode = 'signup'" class="eco-widget-btn">Join Our
                     Community</button>
@@ -236,8 +236,8 @@
         @auth
             @if (auth()->user()->user_type === 'verified_user')
                 <!-- 🌿 LEFT MODAL PANEL -->
-                <div id="left-panel" class="fade-in-panel hidden lg:block"
-                    style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
+                <div id="left-panel" class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:left-[5rem] lg:translate-x-0"
+                    style="position: absolute; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                     <!-- Title + View More Link -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
                         <h2
@@ -315,12 +315,10 @@
                             @endforeach
                         </div>
                     @endif
-
                 </div>
-
                 <!-- 🌿 RIGHT MODAL PANEL -->
-                <div id="right-panel" class="fade-in-panel hidden lg:block"
-                    style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
+                <div id="right-panel" class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:right-[5rem] lg:left-auto lg:translate-x-0"
+                    style="position: absolute; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                     <!-- Title + View More Link -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
                         <h2
@@ -402,8 +400,8 @@
                 </div>
             @else
                 <!-- 🌿 LEFT MODAL PANEL LOCKED -->
-                <div id="left-panel" class="fade-in-panel hidden lg:block"
-                    style="position: absolute; left: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
+                <div id="left-panel" class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:left-[5rem] lg:translate-x-0"
+                    style="position: absolute; top: 25%; width: 420px; height: 360px; 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                         <!-- 🔒 Overlay Lock -->
                         <div
@@ -433,8 +431,8 @@
                 </div>
 
                 <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
-                <div id="right-panel" class="fade-in-panel hidden lg:block"
-                    style="position: absolute; right: 5rem; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
+                <div id="right-panel" class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:right-[5rem] lg:left-auto lg:translate-x-0"
+                    style="position: absolute; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                         <!-- 🔒 Overlay Lock -->
                         <div
@@ -465,19 +463,15 @@
             @endif
         @endauth
 
-
-
         <div id="plant-container"
             class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
             @auth
-                @if (auth()->user()->user_type === 'verified_user')
                     <div id="mobile-button-wrapper"
                         class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 
                   flex items-center justify-center gap-6 z-[999]">
-
                         <!-- Left Arrow -->
                         <button id="mobile-switch-left"
-                            class="w-10 h-10 flex items-center justify-center
+                            class="w-10 h-10 flex hidden items-center justify-center
                         rounded-full bg-[#F7F6EB]/80 backdrop-blur-md
                         shadow-[0_4px_12px_rgba(0,0,0,0.15)]
                         border border-[#e6e4cf]
@@ -490,200 +484,184 @@
                         </button>
 
                         <!-- Center main toggle button -->
-                        <button id="mobile-panels-toggle"
-                            class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 btn-eco
-           px-5 py-3  z-[999]">
+                        <button id="mobile-panels-toggle" class="btn-eco">
                             Show Available Quests
                         </button>
-                        <!-- Switch button inside panels -->
-                        <button id="mobile-switch-panel"
-                            class="hidden lg:hidden fixed -top-5 left-1/2 -translate-x-1/2 btn-eco
-                            px-4 py-2 z-[999]">
-                            Go to Pending Submissions
+
+                        <!-- Right Arrow -->
+                        <button id="mobile-switch-right"
+                            class="w-10 h-10  hidden flex items-center justify-center
+                    rounded-full bg-[#F7F6EB]/80 backdrop-blur-md
+                    shadow-[0_4px_12px_rgba(0,0,0,0.15)]
+                    border border-[#e6e4cf]
+                    text-[#4B4A2E]
+                    hover:bg-[#FFFDF4] active:scale-95 transition-all duration-300">
+                            <!-- SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                                <path fill="currentColor" d="m8.5 19 7-7-7-7" />
+                            </svg>
                         </button>
                     </div>
-                    @endif
-                @endauth
+            @endauth
+
+            <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
+            <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
+            <div id="fallen-leaves" class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
+                style="
+                    mask-image: 
+                        /* Top soft fade */
+                        linear-gradient(
+                            to bottom,
+                            transparent 0%,
+                            rgba(0, 0, 0, 0.1) 15%,
+                            rgba(0, 0, 0, 0.3) 30%,
+                            rgba(0, 0, 0, 0.6) 45%,
+                            black 60%,
+                            black 80%,
+                            /* Bottom very soft fade */
+                            rgba(0, 0, 0, 0.7) 85%,
+                            rgba(0, 0, 0, 0.4) 90%,
+                            rgba(0, 0, 0, 0.2) 95%,
+                            transparent 100%
+                        );
+                    -webkit-mask-image: 
+                        linear-gradient(
+                            to bottom,
+                            transparent 0%,
+                            rgba(0, 0, 0, 0.1) 15%,
+                            rgba(0, 0, 0, 0.3) 30%,
+                            rgba(0, 0, 0, 0.6) 45%,
+                            black 60%,
+                            black 80%,
+                            rgba(0, 0, 0, 0.7) 85%,
+                            rgba(0, 0, 0, 0.4) 90%,
+                            rgba(0, 0, 0, 0.2) 95%,
+                            transparent 100%
+                        );
+                ">
+            </div>
+            <!-- Rest of your HTML remains the same... -->
+
+            <div id="plant-text" class="absolute top-[15rem] left-1/2 z-70 -translate-x-1/2 w-max text-center"
+                style="text-shadow: 
+                    0 0 10px rgba(255, 255, 200, 1),
+                    0 0 20px rgba(255, 255, 200, 0.95),
+                    0 0 30px rgba(255, 255, 180, 0.85),
+                    0 0 40px rgba(255, 255, 180, 0.7),
+                    0 0 50px rgba(255, 255, 180, 0.5);">
+                <h1 class="md:text-3xl font-serif font-semibold text-[#5e471dff] leading-snug whitespace-nowrap">
+                </h1>
+            </div>
 
 
-                <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
-                <!-- 🍂 FALLEN LEAVES CONTAINER WITH MULTI-LAYER FADE -->
-                <div id="fallen-leaves" class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10"
-                    style="
-        mask-image: 
-            /* Top soft fade */
-            linear-gradient(
-                to bottom,
-                transparent 0%,
-                rgba(0, 0, 0, 0.1) 15%,
-                rgba(0, 0, 0, 0.3) 30%,
-                rgba(0, 0, 0, 0.6) 45%,
-                black 60%,
-                black 80%,
-                /* Bottom very soft fade */
-                rgba(0, 0, 0, 0.7) 85%,
-                rgba(0, 0, 0, 0.4) 90%,
-                rgba(0, 0, 0, 0.2) 95%,
-                transparent 100%
-            );
-        -webkit-mask-image: 
-            linear-gradient(
-                to bottom,
-                transparent 0%,
-                rgba(0, 0, 0, 0.1) 15%,
-                rgba(0, 0, 0, 0.3) 30%,
-                rgba(0, 0, 0, 0.6) 45%,
-                black 60%,
-                black 80%,
-                rgba(0, 0, 0, 0.7) 85%,
-                rgba(0, 0, 0, 0.4) 90%,
-                rgba(0, 0, 0, 0.2) 95%,
-                transparent 100%
-            );
-     ">
-                </div>
-                <!-- Rest of your HTML remains the same... -->
+            <style>
+                .animate-float
 
-                <div id="plant-text" class="absolute top-[15rem] left-1/2 z-70 -translate-x-1/2 w-max text-center"
-                    style="text-shadow: 
-            0 0 10px rgba(255, 255, 200, 1),
-            0 0 20px rgba(255, 255, 200, 0.95),
-            0 0 30px rgba(255, 255, 180, 0.85),
-            0 0 40px rgba(255, 255, 180, 0.7),
-            0 0 50px rgba(255, 255, 180, 0.5);">
-                    <h1 class="md:text-3xl font-serif font-semibold text-[#5e471dff] leading-snug whitespace-nowrap">
-                    </h1>
-                </div>
+                /* Glow activation styles */
+                .glow-active .w-\[500px\].h-\[650px\] {
+                    background-image: linear-gradient(to bottom,
+                            rgb(254 240 138 / 0.3) 0%,
+                            rgb(254 249 195 / 0.2) 50%,
+                            transparent 100%) !important;
+                    transition: background-image 1s ease-out;
+                }
 
+                .glow-active .absolute.top-0.w-\[300px\].h-\[400px\] {
+                    background-color: rgb(255 255 255 / 0.4) !important;
+                    transition: background-color 1s ease-out;
+                }
+            </style>
 
-                <!-- 🌾 Glow Background -->
-                <div class="absolute top-1/5 flex items-center justify-center">
-                    <!-- Outer glow -->
+            @auth
+                <!-- Plant Container with Glow Effects -->
+                <div class="relative">
+                    <!-- Background glow aura -->
                     <div
-                        class="w-[500px] h-[650px] rounded-full bg-gradient-to-b 
-                from-yellow-200/0 via-yellow-100/0 to-transparent 
-                blur-3xl scale-125">
-                    </div>
-                    <!-- Inner soft white glow -->
-                    <div class="absolute top-0 w-[300px] h-[400px] rounded-full bg-white/0 blur-2xl"></div>
-                </div>
-                <style>
-                    .animate-float
-
-                    /* Glow activation styles */
-                    .glow-active .w-\[500px\].h-\[650px\] {
-                        background-image: linear-gradient(to bottom,
-                                rgb(254 240 138 / 0.3) 0%,
-                                rgb(254 249 195 / 0.2) 50%,
-                                transparent 100%) !important;
-                        transition: background-image 1s ease-out;
-                    }
-
-                    .glow-active .absolute.top-0.w-\[300px\].h-\[400px\] {
-                        background-color: rgb(255 255 255 / 0.4) !important;
-                        transition: background-color 1s ease-out;
-                    }
-                </style>
-
-                <!-- 🌟 Hint Message -->
-                <!-- 🌟 Hint Message -->
-                <div id="tap-message"
-                    class="absolute left-full ml-3 top-1/2 -translate-y-1/2 
-           text-xs italic text-[#6B5840] opacity-0 transition-opacity duration-500
-           bg-gradient-to-r from-[#E8E2D5]/90 to-[#D8D1C1]/90
-           px-3 py-2 rounded-lg border border-[#B8A992]/30 shadow-md">
-                </div>
-
-                @auth
-                    <!-- Plant Container with Glow Effects -->
-                    <div class="relative">
-                        <!-- Background glow aura -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-b from-[#5C7919]/10 via-transparent to-[#9f8f6a]/5 
+                        class="absolute inset-0 bg-gradient-to-b from-[#5C7919]/10 via-transparent to-[#9f8f6a]/5 
                     blur-[30px] -z-10 w-[110%] h-[110%] -left-[5%] -top-[5%] 
                     opacity-60 group-hover:opacity-80 transition-opacity duration-500">
-                        </div>
+                    </div>
 
-                        <!-- Particle effect container -->
-                        <div id="plant-particle-container" class="absolute inset-0 z-20 pointer-events-none"></div>
+                    <!-- Particle effect container -->
+                    <div id="plant-particle-container" class="absolute inset-0 z-20 pointer-events-none"></div>
 
 
-                        <img id="plant-image">
+                    <img id="plant-image">
 
-                        <!-- Interactive tap hint (optional - can be removed) -->
-                        <div
-                            class="absolute -bottom-6 left-1/2 -translate-x-1/2 z-30
+                    <!-- Interactive tap hint (optional - can be removed) -->
+                    <div
+                        class="absolute -bottom-6 left-1/2 -translate-x-1/2 z-30
                     text-xs text-[#9f8f6a] font-medium tracking-wide
                     opacity-0 group-hover:opacity-100 transition-opacity duration-300
                     whitespace-nowrap">
-                            👆 Tap to grow your tree
-                        </div>
+                        👆 Tap to grow your tree
                     </div>
+                </div>
 
-                    <!-- 🌾 Horizontal Progress Bar -->
-                    <div id="growth-bar"
-                        class="absolute opacity-0 flex flex-col items-center gap-2 md:gap-3 z-70 transition-opacity duration-700 ease-out
+                <!-- 🌾 Horizontal Progress Bar -->
+                <div id="growth-bar"
+                    class="absolute opacity-0 flex flex-col items-center gap-2 md:gap-3 z-70 transition-opacity duration-700 ease-out
                 w-full px-4 top-105"
-                        style="bottom: 50px;">
+                    style="bottom: 50px;">
 
-                        <!-- Enhanced glow container with bright center -->
-                        <div class="relative top-0">
-                            <!-- Outer golden glow -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r 
+                    <!-- Enhanced glow container with bright center -->
+                    <div class="relative top-0">
+                        <!-- Outer golden glow -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffacd]/60 via-[#fff8b0]/80 to-[#fff695]/80 
                             blur-[10px] md:blur-[15px] -z-10 w-[130%] -left-[15%]
                             opacity-80">
-                            </div>
+                        </div>
 
-                            <!-- Middle bright yellow layer -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Middle bright yellow layer -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffee0]/70 via-[#fffdc2]/65 to-[#fffb9d]/60 
                             blur-[6px] md:blur-[10px] -z-10 w-[115%] -left-[7.5%]
                             opacity-90 mix-blend-overlay">
-                            </div>
+                        </div>
 
-                            <!-- Center intense yellow core -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Center intense yellow core -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#ffffe0] via-[#ffffb5] to-[#ffff8f] 
                             blur-[3px] md:blur-[5px] -z-10 w-[105%] -left-[2.5%]
                             opacity-70 mix-blend-screen">
-                            </div>
+                        </div>
 
-                            <!-- Subtle yellow shimmer effect -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Subtle yellow shimmer effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-transparent via-[#ffffd0]/30 to-transparent 
                             blur-[2px] -z-10 w-[102%] -left-[1%]
                             opacity-100 mix-blend-lighten">
-                            </div>
-                            <p
-                                class="text-[#553722ff] text-base md:text-3xl font-serif italic tracking-wide text-center relative font-medium">
-                                Your personal growth tree
-                            </p>
                         </div>
+                        <p
+                            class="text-[#553722ff] text-base md:text-3xl font-serif italic tracking-wide text-center relative font-medium">
+                            Your personal growth tree
+                        </p>
+                    </div>
 
-                        <!-- Enhanced Progress Bar with Interactive Features -->
-                        <div class="relative group">
-                            <!-- Outer glow effect -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r from-[#9f8f6a]/40 via-[#bfae7c]/30 to-[#f2e9c2]/20 
+                    <!-- Enhanced Progress Bar with Interactive Features -->
+                    <div class="relative group">
+                        <!-- Outer glow effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-[#9f8f6a]/40 via-[#bfae7c]/30 to-[#f2e9c2]/20 
                 blur-[10px] -z-10 w-[105%] -left-[2.5%] scale-y-125 
                 group-hover:blur-[12px] transition-all duration-300">
-                            </div>
+                        </div>
 
-                            <!-- Progress bar container -->
-                            <div
-                                class="relative w-[260px] sm:w-[320px] md:w-[480px] lg:w-[520px]
+                        <!-- Progress bar container -->
+                        <div
+                            class="relative w-[260px] sm:w-[320px] md:w-[480px] lg:w-[520px]
                 h-[14px] md:h-[16px] rounded-full bg-[#d6cbb7]/40 overflow-hidden 
                 shadow-inner border border-[#cbbfa8]/40 shadow-lg shadow-[#9f8f6a]/25
                 group-hover:shadow-[#9f8f6a]/35 transition-all duration-300">
 
-                                <!-- Interactive progress fill -->
-                                <div id="growth-fill"
-                                    class="absolute left-0 bottom-0 h-full bg-gradient-to-r
+                            <!-- Interactive progress fill -->
+                            <div id="growth-fill"
+                                class="absolute left-0 bottom-0 h-full bg-gradient-to-r
                     from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2]
                     rounded-full transition-all duration-700 ease-out
                     shadow-[0_0_20px_5px_rgba(159,143,106,0.5)]
@@ -694,37 +672,37 @@
                     after:absolute after:right-0 after:top-0 after:h-full 
                     after:w-[3px] after:bg-white/90 after:blur-[2px] relative
                     hover:scale-y-110 transition-transform duration-300"
-                                    style="width: {{ $growthPercent }}%;">
+                                style="width: {{ $growthPercent }}%;">
 
-                                    <!-- Percentage indicator on hover -->
-                                    <span
-                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-white/90 
+                                <!-- Percentage indicator on hover -->
+                                <span
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-white/90 
                           mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        {{ $growthPercent }}%
-                                    </span>
-                                </div>
+                                    {{ $growthPercent }}%
+                                </span>
+                            </div>
 
-                                <!-- Stage markers with status distinction -->
-                                <div class="absolute inset-0 flex justify-between items-center px-2">
+                            <!-- Stage markers with status distinction -->
+                            <div class="absolute inset-0 flex justify-between items-center px-2">
+                                @php
+                                    $stages = $treeStages;
+                                    $currentStage = $stage;
+                                    $progressPerStage = 100 / $stages;
+                                @endphp
+                                @for ($i = 1; $i <= $stages; $i++)
                                     @php
-                                        $stages = $treeStages;
-                                        $currentStage = $stage;
-                                        $progressPerStage = 100 / $stages;
+                                        $isCurrentStage = $i == $currentStage;
+                                        $isUnlocked = $i <= $currentStage;
+                                        $isFutureStage = $i > $currentStage;
+                                        $positionPercent = ($i - 1) * $progressPerStage;
                                     @endphp
-                                    @for ($i = 1; $i <= $stages; $i++)
-                                        @php
-                                            $isCurrentStage = $i == $currentStage;
-                                            $isUnlocked = $i <= $currentStage;
-                                            $isFutureStage = $i > $currentStage;
-                                            $positionPercent = ($i - 1) * $progressPerStage;
-                                        @endphp
 
-                                        <div class="relative group/marker"
-                                            style="left: {{ $positionPercent }}%; transform: translateX(-50%);">
+                                    <div class="relative group/marker"
+                                        style="left: {{ $positionPercent }}%; transform: translateX(-50%);">
 
-                                            <!-- Dot marker with status styles -->
-                                            <div
-                                                class="w-[8px] h-[8px] rounded-full transition-all duration-300
+                                        <!-- Dot marker with status styles -->
+                                        <div
+                                            class="w-[8px] h-[8px] rounded-full transition-all duration-300
                                 @if ($isCurrentStage) bg-gradient-to-br from-[#f2e9c2] to-[#9f8f6a]
                                     shadow-[0_0_8px_2px_rgba(159,143,106,0.6)]
                                     ring-2 ring-white/50
@@ -736,11 +714,11 @@
                                     border border-[#cbbfa8]/50 @endif
                                 group-hover/marker:scale-150 
                                 group-hover/marker:shadow-[0_0_10px_3px_rgba(159,143,106,0.8)]">
-                                            </div>
+                                        </div>
 
-                                            <!-- Stage label -->
-                                            <span
-                                                class="absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] font-medium
+                                        <!-- Stage label -->
+                                        <span
+                                            class="absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] font-medium
                                  opacity-0 group-hover/marker:opacity-100 
                                  transition-opacity duration-300 whitespace-nowrap
                                  @if ($isCurrentStage) text-[#5C7919] font-bold
@@ -748,126 +726,126 @@
                                     text-[#9f8f6a]
                                  @else
                                     text-[#cbbfa8]/70 @endif">
-                                                @if ($isCurrentStage)
-                                                    ⭐ Stage {{ $i }}
-                                                @elseif($isUnlocked)
-                                                    ✓ Stage {{ $i }}
-                                                @else
-                                                    Stage {{ $i }}
-                                                @endif
-                                            </span>
-                                        </div>
-                                    @endfor
-                                </div>
+                                            @if ($isCurrentStage)
+                                                ⭐ Stage {{ $i }}
+                                            @elseif($isUnlocked)
+                                                ✓ Stage {{ $i }}
+                                            @else
+                                                Stage {{ $i }}
+                                            @endif
+                                        </span>
+                                    </div>
+                                @endfor
                             </div>
                         </div>
+                    </div>
 
-                        @auth
-                            @if (auth()->user()->user_type === 'verified_user')
-                                <!-- ====================== VERIFIED USER: FULL PROGRESS INFO ====================== -->
-                                <p id="growth-label"
-                                    class="text-[#5e471dff] text-lg md:text-lg font-medium tracking-wide text-center
+                    @auth
+                        @if (auth()->user()->user_type === 'verified_user')
+                            <!-- ====================== VERIFIED USER: FULL PROGRESS INFO ====================== -->
+                            <p id="growth-label"
+                                class="text-[#5e471dff] text-lg md:text-lg font-medium tracking-wide text-center
                                     bg-gradient-to-r from-[#fffacd] via-[#f0edcaff] to-[#ebe7c0ff]
                                     px-4 py-2 rounded-[1.4rem] border border-[#fff695]/60 shadow-sm
                                     shadow-[0_0_15px_rgba(255,246,149,0.3)]
                                     group-hover:bg-gradient-to-r group-hover:from-[#fffee0] group-hover:to-[#fff695]/80
                                     group-hover:border-[#fff695] transition-all duration-300">
-                                    Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} /
-                                    {{ $growthMax }}
-                                    points
-                                    <span class="block text-lg text-[#885b2eff]/90 font-normal mt-1">
-                                        {{ $treeStages - $stage }} stages remaining
-                                    </span>
-                                </p>
-                            @else
-                                <!-- ====================== AUTHENTICATED BUT NOT VERIFIED: RESTRICTED MESSAGE ====================== -->
-                                <p id="growth-label"
-                                    class="text-[#594422ff] text-lg md:text-lg font-medium tracking-wide text-center
-                                    bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-[1.3rem]
-                                    border border-[#cbbfa8] shadow-sm">
-                                    Please verify your account to grow your tree and earn points
-                                </p>
-                            @endif
+                                Stage {{ $stage }} / {{ $treeStages }} — {{ $progressPoints }} /
+                                {{ $growthMax }}
+                                points
+                                <span class="block text-lg text-[#885b2eff]/90 font-normal mt-1">
+                                    {{ $treeStages - $stage }} stages remaining
+                                </span>
+                            </p>
                         @else
-                            <!-- ====================== GUEST: LOGIN PROMPT ====================== -->
+                            <!-- ====================== AUTHENTICATED BUT NOT VERIFIED: RESTRICTED MESSAGE ====================== -->
                             <p id="growth-label"
                                 class="text-[#594422ff] text-lg md:text-lg font-medium tracking-wide text-center
+                                    bg-gradient-to-r from-[#d6cbb7] to-transparent px-4 py-2 rounded-[1.3rem]
+                                    border border-[#cbbfa8] shadow-sm">
+                                Please verify your account to grow your tree and earn points
+                            </p>
+                        @endif
+                    @else
+                        <!-- ====================== GUEST: LOGIN PROMPT ====================== -->
+                        <p id="growth-label"
+                            class="text-[#594422ff] text-lg md:text-lg font-medium tracking-wide text-center
                                 bg-gradient-to-r from-[#0048ffff] to-transparent px-4 py-2 rounded-[1.3rem]
                                 border border-[#cbbfa8] shadow-sm">
-                                Please log in to see your personalized growth tree
-                            </p>
-                        @endauth
-                    </div>
+                            Please log in to see your personalized growth tree
+                        </p>
+                    @endauth
+                </div>
 
-                @endauth
+            @endauth
 
 
-                @guest
+            @guest
 
-                    <img id="plant-image">
+                <img id="plant-image">
 
-                    <!-- 🌾 Horizontal Progress Bar -->
-                    <div id="growth-bar"
-                        class="absolute opacity-0 flex flex-col items-center gap-2 md:gap-3 z-70 transition-opacity duration-700 ease-out w-full px-4 top-90"
-                        style="bottom: 50px;">
+                <!-- 🌾 Horizontal Progress Bar -->
+                <div id="growth-bar"
+                    class="absolute opacity-0 flex flex-col items-center gap-2 md:gap-3 z-70 transition-opacity duration-700 ease-out w-full px-4 top-90"
+                    style="bottom: 50px;">
 
-                        <!-- Enhanced glow container with bright center -->
-                        <div class="relative top-0">
-                            <!-- Outer golden glow -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r 
+                    <!-- Enhanced glow container with bright center -->
+                    <div class="relative top-0">
+                        <!-- Outer golden glow -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffacd]/60 via-[#fff8b0]/80 to-[#fff695]/80 
                             blur-[10px] md:blur-[15px] -z-10 w-[130%] -left-[15%]
                             opacity-80">
-                            </div>
+                        </div>
 
-                            <!-- Middle bright yellow layer -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Middle bright yellow layer -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#fffee0]/70 via-[#fffdc2]/65 to-[#fffb9d]/60 
                             blur-[6px] md:blur-[10px] -z-10 w-[115%] -left-[7.5%]
                             opacity-90 mix-blend-overlay">
-                            </div>
+                        </div>
 
-                            <!-- Center intense yellow core -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Center intense yellow core -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-[#ffffe0] via-[#ffffb5] to-[#ffff8f] 
                             blur-[3px] md:blur-[5px] -z-10 w-[105%] -left-[2.5%]
                             opacity-70 mix-blend-screen">
-                            </div>
+                        </div>
 
-                            <!-- Subtle yellow shimmer effect -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r 
+                        <!-- Subtle yellow shimmer effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r 
                             from-transparent via-[#ffffd0]/30 to-transparent 
                             blur-[2px] -z-10 w-[102%] -left-[1%]
                             opacity-100 mix-blend-lighten">
-                            </div>
-
-                            <p
-                                class="text-[#553722ff] text-base md:text-2xl font-sans-serif italic tracking-wide text-center relative font-medium">
-                                Your personal growth tree
-                            </p>
                         </div>
 
-                        <!-- Enhanced Progress Bar with Glow -->
-                        <div class="relative">
-                            <!-- Outer glow effect -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r from-[#9f8f6a]/40 via-[#bfae7c]/30 to-[#f2e9c2]/20 
-                        blur-[10px] -z-10 w-[105%] -left-[2.5%] scale-y-125">
-                            </div>
+                        <p
+                            class="text-[#553722ff] text-base md:text-2xl font-sans-serif italic tracking-wide text-center relative font-medium">
+                            Your personal growth tree
+                        </p>
+                    </div>
 
-                            <!-- Progress bar container -->
-                            <div
-                                class="relative w-[260px] sm:w-[320px] md:w-[480px] lg:w-[520px]
+                    <!-- Enhanced Progress Bar with Glow -->
+                    <div class="relative">
+                        <!-- Outer glow effect -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-[#9f8f6a]/40 via-[#bfae7c]/30 to-[#f2e9c2]/20 
+                        blur-[10px] -z-10 w-[105%] -left-[2.5%] scale-y-125">
+                        </div>
+
+                        <!-- Progress bar container -->
+                        <div
+                            class="relative w-[260px] sm:w-[320px] md:w-[480px] lg:w-[520px]
                         h-[14px] md:h-[16px] rounded-full bg-[#d6cbb7]/80 overflow-hidden 
                         shadow-inner border border-[#cbbfa8]/80 shadow-lg shadow-[#9f8f6a]/25">
 
-                                <!-- Progress fill with enhanced glow -->
-                                <div id="growth-fill"
-                                    class="absolute left-0 bottom-0 h-full bg-gradient-to-r
+                            <!-- Progress fill with enhanced glow -->
+                            <div id="growth-fill"
+                                class="absolute left-0 bottom-0 h-full bg-gradient-to-r
                             from-[#9f8f6a] via-[#bfae7c] to-[#f2e9c2]
                             rounded-full transition-all duration-700 ease-out
                             shadow-[0_0_20px_5px_rgba(159,143,106,0.5)]
@@ -876,27 +854,27 @@
                             before:translate-x-[-100%] before:animate-shimmer
                             after:absolute after:right-0 after:top-0 after:h-full 
                             after:w-[3px] after:bg-white/70 after:blur-[2px] relative"
-                                    style="width: 0%;">
-                                </div>
+                                style="width: 0%;">
+                            </div>
 
-                                <!-- Progress markers (subtle) -->
-                                <div class="absolute inset-0 flex justify-between px-1">
-                                    <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
-                                    <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
-                                    <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
-                                    <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
-                                </div>
+                            <!-- Progress markers (subtle) -->
+                            <div class="absolute inset-0 flex justify-between px-1">
+                                <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
+                                <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
+                                <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
+                                <div class="w-px h-1/2 bg-[#cbbfa8]/60 self-center mt-1"></div>
                             </div>
                         </div>
+                    </div>
 
-                        <p id="growth-label"
-                            class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
+                    <p id="growth-label"
+                        class="text-[#6b665e] text-lg md:text-lg font-medium tracking-wide text-center
                   bg-gradient-to-r from-[#d6cbb7]/30 to-transparent px-4 py-2 rounded-full
                   border border-[#cbbfa8]/30 shadow-sm">
-                            Please log in to see your personalized growth tree
-                        </p>
-                    </div>
-                @endguest
+                        Please log in to see your personalized growth tree
+                    </p>
+                </div>
+            @endguest
         </div>
     </section>
     <section class="relative text-center overflow-hidden min-h-screen"
@@ -2492,6 +2470,8 @@
                 rightPanel.classList.remove("hidden");
                 activePanel = "right";
                 btnToggle.textContent = "Hide Panels";
+                btnLeft.classList.remove("hidden");
+                btnRight.classList.add("hidden");
 
             }
 

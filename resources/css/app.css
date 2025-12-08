@@ -1729,3 +1729,22 @@ button {
         display: none !important;
     }
 }
+
+#mobile-button-wrapper {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none; /* hidden state should not block touch */
+}
+
+#mobile-button-wrapper.show-mobile-buttons {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#mobile-button-wrapper.hide-mobile-buttons {
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+}

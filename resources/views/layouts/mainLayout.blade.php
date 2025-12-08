@@ -307,42 +307,42 @@
             @endauth
 
         </div>
-<div class="flex flex-col mt-4 space-y-2 p-4">
-    <a href="/" class="nav-link">HOME</a>
-    <a href="/lifestyle" class="nav-link">LIFESTYLE</a>
-    <a href="/quests" class="nav-link">QUESTS</a>
-    <a href="/about" class="nav-link">ABOUT</a>
-</div>
+        <div class="flex flex-col mt-4 space-y-2 p-4">
+            <a href="/" class="nav-link">HOME</a>
+            <a href="/lifestyle" class="nav-link">LIFESTYLE</a>
+            <a href="/quests" class="nav-link">QUESTS</a>
+            <a href="/about" class="nav-link">ABOUT</a>
+        </div>
     </aside>
 
     <!-- Overlay -->
-<!-- Overlay - FIXED for mobile -->
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-[1199] cursor-pointer"></div>
+    <!-- Overlay - FIXED for mobile -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-[1199] cursor-pointer"></div>
     <!-- 🌿 Feedback Notification -->
-<!-- 🌿 Feedback Notification - HIGHEST Z-INDEX -->
-@if (session('success'))
-    <div id="feedback-toast"
-        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/95 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[99999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
-        <!-- Success Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
-        <span>{{ session('success') }}</span>
-    </div>
-@endif
+    <!-- 🌿 Feedback Notification - HIGHEST Z-INDEX -->
+    @if (session('success'))
+        <div id="feedback-toast"
+            class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/95 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[99999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
+            <!-- Success Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
 
-@if (session('error') || $errors->any())
-    <div id="error-toast"
-        class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/95 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[99999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
-        <!-- Error Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-        <span>{{ session('error') ?? $errors->first() }}</span>
-    </div>
-@endif
+    @if (session('error') || $errors->any())
+        <div id="error-toast"
+            class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/95 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[99999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
+            <!-- Error Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span>{{ session('error') ?? $errors->first() }}</span>
+        </div>
+    @endif
 
     @if (session('error') || $errors->any())
         <div id="error-toast"
@@ -385,7 +385,8 @@
                 </p>
 
                 <!-- Social Icons -->
-                <div class="flex justify-center sm:justify-start space-x-4 md:space-x-5 mt-4 md:mt-5 text-base md:text-lg">
+                <div
+                    class="flex justify-center sm:justify-start space-x-4 md:space-x-5 mt-4 md:mt-5 text-base md:text-lg">
                     <a href="https://www.facebook.com/profile.php?id=100090120161622"
                         class="hover:text-green-200 transition" target="_blank">
                         <i class="fab fa-facebook-f"></i>
@@ -405,9 +406,11 @@
                 </h3>
                 <ul class="space-y-1 md:space-y-2">
                     <li><a href="/" class="hover:text-green-200 transition text-xs md:text-sm">Home</a></li>
-                    <li><a href="/lifestyle" class="hover:text-green-200 transition text-xs md:text-sm">Lifestyle</a></li>
+                    <li><a href="/lifestyle" class="hover:text-green-200 transition text-xs md:text-sm">Lifestyle</a>
+                    </li>
                     <li><a href="/quests" class="hover:text-green-200 transition text-xs md:text-sm">Quests</a></li>
-                    <li><a href="/progress" class="hover:text-green-200 transition text-xs md:text-sm">My Progress</a></li>
+                    <li><a href="/progress" class="hover:text-green-200 transition text-xs md:text-sm">My Progress</a>
+                    </li>
                     <li><a href="/about" class="hover:text-green-200 transition text-xs md:text-sm">About</a></li>
                 </ul>
             </div>
@@ -418,9 +421,12 @@
                     Learn More
                 </h3>
                 <ul class="space-y-1 md:space-y-2">
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Sustainability Guides</a></li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Community Partners</a></li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Educational Resources</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Sustainability
+                            Guides</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Community
+                            Partners</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Educational
+                            Resources</a></li>
                     <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">FAQs</a></li>
                 </ul>
             </div>
@@ -431,119 +437,124 @@
                     About & Legal
                 </h3>
                 <ul class="space-y-1 md:space-y-2 mb-3 md:mb-4">
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">About ECOconnect</a></li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Team Members</a></li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">About
+                            ECOconnect</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Team Members</a>
+                    </li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Contact Us</a>
+                    </li>
                 </ul>
                 <ul class="space-y-1 md:space-y-2">
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Terms of Use</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Privacy
+                            Policy</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Terms of Use</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
-    <script>
- const menuToggle = document.getElementById('menu-toggle');
-const sidebar = document.getElementById('sidebar');
-const closeSidebar = document.getElementById('close-sidebar');
-const overlay = document.getElementById('overlay');
+<script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const closeSidebar = document.getElementById('close-sidebar');
+    const overlay = document.getElementById('overlay');
 
-function openSidebar() {
-    sidebar.classList.remove('translate-x-full');
-    overlay.classList.remove('hidden');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling on mobile
-}
-
-function closeSidebarFunc() {
-    sidebar.classList.add('translate-x-full');
-    overlay.classList.add('hidden');
-    document.body.style.overflow = ''; // Restore scrolling
-}
-
-// Handle overlay click (close sidebar when clicking outside)
-overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) {
-        closeSidebarFunc();
+    function openSidebar() {
+        sidebar.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling on mobile
     }
-});
 
-// Close sidebar when clicking mobile nav links
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-        link.addEventListener('click', closeSidebarFunc);
-    });
-});
-
-menuToggle.addEventListener('click', openSidebar);
-closeSidebar.addEventListener('click', closeSidebarFunc);
-
-// Close sidebar on escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !sidebar.classList.contains('translate-x-full')) {
-        closeSidebarFunc();
+    function closeSidebarFunc() {
+        sidebar.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.style.overflow = ''; // Restore scrolling
     }
-});
 
-// Auto-hide feedback toasts
-setTimeout(() => {
-    const toast = document.getElementById('feedback-toast');
-    const errorToast = document.getElementById('error-toast');
-    [toast, errorToast].forEach(el => {
-        if (el) {
-            el.style.opacity = '0';
-            setTimeout(() => el.remove(), 1000);
+    // Handle overlay click (close sidebar when clicking outside)
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            closeSidebarFunc();
         }
     });
-}, 3000);
 
-// Navbar with permanent green shadow for non-home pages (full width)
-document.addEventListener('DOMContentLoaded', function() {
-    const navbar = document.getElementById('navbar');
-    if (!navbar) return;
+    // Close sidebar when clicking mobile nav links
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', closeSidebarFunc);
+        });
+    });
 
-    function updateNavbar() {
-        const isHomePage = window.location.pathname === '/';
+    menuToggle.addEventListener('click', openSidebar);
+    closeSidebar.addEventListener('click', closeSidebarFunc);
 
-        // Always add green shadow for non-home pages, but keep full width
-        if (!isHomePage) {
-            navbar.classList.add('navbar-green-shadow');
-            // Remove navbar-solid to keep full width
-            navbar.classList.remove('navbar-solid');
-        } else {
-            navbar.classList.remove('navbar-green-shadow');
-            // Home page behavior - solid only when scrolled
-            if (window.scrollY > 50) {
-                navbar.classList.add('navbar-solid');
-            } else {
+    // Close sidebar on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !sidebar.classList.contains('translate-x-full')) {
+            closeSidebarFunc();
+        }
+    });
+
+    // Auto-hide feedback toasts
+    setTimeout(() => {
+        const toast = document.getElementById('feedback-toast');
+        const errorToast = document.getElementById('error-toast');
+        [toast, errorToast].forEach(el => {
+            if (el) {
+                el.style.opacity = '0';
+                setTimeout(() => el.remove(), 1000);
+            }
+        });
+    }, 3000);
+
+    // Navbar with permanent green shadow for non-home pages (full width)
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbar = document.getElementById('navbar');
+        if (!navbar) return;
+
+        function updateNavbar() {
+            const isHomePage = window.location.pathname === '/';
+
+            // Always add green shadow for non-home pages, but keep full width
+            if (!isHomePage) {
+                navbar.classList.add('navbar-green-shadow');
+                // Remove navbar-solid to keep full width
                 navbar.classList.remove('navbar-solid');
+            } else {
+                navbar.classList.remove('navbar-green-shadow');
+                // Home page behavior - solid only when scrolled
+                if (window.scrollY > 50) {
+                    navbar.classList.add('navbar-solid');
+                } else {
+                    navbar.classList.remove('navbar-solid');
+                }
             }
         }
-    }
 
-    // Initial check
-    updateNavbar();
+        // Initial check
+        updateNavbar();
 
-    // Only listen to scroll for home page
-    let scrollTimeout;
-    window.addEventListener('scroll', function() {
-        const isHomePage = window.location.pathname === '/';
-        if (isHomePage && !scrollTimeout) {
-            scrollTimeout = setTimeout(function() {
-                scrollTimeout = null;
-                updateNavbar();
-            }, 10);
-        }
+        // Only listen to scroll for home page
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            const isHomePage = window.location.pathname === '/';
+            if (isHomePage && !scrollTimeout) {
+                scrollTimeout = setTimeout(function() {
+                    scrollTimeout = null;
+                    updateNavbar();
+                }, 10);
+            }
+        });
+
+        window.addEventListener('resize', updateNavbar);
     });
-
-    window.addEventListener('resize', updateNavbar);
-});
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
 
 
-    </body>
+</body>
 
 </html>
