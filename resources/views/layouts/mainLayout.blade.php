@@ -118,7 +118,7 @@
                                     <ul class="flex flex-col py-3 mt-10 text-sm font-medium text-[#4F6B3F] space-y-1">
                                         <li>
                                             <a href="{{ route('account.show') }}"
-                                                class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+                                                class="flex items-center gap-3 px-5 py-2.5  hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
 
                                                 <!-- Rectangle icon -->
                                                 <span
@@ -136,7 +136,7 @@
 
                                         <li>
                                             <a href="/myprogress"
-                                                class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+                                                class="flex items-center gap-3 px-5 py-2.5  hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
                                                 <span
                                                     class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -152,7 +152,7 @@
 
                                         <li>
                                             <a href="/rewards"
-                                                class="flex items-center gap-3 px-5 py-2.5 rounded-lg hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+                                                class="flex items-center gap-3 px-5 py-2.5  hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
                                                 <span
                                                     class="flex items-center justify-center w-7 h-7 bg-[#E0E9D6] border border-[#6A8A52] rounded-md">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -170,7 +170,7 @@
                                             <form method="POST" action="{{ route('logout') }}">
                                                 @csrf
                                                 <button type="submit"
-                                                    class="flex items-center gap-3 w-full text-left px-5 py-2.5 rounded-lg hover:bg-[#F4D4D4] hover:text-[#642B2B] transition-all duration-200">
+                                                    class="flex items-center gap-3 w-full text-left px-5 py-2.5  hover:bg-[#F4D4D4] hover:text-[#642B2B] transition-all duration-200">
                                                     <span
                                                         class="flex items-center justify-center w-7 h-7 bg-[#FCE8E8] border border-[#DFA7A7] rounded-md">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -184,6 +184,17 @@
                                                 </button>
                                             </form>
                                         </li>
+                                        <li>
+                                            @auth
+                                                @if (auth()->user()->user_type === 'admin')
+                                                    <a href="/adminHome"
+                                                        class="flex items-center gap-3 px-5 py-2.5  hover:bg-[#E5EED3] hover:text-[#3E5632] transition-all duration-200">
+                                                        ADMIN DASHBOARD
+                                                    </a>
+                                                @endif
+                                            @endauth
+                                        </li>
+
                                     </ul>
 
                                 </div>

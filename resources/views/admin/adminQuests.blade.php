@@ -64,7 +64,7 @@
                                                                 </div>
                                                                 <div class="w-1 h-1 bg-rose-500 rounded-full"></div>
                                                             </div>
-                                                            <span>{{ $quest->submissions->where('status', 'pending')->count() }}
+                                                            <span class="text-[10px]">{{ $quest->submissions->where('status', 'pending')->count() }}
                                                                 pending</span>
                                                         </div>
                                                     @endif
