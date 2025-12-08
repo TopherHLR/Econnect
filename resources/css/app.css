@@ -1723,3 +1723,10 @@ button {
     border-radius: 1.5rem;
     z-index: 10;
 }
+
+/* Hide text on mobile screens */
+@media (max-width: 768px) {
+    .mobile-hide-text {
+        display: none !important;
+    }
+}

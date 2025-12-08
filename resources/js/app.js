@@ -81,22 +81,25 @@ Alpine.start();
                 }
 
                 // ---- Text ----
-                if (textDiv && textEl) {
-                    textDiv.style.top = `${window.innerHeight * 0.57}px`;
-                    textEl.innerHTML =
-                        "<strong>Grow with us</strong> on a sustainable journey <br>" +
-                        "where <strong>every small action blooms into impact</strong><br>" +
-                        "and every quest brings meaningful rewards.";
-                    textEl.classList.add("fade-text");
+      if (textDiv && textEl) {
+    textDiv.style.top = `${window.innerHeight * 0.57}px`;
+    textEl.innerHTML =
+        "<strong>Grow with us</strong> on a sustainable journey <br>" +
+        "where <strong>every small action blooms into impact</strong><br>" +
+        "and every quest brings meaningful rewards.";
+    textEl.classList.add("fade-text");
+    
+    // Add mobile hide class
+    textEl.classList.add("mobile-hide-text");
 
-                    textEl.style.fontSize = "clamp(0.9rem, 1.8vw, 1.3rem)";
-                    textEl.style.lineHeight = "1.3";
-                    textEl.style.textAlign = "center";
-                    textEl.style.color = "#556037ff";
-                    textEl.style.fontWeight = "500";
-                    textEl.style.maxWidth = "500px";
-                    textEl.style.margin = "0 auto";
-                }
+    textEl.style.fontSize = "clamp(0.9rem, 1.8vw, 1.3rem)";
+    textEl.style.lineHeight = "1.3";
+    textEl.style.textAlign = "center";
+    textEl.style.color = "#556037ff";
+    textEl.style.fontWeight = "500";
+    textEl.style.maxWidth = "500px";
+    textEl.style.margin = "0 auto";
+}
 
                 // ---- Glow animation ----
                 const glowContainers = document.querySelectorAll(
