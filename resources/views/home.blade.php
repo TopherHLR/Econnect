@@ -900,178 +900,251 @@
             @endguest
         </div>
     </section>
-
-
-
-    <section class="relative text-center py-27 px-6 overflow-hidden mb-[96px] min-h-screen"> <!-- min-h-screen = 100vh -->
-        <!-- Background image that scrolls with content -->
-        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
-            style="background-image: url('{{ Vite::asset('resources/images/viewport1/bgstatic.webp') }}');">
-        </div>
-        <!-- Content -->
-        <div class="relative flex flex-col items-center justify-center space-y-10 z-20 -mt-20 md:-mt-23">
-            <h2
-                class="text-white font-serif italic font-bold text-5xl md:text-6xl lg:text-7xl 
+<section class="relative text-center py-27 px-6 overflow-hidden mb-[96px] min-h-screen
+    [@media(max-width:640px)]:py-16 [@media(max-width:640px)]:px-4 [@media(max-width:640px)]:mb-[60px] [@media(max-width:640px)]:min-h-[85vh]">
+    
+    <!-- Desktop/Laptop background (768px+) -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 hidden md:block"
+        style="background-image: url('{{ Vite::asset('resources/images/viewport1/bgstatic.webp') }}');">
+    </div>
+    
+    <!-- Mobile background (<768px) -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 md:hidden"
+        style="background-image: url('{{ Vite::asset('resources/images/viewport1/smallerbgstatic.webp') }}');">
+    </div>
+    
+    <!-- Content container -->
+    <div class="relative flex flex-col items-center justify-center space-y-10 z-20 -mt-20 md:-mt-23
+        [@media(max-width:640px)]:space-y-6 [@media(max-width:640px)]:-mt-10">
+        
+        <h2 class="text-white font-serif italic font-bold text-5xl md:text-6xl lg:text-7xl 
             drop-shadow-[0_4px_8px_rgba(111,78,55,0.65),0_8px_24px_rgba(89,63,44,0.55),0_0_35px_rgba(255,252,225,0.25)]
-            tracking-wider leading-snug text-center px-4 relative z-30">
-                The passion of <span class="text-[#fff8b0] drop-shadow-[0_0_20px_rgba(255,248,176,0.6)]">Ecobrew</span>
-            </h2>
-            <!-- Text Box -->
+            tracking-wider leading-snug text-center px-4 relative z-30
+            [@media(max-width:640px)]:text-3xl [@media(max-width:640px)]:leading-tight [@media(max-width:640px)]:tracking-normal
+            [@media(max-width:480px)]:text-2xl [@media(max-width:480px)]:px-2">
+            The passion of 
+            <span class="text-[#fff8b0] drop-shadow-[0_0_20px_rgba(255,248,176,0.6)]
+                [@media(max-width:640px)]:text-[#fff8b0]/95
+                [@media(max-width:640px)]:drop-shadow-[0_0_10px_rgba(255,248,176,0.4)]">
+                Ecobrew
+            </span>
+        </h2>
+        
+        <!-- PUSHED MORE TO BOTTOM - Increased mt values -->
+        <div class="bg-gradient-to-br from-[#6b4f37]/90 via-[#5a402c] to-[#3a2a1c]/90 
+            text-amber-50 text-[clamp(1rem,3.5vw,2rem)] md:text-2xl lg:text-3xl
+            px-[clamp(1rem,6vw,3.75rem)] py-[clamp(1rem,3vw,2rem)] rounded-[clamp(1.25rem,2.5vw,2rem)]
+            max-w-[95%] md:max-w-5xl lg:max-w-6xl mx-auto leading-relaxed
+            shadow-[0_25px_50px_-12px_rgba(111,78,55,0.5)] border border-amber-900/30 backdrop-blur-md
+            font-serif text-center 
+            
+            /* PUSHED DOWN MORE: Increased top margin significantly */
+            mt-[clamp(8rem,20vw,12rem)]  /* Changed from 3rem,12vw,8rem to 8rem,20vw,12rem */
+            
+            mb-[clamp(1.5rem,4vw,5rem)]
+            [@media(max-width:640px)]:leading-normal [@media(max-width:640px)]:backdrop-blur-sm
+            [@media(max-width:480px)]:leading-snug
+            [@media(max-width:640px)]:mt-[15rem]  /* Extra push for mobile */
+            [@media(min-width:768px)]:mt-[35rem]  /* Extra push for laptop/desktop */">
+            
+            Ecobrew shares simple ways to live more sustainably—at no cost.
+        </div>
+    </div>
+</section>
+
+   <section class="py-20 px-8 overflow-hidden relative
+    [@media(max-width:640px)]:py-10 [@media(max-width:640px)]:px-4">
+
+    <!-- Background overlay image -->
+    <div
+        class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat opacity-15">
+    </div>
+
+    <!-- 🌫️ Soft Fog Layer -->
+    <div
+        class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]
+        [@media(max-width:640px)]:h-[80px]">
+    </div>
+
+    <!-- 🌫️ Soft Fog Layer -->
+    <div
+        class="absolute top-[-3rem] left-0 w-full h-[150px] bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]
+        [@media(max-width:640px)]:top-[-1.5rem] [@media(max-width:640px)]:h-[80px]">
+    </div>
+
+    <!-- Cards Container - Stack vertically on mobile -->
+    <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10
+        [@media(max-width:640px)]:items-center [@media(max-width:640px)]:gap-12 [@media(max-width:640px)]:mt-6 [@media(max-width:640px)]:max-w-full">
+
+        <!-- 🌱 Card 1 -->
+        <div class="fade-card
+            [@media(max-width:640px)]:w-full">
             <div
-                class="bg-gradient-to-br from-[#6b4f37]/90 via-[#5a402c] to-[#3a2a1c]/90 
-            text-amber-50 text-2xl md:text-3xl px-15 py-8 rounded-[2rem] max-w-6xl mx-auto
-            leading-relaxed shadow-[0_25px_50px_-12px_rgba(111,78,55,0.5)]
-            border border-amber-900/30 backdrop-blur-md
-            font-serif text-center mt-130 mb-20">
-                <!-- Changed mt-20 to mt-40 -->
-
-                Ecobrew shares simple ways to live more sustainably—at no cost.
-
-            </div>
-        </div>
-    </section>
-
-
-    <section class="py-20 px-8 overflow-hidden relative">
-
-        <!-- Background overlay image -->
-        <div
-            class="absolute inset-0 bg-[url('/resources/images/viewport1/wood-texture.png')] bg-cover bg-center bg-no-repeat opacity-15">
-        </div>
-
-        <!-- 🌫️ Soft Fog Layer -->
-        <div
-            class="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#E0E9D6] via-[#E0E9D6]/80 to-transparent z-[5]">
-        </div>
-
-        <!-- 🌫️ Soft Fog Layer -->
-        <div
-            class="absolute top-[-3rem] left-0 w-full h-[150px] bg-gradient-to-b from-[#E0E9D6] from-25% via-[#E0E9D6]/50 via-50% to-transparent z-[5]">
-        </div>
-
-        <!-- Cards Container -->
-        <div class="relative z-10 flex flex-col items-start gap-20 max-w-6xl mx-auto mt-10">
-
-            <!-- 🌱 Card 1 -->
-            <div class="fade-card">
-                <div
-                    class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
-                    <!-- Left side image -->
-                    <div class="w-64 h-64 mr-8 flex-shrink-0">
-                        <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}"
-                            alt="People collaborating on sustainability"
-                            class="w-full h-full object-cover rounded-2xl shadow-md">
-                    </div>
-
-                    <!-- Content on right -->
-                    <div class="flex-1">
-                        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Discover people who want to contribute
-                            more</h3>
-                        <p class="text-gray-700 mt-1 text-[20px]">EcoBrew shares simple ways to live more sustainably—at no
-                            cost.</p>
-                        <div class="flex justify-end">
-                            <a href="/leaderboard"
-                                class="mt-10 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300">
-                                Explore Leaderboards
-                            </a>
-                        </div>
-                    </div>
+                class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20
+                [@media(max-width:640px)]:flex-col [@media(max-width:640px)]:w-full [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:p-6 [@media(max-width:640px)]:min-h-auto [@media(max-width:640px)]:rounded-2xl">
+                
+                <!-- Left side image -->
+                <div class="w-64 h-64 mr-8 flex-shrink-0
+                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:h-48 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:mb-6">
+                    <img src="{{ Vite::asset('resources/images/viewport1/91250.jpg') }}"
+                        alt="People collaborating on sustainability"
+                        class="w-full h-full object-cover rounded-2xl shadow-md
+                        [@media(max-width:640px)]:rounded-xl">
                 </div>
-            </div>
 
-            <!-- 🌿 Card 2 (MOVED SIGNIFICANTLY RIGHT) -->
-            <div class="fade-card">
-                <div
-                    class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[300px] min-h-[300px] backdrop-blur-sm border border-white/20">
-                    <!-- Content on left -->
-                    <div class="flex-1">
-                        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Take on fun eco-quests</h3>
-                        <p class="text-gray-700 mt-2 text-[20px]">Turn small actions into meaningful impact.</p>
-                        <div class="flex justify-start">
-                            <a href="/quests"
-                                class="mt-20 ml-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300">
-                                Explore quests
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Right side image -->
-                    <div class="w-64 h-64 ml-8 flex-shrink-0">
-                        <img src="{{ Vite::asset('resources/images/viewport1/quest.jpg') }}"
-                            alt="Eco quests and challenges" class="w-full h-full object-cover rounded-2xl shadow-md">
-                    </div>
-                </div>
-            </div>
-
-            <!-- ☕ Card 3 -->
-            <div class="fade-card">
-                <div
-                    class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20">
-                    <!-- Left side image -->
-                    <div class="w-64 h-64 mr-8 flex-shrink-0">
-                        <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}"
-                            alt="Sustainable café inspiration" class="w-full h-full object-cover rounded-2xl shadow-md">
-                    </div>
-
-                    <!-- Content on right -->
-                    <div class="flex-1">
-                        <h3 class="text-[#4A6613] italic font-semibold text-[40px]">Be inspired by Ecobrew</h3>
-                        <p class="text-gray-700 mt-2 text-[20px]">See how one café walks its sustainability talk.</p>
-                        <div class="flex justify-end">
-                            <a href="/about"
-                                class="mt-15 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300">
-                                Explore About Us
-                            </a>
-                        </div>
+                <!-- Content on right -->
+                <div class="flex-1
+                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:text-center">
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]
+                        [@media(max-width:640px)]:text-2xl [@media(max-width:640px)]:leading-tight">
+                        Discover people who want to contribute more
+                    </h3>
+                    <p class="text-gray-700 mt-1 text-[20px]
+                        [@media(max-width:640px)]:text-base [@media(max-width:640px)]:mt-2">
+                        EcoBrew shares simple ways to live more sustainably—at no cost.
+                    </p>
+                    <div class="flex justify-end
+                        [@media(max-width:640px)]:justify-center [@media(max-width:640px)]:mt-6">
+                        <a href="/leaderboard"
+                            class="mt-10 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300
+                            [@media(max-width:640px)]:mt-4 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:px-6 [@media(max-width:640px)]:py-3">
+                            Explore Leaderboards
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <style>
-        /* Simple fade animation */
+        <!-- 🌿 Card 2 -->
+        <div class="fade-card
+            [@media(max-width:640px)]:w-full">
+            <div
+                class="bg-gradient-to-r from-[#F7FBEE]/95 to-[#E3F2D3]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] ml-[300px] min-h-[300px] backdrop-blur-sm border border-white/20
+                [@media(max-width:640px)]:flex-col [@media(max-width:640px)]:w-full [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:p-6 [@media(max-width:640px)]:min-h-auto [@media(max-width:640px)]:rounded-2xl">
+                
+                <!-- Content on left -->
+                <div class="flex-1
+                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:text-center [@media(max-width:640px)]:order-2">
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]
+                        [@media(max-width:640px)]:text-2xl [@media(max-width:640px)]:leading-tight">
+                        Take on fun eco-quests
+                    </h3>
+                    <p class="text-gray-700 mt-2 text-[20px]
+                        [@media(max-width:640px)]:text-base [@media(max-width:640px)]:mt-2">
+                        Turn small actions into meaningful impact.
+                    </p>
+                    <div class="flex justify-start
+                        [@media(max-width:640px)]:justify-center [@media(max-width:640px)]:mt-6">
+                        <a href="/quests"
+                            class="mt-20 ml-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300
+                            [@media(max-width:640px)]:mt-4 [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:px-6 [@media(max-width:640px)]:py-3">
+                            Explore quests
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right side image -->
+                <div class="w-64 h-64 ml-8 flex-shrink-0
+                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:h-48 [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:mb-6 [@media(max-width:640px)]:order-1">
+                    <img src="{{ Vite::asset('resources/images/viewport1/quest.jpg') }}"
+                        alt="Eco quests and challenges" 
+                        class="w-full h-full object-cover rounded-2xl shadow-md
+                        [@media(max-width:640px)]:rounded-xl">
+                </div>
+            </div>
+        </div>
+
+        <!-- ☕ Card 3 -->
+        <div class="fade-card
+            [@media(max-width:640px)]:w-full">
+            <div
+                class="bg-gradient-to-r from-[#E3F2D3]/95 to-[#F7FBEE]/95 rounded-3xl p-8 shadow-lg flex items-center justify-between w-[1000px] -ml-[160px] min-h-[300px] backdrop-blur-sm border border-white/20
+                [@media(max-width:640px)]:flex-col [@media(max-width:640px)]:w-full [@media(max-width:640px)]:ml-0 [@media(max-width:640px)]:p-6 [@media(max-width:640px)]:min-h-auto [@media(max-width:640px)]:rounded-2xl">
+                
+                <!-- Left side image -->
+                <div class="w-64 h-64 mr-8 flex-shrink-0
+                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:h-48 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:mb-6">
+                    <img src="{{ Vite::asset('resources/images/viewport1/shop.jpg') }}"
+                        alt="Sustainable café inspiration" 
+                        class="w-full h-full object-cover rounded-2xl shadow-md
+                        [@media(max-width:640px)]:rounded-xl">
+                </div>
+
+                <!-- Content on right -->
+                <div class="flex-1
+                    [@media(max-width:640px)]:w-full [@media(max-width:640px)]:text-center">
+                    <h3 class="text-[#4A6613] italic font-semibold text-[40px]
+                        [@media(max-width:640px)]:text-2xl [@media(max-width:640px)]:leading-tight">
+                        Be inspired by Ecobrew
+                    </h3>
+                    <p class="text-gray-700 mt-2 text-[20px]
+                        [@media(max-width:640px)]:text-base [@media(max-width:640px)]:mt-2">
+                        See how one café walks its sustainability talk.
+                    </p>
+                    <div class="flex justify-end
+                        [@media(max-width:640px)]:justify-center [@media(max-width:640px)]:mt-6">
+                        <a href="/about"
+                            class="mt-15 mr-[30px] bg-[#5C3B23] text-white px-5 py-2 rounded-xl text-sm hover:bg-[#3d2617] transition-colors duration-300
+                            [@media(max-width:640px)]:mt-4 [@media(max-width:640px)]:mr-0 [@media(max-width:640px)]:px-6 [@media(max-width:640px)]:py-3">
+                            Explore About Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Simple fade animation */
+    .fade-card {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-card.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Mobile specific animations */
+    @media (max-width: 640px) {
         .fade-card {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(10px);
         }
+    }
+</style>
 
-        .fade-card.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.fade-card');
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.fade-card');
-
-            // Simple Intersection Observer
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('show');
-                    } else {
-                        entry.target.classList.remove('show');
-                    }
-                });
-            }, {
-                threshold: 0.1, // Trigger when 10% of card is visible
-                rootMargin: '0px 0px -50px 0px' // Slight offset for smoothness
+        // Simple Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                } else {
+                    entry.target.classList.remove('show');
+                }
             });
-
-            // Start observing each card
-            cards.forEach(card => {
-                observer.observe(card);
-            });
+        }, {
+            threshold: 0.1, // Trigger when 10% of card is visible
+            rootMargin: '0px 0px -50px 0px' // Slight offset for smoothness
         });
-    </script>
+
+        // Start observing each card
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+    });
+</script>
 
     <section class="relative py-48 px-8 overflow-hidden pattern-bg">
 
