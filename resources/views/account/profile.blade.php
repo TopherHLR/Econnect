@@ -10,17 +10,13 @@
     <div class="space-y-6">
 
         <!-- QR CODE CARD -->
-        <div class="bg-white shadow-md rounded-2xl p-6 w-full  md:w-[1300px] mx-auto">
+        <div class="bg-white shadow-md rounded-2xl p-6 w-full md:w-[1300px] mx-auto">
 
             <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
 
                 <!-- LEFT: QR CODE + TEXT -->
-                <div class="flex flex-col items-center md:items-start">
-                    <div id="user-qr-code" class="w-[210px] h-[210px] bg-gray-300"></div>
-
-                    <p class="text-gray-600 text-sm mt-2 break-all w-[180px] text-center md:text-left">
-                        {{ $user->qr_code }}
-                    </p>
+                <div class="flex flex-col  mr-10 md:mr-0 items-center md:items-start flex-shrink-0">
+                    <div id="user-qr-code" class="w-[210px] h-[210px] bg-gray-300 mb-4 md:mb-0"></div>
                 </div>
 
                 <!-- CENTER: MESSAGE -->
@@ -28,6 +24,11 @@
                     <h1 class="text-3xl md:text-4xl font-bold text-green-900">
                         Hello, {{ $user->first_name }}!
                     </h1>
+
+                    <p
+                        class="text-gray-600 text-sm mt-2 break-all max-w-[90vw] md:max-w-[180px] mx-auto md:mx-0 text-center md:text-left">
+                        {{ $user->qr_code }}
+                    </p>
 
                     <p class="mt-4 text-lg text-green-900 leading-relaxed">
                         At EcoBrew, a café on a mission, we serve quality food and drinks<br class="hidden md:block">
@@ -55,6 +56,7 @@
 
             </div>
         </div>
+
 
 
         <!-- PROFILE FORM -->
