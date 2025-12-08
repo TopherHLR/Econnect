@@ -22,7 +22,7 @@
 
                     <span class="hidden xl:inline">Verify User</span>
                 </button>
-                <button onclick="openUserQrScannerModal()" class="btn-eco btn-leaf compact" title="Scan User QR">
+                <button onclick="openUserQrScannerModal()" class="btn-eco btn-mint compact" title="Scan User QR">
                     <i class="fa-solid fa-qrcode"></i>
                     <span class="hidden xl:inline">QR Quests</span>
                 </button>
@@ -161,7 +161,7 @@
                 <!-- 🟢 HIGH PRIORITY CARDS (Top Row) -->
 
                     <div class="metric-card">
-                        <h3 class="text-lg font-semibold text-green-700">Most Deserving Player</h3>
+                        <h3 class="text-lg font-semibold text-[#4A6613]">Most Deserving Player</h3>
 
                         <div class="mt-2">
                             <p><strong>Name:</strong> {{ $mostDeserving->user->first_name }}
@@ -171,7 +171,7 @@
 
                         <!-- Reward Button -->
                         <button onclick="openRewardModal()"
-                            class="mt-3 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            class="mt-3 px-4 py-2 bg-[#4A6613] text-white rounded hover:bg-[#95a379] ">
                             Give Reward
                         </button>
 
@@ -198,10 +198,10 @@
                 <div class="metric-card urgent">
                     <div class="flex justify-between items-start">
                         <h3 class="metric-title">Pending Submissions</h3>
-                        <i class="fa-solid fa-inbox text-[#DC2626] text-lg"></i>
+                        <i class="fa-solid fa-inbox text-[#D97706] text-lg"></i>
                     </div>
                     <div class="mt-4">
-                        <div class="metric-value text-[#DC2626]" id="pendingSubmissionsCount">{{ $pendingSubmissions }}
+                        <div class="metric-value text-[#D97706]" id="pendingSubmissionsCount">{{ $pendingSubmissions }}
                         </div>
                         <div class="metric-subtext italic">
                             "Behind every submission is someone choosing sustainability."
@@ -381,11 +381,11 @@
                 <div class="metric-card">
                     <div class="flex justify-between items-start">
                         <h3 class="metric-title">Points Redeemed</h3>
-                        <i class="fa-solid fa-gift text-[#DC2626] text-lg"></i>
+                        <i class="fa-solid fa-gift text-[#D97706] text-lg"></i>
                     </div>
                     <div class="mt-4">
                         <div class="flex justify-between items-end mb-3">
-                            <div class="metric-value text-[#DC2626]">{{ $pointsRedeemed }} pts</div>
+                            <div class="metric-value text-[#D97706]">{{ $pointsRedeemed }} pts</div>
                             <div class="metric-subtext">redeemed in the last 7 days</div>
                         </div>
 
@@ -399,7 +399,7 @@
                                 <div class="flex flex-col items-center">
                                     <div class="relative group">
                                         <!-- Bar -->
-                                        <div class="w-5 bg-[#DC2626] rounded transition-all duration-500"
+                                        <div class="w-5 bg-[#D97706] rounded transition-all duration-500"
                                             style="height: {{ $height }}px">
                                         </div>
 
@@ -470,7 +470,7 @@
             }
 
             .metric-card.urgent {
-                border-left: 4px solid #DC2626;
+                border-left: 4px solid #FEF3C7;
             }
 
             .metric-title {

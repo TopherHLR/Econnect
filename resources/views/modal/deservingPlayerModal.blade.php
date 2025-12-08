@@ -1,6 +1,7 @@
 <!-- Reward Modal -->
-<div id="rewardModal" class="hidden fixed inset-0 z-3000 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white p-6 rounded-lg shadow-xl w-96">
+<div id="rewardModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div class=" rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] w-full max-w-lg p-6 relative">
         <h2 class="text-xl font-bold mb-4">Give Reward</h2>
 
         <form action="{{ route('admin.giveReward') }}" method="POST">
@@ -20,7 +21,7 @@
                 class="w-full mt-[-10px] mb-4 text-sm text-green-700 underline hover:text-green-900">
                 + Add New Voucher
             </button>
-            <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+            <button class="w-full bg-[#4A6613] text-white py-2 rounded hover:bg-[#95a379]">
                 Confirm Reward
             </button>
         </form>

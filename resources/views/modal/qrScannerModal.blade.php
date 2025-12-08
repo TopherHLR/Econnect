@@ -1,9 +1,10 @@
 <!-- QR Scanner Modal (Theme-Matched with Image Upload) -->
 <div id="qrScannerModal" class="hidden fixed inset-0 z-3000 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
+    <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] overflow-hidden">
 
         <!-- Modal Header -->
-        <div class="flex justify-between items-center px-6 py-4 bg-[#8B6E4A] text-white">
+        <div class="flex justify-between items-center px-6 py-4 bg-[#4A6613] text-white">
             <h3 id="qr-scanner-title" class="text-lg font-semibold flex items-center">
                 <i class="fa-solid fa-qrcode mr-2"></i> Scan Voucher QR Code
             </h3>
@@ -98,7 +99,8 @@
 
 <!-- PENDING QQUEST VIA QR-->
 <div id="userPendingQuestsModal" class="hidden fixed inset-0 z-3000 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#FCFFF6] w-full max-w-3xl rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-auto p-6">
+    <div class=" w-full max-w-3xl rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] overflow-auto p-6">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold text-[#4F6B3F]">User Pending Quests</h2>
             <button onclick="closeUserPendingQuestsModal()" class="text-[#8B6E4A] hover:text-[#6A8A52]">

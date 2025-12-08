@@ -1,8 +1,9 @@
 <div id="addVoucherModal" class="hidden fixed inset-0 z-3000 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
+    <div class=" w-full max-w-lg rounded-2xl shadow-2xl   bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB]  overflow-hidden">
 
         <!-- Modal Header -->
-        <div class="flex justify-between items-center px-6 py-4 bg-[#8B6E4A] text-white">
+        <div class="flex justify-between items-center px-6 py-4 bg-[#4A6613] text-white">
             <h2 id="voucherModalTitle" class="text-lg font-semibold flex items-center">
                 <i class="fa-solid fa-ticket mr-2"></i> Add New Voucher
             </h2>

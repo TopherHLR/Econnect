@@ -4,7 +4,7 @@
 
 @section('content')
     @include('modal.userQuestModal')
-    <div class="space-y-6">
+    <div class="space-y-6 min">
         <!-- Header Section with Quick Actions -->
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-2">
             <div>

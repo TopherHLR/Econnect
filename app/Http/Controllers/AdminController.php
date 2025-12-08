@@ -306,7 +306,7 @@ class AdminController extends Controller
             'pointsHistory',
             'userVouchers.voucher',
             'feedbacks',
-        ])->paginate(2);
+        ])->paginate(5);
 
         // Log the QR code for each user
         foreach ($users as $user) {

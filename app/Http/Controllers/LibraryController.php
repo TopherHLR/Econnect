@@ -366,14 +366,14 @@ class LibraryController extends Controller
         $archivedTopics = EcoLibrary::where('type', 'Topic')
             ->where('archive', 1)
             ->orderBy('created_at', 'desc')
-            ->paginate(1);
+            ->paginate(5);
 
         $ecoActions = EcoAction::where('archive', 0)
             ->orderBy('created_at', 'desc')
-            ->paginate(1);
+            ->paginate(5);
         $archivedActions = EcoAction::where('archive', 1)
             ->orderBy('created_at', 'desc')
-            ->paginate(1);
+            ->paginate(5);
 
         $ecoTopicsList = EcoLibrary::where('type', 'Topic')
             ->where('archive', 0)

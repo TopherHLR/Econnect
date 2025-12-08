@@ -1,9 +1,10 @@
 <!-- Create Eco Topic Modal -->
 <div id="createEcoTopicModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
+    <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] overflow-hidden">
 
         <!-- Modal Header -->
-        <div class="flex justify-between items-center px-6 py-4 bg-[#8B6E4A] text-white">
+        <div class="flex justify-between items-center px-6 py-4 bg-[#4A6613] text-white">
             <h2 class="text-lg font-semibold flex items-center">
                 <i class="fa-solid fa-leaf mr-2"></i> Add Eco Topic
             </h2>
@@ -83,10 +84,11 @@
 </div>
 <!-- Edit Eco Topic Modal -->
 <div id="editEcoTopicModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
+    <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] overflow-hidden">
 
         <!-- Modal Header -->
-        <div class="flex justify-between items-center px-6 py-4 bg-[#8B6E4A] text-white">
+        <div class="flex justify-between items-center px-6 py-4 bg-[#4A6613] text-white">
             <h2 class="text-lg font-semibold flex items-center">
                 <i class="fa-solid fa-leaf mr-2"></i> Edit Eco Topic
             </h2>
@@ -147,10 +149,11 @@
 
 <!-- Add Eco Action Modal -->
 <div id="addEcoActionModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
+    <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] overflow-hidden">
 
         <!-- Modal Header -->
-        <div class="flex justify-between items-center px-6 py-4 bg-[#8B6E4A] text-white">
+        <div class="flex justify-between items-center px-6 py-4 bg-[#4A6613] text-white">
             <h2 class="text-lg font-semibold flex items-center">
                 <i class="fa-solid fa-hand-holding-seedling mr-2"></i> Add Eco Action
             </h2>
@@ -230,10 +233,11 @@
 
 <!-- Edit Eco Action Modal -->
 <div id="editEcoActionModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
+    <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] overflow-hidden">
 
         <!-- Modal Header -->
-        <div class="flex justify-between items-center px-6 py-4 bg-[#8B6E4A] text-white">
+        <div class="flex justify-between items-center px-6 py-4 bg-[#4A6613] text-white">
             <h2 class="text-lg font-semibold flex items-center">
                 <i class="fa-solid fa-hand-holding-seedling mr-2"></i> Edit Eco Action
             </h2>

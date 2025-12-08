@@ -1,9 +1,10 @@
 <!-- Create / Edit Quest Modal -->
 <div id="createQuestModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-[#FCFFF6] w-full max-w-lg rounded-2xl shadow-2xl border border-[#8B6E4A]/40 overflow-hidden">
+    <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB]  overflow-hidden">
 
         <!-- Modal Header -->
-        <div class="flex justify-between items-center px-6 py-4 bg-[#8B6E4A] text-white">
+        <div class="flex justify-between items-center px-6 py-4  bg-[#4A6613] text-white">
             <h2 id="modalTitle" class="text-lg font-semibold flex items-center">
                 <i class="fa-solid fa-bullseye mr-2"></i> Create New Quest
             </h2>
@@ -125,7 +126,8 @@
 </div>
 <!-- Submission Modal -->
 <div id="submissionModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl border border-[#8B6E4A]/40 w-full max-w-lg p-6 relative">
+    <div class=" rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+            border-2 border-[#C8D5BB] w-full max-w-lg p-6 relative">
         <button type="button" onclick="closeSubmissionModal()"
             class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
             <i class="fa-solid fa-xmark text-2xl"></i>
@@ -143,7 +145,7 @@
                 Reject
             </button>
             <button id="btnVerify"
-                class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg font-medium transition">
+                class=" bg-[#4A6613] text-white hover:bg-[#95a379] px-5 py-2.5 rounded-lg font-medium transition">
                 Verify & Award Points
             </button>
         </div>

@@ -50,7 +50,7 @@
 
                             <!-- Reward Button -->
                             <button onclick="openRewardModal()"
-                                class="mt-3 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                                class="mt-3 px-4 py-2 bg-[#4A6613] text-white rounded-lg hover:bg-green-700">
                                 Give Reward
                             </button>
                         </div>
