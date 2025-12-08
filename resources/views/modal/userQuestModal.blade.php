@@ -1,5 +1,5 @@
     <!-- 🔹 Active Quest Modal -->
-    <div id="activeQuestModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div id="activeQuestModal" class="hidden fixed inset-0 z-[1000] bg-black/50 flex items-center justify-center p-4">
         <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB] overflow-hidden">
 
@@ -38,7 +38,7 @@
         </div>
     </div>
     <!-- 🔹 Accepted Quest Submission Modal -->
-    <div id="acceptedQuestModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div id="acceptedQuestModal" class="hidden fixed inset-0 z-[1000] bg-black/50 flex items-center justify-center p-4">
         <div class="w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB] overflow-hidden">
 
@@ -91,7 +91,7 @@
         </div>
     </div>
     <!-- 🔹 Quest View Modal (Completed & Rejected) -->
-    <div id="viewQuestModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div id="viewQuestModal" class="hidden fixed inset-0 z-[1000] bg-black/50 flex items-center justify-center p-4">
         <div class="w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB] overflow-hidden">
 
