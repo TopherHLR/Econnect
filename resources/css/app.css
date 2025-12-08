@@ -1590,6 +1590,7 @@ button{
     from { transform: translateY(40px); opacity: 0; }
     to   { transform: translateY(0); opacity: 1; }
 }
+<<<<<<< HEAD
 
 
 #mobile-button-wrapper {
@@ -1610,3 +1611,53 @@ button{
     transform: translateY(10px);
     pointer-events: none;
 }
+=======
+/* =========================================================== */
+/* MOBILE SCROLLING FIXES FOR LIFESTYLE PAGE                  */
+/* =========================================================== */
+
+/* Fix for mobile scrolling in eco content */
+.touch-scroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Enables momentum scrolling on iOS */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #7A8C4F #E0E9D6; /* Custom scrollbar colors */
+}
+
+/* Custom scrollbar styling for webkit browsers */
+.touch-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.touch-scroll::-webkit-scrollbar-track {
+    background: #E0E9D6;
+    border-radius: 10px;
+}
+
+.touch-scroll::-webkit-scrollbar-thumb {
+    background: #7A8C4F;
+    border-radius: 10px;
+}
+
+.touch-scroll::-webkit-scrollbar-thumb:hover {
+    background: #5C7919;
+}
+
+/* Ensure saved items lists also scroll on mobile */
+#savedList, #mobileSavedList {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* For very small mobile screens, adjust the height */
+@media (max-width: 640px) {
+    .max-h-\[55vh\] {
+        max-height: 65vh !important; /* Give more height on mobile */
+    }
+    
+    /* Ensure scroll works even when keyboard is open */
+    #ecoContent {
+        overflow-y: scroll !important;
+    }
+}
+>>>>>>> 55e1cac1683d4f8503c33133a77036d568ad0512
