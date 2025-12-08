@@ -125,11 +125,11 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //---------------------------------------------------- LIBRARY (USER SIDE) -------------------------------------------------
-
+    Route::get('/libraries/{id}', [LibraryController::class, 'show'])->name('libraries.show');
 // User library routes
 Route::middleware('auth')->group(function () {
     Route::get('/libraries', [LibraryController::class, 'index'])->name('libraries.index');
-    Route::get('/libraries/{id}', [LibraryController::class, 'show'])->name('libraries.show');
+
     Route::post('/libraries/{id}/save', [LibraryController::class, 'saveLibrary'])->name('libraries.save');
     Route::delete('/libraries/{id}/unsave', [LibraryController::class, 'unsaveLibrary'])->name('libraries.unsave');
     Route::post('/libraries/{id}/mark-done', [LibraryController::class, 'markDone'])->name('libraries.mark-done');
