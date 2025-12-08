@@ -1,6 +1,7 @@
 <table class="min-w-full bg-white border border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
     <thead class="bg-[#FCF9EF] border-b border-[#D8E2CA]">
         <tr>
+            <th class="px-4 py-3 text-left font-semibold">#</th>
             <th class="px-4 py-3 text-left font-semibold">Reward Name</th>
             <th class="px-4 py-3 text-left font-semibold">Points Cost</th>
             <th class="px-4 py-3 text-left font-semibold">Discount</th>
@@ -13,6 +14,7 @@
         @foreach ($vouchers as $voucher)
             @if ($voucher->is_active)
                 <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
+                    <td class="px-4 py-2">{{ $loop->iteration }}</td>
                     <td class="px-4 py-3 font-medium text-[#4F6B3F]">
                         {{ $voucher->title }}
                     </td>

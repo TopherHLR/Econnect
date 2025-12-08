@@ -1,6 +1,7 @@
 <table class="min-w-full bg-white border border-[#D8E2CA] rounded-2xl overflow-hidden shadow-sm">
     <thead class="bg-[#FCF9EF] border-b border-[#D8E2CA]">
         <tr>
+            <th class="px-4 py-3 text-left font-semibold">#</th>
             <th class="px-4 py-3 text-left font-semibold">User</th>
             <th class="px-4 py-3 text-left font-semibold">Reward</th>
             <th class="px-4 py-3 text-left font-semibold">Redeem Date</th>
@@ -12,6 +13,7 @@
     <tbody>
         @foreach ($redeemed as $r)
             <tr class="border-b border-[#E6EAD7] hover:bg-[#F5F7F0] transition">
+                <td class="px-4 py-2">{{ $loop->iteration }}</td>
                 <td class="px-4 py-3">{{ $r->user->first_name }}
                     {{ $r->user->last_name }}
                 </td>
