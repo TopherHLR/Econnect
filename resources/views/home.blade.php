@@ -236,7 +236,8 @@
         @auth
             @if (auth()->user()->user_type === 'verified_user')
                 <!-- 🌿 LEFT MODAL PANEL -->
-                <div id="left-panel" class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:left-[5rem] lg:translate-x-0"
+                <div id="left-panel"
+                    class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:left-[5rem] lg:translate-x-0"
                     style="position: absolute; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(224, 233, 214, 0.6); box-shadow: 0 12px 48px rgba(122, 140, 79, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                     <!-- Title + View More Link -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
@@ -317,7 +318,8 @@
                     @endif
                 </div>
                 <!-- 🌿 RIGHT MODAL PANEL -->
-                <div id="right-panel" class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:right-[5rem] lg:left-auto lg:translate-x-0"
+                <div id="right-panel"
+                    class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:right-[5rem] lg:left-auto lg:translate-x-0"
                     style="position: absolute; top: 25%; width: 420px; height: 360px; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(10px); border: 1.5px solid rgba(240, 230, 222, 0.6); box-shadow: 0 12px 48px rgba(195, 122, 73, 0.18); padding: 1.75rem; border-radius: 1.5rem; z-index: 10;">
                     <!-- Title + View More Link -->
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
@@ -400,7 +402,8 @@
                 </div>
             @else
                 <!-- 🌿 LEFT MODAL PANEL LOCKED -->
-                <div id="left-panel" class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:left-[5rem] lg:translate-x-0"
+                <div id="left-panel"
+                    class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:left-[5rem] lg:translate-x-0"
                     style="position: absolute; top: 25%; width: 420px; height: 360px; 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(240,245,235,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(122,140,79,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                         <!-- 🔒 Overlay Lock -->
@@ -431,7 +434,8 @@
                 </div>
 
                 <!-- 🌿 RIGHT MODAL PANEL LOCKED -->
-                <div id="right-panel" class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:right-[5rem] lg:left-auto lg:translate-x-0"
+                <div id="right-panel"
+                    class="fade-in-panel hidden lg:block left-1/2 -translate-x-1/2 lg:right-[5rem] lg:left-auto lg:translate-x-0"
                     style="position: absolute; top: 25%; width: 420px; height: 360px; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(250,248,242,0.3) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 24px 72px rgba(195,122,73,0.22); padding: 1.5rem; border-radius: 1.5rem; z-index: 10;">
                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                         <!-- 🔒 Overlay Lock -->
@@ -466,42 +470,42 @@
         <div id="plant-container"
             class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
             @auth
-                    <div id="mobile-button-wrapper"
-                        class="lg:hidden fixed top-4 left-1/2 -translate-x-1/2 
+                <div id="mobile-button-wrapper"
+                    class="lg:hidden fixed top-4 left-1/2 -translate-x-1/2 
                   flex items-center justify-center gap-6 z-[999]">
-                        <!-- Left Arrow -->
-                        <button id="mobile-switch-left"
-                            class="w-10 h-10 flex hidden items-center justify-center
+                    <!-- Left Arrow -->
+                    <button id="mobile-switch-left"
+                        class="w-10 h-10 flex hidden items-center justify-center
                         rounded-full bg-[#F7F6EB]/80 backdrop-blur-md
                         shadow-[0_4px_12px_rgba(0,0,0,0.15)]
                         border border-[#e6e4cf]
                         text-[#4B4A2E]
                         hover:bg-[#FFFDF4] active:scale-95 transition-all duration-300">
-                            <!-- SVG -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path fill="currentColor" d="M15.5 19 8.5 12l7-7" />
-                            </svg>
-                        </button>
+                        <!-- SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                            <path fill="currentColor" d="M15.5 19 8.5 12l7-7" />
+                        </svg>
+                    </button>
 
-                        <!-- Center main toggle button -->
-                        <button id="mobile-panels-toggle" class="btn-eco">
-                            Show Available Quests
-                        </button>
+                    <!-- Center main toggle button -->
+                    <button id="mobile-panels-toggle" class="btn-eco">
+                        Show Available Quests
+                    </button>
 
-                        <!-- Right Arrow -->
-                        <button id="mobile-switch-right"
-                            class="w-10 h-10  hidden flex items-center justify-center
+                    <!-- Right Arrow -->
+                    <button id="mobile-switch-right"
+                        class="w-10 h-10  hidden flex items-center justify-center
                     rounded-full bg-[#F7F6EB]/80 backdrop-blur-md
                     shadow-[0_4px_12px_rgba(0,0,0,0.15)]
                     border border-[#e6e4cf]
                     text-[#4B4A2E]
                     hover:bg-[#FFFDF4] active:scale-95 transition-all duration-300">
-                            <!-- SVG -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
-                                <path fill="currentColor" d="m8.5 19 7-7-7-7" />
-                            </svg>
-                        </button>
-                    </div>
+                        <!-- SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6">
+                            <path fill="currentColor" d="m8.5 19 7-7-7-7" />
+                        </svg>
+                    </button>
+                </div>
             @endauth
 
             <!-- 🍂 FALLEN LEAVES CONTAINER WITH RADIAL FADE -->
@@ -1198,7 +1202,7 @@
     </script>
 
     <section class="relative py-48 px-8 overflow-hidden pattern-bg">
-
+        @include('modal.feedBackModal')
         <div class="relative z-10 max-w-6xl mx-auto text-center">
             <!-- Section header -->
             <div class="mb-14">
@@ -1352,8 +1356,16 @@
                                                         {{ $item->created_at->format('M d, Y') }}</p>
                                                 </div>
                                             </div>
-                                            <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3">
+                                            <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3  feedback-text">
                                                 "{{ $item->content }}"</p>
+                                            <button class="text-[#4A6613] text-xs font-semibold open-feedback-modal"
+                                                data-content="{{ $item->content }}"
+                                                data-user="{{ $item->user->first_name ?? 'Anonymous' }} {{ $item->user->last_name ?? '' }}"
+                                                data-date="{{ $item->created_at->format('M d, Y') }}"
+                                                data-rating="{{ $item->rating }}">
+                                                Read full review →
+                                            </button>
+
                                             <div
                                                 class="flex justify-between items-center pt-4 border-t border-[#8A9A7B]/30">
                                                 <div class="flex gap-1">
