@@ -3,7 +3,6 @@
     <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB]  overflow-hidden">
 
-        <!-- Modal Header -->
         <div class="flex justify-between items-center px-6 py-4  bg-[#4A6613] text-white">
             <h2 id="modalTitle" class="text-lg font-semibold flex items-center">
                 <i class="fa-solid fa-bullseye mr-2"></i> Create New Quest
