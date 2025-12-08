@@ -470,12 +470,11 @@
         <div id="plant-container"
             class="relative w-[600px] -top-170 flex items-center justify-center transition-transform duration-[1500ms] ease-out z-20">
             <div id="mobile-button-wrapper"
-                class="lg:hidden fixed top-0 left-1/2 -translate-x-1/2 
+                class="lg:hidden fixed top-5 left-1/2 -translate-x-1/2 
                   flex items-center justify-center gap-6 z-[999]">
-
                 <!-- Left Arrow -->
                 <button id="mobile-switch-left"
-                    class="w-10 h-10 flex items-center justify-center
+                    class="w-10 h-10 flex hidden items-center justify-center
                         rounded-full bg-[#F7F6EB]/80 backdrop-blur-md
                         shadow-[0_4px_12px_rgba(0,0,0,0.15)]
                         border border-[#e6e4cf]
@@ -495,7 +494,7 @@
 
                 <!-- Right Arrow -->
                 <button id="mobile-switch-right"
-                    class="w-10 h-10 flex items-center justify-center
+                    class="w-10 h-10  hidden flex items-center justify-center
                     rounded-full bg-[#F7F6EB]/80 backdrop-blur-md
                     shadow-[0_4px_12px_rgba(0,0,0,0.15)]
                     border border-[#e6e4cf]
@@ -2337,6 +2336,8 @@
                 leftPanel.classList.remove("hidden");
                 activePanel = "left";
                 btnToggle.textContent = "Hide Panels";
+                btnRight.classList.remove("hidden");
+                btnLeft.classList.add("hidden");
             }
 
             function showRight() {
@@ -2345,6 +2346,9 @@
                 rightPanel.classList.remove("hidden");
                 activePanel = "right";
                 btnToggle.textContent = "Hide Panels";
+                btnLeft.classList.remove("hidden");
+                btnRight.classList.add("hidden");
+                
             }
 
             btnToggle.addEventListener("click", () => {
