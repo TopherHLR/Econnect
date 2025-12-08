@@ -394,8 +394,19 @@
             <div class="relative">
                 <button id="notification-btn" class="text-[#6A8A52] hover:text-[#4F6B3F] relative">
                     <i class="fa-solid fa-bell text-3xl"></i>
-                    <span id="notification-dot"
-                        class="absolute top-0 right-0 inline-block w-3 h-3 bg-red-500 rounded-full"></span>
+                    @php
+                        $unreadCount = App\Models\Notification::where('user_id', Auth::id())
+                            ->whereNull('read_at')
+                            ->count();
+                    @endphp
+
+                    @if ($unreadCount > 0)
+                        <span id="notification-dot"
+                            class="absolute top-0 right-0x min-w-[13px] h-[13px] bg-red-500 text-white text-[8px] font-bold 
+                                    flex items-center justify-center rounded-full px-1">
+                            {{ $unreadCount }}
+                        </span>
+                    @endif
                 </button>
             </div>
 

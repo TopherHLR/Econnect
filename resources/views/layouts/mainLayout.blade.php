@@ -72,11 +72,20 @@
                                 <button id="notification-btn"
                                     class="relative text-[#6A8A52] hover:text-[#4F6B3F] focus:outline-none">
                                     <i class="fa-solid fa-bell text-2xl"></i>
-                                    <!-- Red dot for unread -->
-                                    @if (App\Models\Notification::where('user_id', Auth::id())->whereNull('read_at')->exists())
+                                    @php
+                                        $unreadCount = App\Models\Notification::where('user_id', Auth::id())
+                                            ->whereNull('read_at')
+                                            ->count();
+                                    @endphp
+
+                                    @if ($unreadCount > 0)
                                         <span id="notification-dot"
-                                            class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                                            class="absolute top-0 right-0 min-w-[15px] h-[15px] bg-red-500 text-white text-[10px] font-bold 
+               flex items-center justify-center rounded-full px-1">
+                                            {{ $unreadCount }}
+                                        </span>
                                     @endif
+
                                 </button>
                             </div>
 
@@ -224,9 +233,18 @@
                     <button id="notification-btn-sidebar"
                         class="relative text-[#6A8A52] hover:text-[#4F6B3F] focus:outline-none">
                         <i class="fa-solid fa-bell text-2xl"></i>
+                        @php
+                            $unreadCount = App\Models\Notification::where('user_id', Auth::id())
+                                ->whereNull('read_at')
+                                ->count();
+                        @endphp
 
-                        @if (App\Models\Notification::where('user_id', Auth::id())->whereNull('read_at')->exists())
-                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                        @if ($unreadCount > 0)
+                            <span id="notification-dot"
+                                class="absolute top-0 right-0 min-w-[15px] h-[15px] bg-red-500 text-white text-[10px] font-bold 
+               flex items-center justify-center rounded-full px-1">
+                                {{ $unreadCount }}
+                            </span>
                         @endif
                     </button>
 
