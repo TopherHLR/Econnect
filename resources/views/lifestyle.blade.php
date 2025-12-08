@@ -303,7 +303,7 @@
 
                     {{-- Mobile Sidebar Panel --}}
                     <div id="ecoSidebarMobile"
-                        class="lg:hidden fixed left-0 top-0 h-full w-[85vw] max-w-sm bg-[#FCF9EF] z-[1200] transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
+                        class="lg:hidden fixed left-0 top-13 md:top-0 h-full w-[85vw] max-w-sm bg-[#FCF9EF] z-[500] transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
 
                         {{-- Mobile Header --}}
                         <div class="sticky top-0 bg-[#FCF9EF] p-4 flex items-center justify-between">

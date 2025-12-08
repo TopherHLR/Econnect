@@ -47,10 +47,11 @@ class AuthController extends Controller
             $secretKey = env('RECAPTCHA_SECRET_KEY');
 
             if (!$recaptchaToken) {
-                Log::warning('❌ RECAPTCHA TOKEN MISSING');
-                return back()->withErrors([
-                    'g-recaptcha-response' => 'Please complete the reCAPTCHA verification.'
-                ]);
+                Log::warning('RECAPTCHA TOKEN MISSING');
+                return back()->withErrors(['g-recaptcha-response' => 'ReCAPTCHA verification failed. Please try again.'])
+                ->withInput()
+                ->with('auth_modal_open', true)
+                ->with('auth_mode', 'signup');
             }
 
             // Replace this:
@@ -66,7 +67,7 @@ class AuthController extends Controller
             Log::info('🤖 reCAPTCHA Response:', $recaptchaResult);
 
             if (!isset($recaptchaResult['success']) || $recaptchaResult['success'] !== true) {
-                Log::warning('❌ RECAPTCHA FAILED', $recaptchaResult);
+                Log::warning('RECAPTCHA FAILED', $recaptchaResult);
                 return back()
                 ->withErrors(['g-recaptcha-response' => 'ReCAPTCHA verification failed. Please try again.'])
                 ->withInput()

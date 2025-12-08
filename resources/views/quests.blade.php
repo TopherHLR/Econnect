@@ -177,7 +177,7 @@
                         onclick="closeMobileQuestSidebar()"></div>
                     <!-- Mobile Quest Sidebar Panel -->
                     <div id="questSidebarMobile"
-                        class="lg:hidden fixed left-0 top-0 h-full w-[85vw] max-w-sm bg-[#FCF9EF] z-[1200]
+                        class="lg:hidden fixed left-0 top-13 md:top-0  h-full w-[85vw] max-w-sm bg-[#FCF9EF] z-[500]
                                 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
 
                         <!-- Header -->

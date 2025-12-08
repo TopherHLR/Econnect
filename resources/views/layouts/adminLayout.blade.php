@@ -350,30 +350,52 @@
            border-b border-[rgba(79,107,63,0.08)]
            rounded-b-[2rem] mx-6 px-8 py-5 w-[97%]">
 
-        <!-- 🌿 Feedback Notification -->
+        <!-- 🌿 Feedback Notification - HIGHEST Z-INDEX -->
         @if (session('success'))
             <div id="feedback-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#f5f8ef]/90 border border-[#5C7919]/40 text-[#5C7919] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
+                class="fixed top-6 left-1/2 -translate-x-1/2 
+               w-[90%] max-w-[420px]        
+               bg-[#f5f8ef]/95 border border-[#5C7919]/40 text-[#5C7919]
+               font-serif italic 
+               sm:text-base md:text-lg          
+               shadow-md px-4 py-2 md:px-6 md:py-3  
+               rounded-2xl z-[99999]
+               transition-opacity duration-1000 ease-in-out opacity-100
+               flex items-center gap-2">
+
                 <!-- Success Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
-                <span>{{ session('success') }}</span>
+
+                <span class="text-center w-full">{{ session('success') }}</span>
             </div>
         @endif
 
+
         @if (session('error') || $errors->any())
             <div id="error-toast"
-                class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
+                class="fixed top-6 left-1/2 -translate-x-1/2
+               w-[90%] max-w-[420px] 
+               bg-[#fff5f5]/95 border border-[#d9534f]/40 text-[#d9534f]
+               font-serif italic 
+               sm:text-base md:text-lg
+               shadow-md px-4 py-2 md:px-6 md:py-3
+               rounded-2xl z-[99999]
+               transition-opacity duration-1000 ease-in-out opacity-100
+               flex items-center gap-2">
+
                 <!-- Error Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
-                <span>{{ session('error') ?? $errors->first() }}</span>
+
+                <span class="text-center w-full">{{ session('error') ?? $errors->first() }}</span>
             </div>
         @endif
+
 
 
 

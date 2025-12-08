@@ -921,7 +921,7 @@
 
         <!-- FIXED: Mobile background (less than 768px) -->
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 block md:hidden"
-            style="background-image: url('{{ Vite::asset('resources/images/viewport1/smallerbgstatic.webp') }}');">
+            style="background-image: url('{{ Vite::asset('resources/images/viewport1/bgstatic.webp') }}');">
         </div>
 
         <!-- Content container -->

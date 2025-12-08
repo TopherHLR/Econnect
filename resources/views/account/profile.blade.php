@@ -15,7 +15,7 @@
             <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
 
                 <!-- LEFT: QR CODE + TEXT -->
-                <div class="flex flex-col  mr-10 md:mr-0 items-center md:items-start flex-shrink-0">
+                <div class="flex flex-col   md:mr-0 items-center md:items-start flex-shrink-0">
                     <div id="user-qr-code" class="w-[210px] h-[210px] bg-gray-300 mb-4 md:mb-0"></div>
                 </div>
 

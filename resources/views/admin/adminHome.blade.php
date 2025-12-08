@@ -159,7 +159,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                 <!-- 🟢 HIGH PRIORITY CARDS (Top Row) -->
-                @if ($mostDeserving && $mostDeserving->pointsEarned > 0)
+
                     <div class="metric-card">
                         <h3 class="text-lg font-semibold text-green-700">Most Deserving Player</h3>
 
@@ -176,7 +176,7 @@
                         </button>
 
                     </div>
-                @endif
+
 
                 <!-- Total Verified Users -->
                 <div class="metric-card">

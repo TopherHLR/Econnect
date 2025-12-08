@@ -2,25 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Models\User;
-use App\Models\Quest;
-use App\Models\QuestSubmission;
-use App\Models\Feedback;
-use App\Models\UserPointsHistory;
-use App\Models\UserLibrary;
-use App\Models\UserAction;
 use App\Models\EcoAction;
 use App\Models\EcoLibrary;
+use App\Models\Feedback;
+use App\Models\Notification;
+use App\Models\Quest;
+use App\Models\QuestSubmission;
+use App\Models\User;
+use App\Models\UserLibrary;
+use App\Models\UserPointsHistory;
 use App\Models\UserVoucher;
 use App\Models\Voucher;
-use App\Models\Notification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-
-
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -149,10 +145,18 @@ class AdminController extends Controller
         foreach ($users as $user) {
             $lastActivityDates = collect();
 
-            if ($user->pointsHistory->count()) $lastActivityDates->push($user->pointsHistory->max('created_at'));
-            if ($user->savedLibraries->count()) $lastActivityDates->push($user->savedLibraries->max('saved_at'));
-            if ($user->savedEcoActions->count()) $lastActivityDates->push($user->savedEcoActions->max('log_date'));
-            if ($user->userVouchers->count()) $lastActivityDates->push($user->userVouchers->max('redeemed_date'));
+            if ($user->pointsHistory->count()) {
+                $lastActivityDates->push($user->pointsHistory->max('created_at'));
+            }
+            if ($user->savedLibraries->count()) {
+                $lastActivityDates->push($user->savedLibraries->max('saved_at'));
+            }
+            if ($user->savedEcoActions->count()) {
+                $lastActivityDates->push($user->savedEcoActions->max('log_date'));
+            }
+            if ($user->userVouchers->count()) {
+                $lastActivityDates->push($user->userVouchers->max('redeemed_date'));
+            }
 
             $lastActivity = $lastActivityDates->count() ? $lastActivityDates->max() : null;
 
@@ -163,7 +167,7 @@ class AdminController extends Controller
                     + $user->savedEcoActions->count()
                     + $user->userVouchers->count();
 
-                $activeUsersLeaderboard->push((object)[
+                $activeUsersLeaderboard->push((object) [
                     'user' => $user,
                     'activityCount' => $activityCount,
                 ]);
@@ -181,47 +185,51 @@ class AdminController extends Controller
             ->first();
 
         $mostCategorySavedName = $mostCategorySaved ? $mostCategorySaved->category : 'N/A';
-        $topByPoints = $users->map(function($user) {
+        $topByPoints = $users->map(function ($user) {
             $progressPoints = $user->pointsHistory->sum('points_change');
-            return (object)[
+
+            return (object) [
                 'user' => $user,
                 'progressPoints' => $progressPoints,
             ];
         })->sortByDesc('progressPoints')->values()->take(10);
-        $topByQuests = $users->map(function($user) {
+        $topByQuests = $users->map(function ($user) {
             $questsCompleted = $user->pointsHistory->where('activity_type', 'Quest')->count()
                 + $user->userVouchers->where('status', 'completed')->count(); // optional if you track completion elsewhere
-            return (object)[
+
+            return (object) [
                 'user' => $user,
                 'questsCompleted' => $questsCompleted,
             ];
         })->sortByDesc('questsCompleted')->values()->take(10);
-        $topDailyActions = $users->map(function($user) {
+        $topDailyActions = $users->map(function ($user) {
             $dailyEcoActions = $user->pointsHistory->where('activity_type', 'Tree Tap')
                 ->where('created_at', '>=', now()->startOfDay())->count();
-            return (object)[
+
+            return (object) [
                 'user' => $user,
                 'dailyEcoActions' => $dailyEcoActions,
             ];
         })->sortByDesc('dailyEcoActions')->values()->take(10);
 
-        $topLibrarySavers = $users->map(function($user) {
-            return (object)[
+        $topLibrarySavers = $users->map(function ($user) {
+            return (object) [
                 'user' => $user,
                 'librarySaves' => $user->savedLibraries->count(),
             ];
         })->sortByDesc('librarySaves')->values()->take(10);
-        $topVoucherRedeemers = $users->map(function($user) {
-            return (object)[
+        $topVoucherRedeemers = $users->map(function ($user) {
+            return (object) [
                 'user' => $user,
                 'vouchersRedeemed' => $user->userVouchers->whereNotNull('redeemed_date')->count(),
             ];
         })->sortByDesc('vouchersRedeemed')->values()->take(10);
 
-        $topPointsLast7Days = $users->map(function($user) {
+        $topPointsLast7Days = $users->map(function ($user) {
             $pointsEarned = $user->pointsHistory->where('created_at', '>=', now()->subDays(7))
                 ->where('points_change', '>', 0)->sum('points_change');
-            return (object)[
+
+            return (object) [
                 'user' => $user,
                 'pointsEarned' => $pointsEarned,
             ];
@@ -231,24 +239,25 @@ class AdminController extends Controller
             ->where('category', '!=', '')
             ->distinct()
             ->pluck('category');
-            
+
         $categoriesLibrary = EcoLibrary::whereNotNull('category')
             ->where('category', '!=', '')
             ->distinct()
             ->pluck('category');
         // ======== MOST DESERVING PLAYER (Highest Points Earned in Last 7 Days) ========
-        $mostDeserving = $users->map(function($user) {
-            $pointsEarned = $user->pointsHistory->where('created_at', '>=', now()->subDays(7))
-                ->where('points_change', '>', 0)
-                ->sum('points_change');
+        $mostDeserving = $users->map(function ($user) {
+        $pointsEarned = $user->pointsHistory
+            ->where('created_at', '>=', now()->subDays(7))
+            ->where('points_change', '>', 0)
+            ->sum('points_change');
 
-            return (object)[
+            return (object) [
                 'user' => $user,
                 'pointsEarned' => $pointsEarned,
             ];
         })
-        ->sortByDesc('pointsEarned')
-        ->first(); // Top 1
+            ->sortByDesc('pointsEarned')
+            ->first(); // Top 1
 
         return view('admin.adminHome', compact(
             'totalUsers',
@@ -296,31 +305,32 @@ class AdminController extends Controller
             'savedEcoActions.ecoAction',
             'pointsHistory',
             'userVouchers.voucher',
-            'feedbacks'
+            'feedbacks',
         ])->paginate(2);
-        
+
         // Log the QR code for each user
         foreach ($users as $user) {
             Log::info('User QR Code', [
                 'user_id' => $user->user_id,
                 'email' => $user->email,
-                'qr_code' => $user->qr_code
+                'qr_code' => $user->qr_code,
             ]);
         }
         if ($request->ajax()) {
             return view('admin.partials.users_table', compact('users'))->render();
         }
-        
+
         $categoriesAction = EcoAction::whereNotNull('category')
             ->where('category', '!=', '')
             ->distinct()
             ->pluck('category');
-            
+
         $categoriesLibrary = EcoLibrary::whereNotNull('category')
             ->where('category', '!=', '')
             ->distinct()
             ->pluck('category');
-        return view('admin.adminUsers', compact('users','categoriesLibrary','categoriesAction'));
+
+        return view('admin.adminUsers', compact('users', 'categoriesLibrary', 'categoriesAction'));
     }
 
     public function setInactive(User $user)
@@ -331,7 +341,7 @@ class AdminController extends Controller
         $user->save();
 
         return response()->json([
-            'success' => true
+            'success' => true,
         ]);
     }
 
@@ -347,7 +357,7 @@ class AdminController extends Controller
             'savedEcoActions.ecoAction',
             'pointsHistory',
             'userVouchers.voucher',
-            'feedbacks'
+            'feedbacks',
         ])->findOrFail($id);
 
         Log::info("User {$id} loaded", [
@@ -360,6 +370,7 @@ class AdminController extends Controller
 
         return response()->json($user);
     }
+
     // Admin Quests
     public function quests()
     {
@@ -497,10 +508,18 @@ class AdminController extends Controller
         foreach ($users as $user) {
             $lastActivityDates = collect();
 
-            if ($user->pointsHistory->count()) $lastActivityDates->push($user->pointsHistory->max('created_at'));
-            if ($user->savedLibraries->count()) $lastActivityDates->push($user->savedLibraries->max('saved_at'));
-            if ($user->savedEcoActions->count()) $lastActivityDates->push($user->savedEcoActions->max('log_date'));
-            if ($user->userVouchers->count()) $lastActivityDates->push($user->userVouchers->max('redeemed_date'));
+            if ($user->pointsHistory->count()) {
+                $lastActivityDates->push($user->pointsHistory->max('created_at'));
+            }
+            if ($user->savedLibraries->count()) {
+                $lastActivityDates->push($user->savedLibraries->max('saved_at'));
+            }
+            if ($user->savedEcoActions->count()) {
+                $lastActivityDates->push($user->savedEcoActions->max('log_date'));
+            }
+            if ($user->userVouchers->count()) {
+                $lastActivityDates->push($user->userVouchers->max('redeemed_date'));
+            }
 
             $lastActivity = $lastActivityDates->count() ? $lastActivityDates->max() : null;
 
@@ -511,7 +530,7 @@ class AdminController extends Controller
                     + $user->savedEcoActions->count()
                     + $user->userVouchers->count();
 
-                $activeUsersLeaderboard->push((object)[
+                $activeUsersLeaderboard->push((object) [
                     'user' => $user,
                     'activityCount' => $activityCount,
                 ]);
@@ -529,76 +548,81 @@ class AdminController extends Controller
             ->first();
 
         $mostCategorySavedName = $mostCategorySaved ? $mostCategorySaved->category : 'N/A';
-        $topByPoints = $users->map(function($user) {
+        $topByPoints = $users->map(function ($user) {
             $progressPoints = $user->pointsHistory->sum('points_change');
-            return (object)[
+
+            return (object) [
                 'user' => $user,
                 'progressPoints' => $progressPoints,
             ];
         })->sortByDesc('progressPoints')->values()->take(10);
-        $topByQuests = $users->map(function($user) {
+        $topByQuests = $users->map(function ($user) {
             $questsCompleted = $user->pointsHistory->where('activity_type', 'Quest')->count()
                 + $user->userVouchers->where('status', 'completed')->count(); // optional if you track completion elsewhere
-            return (object)[
+
+            return (object) [
                 'user' => $user,
                 'questsCompleted' => $questsCompleted,
             ];
         })->sortByDesc('questsCompleted')->values()->take(10);
-        $topDailyActions = $users->map(function($user) {
+        $topDailyActions = $users->map(function ($user) {
             $dailyEcoActions = $user->pointsHistory->where('activity_type', 'Tree Tap')
                 ->where('created_at', '>=', now()->startOfDay())->count();
-            return (object)[
+
+            return (object) [
                 'user' => $user,
                 'dailyEcoActions' => $dailyEcoActions,
             ];
         })->sortByDesc('dailyEcoActions')->values()->take(10);
 
-        $topLibrarySavers = $users->map(function($user) {
-            return (object)[
+        $topLibrarySavers = $users->map(function ($user) {
+            return (object) [
                 'user' => $user,
                 'librarySaves' => $user->savedLibraries->count(),
             ];
         })->sortByDesc('librarySaves')->values()->take(10);
-        $topVoucherRedeemers = $users->map(function($user) {
-            return (object)[
+        $topVoucherRedeemers = $users->map(function ($user) {
+            return (object) [
                 'user' => $user,
                 'vouchersRedeemed' => $user->userVouchers->whereNotNull('redeemed_date')->count(),
             ];
         })->sortByDesc('vouchersRedeemed')->values()->take(10);
 
-        $topPointsLast7Days = $users->map(function($user) {
+        $topPointsLast7Days = $users->map(function ($user) {
             $pointsEarned = $user->pointsHistory->where('created_at', '>=', now()->subDays(7))
                 ->where('points_change', '>', 0)->sum('points_change');
-            return (object)[
+
+            return (object) [
                 'user' => $user,
                 'pointsEarned' => $pointsEarned,
             ];
         })->sortByDesc('pointsEarned')->values()->take(10);
 
         // ======== MOST DESERVING PLAYER (Highest Points Earned in Last 7 Days) ========
-        $mostDeserving = $users->map(function($user) {
-            $pointsEarned = $user->pointsHistory->where('created_at', '>=', now()->subDays(7))
-                ->where('points_change', '>', 0)
-                ->sum('points_change');
+        $mostDeserving = $users->map(function ($user) {
+        $pointsEarned = $user->pointsHistory
+            ->where('created_at', '>=', now()->subDays(7))
+            ->where('points_change', '>', 0)
+            ->sum('points_change');
 
-            return (object)[
+            return (object) [
                 'user' => $user,
                 'pointsEarned' => $pointsEarned,
             ];
         })
-        ->sortByDesc('pointsEarned')
-        ->first(); // Top 1
+            ->sortByDesc('pointsEarned')
+            ->first(); // Top 1
 
-        
         $categoriesAction = EcoAction::whereNotNull('category')
             ->where('category', '!=', '')
             ->distinct()
             ->pluck('category');
-            
+
         $categoriesLibrary = EcoLibrary::whereNotNull('category')
             ->where('category', '!=', '')
             ->distinct()
             ->pluck('category');
+
         return view('admin.adminAnalytics', compact(
             'totalUsers',
             'verifiedUsers',
@@ -636,6 +660,7 @@ class AdminController extends Controller
         ));
 
     }
+
     public function giveReward(Request $request)
     {
         $request->validate([
@@ -655,17 +680,18 @@ class AdminController extends Controller
 
         // ---- Notification for Admin ----
         Notification::create([
-            'user_id' =>$request->user_id, // Admin user_id (can be dynamic)
+            'user_id' => $request->user_id, // Admin user_id (can be dynamic)
             'from_user_id' => 1,
             'type' => 'reward_given',
             'reference_id' => $userVoucher->redemption_id ?? $userVoucher->id, // Depending on your PK
             'title' => 'Reward Given',
             'message' => 'A reward has been given to you congratulations in your prize',
-            'created_at' => now()
+            'created_at' => now(),
         ]);
 
         return back()->with('success', 'Reward successfully given to the player!');
     }
+
     public function filterUsers(Request $request)
     {
         $search = $request->search;
@@ -681,8 +707,8 @@ class AdminController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('first_name', 'like', "%$search%")
-                ->orWhere('last_name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%");
+                    ->orWhere('last_name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%");
             });
         }
 
@@ -710,7 +736,6 @@ class AdminController extends Controller
 
         $users = $query->get();
 
-
         /* ---------------------------------------
             BUILD TABLE ROWS
         ---------------------------------------*/
@@ -720,15 +745,23 @@ class AdminController extends Controller
 
             // Last Activity Check
             $lastActivityDates = collect();
-            if ($user->pointsHistory->count()) $lastActivityDates->push($user->pointsHistory->max('created_at'));
-            if ($user->savedLibraries->count()) $lastActivityDates->push($user->savedLibraries->max('saved_at'));
-            if ($user->savedEcoActions->count()) $lastActivityDates->push($user->savedEcoActions->max('log_date'));
-            if ($user->userVouchers->count()) $lastActivityDates->push($user->userVouchers->max('redeemed_date'));
+            if ($user->pointsHistory->count()) {
+                $lastActivityDates->push($user->pointsHistory->max('created_at'));
+            }
+            if ($user->savedLibraries->count()) {
+                $lastActivityDates->push($user->savedLibraries->max('saved_at'));
+            }
+            if ($user->savedEcoActions->count()) {
+                $lastActivityDates->push($user->savedEcoActions->max('log_date'));
+            }
+            if ($user->userVouchers->count()) {
+                $lastActivityDates->push($user->userVouchers->max('redeemed_date'));
+            }
 
             $lastActivity = $lastActivityDates->count() ? $lastActivityDates->max() : null;
 
             $inactiveMessage = '';
-            if (!$user->is_active) {
+            if (! $user->is_active) {
                 $inactiveMessage = 'Inactive';
             } elseif ($lastActivity && \Carbon\Carbon::parse($lastActivity)->lt(now()->subMonths(6))) {
                 $inactiveMessage = 'Inactive for 6+ months';
@@ -736,11 +769,11 @@ class AdminController extends Controller
 
             // USER TYPE BADGE COLORS
             $userTypeColor =
-                $user->user_type === "admin" ?
-                    "bg-[#FFFBEB] text-[#D97706]" :
-                ($user->user_type === "verified_user" ?
-                    "bg-[#F0F7E6] text-[#4F6B3F]" :
-                    "bg-[#EFF6FF] text-[#1E40AF]"
+                $user->user_type === 'admin' ?
+                    'bg-[#FFFBEB] text-[#D97706]' :
+                ($user->user_type === 'verified_user' ?
+                    'bg-[#F0F7E6] text-[#4F6B3F]' :
+                    'bg-[#EFF6FF] text-[#1E40AF]'
                 );
 
             // BUILD ROW
@@ -776,7 +809,7 @@ class AdminController extends Controller
                     )
                 .'</td>
 
-                <td class="px-4 py-2">'.$user->created_at->format("Y-m-d").'</td>
+                <td class="px-4 py-2">'.$user->created_at->format('Y-m-d').'</td>
 
                 <!-- ACTION BUTTONS -->
                 <td class="px-4 py-2">
@@ -788,7 +821,7 @@ class AdminController extends Controller
                             <span class="hidden sm:inline">View</span>
                         </button>'.
 
-                        (!$user->is_verified
+                        (! $user->is_verified
                             ? '<button class="btn-action btn-mint compact" onclick="alert(\'Verify '.$user->first_name.'\')">
                                     <i class="fas fa-check-circle"></i>
                                     <span class="hidden sm:inline">Verify</span>
@@ -821,10 +854,9 @@ class AdminController extends Controller
         $invalidRate = $totalSubmissions > 0 ? round(($invalidSubmissions / $totalSubmissions) * 100) : 0;
 
         // 3. QR Scan Activity (Unusual patterns)
-        $qrScansToCheck = UserPointsHistory::where('activity_type', 'QR Scan') 
+        $qrScansToCheck = UserPointsHistory::where('activity_type', 'QR Scan')
             ->where('created_at', '>=', now()->subDay())
             ->count();
-
 
         // ========== FOR REVIEW ==========
 
@@ -836,19 +868,27 @@ class AdminController extends Controller
         // 5. Vouchers expiring soon
         $expiringVouchers = Voucher::where('expiry_date', '<=', now()->addDays(7))->count();
 
-
         // TOTAL ALERT COUNTS
         $needsAttentionCount = 0;
-        if ($pendingVerifications > 0) $needsAttentionCount++;
-        if ($invalidRate >= 30) $needsAttentionCount++;
-        if ($qrScansToCheck > 0) $needsAttentionCount++;
+        if ($pendingVerifications > 0) {
+            $needsAttentionCount++;
+        }
+        if ($invalidRate >= 30) {
+            $needsAttentionCount++;
+        }
+        if ($qrScansToCheck > 0) {
+            $needsAttentionCount++;
+        }
 
         $forReviewCount = 0;
-        if ($endingQuests > 0) $forReviewCount++;
-        if ($expiringVouchers > 0) $forReviewCount++;
+        if ($endingQuests > 0) {
+            $forReviewCount++;
+        }
+        if ($expiringVouchers > 0) {
+            $forReviewCount++;
+        }
 
         $totalAlerts = $needsAttentionCount + $forReviewCount;
-
 
         return view('admin.adminSystemAlerts', compact(
             'pendingVerifications',
@@ -873,12 +913,13 @@ class AdminController extends Controller
     {
         return view('admin.adminLifestyle');
     }
+
     public function verifyUser($qr)
     {
         // Find user by QR
         $user = User::where('qr_code', $qr)->first();
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
@@ -890,7 +931,7 @@ class AdminController extends Controller
 
         return response()->json([
             'success' => true,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 }

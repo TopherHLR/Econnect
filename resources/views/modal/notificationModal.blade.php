@@ -1,7 +1,7 @@
                 <div class="relative">
                     <!-- Notification Modal / Dropdown -->
                     <div id="notification-modal"
-                        class="hidden fixed top-16 right-65 mt-2 w-80 bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden z-[1300]">
+                        class="hidden fixed md:top-12 md:right-85  top-35  right-5 mt-2 w-80 bg-white shadow-lg border border-gray-200 rounded-xl overflow-hidden z-[1300]">
                         <div class="p-4 border-b border-gray-100 font-semibold bg-[#f5f8ef]">
                             Notifications
                         </div>
