@@ -347,7 +347,7 @@
 
 
     {{-- Main Content --}}
-    <main class="mt-10">
+    <main class="mt-10 ">
         @include('modal.authModal')
         @yield('content')
     </main>

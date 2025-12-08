@@ -5,13 +5,12 @@ window.Alpine = Alpine;
 
 document.addEventListener("alpine:init", () => {
     Alpine.store("authModal", {
-        open: Boolean(window.authModalOpen),   // read from backend
-        mode: window.authModalMode || "signin"
+        open: Boolean(window.authModalOpen), // read from backend
+        mode: window.authModalMode || "signin",
     });
 });
 
 Alpine.start();
-
 
 //======================================================================================= NAVBAR ======================================================================================
 (() => {
@@ -23,6 +22,9 @@ Alpine.start();
     const leftPanel = document.getElementById("left-panel");
     const rightPanel = document.getElementById("right-panel");
 
+    // NEW — mobile buttons
+    const mobileButtons = document.getElementById("mobile-button-wrapper");
+
     if (!plant && !textDiv && !progressBar) return;
 
     let ticking = false;
@@ -31,7 +33,19 @@ Alpine.start();
     const onScroll = () => {
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
+
         const pastThreshold = scrollY > windowHeight * 0.3;
+
+        // ---- SHOW mobile buttons when animation triggers ----
+        if (mobileButtons) {
+            if (pastThreshold) {
+                mobileButtons.classList.add("show-mobile-buttons");
+                mobileButtons.classList.remove("hide-mobile-buttons");
+            } else {
+                mobileButtons.classList.add("hide-mobile-buttons");
+                mobileButtons.classList.remove("show-mobile-buttons");
+            }
+        }
 
         if (!ticking && pastThreshold && !hasAnimated) {
             window.requestAnimationFrame(() => {
@@ -68,35 +82,29 @@ Alpine.start();
 
                 // ---- Text ----
                 if (textDiv && textEl) {
-                    textDiv.style.top = `${window.innerHeight * 0.59}px`;
+                    textDiv.style.top = `${window.innerHeight * 0.57}px`;
                     textEl.innerHTML =
                         "<strong>Grow with us</strong> on a sustainable journey <br>" +
                         "where <strong>every small action blooms into impact</strong><br>" +
                         "and every quest brings meaningful rewards.";
                     textEl.classList.add("fade-text");
 
-                    // Add inline styles for text size and other properties
-                    textEl.style.fontSize = "clamp(0.9rem, 1.8vw, 1.3rem)"; // Much smaller
-                    textEl.style.lineHeight = "1.3"; // Tighter line height
-                    textDiv.style.top = `${window.innerHeight * 0.57}px`; // Near the top
+                    textEl.style.fontSize = "clamp(0.9rem, 1.8vw, 1.3rem)";
+                    textEl.style.lineHeight = "1.3";
                     textEl.style.textAlign = "center";
                     textEl.style.color = "#556037ff";
                     textEl.style.fontWeight = "500";
-                    textEl.style.maxWidth = "500px"; // Smaller max width
+                    textEl.style.maxWidth = "500px";
                     textEl.style.margin = "0 auto";
                 }
-                // ---- GLOW ANIMATION ----
-                // Find the glow container and add the activation class
+
+                // ---- Glow animation ----
                 const glowContainers = document.querySelectorAll(
                     ".absolute.top-1\\/4.flex.items-center.justify-center"
                 );
-                if (glowContainers.length > 0) {
-                    glowContainers.forEach((container) => {
-                        container.classList.add("glow-active");
-                    });
-                }
+                glowContainers.forEach((c) => c.classList.add("glow-active"));
 
-                hasAnimated = true; // prevent further animation
+                hasAnimated = true;
                 ticking = false;
             });
 
