@@ -35,7 +35,7 @@
                         {{-- iOS-style Toggle --}}
                         <div class="relative flex items-center bg-[#5C7919] rounded-xl p-1 w-full sm:w-40">
                             <div id="toggle-slider"
-                                class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-white rounded-xl shadow-md transition-all duration-300 ease-in-out">
+                                class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-white rounded-md shadow-md transition-all duration-300 ease-in-out">
                             </div>
                             <button id="topicsBtn"
                                 class="relative z-10 flex-1 text-center text-sm font-medium text-[#5C7919] py-"
