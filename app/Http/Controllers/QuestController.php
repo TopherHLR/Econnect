@@ -20,7 +20,7 @@ class QuestController extends Controller
         $quests = Quest::with('submissions.user')
             ->whereIn('status', ['active', 'ending_soon'])
             ->orderBy('start_date', 'desc')
-            ->paginate(1);
+            ->paginate(5);
 
         $archivedQuests = Quest::with('submissions.user')
             ->whereIn('status', ['archived', 'closed'])
@@ -44,7 +44,7 @@ class QuestController extends Controller
                 $paginatedSubmissions = $quest->submissions()
                     ->with('user', 'verifier')
                     ->orderBy('date_submitted', 'desc')
-                    ->paginate(1);
+                    ->paginate(5);
 
                 $quest->setRelation('submissions', $paginatedSubmissions);
 

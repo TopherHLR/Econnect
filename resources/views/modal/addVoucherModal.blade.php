@@ -43,7 +43,7 @@
             <!-- Discount Value -->
             <div>
                 <label class="block text-[#4F6B3F] font-medium mb-1">Discount Value</label>
-                <input type="text" id="discount_value" name="discount_value"
+                <input type="number" id="discount_value" name="discount_value"
                     class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
                     placeholder="e.g., 10%, $5 off">
             </div>
