@@ -1,6 +1,7 @@
 @extends('layouts.mainLayout')
 @section('title', 'lifestyle')
 @section('content')
+@section('manualImage')
     <div class="min-h-screen  bg-[#E2EBD7] p-4 md:p-10 text-[#4F6B3F]">
         <div class="bg-[#F7F3E7] mt-2 rounded-2xl sm:rounded-4xl shadow-sm overflow-hidden p-4 sm:p-8">
 
@@ -526,6 +527,17 @@
     </div>
     <!-- Script -->
 
+@guest
+<script>
+    window.manualImagePath = "{{ Vite::asset('resources/images/viewport1/guest-lifestyle.webp') }}";
+</script>
+@endguest
+
+@auth
+<script>
+    window.manualImagePath = "{{ Vite::asset('resources/images/viewport1/logged-in-lifestyle.webp') }}";
+</script>
+@endauth
 
     <script>
         // Mobile sidebar functions

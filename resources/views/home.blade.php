@@ -1,6 +1,7 @@
 @extends('layouts.mainLayout')
 @section('title', 'Home')
 @section('content')
+@section('manualImage')
     <!-- ⭐ Rating Required Toast -->
     <div id="rating-toast"
         class="fixed top-6 left-1/2 hidden -translate-x-1/2 bg-[#fff5f5]/90 border border-[#d9534f]/40 text-[#d9534f] font-serif italic text-lg shadow-md px-6 py-3 rounded-2xl z-[9999] transition-opacity duration-1000 ease-in-out opacity-100 flex items-center gap-2">
@@ -1727,7 +1728,21 @@
             animation: float 6s ease-in-out infinite;
         }
     </style>
+@guest
+<script>
+    window.manualImagePath = "{{ Vite::asset('resources/images/viewport1/guest-home.webp') }}";
+</script>
+@endguest
+
+@auth
+<script>
+    window.manualImagePath = "{{ Vite::asset('resources/images/viewport1/logged-in-home.webp') }}";
+</script>
+@endauth
+
     <script>
+
+        
         window.isGuest = @guest true
         @else
             false

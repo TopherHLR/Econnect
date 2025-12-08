@@ -2,6 +2,7 @@
 @section('title', 'Rewards')
 @section('account_content')
     @include('modal.userVoucherModal')
+    @section('manualImage')
     <script>
         const availableVouchers = @json($availableVouchers);
         const myVouchers = @json($myVouchers);
@@ -188,6 +189,17 @@
         </p>
     </div>
 
+@php
+    $manualImage = Vite::asset('resources/images/viewport1/rewards.webp');
+
+    if(auth()->check() && auth()->user()->is_verified) {
+        $manualImage = Vite::asset('resources/images/viewport1/rewards.webp');
+    }
+@endphp
+
+<script>
+    window.manualImagePath = "{{ $manualImage }}";
+</script>
     <script>
         const currentPointsUser = {{ $currentPoints ?? 0 }}; // user points from PHP
 

@@ -1,6 +1,7 @@
 @extends('layouts.mainLayout')
 @section('title', 'Quests')
 @section('content')
+@section('manualImage')
     @if (Auth::check())
         @if (auth()->user()->user_type === 'verified_user')
             <!-- 🔹 Main Container -->
@@ -569,6 +570,19 @@
             @include('partials.locked_view')
         </section>
     @endif
+
+
+@php
+    $manualImage = Vite::asset('resources/images/viewport1/verified-quest.webp');
+
+    if(auth()->check() && auth()->user()->is_verified) {
+        $manualImage = Vite::asset('resources/images/viewport1/unverified-quest.webp');
+    }
+@endphp
+
+<script>
+    window.manualImagePath = "{{ $manualImage }}";
+</script>
 
     <script>
         function toggleMobileQuestSidebar() {
