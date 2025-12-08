@@ -511,7 +511,7 @@
 /* Responsive adjustments for mobile */
 @media (max-width: 640px) {
     #manualImage {
-        height: 65vh;     /* smaller for mobile */
+        height: 40vh;     /* smaller for mobile */
         max-width: 85%;
     }
 }
@@ -536,7 +536,7 @@
 /* For small screens (mobile) */
 @media (max-width: 468px) {
     .manual-offset {
-        margin-top: 40rem; /* adjust this to move lower */
+        margin-top: 10rem; /* adjust this to move lower */
     }
 }
 
