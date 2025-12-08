@@ -1,6 +1,7 @@
 <!-- Create / Edit Quest Modal -->
 <div id="createQuestModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+    <div
+        class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB]  overflow-hidden">
 
         <div class="flex justify-between items-center px-6 py-4  bg-[#4A6613] text-white">
@@ -33,38 +34,38 @@
                         placeholder="Describe the quest"></textarea>
                 </div>
 
-            <!-- Category -->
-            <div x-data="{ custom: false }">
-                <label class="block text-[#4F6B3F] font-medium mb-1">Category</label>
+                <!-- Category -->
+                <div x-data="{ custom: false }">
+                    <label class="block text-[#4F6B3F] font-medium mb-1">Category</label>
 
-                <select id="categorySelect" x-show="!custom" name="category"
-                    x-on:change="
+                    <select id="categorySelect" x-show="!custom" name="category"
+                        x-on:change="
                             custom = ($event.target.value === '__custom');
                             if (!custom) applyCategoryPoints($event.target.value);
                         "
-                    class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
+                        class="w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]">
 
-                    <option value="">Select Category</option>
-                    <option value="Small Quest">Small Quest</option>
-                    <option value="Medium Quest">Medium Quest</option>
-                    <option value="Big Quest">Big Quest</option>
+                        <option value="">Select Category</option>
+                        <option value="Small Quest">Small Quest</option>
+                        <option value="Medium Quest">Medium Quest</option>
+                        <option value="Big Quest">Big Quest</option>
 
-                    <option value="__custom">➕ Add new category...</option>
-                </select>
+                        <option value="__custom">➕ Add new category...</option>
+                    </select>
 
-                <!-- Custom Category Input -->
-                <div x-show="custom" x-transition>
-                    <input type="text" name="custom_category"
-                        class="mt-2 w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
-                        placeholder="Type new category..." x-ref="customInput"
-                        x-on:shown="setTimeout(() => $refs.customInput.focus(), 10)">
+                    <!-- Custom Category Input -->
+                    <div x-show="custom" x-transition>
+                        <input type="text" name="custom_category"
+                            class="mt-2 w-full rounded-lg border border-[#8B6E4A]/30 p-2 focus:outline-none focus:ring-2 focus:ring-[#8B6E4A]"
+                            placeholder="Type new category..." x-ref="customInput"
+                            x-on:shown="setTimeout(() => $refs.customInput.focus(), 10)">
 
-                    <button type="button" x-on:click="custom = false"
-                        class="mt-2 text-sm text-[#4F6B3F] underline hover:text-[#6A8A52]">
-                        ← Back to select dropdown
-                    </button>
+                        <button type="button" x-on:click="custom = false"
+                            class="mt-2 text-sm text-[#4F6B3F] underline hover:text-[#6A8A52]">
+                            ← Back to select dropdown
+                        </button>
+                    </div>
                 </div>
-            </div>
 
                 <!-- Points Reward -->
                 <div>
@@ -125,7 +126,8 @@
 </div>
 <!-- Submission Modal -->
 <div id="submissionModal" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class=" rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+    <div
+        class=" rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB] w-full max-w-lg p-6 relative">
         <button type="button" onclick="closeSubmissionModal()"
             class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
@@ -350,43 +352,47 @@
     }
     const questForm = document.getElementById('questForm');
     // JS: Prefill form for editing
-    document.querySelectorAll('.btn-edit').forEach(button => {
-        button.addEventListener('click', () => {
-            const quest = JSON.parse(button.dataset.quest);
+    document.addEventListener("click", function(e) {
+        const button = e.target.closest(".btn-edit");
+        if (!button) return;
 
-            // Prefill form
-            const questForm = document.getElementById('questForm');
-            questForm.title.value = quest.title;
-            questForm.description.value = quest.description;
-            questForm.category.value = quest.category;
-            questForm.points_reward.value = quest.points_reward;
-            questForm.required_points.value = quest.required_points ?? 0;
-            questForm.start_date.value = quest.start_date ?? new Date().toISOString().split('T')[0];
-            questForm.end_date.value = quest.end_date;
-            questForm.status.value = quest.status;
+        const quest = JSON.parse(button.dataset.quest);
 
-            // Update modal title
-            document.getElementById('modalTitle').textContent = "Edit Quest";
+        // Prefill form
+        const questForm = document.getElementById('questForm');
+        questForm.title.value = quest.title;
+        questForm.description.value = quest.description;
+        questForm.category.value = quest.category;
+        questForm.points_reward.value = quest.points_reward;
+        questForm.required_points.value = quest.required_points ?? 0;
+        questForm.start_date.value = quest.start_date ?? new Date().toISOString().split("T")[0];
+        questForm.end_date.value = quest.end_date;
+        questForm.status.value = quest.status;
 
-            // Update submit button text & icon
-            const submitBtn = document.getElementById('questSubmitBtn');
-            submitBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Update Quest';
+        // Update modal title
+        document.getElementById("modalTitle").textContent = "Edit Quest";
 
-            // Form action & method
-            questForm.action = `/quests/${quest.quest_id}`;
-            let methodInput = questForm.querySelector('input[name="_method"]');
-            if (!methodInput) {
-                methodInput = document.createElement('input');
-                methodInput.type = 'hidden';
-                methodInput.name = '_method';
-                questForm.appendChild(methodInput);
-            }
-            methodInput.value = 'PUT';
+        // Update submit button
+        const submitBtn = document.getElementById("questSubmitBtn");
+        submitBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Update Quest';
 
-            // Open modal
-            openQuestModal();
-        });
+        // Update form action
+        questForm.action = `/quests/${quest.quest_id}`;
+
+        // Add/Update _method
+        let methodInput = questForm.querySelector('input[name="_method"]');
+        if (!methodInput) {
+            methodInput = document.createElement("input");
+            methodInput.type = "hidden";
+            methodInput.name = "_method";
+            questForm.appendChild(methodInput);
+        }
+        methodInput.value = "PUT";
+
+        // Open modal
+        openQuestModal();
     });
+
     // Reset modal when creating new quest
     function openCreateQuestModal() {
         const questForm = document.getElementById('questForm');
