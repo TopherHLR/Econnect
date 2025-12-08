@@ -110,7 +110,7 @@
                 <p><strong>Title:</strong> <span id="viewQuestTitle"></span></p>
                 <p><strong>Description:</strong> <span id="viewQuestDescription"></span></p>
                 <p><strong>Status:</strong> <span id="viewQuestStatus"></span></p>
-                <p><strong>Points Reward:</strong> <span id="viewQuestPoints"></span> pts 🌱</p>
+                <p><strong>Points Reward:</strong> <span id="viewQuestPoints"></span> pts</p>
                 <p><strong>Date Completed / Rejected:</strong> <span id="viewQuestDate"></span></p>
             </div>
         </div>

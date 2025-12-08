@@ -29,7 +29,7 @@
         <!-- Rewards Section -->
         <div class="lg:col-span-2">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-[#4b3f2f]">Available Rewards</h2>
+                <h2 class="md:text-2xl text-xl font-bold text-[#4b3f2f]">Rewards</h2>
                 <div class="flex space-x-2">
                     @if ($availableVouchers->isNotEmpty())
                         <button onclick="showAll()"
@@ -63,7 +63,7 @@
 
 
                     <div class="voucher-card rounded-2xl p-6 flex flex-col justify-between shadow-lg transform transition-all duration-300
-                    {{ $redeemed ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-gradient-to-br from-[#9bb48b] to-[#8aa87a] text-white hover:shadow-xl hover:scale-[1.02]' }}"
+                    {{ $redeemed ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-gradient-to-br  from-[#4A6613] to-[#8aa87a] text-white hover:shadow-xl hover:scale-[1.02]' }}"
                         data-points="{{ $voucher->required_points }}"
                         data-popular="{{ $voucher->user_vouchers_count == $maxRedemptions ? '1' : '0' }}">
                         <div>
@@ -76,11 +76,6 @@
                                         Most Popular
                                     </span>
                                 @endif
-
-
-                                <span class="text-sm {{ $redeemed ? 'text-gray-600' : 'text-white/80' }}">
-                                    {{ $voucher->category ?? 'General' }}
-                                </span>
                             </div>
 
                             <h2
@@ -202,18 +197,29 @@
                 console.log('Card points:', requiredPoints, 'User points:', currentPointsUser); // debug
                 card.style.display = requiredPoints <= currentPointsUser ? 'block' : 'none';
             });
+                setActiveButton(event.currentTarget);
         }
 
         function showAll() {
             document.querySelectorAll('.voucher-card').forEach(card => {
                 card.style.display = 'block';
             });
+            setActiveButton(event.currentTarget);
         }
 
         function showPopular() {
             document.querySelectorAll('.voucher-card').forEach(card => {
                 card.style.display = card.dataset.popular === '1' ? 'block' : 'none';
             });
+                setActiveButton(event.currentTarget);
+        }
+
+        function setActiveButton(button) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('filter-btn-active');
+            });
+
+            button.classList.add('filter-btn-active');
         }
     </script>
 @endsection

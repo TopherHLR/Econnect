@@ -814,7 +814,7 @@
                         <h3 class="text-gray-600 font-medium mb-2">No saved actions yet</h3>
                         <p class="text-sm text-gray-500 mb-4">Discover and save actionable eco tips!</p>
                         <div class="bg-[#F0F5E9] p-4 rounded-lg w-full">
-                            <p class="text-xs text-[#5C7919] italic">💡 Tip: Browse actions and click the bookmark icon to save them here</p>
+                            <p class="text-xs text-[#5C7919] italic">Tip: Browse actions and click the bookmark icon to save them here</p>
                         </div>
                     </div>`;
                 }

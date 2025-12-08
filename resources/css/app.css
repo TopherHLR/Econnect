@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,9 +6,11 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-serif: 'Crimson Text', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --font-serif: "Crimson Text", ui-serif, Georgia, Cambria, "Times New Roman",
+        Times, serif;
 }
 
 /* =========================================================== NAVBAR =========================================================== */
@@ -25,7 +27,11 @@ button {
 .navbar {
     @apply fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-md;
     width: 100%;
-    background: linear-gradient(to bottom, rgba(126, 166, 94, 0) 0%, rgba(224, 233, 214, 0) 90%);
+    background: linear-gradient(
+        to bottom,
+        rgba(126, 166, 94, 0) 0%,
+        rgba(224, 233, 214, 0) 90%
+    );
     box-shadow: none;
     left: 0;
     right: 0;
@@ -34,33 +40,29 @@ button {
 
 /* Solid navbar state after scroll */
 .navbar.navbar-solid {
-    background: linear-gradient(to bottom,
-            rgba(255, 255, 255, 0.98) 0%,
-            /* very light cream (top of cloud) */
-            rgba(252, 249, 244, 0.96) 100%
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.98) 0%,
+        /* very light cream (top of cloud) */ rgba(252, 249, 244, 0.96) 100%
             /* slightly warmer cream (bottom of cloud) */
-        ) !important;
+    ) !important;
     backdrop-filter: blur(12px) !important;
     -webkit-backdrop-filter: blur(12px) !important;
-    box-shadow:
-        0 4px 20px rgba(0, 0, 0, 0.178),
-        0 2px 8px rgba(255, 248, 230, 0.527),
-        0 0 0 1px rgba(0, 0, 0, 0.041) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.178),
+        0 2px 8px rgba(255, 248, 230, 0.527), 0 0 0 1px rgba(0, 0, 0, 0.041) !important;
 }
-
 
 /* Special style for non-home pages (full width, always solid) */
 .navbar.navbar-green-shadow {
-    background: linear-gradient(to bottom,
-            rgba(255, 255, 255, 0.98) 0%,
-            /* very light cream (top of cloud) */
-            rgba(252, 249, 244, 0.96) 100%) !important;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.98) 0%,
+        /* very light cream (top of cloud) */ rgba(252, 249, 244, 0.96) 100%
+    ) !important;
     backdrop-filter: blur(12px) !important;
     -webkit-backdrop-filter: blur(12px) !important;
-    box-shadow:
-        0 4px 20px rgba(0, 0, 0, 0.178),
-        0 2px 8px rgba(255, 248, 230, 0.527),
-        0 0 0 1px rgba(0, 0, 0, 0.041) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.178),
+        0 2px 8px rgba(255, 248, 230, 0.527), 0 0 0 1px rgba(0, 0, 0, 0.041) !important;
     width: 100% !important;
     left: 0 !important;
     right: 0 !important;
@@ -69,7 +71,11 @@ button {
 /* Regular home page behavior when not scrolled */
 .navbar:not(.navbar-green-shadow):not(.navbar-solid) {
     box-shadow: none;
-    background: linear-gradient(to bottom, rgba(126, 166, 94, 0) 0%, rgba(224, 233, 214, 0) 90%);
+    background: linear-gradient(
+        to bottom,
+        rgba(126, 166, 94, 0) 0%,
+        rgba(224, 233, 214, 0) 90%
+    );
 }
 
 /* Navigation Links Container - Clean */
@@ -110,24 +116,25 @@ button {
 
 /* Active state underline - KEEP EXISTING */
 .nav-link.active::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 15%;
     left: 15%;
     right: 15%;
     height: 3.2px;
-    background: linear-gradient(90deg,
-            transparent 0%,
-            #7F8A4F 25%,
-            #14532d 50%,
-            #7F8A4F 75%,
-            transparent 100%);
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        #7f8a4f 25%,
+        #14532d 50%,
+        #7f8a4f 75%,
+        transparent 100%
+    );
     border-radius: 2px;
     animation: pulseUnderline 2s ease-in-out infinite;
 }
 
 @keyframes pulseUnderline {
-
     0%,
     100% {
         opacity: 0.8;
@@ -146,11 +153,11 @@ button {
         padding: 0.6rem 1rem;
         border-radius: 6px;
     }
-    
+
     .nav-link:hover {
         text-shadow: 0 0 8px rgba(143, 188, 143, 0.5);
     }
-    
+
     .nav-link.active {
         text-shadow: 0 0 10px rgba(127, 138, 79, 0.7);
     }
@@ -194,15 +201,15 @@ button {
 }
 
 .sidebar-links a {
-    color: #335C2F;
+    color: #335c2f;
     font-weight: 500;
     letter-spacing: 0.3px;
     transition: color 0.3s ease;
-    font-family: 'Nunito', sans-serif;
+    font-family: "Nunito", sans-serif;
 }
 
 .sidebar-links a:hover {
-    color: #1E3A1A;
+    color: #1e3a1a;
 }
 
 .sidebar-footer {
@@ -223,7 +230,6 @@ button {
 #overlay.overlay-active {
     display: block !important;
 }
-
 
 #overlay {
     position: fixed;
@@ -264,7 +270,7 @@ button {
 
 .viewport1BG {
     position: relative;
-    background-color: #E0E9D6;
+    background-color: #e0e9d6;
     min-height: 100vh;
     width: 100%;
     overflow: hidden;
@@ -273,12 +279,12 @@ button {
 .viewport1BG .overlay {
     position: absolute;
     inset: 0;
-    background: url('/resources/images/viewport1/cloud-texture.png') center/cover no-repeat;
-    opacity: 0.150;
+    background: url("/resources/images/viewport1/cloud-texture.png")
+        center/cover no-repeat;
+    opacity: 0.15;
     /* adjust */
     pointer-events: none;
 }
-
 
 /* Mobile adjustments */
 @media (max-width: 1024px) {
@@ -299,7 +305,7 @@ button {
 
 .viewport2BG {
     position: relative;
-    background-image: url('/resources/images/backgrounds/viewport2_bg_coffee.png');
+    background-image: url("/resources/images/backgrounds/viewport2_bg_coffee.png");
     background-repeat: no-repeat;
     background-position: center top;
     background-size: cover;
@@ -345,7 +351,6 @@ button {
 /* =========================================================== SMALL PLANT ================================================================== */
 
 @keyframes sway-top {
-
     0%,
     100% {
         transform: rotate(0deg);
@@ -365,24 +370,26 @@ button {
 }
 
 #plant-image {
-    -webkit-mask-image: linear-gradient(to bottom,
-            rgba(0, 0, 0, 1) 75%,
-            rgba(0, 0, 0, 0) 100%);
-    mask-image: linear-gradient(to bottom,
-            rgba(0, 0, 0, 1) 75%,
-            rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 1) 75%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 1) 75%,
+        rgba(0, 0, 0, 0) 100%
+    );
 
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
 }
 
-
 /* =========================================================== BRANCH SWAY ANIMATIONS ================================================================== */
 /* 🌿 LEFT BRANCH — rooted bottom-left */
 .animate-sway-left {
     transform-origin: 0% 100%;
-    animation:
-        branch-sway-left 7s ease-in-out infinite,
+    animation: branch-sway-left 7s ease-in-out infinite,
         branch-tilt-left 7s ease-in-out infinite;
     animation-composition: add;
 }
@@ -390,8 +397,7 @@ button {
 /* 🌿 RIGHT BRANCH — rooted bottom-right */
 .animate-sway-right {
     transform-origin: 100% 100%;
-    animation:
-        branch-sway-right 7s ease-in-out infinite,
+    animation: branch-sway-right 7s ease-in-out infinite,
         branch-tilt-right 7s ease-in-out infinite;
     animation-composition: add;
 }
@@ -400,7 +406,6 @@ button {
 /* MAIN UPPER MOTION — big, slow sway */
 /* ———————————————————————— */
 @keyframes branch-sway-left {
-
     0%,
     100% {
         transform: rotate(0deg);
@@ -414,7 +419,6 @@ button {
 }
 
 @keyframes branch-sway-right {
-
     0%,
     100% {
         transform: rotate(0deg);
@@ -431,7 +435,6 @@ button {
 /* SUBTLE EXTRA TILT (keeps it natural) */
 /* ———————————————————————— */
 @keyframes branch-tilt-left {
-
     0%,
     100% {
         transform: rotate(0deg);
@@ -443,7 +446,6 @@ button {
 }
 
 @keyframes branch-tilt-right {
-
     0%,
     100% {
         transform: rotate(0deg);
@@ -477,7 +479,6 @@ button {
 /* =========================================================== ECO WIDGETS - EXTREME HIGH TEXT POSITIONING =========================================================== */
 /* In your app.css or main CSS file */
 @media (max-width: 768px) {
-
     /* Make navbar full width on mobile */
     .navbar {
         width: 100vw !important;
@@ -505,7 +506,6 @@ button {
         right: 0 !important;
     }
 }
-
 
 /* Widget Container - Side by side on ALL screens */
 .eco-widgets-container {
@@ -633,7 +633,7 @@ button {
     transition: all 0.3s ease;
     white-space: nowrap;
     width: max-content;
-    font-family: 'Crimson Text', serif;
+    font-family: "Crimson Text", serif;
 
     /* MOBILE */
     @media (max-width: 800px) {
@@ -673,7 +673,7 @@ button {
 /* Text - VERY HIGH POSITION (just below touching button) */
 .eco-widget-text {
     color: #625237;
-    font-family: 'Nunito', sans-serif;
+    font-family: "Nunito", sans-serif;
     font-weight: 600;
     margin-bottom: 0rem;
 
@@ -739,7 +739,7 @@ button {
     transition: color 0.3s ease;
     margin-bottom: 0.08rem;
     /* Increased a little from 0.05rem */
-    font-family: 'Crimson Text', serif;
+    font-family: "Crimson Text", serif;
 
     /* MOBILE - VERY HIGH (just below text) */
     @media (max-width: 800px) {
@@ -793,7 +793,7 @@ button {
 }
 
 /* Very small spacing between text and link - slightly separated */
-.eco-widget-text+.eco-widget-link {
+.eco-widget-text + .eco-widget-link {
     margin-top: -0.08rem !important;
     /* Slightly less negative from -0.15rem */
 
@@ -846,7 +846,7 @@ button {
         /* Increased a little from 0.1rem */
     }
 
-    .eco-widget-text+.eco-widget-link {
+    .eco-widget-text + .eco-widget-link {
         margin-top: -0.15rem !important;
         /* Slightly less negative from -0.2rem */
     }
@@ -854,7 +854,6 @@ button {
 
 /* Additional mobile tweaks for slightly lower positioning */
 @media (max-width: 800px) {
-
     /* Slightly more widget padding */
     .eco-widget {
         padding: 2.6rem 0.5rem 0.15rem 0.5rem !important;
@@ -885,7 +884,6 @@ button {
 
 /* Keep your existing cloud animation */
 @keyframes cloudFloat {
-
     0%,
     100% {
         transform: translateY(0px);
@@ -911,7 +909,6 @@ button {
 
 /* ===== MOBILE SIZE REDUCTIONS (max-width: 800px) ===== */
 @media (max-width: 800px) {
-
     /* Shrink widget container spacing */
     .eco-widgets-container {
         gap: 0.5rem !important;
@@ -958,13 +955,12 @@ button {
     }
 
     /* Fix spacing between text + link */
-    .eco-widget-text+.eco-widget-link {
+    .eco-widget-text + .eco-widget-link {
         margin-top: -0.1rem !important;
     }
 }
 
 @media (max-width: 374px) {
-
     .eco-widget {
         width: 135px !important;
         height: 105px !important;
@@ -992,20 +988,17 @@ button {
     }
 }
 
-
 /* =========================================================== BUTTONS ================================================================== */
 @layer components {
-
     /* 🌿 BASE BUTTON — Uniform Neumorphism */
     .btn-eco {
         @apply relative inline-flex items-center justify-center gap-2 font-semibold cursor-pointer rounded-xl select-none transition-all duration-300 ease-out px-4 py-2 text-[0.95rem];
         z-index: 5;
-        color: #5A4A36;
+        color: #5a4a36;
         background: rgba(240, 245, 235, 0.95);
 
         /* Neumorphism shadows */
-        box-shadow:
-            inset 2px 2px 4px rgba(140, 160, 130, 0.25),
+        box-shadow: inset 2px 2px 4px rgba(140, 160, 130, 0.25),
             inset -2px -2px 4px rgba(255, 255, 255, 0.65),
             0 2px 6px rgba(140, 160, 130, 0.12);
     }
@@ -1013,8 +1006,7 @@ button {
     /* Hover — Gentle Lift */
     .btn-eco:hover {
         transform: translateY(-1px);
-        box-shadow:
-            0 4px 8px rgba(140, 160, 130, 0.12),
+        box-shadow: 0 4px 8px rgba(140, 160, 130, 0.12),
             -2px -2px 4px rgba(255, 255, 255, 0.7),
             2px 2px 4px rgba(160, 180, 150, 0.25);
 
@@ -1024,8 +1016,7 @@ button {
     /* Active — Soft Press */
     .btn-eco:active {
         transform: translateY(1px);
-        box-shadow:
-            inset 3px 3px 5px rgba(120, 140, 110, 0.3),
+        box-shadow: inset 3px 3px 5px rgba(120, 140, 110, 0.3),
             inset -2px -2px 4px rgba(255, 255, 255, 0.55);
 
         filter: brightness(0.97);
@@ -1045,19 +1036,18 @@ button {
 ———————————————————————————— */
     .btn-sage {
         background: rgba(240, 245, 235, 0.95);
-        color: #5A4A36;
+        color: #5a4a36;
     }
 
     .btn-sand {
         background: rgba(250, 248, 242, 0.95);
-        color: #5A4A36;
+        color: #5a4a36;
     }
 
     .btn-clay {
         background: rgba(195, 122, 73, 0.92);
         color: white;
-        box-shadow:
-            inset 2px 2px 4px rgba(120, 80, 50, 0.3),
+        box-shadow: inset 2px 2px 4px rgba(120, 80, 50, 0.3),
             inset -2px -2px 4px rgba(255, 200, 170, 0.5),
             0 2px 6px rgba(195, 122, 73, 0.2);
     }
@@ -1065,8 +1055,7 @@ button {
     .btn-mint {
         background: rgba(122, 140, 79, 0.92);
         color: white;
-        box-shadow:
-            inset 2px 2px 4px rgba(70, 85, 45, 0.35),
+        box-shadow: inset 2px 2px 4px rgba(70, 85, 45, 0.35),
             inset -2px -2px 4px rgba(200, 220, 170, 0.4),
             0 2px 6px rgba(122, 140, 79, 0.25);
     }
@@ -1074,8 +1063,7 @@ button {
     .btn-leaf {
         background: rgba(84, 110, 48, 0.92);
         color: white;
-        box-shadow:
-            inset 2px 2px 4px rgba(50, 65, 30, 0.35),
+        box-shadow: inset 2px 2px 4px rgba(50, 65, 30, 0.35),
             inset -2px -2px 4px rgba(200, 225, 170, 0.35),
             0 2px 6px rgba(84, 110, 48, 0.25);
     }
@@ -1083,8 +1071,7 @@ button {
     .btn-olive {
         background: rgba(122, 140, 79, 0.92);
         color: white;
-        box-shadow:
-            inset 2px 2px 4px rgba(60, 75, 40, 0.35),
+        box-shadow: inset 2px 2px 4px rgba(60, 75, 40, 0.35),
             inset -2px -2px 4px rgba(220, 240, 190, 0.4),
             0 2px 6px rgba(122, 140, 79, 0.25);
     }
@@ -1101,7 +1088,7 @@ button {
         @apply relative flex items-center px-5 py-2.5 font-medium cursor-pointer rounded-xl select-none border transition-all duration-300 ease-out text-sm;
 
         background: rgba(248, 250, 237, 0.9);
-        color: #5A4A36;
+        color: #5a4a36;
         border: 1.5px solid rgba(122, 140, 79, 0.15);
         box-shadow: 0 1px 2px rgba(122, 140, 79, 0.05);
     }
@@ -1130,7 +1117,6 @@ button {
 
 .eco-card {
     transform-origin: center;
-
 }
 
 .eco-card {
@@ -1143,16 +1129,14 @@ button {
 
     background: rgba(255, 255, 255, 0.95);
     border: 1.5px solid rgba(224, 233, 214, 0.5);
-    box-shadow:
-        0 2px 8px rgba(122, 140, 79, 0.04),
+    box-shadow: 0 2px 8px rgba(122, 140, 79, 0.04),
         0 1px 3px rgba(195, 122, 73, 0.02);
     transform: translateY(0);
 }
 
 .eco-card:hover {
     transform: translateY(-2px);
-    box-shadow:
-        0 4px 16px rgba(122, 140, 79, 0.08),
+    box-shadow: 0 4px 16px rgba(122, 140, 79, 0.08),
         0 2px 6px rgba(195, 122, 73, 0.04);
     border-color: rgba(122, 140, 79, 0.3);
 }
@@ -1160,8 +1144,7 @@ button {
 /* 🌤 Hover: Gentle elevation */
 .eco-card:hover {
     transform: translateY(-2px);
-    box-shadow:
-        0 4px 16px rgba(122, 140, 79, 0.08),
+    box-shadow: 0 4px 16px rgba(122, 140, 79, 0.08),
         0 2px 6px rgba(195, 122, 73, 0.04);
     border-color: rgba(122, 140, 79, 0.3);
 }
@@ -1169,8 +1152,7 @@ button {
 /* 🌾 Active: Subtle press */
 .eco-card:active {
     transform: translateY(0px);
-    box-shadow:
-        0 1px 4px rgba(122, 140, 79, 0.03),
+    box-shadow: 0 1px 4px rgba(122, 140, 79, 0.03),
         inset 0 1px 2px rgba(224, 233, 214, 0.3);
 }
 
@@ -1194,40 +1176,38 @@ button {
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-    background: #EDF5E1;
+    background: #edf5e1;
     /* soft light green track */
     border-radius: 8px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-    background-color: #A6C17F;
+    background-color: #a6c17f;
     /* soft green thumb */
     border-radius: 8px;
-    border: 2px solid #EDF5E1;
+    border: 2px solid #edf5e1;
     /* space around thumb */
 }
 
 .custom-scroll {
     scrollbar-width: thin;
-    scrollbar-color: #A6C17F #EDF5E1;
+    scrollbar-color: #a6c17f #edf5e1;
     /* Firefox */
 }
 
 /* MAIN SHAPE*/
 @layer components {
-
     /* 🌿 Base Action Button */
     .btn-action {
         @apply inline-flex items-center gap-1 font-medium rounded-xl px-3 py-1.5 text-xs transition-all duration-300 ease-out select-none;
         z-index: 10;
         /* Soft Minimalism Base */
-        color: #5A4A36;
+        color: #5a4a36;
         background: rgba(240, 245, 235, 0.95);
-        font-family: 'Nunito Sans', sans-serif;
+        font-family: "Nunito Sans", sans-serif;
 
         /* Gentle Neumorphism: soft sunken */
-        box-shadow:
-            inset 2px 2px 4px rgba(140, 160, 130, 0.25),
+        box-shadow: inset 2px 2px 4px rgba(140, 160, 130, 0.25),
             inset -2px -2px 4px rgba(255, 255, 255, 0.6),
             0 2px 4px rgba(140, 160, 130, 0.12);
     }
@@ -1235,8 +1215,7 @@ button {
     /* Hover: Gentle Lift + brightness */
     .btn-action:hover {
         transform: translateY(-1px);
-        box-shadow:
-            -2px -2px 4px rgba(255, 255, 255, 0.65),
+        box-shadow: -2px -2px 4px rgba(255, 255, 255, 0.65),
             2px 2px 4px rgba(160, 180, 150, 0.25);
         filter: brightness(1.03);
     }
@@ -1244,8 +1223,7 @@ button {
     /* Active: Subtle Press */
     .btn-action:active {
         transform: translateY(1px);
-        box-shadow:
-            inset 3px 3px 5px rgba(120, 140, 110, 0.3),
+        box-shadow: inset 3px 3px 5px rgba(120, 140, 110, 0.3),
             inset -2px -2px 4px rgba(255, 255, 255, 0.5);
         filter: brightness(0.97);
     }
@@ -1253,17 +1231,17 @@ button {
     /* Individual Button Color Variants (Flat emphasis) */
     .btn-view {
         background: rgba(224, 229, 216, 0.95);
-        color: #4F3B2C;
+        color: #4f3b2c;
     }
 
     .btn-edit {
         background: rgba(224, 229, 216, 0.95);
-        color: #4F6B3F;
+        color: #4f6b3f;
     }
 
     .btn-delete {
         background: rgba(216, 176, 140, 0.95);
-        color: #4F3B2C;
+        color: #4f3b2c;
     }
 
     /* Icon spacing */
@@ -1274,10 +1252,7 @@ button {
     .btn-action:hover i {
         transform: scale(1.1);
     }
-
 }
-
-
 
 /**=========================================================== You're here because you care animation ================================================================== */
 /* Main title word emphasis with spacing */
@@ -1304,7 +1279,7 @@ button {
 @keyframes emphasizeWord {
     0% {
         transform: scale(1);
-        color: #5C7919;
+        color: #5c7919;
     }
 
     50% {
@@ -1334,7 +1309,7 @@ button {
 
 /* Slower staggered glow animations for all words */
 .glow-word.word-1 {
-    animation: wordGlow 0.7s ease-out 2.0s forwards;
+    animation: wordGlow 0.7s ease-out 2s forwards;
 }
 
 .glow-word.word-2 {
@@ -1475,10 +1450,9 @@ button {
 
 /* Reduce space between title and subtext */
 .absolute.top-\\[20\\%\\] h1 {
-    margin-bottom: 0.10rem !important;
+    margin-bottom: 0.1rem !important;
     /* Much tighter spacing */
 }
-
 
 /* Responsive adjustments for mobile */
 @media (max-width: 768px) {
@@ -1506,7 +1480,7 @@ button {
     }
 
     .glow-word.word-3 {
-        animation: wordGlowDarker 1.0s ease-out 2.5s forwards;
+        animation: wordGlowDarker 1s ease-out 2.5s forwards;
     }
 
     .glow-word.word-4 {
@@ -1526,7 +1500,7 @@ button {
     }
 
     .glow-word.word-8 {
-        animation: wordGlow 0.5s ease-out 3.0s forwards;
+        animation: wordGlow 0.5s ease-out 3s forwards;
     }
 
     .glow-word.word-9 {
@@ -1561,7 +1535,6 @@ button {
 }
 
 @keyframes bounce-slow {
-
     0%,
     100% {
         transform: translateY(0);
@@ -1605,7 +1578,6 @@ button {
 
 /* Optional: slow pulse on the "LIVE" badge */
 @keyframes pulse {
-
     0%,
     100% {
         opacity: 0.8;
@@ -1665,7 +1637,7 @@ button {
     /* Enables momentum scrolling on iOS */
     scrollbar-width: thin;
     /* For Firefox */
-    scrollbar-color: #7A8C4F #E0E9D6;
+    scrollbar-color: #7a8c4f #e0e9d6;
     /* Custom scrollbar colors */
 }
 
@@ -1675,17 +1647,17 @@ button {
 }
 
 .touch-scroll::-webkit-scrollbar-track {
-    background: #E0E9D6;
+    background: #e0e9d6;
     border-radius: 10px;
 }
 
 .touch-scroll::-webkit-scrollbar-thumb {
-    background: #7A8C4F;
+    background: #7a8c4f;
     border-radius: 10px;
 }
 
 .touch-scroll::-webkit-scrollbar-thumb:hover {
-    background: #5C7919;
+    background: #5c7919;
 }
 
 /* Ensure saved items lists also scroll on mobile */
@@ -1749,15 +1721,19 @@ button {
     pointer-events: none;
 }
 
-    .counter-badge {
-        position: absolute;
-        top: -6px;
-        right: -6px;
-        background: #4A6613;
-        color: white;
-        font-size: 10px;
-        padding: 2px 6px;
-        border-radius: 9999px;
-        font-weight: bold;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-    }
+.counter-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #4a6613;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 9999px;
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.filter-btn-active {
+    background-color: #4a6613 !important;
+    color: white !important;
+}
