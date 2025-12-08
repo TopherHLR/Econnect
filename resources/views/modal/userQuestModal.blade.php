@@ -1,6 +1,7 @@
     <!-- 🔹 Active Quest Modal -->
     <div id="activeQuestModal" class="hidden fixed inset-0 z-[1000] bg-black/50 flex items-center justify-center p-4">
-        <div class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+        <div
+            class=" w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB] overflow-hidden">
 
             <!-- Modal Header -->
@@ -39,7 +40,8 @@
     </div>
     <!-- 🔹 Accepted Quest Submission Modal -->
     <div id="acceptedQuestModal" class="hidden fixed inset-0 z-[1000] bg-black/50 flex items-center justify-center p-4">
-        <div class="w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+        <div
+            class="w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB] overflow-hidden">
 
             <!-- Modal Header -->
@@ -92,7 +94,8 @@
     </div>
     <!-- 🔹 Quest View Modal (Completed & Rejected) -->
     <div id="viewQuestModal" class="hidden fixed inset-0 z-[1000] bg-black/50 flex items-center justify-center p-4">
-        <div class="w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
+        <div
+            class="w-full max-w-lg rounded-2xl shadow-2xl bg-[linear-gradient(135deg,#FFFFFF_0%,#F8F4E7_100%)]
             border-2 border-[#C8D5BB] overflow-hidden">
 
             <!-- Modal Header -->
@@ -339,47 +342,58 @@
 
         // ==================== View Quest Modal (Completed/Rejected) ====================
         function openViewQuestModal(submission) {
+            const cleanData = parseQuestDescription(submission.questDescription || submission.description);
+
             const {
                 clean,
                 extras
-            } = parseQuestDescription(submission.questDescription || submission.description);
+            } = cleanData;
 
-            document.getElementById('viewQuestTitle').textContent = submission.questTitle || submission.title;
-            document.getElementById('viewQuestDescription').innerHTML = clean +
-                (extras.length > 0 ? '<br><br>' + extras.join('<br>') : '');
-            document.getElementById('viewQuestStatus').textContent = submission.status;
-            document.getElementById('viewQuestPoints').textContent = submission.pointsReward || '0';
-            document.getElementById('viewQuestDate').textContent = submission.date || 'N/A';
+            document.getElementById('viewQuestTitle').textContent = submission.questTitle || 'Untitled Quest';
+            document.getElementById('viewQuestDescription').innerHTML =
+                clean + (extras.length ? '<br><br>' + extras.join('<br>') : '');
 
+            // POINTS
+            document.getElementById('viewQuestPoints').textContent =
+                submission.pointsReward || submission.points || '0';
+
+            // DATE
+            document.getElementById('viewQuestDate').textContent =
+                submission.date || submission.dateCompleted || 'N/A';
+
+            // HEADER COLOR
             const header = document.getElementById('viewQuestHeader');
             header.classList.remove('bg-red-600', 'bg-green-700');
-            if (submission.status === 'completed' || submission.status === 'Completed') {
+
+            if (submission.status?.toLowerCase() === 'completed') {
                 header.classList.add('bg-green-700');
-            } else if (submission.status === 'rejected' || submission.status === 'Rejected') {
+            } else if (submission.status?.toLowerCase() === 'rejected') {
                 header.classList.add('bg-red-600');
             }
 
             document.getElementById('viewQuestModal').classList.remove('hidden');
         }
 
+
         function closeViewQuestModal() {
             viewQuestModal.classList.add('hidden');
         }
 
-        // Attach click events to completed/rejected quests
         document.querySelectorAll('.completed-quest, .rejected-quest').forEach(item => {
             item.addEventListener('click', function() {
                 const submission = {
                     submissionId: this.dataset.submissionId,
-                    questTitle: this.querySelector('span').textContent,
+                    questTitle: this.dataset.title || 'Untitled Quest',
                     questDescription: this.dataset.description || 'No description provided',
                     status: this.classList.contains('completed-quest') ? 'Completed' : 'Rejected',
-                    pointsReward: this.querySelector('small')?.textContent?.replace(' pts', '') || '0',
-                    date: this.querySelector('small')?.textContent || 'N/A'
+                    pointsReward: this.dataset.points || '0',
+                    date: this.dataset.date || 'N/A'
                 };
+
                 openViewQuestModal(submission);
             });
         });
+
 
         // Close modal when clicking backdrop
         viewQuestModal?.addEventListener('click', e => {
