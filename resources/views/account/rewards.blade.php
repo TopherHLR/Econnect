@@ -1,8 +1,9 @@
 @extends('layouts.accountLayout')
 @section('title', 'Rewards')
+@section('manualImage')
 @section('account_content')
     @include('modal.userVoucherModal')
-    @section('manualImage')
+
     <script>
         const availableVouchers = @json($availableVouchers);
         const myVouchers = @json($myVouchers);
@@ -26,7 +27,6 @@
     </div>
     <!-- Main Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
-
         <!-- Rewards Section -->
         <div class="lg:col-span-2">
             <div class="flex justify-between items-center mb-6">

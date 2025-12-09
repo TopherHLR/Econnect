@@ -20,21 +20,17 @@
     <nav id="navbar"
         class="navbar {{ !Request::is('/') && !Request::is('home') ? 'navbar-scrolled navbar-green-shadow' : '' }}">
         {{-- FLOATING MANUAL ICON (visible only if a page sets manualImage) --}}
-<div id="manualTrigger"
-     class="fixed top-20 right-4 z-40 hidden md:flex cursor-pointer">
-    <img id="manualIconImg"
-         src="{{ Vite::asset('resources/images/viewport1/manual-icon.webp') }}"
-         class="w-10 h-10 md:w-12 md:h-12 drop-shadow-xl hover:scale-110 transition">
-</div>
+        <div id="manualTrigger" class="fixed top-20 right-4 z-40 hidden md:flex cursor-pointer">
+            <img id="manualIconImg" src="{{ Vite::asset('resources/images/viewport1/manual-icon.webp') }}"
+                class="w-10 h-10 md:w-12 md:h-12 drop-shadow-xl hover:scale-110 transition">
+        </div>
 
-{{-- MANUAL VIEWER --}}
-<!-- Manual Viewer Modal -->
-<div id="manualViewer"
-     class="fixed inset-0  hidden z-50 flex items-center justify-center p-4">
+        {{-- MANUAL VIEWER --}}
+        <!-- Manual Viewer Modal -->
+        <div id="manualViewer" class="fixed inset-0  hidden z-50 flex items-center justify-center p-4">
 
-    <img id="manualImage"
-         class="max-w-full max-h-[90vh] rounded-xl shadow-lg manual-offset">
-</div>
+            <img id="manualImage" class="max-w-full max-h-[90vh] rounded-xl shadow-lg manual-offset">
+        </div>
 
 
         <div class="navbar-container">
@@ -403,7 +399,7 @@
         @yield('content')
         @yield('manualImage')
     </main>
-    
+
 </body>
 {{-- Footer --}}
 {{-- Footer --}}
@@ -494,207 +490,194 @@
             </div>
         </div>
     </div>
-</footer><style>
-#manualImage {
-    width: auto;          /* maintain aspect ratio */
-    height: 70vh;         /* slightly smaller than before */
-    max-width: 90%;       /* almost full width */
-    border-radius: 1rem;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    transition: transform 0.2s ease; /* optional hover zoom */
-}
-
-#manualImage:hover {
-    transform: scale(1.05);  /* gentle zoom on hover */
-}
-
-/* Responsive adjustments for mobile */
-@media (max-width: 640px) {
+</footer>
+<style>
     #manualImage {
-        height: 40vh;     /* smaller for mobile */
-        max-width: 85%;
-    }
-}
-
-#manualTrigger {
-    top: 5.5rem;       /* push a bit lower under mobile nav */
-    right: 1rem;
-    z-index: 50;
-    display: flex;
-}
-
-#manualIconImg {
-    width: 2.5rem;
-    height: 2.5rem;
-}
-
-/* KEEP margin-top offsets intact */
-.manual-offset {
-    margin-top: 8rem; /* change globally here */
-}
-
-/* For small screens (mobile) */
-@media (max-width: 468px) {
-    .manual-offset {
-        margin-top: 10rem; /* adjust this to move lower */
-    }
-}
-
-/* Slightly bigger screens (tablet) */
-@media (min-width: 469px) and (max-width: 767px) {
-    .manual-offset {
-        margin-top: 50rem;
-    }
-}
-
-/* Default for larger screens */
-.manual-offset {
-    margin-top: 50rem;
-}
-</style>
-
-    .manual-offset {
-        margin-top: 8rem; /* change globally here */
-    }
-/* For small screens (mobile) */
-@media (max-width: 468px) {
-    .manual-offset {
-        margin-top: 40rem; /* adjust this to move lower */
-    }
-}
-
-/* Optional: for slightly bigger screens (tablet) */
-@media (min-width: 469px) and (max-width: 767px) {
-    .manual-offset {
-        margin-top: 50rem;
-    }
-}
-
-/* Default for larger screens */
-.manual-offset {
-    margin-top: 50rem;
-}
-
-</style>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const trigger = document.getElementById("manualTrigger");
-    const viewer = document.getElementById("manualViewer");
-    const manualImage = document.getElementById("manualImage");
-    const manualIconImg = document.getElementById("manualIconImg");
-
-    const manualPath = window.manualImagePath;
-
-    if (trigger && manualPath) {
-        trigger.classList.remove("hidden");
+        width: auto;
+        /* maintain aspect ratio */
+        height: 70vh;
+        /* slightly smaller than before */
+        max-width: 90%;
+        /* almost full width */
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s ease;
+        /* optional hover zoom */
     }
 
-    if (trigger && viewer && manualImage) {
-        trigger.addEventListener("click", () => {
-            // Toggle visibility
-            if (viewer.classList.contains("hidden")) {
-                manualImage.src = manualIconImg?.dataset.manualImage || manualPath || manualIconImg?.src;
-                viewer.classList.remove("hidden");
-            } else {
-                viewer.classList.add("hidden");
-            }
-        });
-
-        // Close when clicking outside image
-        viewer.addEventListener("click", (e) => {
-            if (e.target === viewer) {
-                viewer.classList.add("hidden");
-            }
-        });
+    #manualImage:hover {
+        transform: scale(1.05);
+        /* gentle zoom on hover */
     }
 
-
-    // --- Sidebar ---
-    const menuToggle = document.getElementById('menu-toggle');
-    const sidebar = document.getElementById('sidebar');
-    const closeSidebar = document.getElementById('close-sidebar');
-    const overlay = document.getElementById('overlay');
-
-    function openSidebar() {
-        sidebar.classList.remove('translate-x-full');
-        overlay.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    }
-
-    function closeSidebarFunc() {
-        sidebar.classList.add('translate-x-full');
-        overlay.classList.add('hidden');
-        document.body.style.overflow = ''; // Restore scrolling
-    }
-
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeSidebarFunc();
-    });
-
-    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-        link.addEventListener('click', closeSidebarFunc);
-    });
-
-    menuToggle?.addEventListener('click', openSidebar);
-    closeSidebar?.addEventListener('click', closeSidebarFunc);
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !sidebar.classList.contains('translate-x-full')) {
-            closeSidebarFunc();
+    /* Responsive adjustments for mobile */
+    @media (max-width: 640px) {
+        #manualImage {
+            height: 40vh;
+            /* smaller for mobile */
+            max-width: 85%;
         }
-    });
+    }
 
-    // --- Auto-hide feedback toasts ---
-    setTimeout(() => {
-        const toast = document.getElementById('feedback-toast');
-        const errorToast = document.getElementById('error-toast');
-        [toast, errorToast].forEach(el => {
-            if (el) {
-                el.style.opacity = '0';
-                setTimeout(() => el.remove(), 1000);
+    #manualTrigger {
+        top: 5.5rem;
+        /* push a bit lower under mobile nav */
+        right: 1rem;
+        z-index: 50;
+        display: flex;
+    }
+
+    #manualIconImg {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    /* KEEP margin-top offsets intact */
+    .manual-offset {
+        margin-top: 8rem;
+        /* change globally here */
+    }
+
+    /* For small screens (mobile) */
+    @media (max-width: 468px) {
+        .manual-offset {
+            margin-top: 10rem;
+            /* adjust this to move lower */
+        }
+    }
+
+    /* Slightly bigger screens (tablet) */
+    @media (min-width: 469px) and (max-width: 767px) {
+        .manual-offset {
+            margin-top: 50rem;
+        }
+    }
+
+    /* Default for larger screens */
+    .manual-offset {
+        margin-top: 50rem;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const trigger = document.getElementById("manualTrigger");
+        const viewer = document.getElementById("manualViewer");
+        const manualImage = document.getElementById("manualImage");
+        const manualIconImg = document.getElementById("manualIconImg");
+
+        const manualPath = window.manualImagePath;
+
+        if (trigger && manualPath) {
+            trigger.classList.remove("hidden");
+        }
+
+        if (trigger && viewer && manualImage) {
+            trigger.addEventListener("click", () => {
+                // Toggle visibility
+                if (viewer.classList.contains("hidden")) {
+                    manualImage.src = manualIconImg?.dataset.manualImage || manualPath || manualIconImg
+                        ?.src;
+                    viewer.classList.remove("hidden");
+                } else {
+                    viewer.classList.add("hidden");
+                }
+            });
+
+            // Close when clicking outside image
+            viewer.addEventListener("click", (e) => {
+                if (e.target === viewer) {
+                    viewer.classList.add("hidden");
+                }
+            });
+        }
+
+
+        // --- Sidebar ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const overlay = document.getElementById('overlay');
+
+        function openSidebar() {
+            sidebar.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeSidebarFunc() {
+            sidebar.classList.add('translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeSidebarFunc();
+        });
+
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', closeSidebarFunc);
+        });
+
+        menuToggle?.addEventListener('click', openSidebar);
+        closeSidebar?.addEventListener('click', closeSidebarFunc);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !sidebar.classList.contains('translate-x-full')) {
+                closeSidebarFunc();
             }
         });
-    }, 3000);
 
-    // --- Navbar green shadow for non-home pages ---
-    const navbar = document.getElementById('navbar');
-    if (navbar) {
-        function updateNavbar() {
-            const isHomePage = window.location.pathname === '/';
-            if (!isHomePage) {
-                navbar.classList.add('navbar-green-shadow');
-                navbar.classList.remove('navbar-solid');
-            } else {
-                navbar.classList.remove('navbar-green-shadow');
-                if (window.scrollY > 50) {
-                    navbar.classList.add('navbar-solid');
-                } else {
+        // --- Auto-hide feedback toasts ---
+        setTimeout(() => {
+            const toast = document.getElementById('feedback-toast');
+            const errorToast = document.getElementById('error-toast');
+            [toast, errorToast].forEach(el => {
+                if (el) {
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 1000);
+                }
+            });
+        }, 3000);
+
+        // --- Navbar green shadow for non-home pages ---
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+            function updateNavbar() {
+                const isHomePage = window.location.pathname === '/';
+                if (!isHomePage) {
+                    navbar.classList.add('navbar-green-shadow');
                     navbar.classList.remove('navbar-solid');
+                } else {
+                    navbar.classList.remove('navbar-green-shadow');
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('navbar-solid');
+                    } else {
+                        navbar.classList.remove('navbar-solid');
+                    }
                 }
             }
+
+            updateNavbar();
+
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                const isHomePage = window.location.pathname === '/';
+                if (isHomePage && !scrollTimeout) {
+                    scrollTimeout = setTimeout(() => {
+                        scrollTimeout = null;
+                        updateNavbar();
+                    }, 10);
+                }
+            });
+
+            window.addEventListener('resize', updateNavbar);
         }
-
-        updateNavbar();
-
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            const isHomePage = window.location.pathname === '/';
-            if (isHomePage && !scrollTimeout) {
-                scrollTimeout = setTimeout(() => {
-                    scrollTimeout = null;
-                    updateNavbar();
-                }, 10);
-            }
-        });
-
-        window.addEventListener('resize', updateNavbar);
-    }
-});
-
-
+    });
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
 </body>
+
 </html>

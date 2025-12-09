@@ -241,7 +241,7 @@ class LibraryController extends Controller
             'category' => 'nullable|string|max:100',
             'type' => 'nullable|string|max:50',
             'source_link' => 'nullable|url|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4048',
         ]);
 
         try {
@@ -361,19 +361,19 @@ class LibraryController extends Controller
         $ecoTopics = EcoLibrary::where('type', 'Topic')
             ->where('archive', 0)
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->paginate(3);
 
         $archivedTopics = EcoLibrary::where('type', 'Topic')
             ->where('archive', 1)
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->paginate(3);
 
         $ecoActions = EcoAction::where('archive', 0)
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->paginate(3);
         $archivedActions = EcoAction::where('archive', 1)
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->paginate(3);
 
         $ecoTopicsList = EcoLibrary::where('type', 'Topic')
             ->where('archive', 0)

@@ -1,7 +1,7 @@
 @extends('layouts.accountLayout')
 
 @section('title', 'Progress')
-
+    @section('manualImage')
 @section('account_content')
     <!-- Progress Bar -->
     <div class="bg-white rounded-2xl p-5 shadow-sm border border-[#e8e6dc] ">
