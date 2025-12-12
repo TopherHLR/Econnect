@@ -121,6 +121,17 @@ class VoucherController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validate fields
+        $request->validate([
+            'title'           => 'required|string|max:150',
+            'description'     => 'nullable|string',
+            'required_points' => 'required|integer|min:1',
+            'discount_value'  => 'nullable|string|max:50',
+            'expiry_date'     => 'required|date|after:today',
+            'is_active'       => 'required|boolean',
+        ]);
+
+        // Find and update
         $voucher = Voucher::findOrFail($id);
         $voucher->update($request->all());
 

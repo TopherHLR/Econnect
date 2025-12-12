@@ -138,7 +138,7 @@
                         <!-- Archived Vouchers Table -->
                         <div id="archiveTablePagi">
                             <div class="overflow-x-auto" id="table-data-archive">
-                                @include('admin.partials.archive_table')    
+                                @include('admin.partials.archive_table')
                             </div>
                         </div>
 
@@ -171,11 +171,11 @@
                 const tableId = input.dataset.tableId;
                 const tableBody = document.querySelector(`#${tableId} tbody`);
 
-                // Create a "No results found" row
+                // Create "No results found" row
                 let emptyRow = document.createElement('tr');
                 emptyRow.classList.add('no-results');
                 emptyRow.innerHTML =
-                    `<td colspan="6" class="px-4 py-2 text-center text-[#7A8C4F]">No rewards found</td>`;
+                    `<td colspan="100" class="px-4 py-2 text-center text-[#7A8C4F]">No rewards found</td>`;
                 tableBody.appendChild(emptyRow);
 
                 const updateVisibility = () => {
@@ -189,11 +189,10 @@
                     }
 
                     rows.forEach(row => {
-                        const rewardCell = row.cells[0]; // search by Reward Name column
-                        const rewardText = rewardCell ? rewardCell.textContent.toLowerCase() :
-                            '';
+                        // Combine all column text into one searchable string
+                        const rowText = row.textContent.toLowerCase();
 
-                        if (rewardText.includes(filter)) {
+                        if (rowText.includes(filter)) {
                             row.style.display = '';
                             anyVisible = true;
                         } else {
@@ -204,13 +203,14 @@
                     emptyRow.style.display = anyVisible ? 'none' : '';
                 };
 
-                // Run on keyup
+                // Run search on input
                 input.addEventListener('keyup', updateVisibility);
 
                 // Run on page load
                 updateVisibility();
             });
         });
+
 
         $(document).ready(function() {
             const $catalogContainer = $('#table-data-rewards');
