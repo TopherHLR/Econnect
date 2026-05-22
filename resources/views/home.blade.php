@@ -1349,7 +1349,7 @@
                                                     <i class="fa-solid fa-user text-[#4A6613]"></i>
                                                 </div>
                                                 <div>
-                                                    <p class="font-semibold text-[#4A6613] text-sm">
+                                                    <p class="font-semibold text-[#4A6613] text-base">
                                                         {{ $item->user->first_name ?? 'Anonymous' }}
                                                         {{ $item->user->last_name ?? '' }}
                                                     </p>
@@ -1357,7 +1357,7 @@
                                                         {{ $item->created_at->format('M d, Y') }}</p>
                                                 </div>
                                             </div>
-                                            <p class="text-[#4E3A2E] italic mb-4 text-sm line-clamp-3  feedback-text">
+                                            <p class="text-[#4E3A2E] italic mb-4 text-base line-clamp-3  feedback-text">
                                                 "{{ $item->content }}"</p>
                                             <button class="text-[#4A6613] text-xs font-semibold open-feedback-modal"
                                                 data-content="{{ $item->content }}"

@@ -1,3 +1,5 @@
+
+
 @extends('layouts.mainLayout')
 @section('title', 'lifestyle')
 @section('content')
@@ -15,7 +17,7 @@
                 {{-- Mobile Saved Button in Header --}}
                 @auth
                     <button onclick="toggleMobileSaved()"
-                        class="lg:hidden flex  justify-center items-center gap-2 px-3 py-2 bg-[#5C7919] text-[#FCFFF6] rounded-full text-sm font-medium">
+                        class="lg:hidden flex  justify-center items-center gap-2 px-3 py-2 bg-[#5C7919] text-[#FCFFF6] rounded-full text-base font-medium">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                         </svg>
@@ -39,10 +41,10 @@
                                 class="absolute left-1 top-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-white rounded-md shadow-md transition-all duration-300 ease-in-out">
                             </div>
                             <button id="topicsBtn"
-                                class="relative z-10 flex-1 text-center text-sm font-medium text-[#5C7919] py-"
+                                class="relative z-10 flex-1 text-center text-base font-medium text-[#5C7919] py-"
                                 onclick="switchTab('topics')">Topics</button>
                             <button id="actionsBtn"
-                                class="relative z-10 flex-1 text-center text-sm font-medium text-[#FCF9EF] py-2"
+                                class="relative z-10 flex-1 text-center text-base font-medium text-[#FCF9EF] py-2"
                                 onclick="switchTab('actions')">Actions</button>
                         </div>
 
@@ -60,7 +62,7 @@
                             <div class="relative w-full">
                                 <input type="text" id="liveSearchInput" placeholder="Search topics & actions..."
                                     value="{{ request('search') }}"
-                                    class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2.5 border border-[#7A8C4F] rounded-xl focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-sm"
+                                    class="bg-[#E0E9D6] w-full pl-3 pr-10 py-2.5 border border-[#7A8C4F] rounded-xl focus:outline-[#7A8C4F] focus:ring-2 focus:ring-[#7A8C4F] text-base"
                                     autocomplete="off">
                                 <svg class="absolute right-3 top-3 w-4 h-4 text-gray-400 pointer-events-none" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
@@ -70,7 +72,7 @@
                             </div>
 
                             <select name="category" id="categoryDropdown"
-                                class="text-sm text-gray-600 bg-white border border-[#7A8C4F] rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] w-full sm:w-auto">
+                                class="text-base text-gray-600 bg-white border border-[#7A8C4F] rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#7A8C4F] w-full sm:w-auto">
                                 <option value="">All Categories</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category }}"
@@ -92,11 +94,11 @@
                                 <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('storage/default.png') }}"
                                     alt="{{ $topic->title }}" class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
                                 <div class="flex-1 min-w-0">
-                                    <h3 class="font-semibold text-base sm:text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
+                                    <h3 class="font-bold text-1xl sm:text-xl text-[#5C7919] mb-1 cursor-pointer hover:underline"
                                         onclick="openEcoModal('ecoTopic', {{ $topic->library_id }})">{{ $topic->title }}
                                     </h3>
                                     <p
-                                        class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
+                                        class="text-lg text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
                                         {{ $topic->content }}</p>
                                 </div>
                                 @auth
@@ -149,7 +151,7 @@
                                             </svg>
                                         </div>
                                         <h3 class="text-gray-600 font-medium mb-2">No saved topics yet</h3>
-                                        <p class="text-sm text-gray-500 mb-4">Start exploring and save your favorite eco topics!
+                                        <p class="text-lg text-gray-500 mb-4">Start exploring and save your favorite eco topics!
                                         </p>
                                         <div class="bg-[#F0F5E9] p-4 rounded-lg w-full">
                                             <p class="text-xs text-[#5C7919] italic">Tip: Browse topics and click the
@@ -167,7 +169,7 @@
                                                     <img src="{{ $saved->image ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : asset('storage/default.png') }}"
                                                         alt="{{ $saved->title }}"
                                                         class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                                                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                                    <h4 class="text-base font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
                                                         onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                                         {{ $saved->title }}
                                                     </h4>
@@ -196,7 +198,7 @@
                                                     <img src="{{ $saved->image ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : asset('storage/default.png') }}"
                                                         alt="{{ $saved->title }}"
                                                         class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                                                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                                    <h4 class="text-base font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
                                                         onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                                         {{ $saved->title }}
                                                     </h4>
@@ -228,7 +230,7 @@
                                             </svg>
                                         </div>
                                         <h3 class="text-gray-600 font-medium mb-2">No saved actions yet</h3>
-                                        <p class="text-sm text-gray-500 mb-4">Discover and save actionable eco tips!</p>
+                                        <p class="text-base text-gray-500 mb-4">Discover and save actionable eco tips!</p>
                                         <div class="bg-[#F0F5E9] p-4 rounded-lg w-full">
                                             <p class="text-xs text-[#5C7919] italic">Tip: Browse actions and click the
                                                 bookmark icon to save them here</p>
@@ -245,7 +247,7 @@
                                                     <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
                                                         alt="{{ $saved->title }}"
                                                         class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                                                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                                    <h4 class="text-base font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
                                                         onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                                         {{ $saved->title }}
                                                     </h4>
@@ -274,7 +276,7 @@
                                                     <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
                                                         alt="{{ $saved->title }}"
                                                         class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                                                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                                                    <h4 class="text-base font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
                                                         onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                                         {{ $saved->title }}
                                                     </h4>
@@ -341,7 +343,7 @@
                                                 </svg>
                                             </div>
                                             <h3 class="text-gray-600 font-medium mb-2">No saved topics yet</h3>
-                                            <p class="text-sm text-gray-500">Save topics to see them here</p>
+                                            <p class="text-base text-gray-500">Save topics to see them here</p>
                                         </div>
                                     @elseif($savedEcoTopicsCount < 4)
                                         {{-- Show saved topics with filler encouragement --}}
@@ -355,7 +357,7 @@
                                                             alt="{{ $saved->title }}"
                                                             class="w-12 h-12 object-cover rounded-md flex-shrink-0">
                                                         <div class="flex-1 min-w-0">
-                                                            <h4 class="text-sm font-medium text-[#5C7919] truncate"
+                                                            <h4 class="text-base font-medium text-[#5C7919] truncate"
                                                                 onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                                                 {{ $saved->title }}
                                                             </h4>
@@ -388,7 +390,7 @@
                                                             alt="{{ $saved->title }}"
                                                             class="w-12 h-12 object-cover rounded-md flex-shrink-0">
                                                         <div class="flex-1 min-w-0">
-                                                            <h4 class="text-sm font-medium text-[#5C7919] truncate"
+                                                            <h4 class="text-base font-medium text-[#5C7919] truncate"
                                                                 onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                                                 {{ $saved->title }}
                                                             </h4>
@@ -423,7 +425,7 @@
                                                 </svg>
                                             </div>
                                             <h3 class="text-gray-600 font-medium mb-2">No saved actions yet</h3>
-                                            <p class="text-sm text-gray-500">Save actions to see them here</p>
+                                            <p class="text-base text-gray-500">Save actions to see them here</p>
                                         </div>
                                     @elseif($savedEcoActionsCount < 4)
                                         {{-- Show saved actions with filler encouragement --}}
@@ -437,7 +439,7 @@
                                                             alt="{{ $saved->title }}"
                                                             class="w-12 h-12 object-cover rounded-md flex-shrink-0">
                                                         <div class="flex-1 min-w-0">
-                                                            <h4 class="text-sm font-medium text-[#5C7919] truncate"
+                                                            <h4 class="text-base font-medium text-[#5C7919] truncate"
                                                                 onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                                                 {{ $saved->title }}
                                                             </h4>
@@ -471,7 +473,7 @@
                                                             d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
                                                     </svg>
                                                 </div>
-                                                <h4 class="font-medium text-[#5C7919] text-sm mb-1">Save
+                                                <h4 class="font-medium text-[#5C7919] text-base mb-1">Save
                                                     {{ 4 - $savedEcoActionsCount }} more!</h4>
                                                 <p class="text-xs text-gray-600">Build your actionable eco tips collection</p>
                                             </div>
@@ -488,7 +490,7 @@
                                                             alt="{{ $saved->title }}"
                                                             class="w-12 h-12 object-cover rounded-md flex-shrink-0">
                                                         <div class="flex-1 min-w-0">
-                                                            <h4 class="text-sm font-medium text-[#5C7919] truncate"
+                                                            <h4 class="text-base font-medium text-[#5C7919] truncate"
                                                                 onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                                                 {{ $saved->title }}
                                                             </h4>
@@ -518,7 +520,7 @@
             </div> {{-- This closes the flex container --}}
 
             {{-- Motivational Quote (centered) --}}
-            <div class="mt-6 text-center text-sm text-gray-500 italic">
+            <div class="mt-6 text-center text-base text-gray-500 italic">
                 "You don't have to know everything today — one tip at a time is enough."
             </div>
 
@@ -630,13 +632,16 @@
                 data-category="{{ $topic->category }}">
                 <img src="{{ $topic->image ? asset('storage/eco-library/' . $topic->image) : asset('storage/default.png') }}"
                     alt="{{ $topic->title }}" class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
-                <div class="flex-1 min-w-0">
-                    <h3 class="font-semibold text-base sm:text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
-                        onclick="openEcoModal('ecoTopic', {{ $topic->library_id }})">{{ $topic->title }}
-                    </h3>
-                    <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
-                        {{ $topic->content }}</p>
-                </div>
+              <div class="flex-1 min-w-0">
+    <h3 class="font-bold text-1xl sm:text-xl text-[#5C7919] mb-1 cursor-pointer hover:underline"
+        onclick="openEcoModal('ecoTopic', {{ $topic->library_id }})">
+        {{ $topic->title }}
+    </h3>
+
+    <p class="text-lg text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
+        {{ $topic->content }}
+    </p>
+</div>
                 @auth
                     <form action="{{ route('libraries.save', ['id' => $topic->library_id]) }}" method="POST"
                         class="mt-2 sm:mt-0">
@@ -666,7 +671,7 @@
                 <div class="flex items-center gap-3 flex-1 min-w-0">
                     <img src="{{ $saved->image ? asset('storage/eco-' . ($saved->type === 'ecoTopic' ? 'library' : 'actions') . '/' . $saved->image) : asset('storage/default.png') }}"
                         alt="{{ $saved->title }}" class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                    <h4 class="text-base font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
                         onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                         {{ $saved->title }}
                     </h4>
@@ -694,7 +699,7 @@
                             </svg>
                         </div>
                         <h3 class="text-gray-600 font-medium mb-2">No saved topics yet</h3>
-                        <p class="text-sm text-gray-500 mb-4">Start exploring and save your favorite eco topics!</p>
+                        <p class="text-lg text-gray-500 mb-4">Start exploring and save your favorite eco topics!</p>
                         <div class="bg-[#F0F5E9] p-4 rounded-lg w-full">
                             <p class="text-xs text-[#5C7919] italic">Tip: Browse topics and click the bookmark icon to save them here</p>
                         </div>
@@ -713,7 +718,7 @@
                             alt="{{ $saved->title }}"
                             class="w-12 h-12 object-cover rounded-md flex-shrink-0">
                         <div class="flex-1 min-w-0">
-                            <h4 class="text-sm font-medium text-[#5C7919] truncate"
+                            <h4 class="text-base font-medium text-[#5C7919] truncate"
                                 onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                 {{ $saved->title }}
                             </h4>
@@ -741,7 +746,7 @@
                         </svg>
                     </div>
                     <h3 class="text-gray-600 font-medium mb-2">No saved topics yet</h3>
-                    <p class="text-sm text-gray-500">Save topics to see them here</p>
+                    <p class="text-lg text-gray-500">Save topics to see them here</p>
                 </div>
             @endif`;
                 }
@@ -764,9 +769,9 @@
                     alt="{{ $action->title }}"
                     class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
                 <div class="flex-1 min-w-0">
-                    <h3 class="font-semibold text-base sm:text-lg text-[#5C7919] mb-1 cursor-pointer hover:underline"
+                    <h3 class="font-bold text-1xl sm:text-xl text-[#5C7919] mb-1 cursor-pointer hover:underline"
                         onclick="openEcoModal('ecoAction', {{ $action->action_id }})">{{ $action->title }}</h3>
-                    <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
+                    <p class="text-lg text-gray-500 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis">
                         {{ $action->description }}
                     </p>
                 </div>
@@ -796,7 +801,7 @@
                 <div class="flex items-center gap-3 flex-1 min-w-0">
                     <img src="{{ $saved->image ? asset('storage/eco-actions/' . $saved->image) : asset('storage/default.png') }}"
                         alt="{{ $saved->title }}" class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                    <h4 class="text-sm font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
+                    <h4 class="text-base font-medium text-[#5C7919] truncate cursor-pointer hover:underline"
                         onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                         {{ $saved->title }}
                     </h4>
@@ -824,7 +829,7 @@
                             </svg>
                         </div>
                         <h3 class="text-gray-600 font-medium mb-2">No saved actions yet</h3>
-                        <p class="text-sm text-gray-500 mb-4">Discover and save actionable eco tips!</p>
+                        <p class="text-xl text-gray-500 mb-4">Discover and save actionable eco tips!</p>
                         <div class="bg-[#F0F5E9] p-4 rounded-lg w-full">
                             <p class="text-xs text-[#5C7919] italic">Tip: Browse actions and click the bookmark icon to save them here</p>
                         </div>
@@ -843,7 +848,7 @@
                             alt="{{ $saved->title }}"
                             class="w-12 h-12 object-cover rounded-md flex-shrink-0">
                         <div class="flex-1 min-w-0">
-                            <h4 class="text-sm font-medium text-[#5C7919] truncate"
+                            <h4 class="text-base font-medium text-[#5C7919] truncate"
                                 onclick="openEcoModal('{{ $saved->type ?? 'ecoTopic' }}', {{ $saved->id }})">
                                 {{ $saved->title }}
                             </h4>
@@ -871,7 +876,7 @@
                         </svg>
                     </div>
                     <h3 class="text-gray-600 font-medium mb-2">No saved actions yet</h3>
-                    <p class="text-sm text-gray-500">Save actions to see them here</p>
+                    <p class="text-lg text-gray-500">Save actions to see them here</p>
                 </div>
             @endif`;
                 }
@@ -941,7 +946,7 @@
                 if (!noResults) {
                     const msg = document.createElement('div');
                     msg.id = 'noResultsMessage';
-                    msg.className = 'text-center text-gray-500 py-8 text-sm italic';
+                    msg.className = 'text-center text-gray-500 py-8 text-base italic';
                     msg.textContent = 'No results found. Try different keywords or category.';
                     document.getElementById('ecoContent').appendChild(msg);
                 }

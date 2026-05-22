@@ -171,10 +171,10 @@
                                 <i class="fa-solid fa-lightbulb text-2xl text-[#5C7919]"></i>
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-2xl font-serif font-bold text-[#4F6B3F] mb-4">
+                               <h3 class="text-2xl font-serif font-bold text-[#4F6B3F] mb-4">
                                     ${data.title}
                                 </h3>
-                                <div class="prose prose-green max-w-none text-justify">
+                               <div class="prose prose-2xl prose-green max-w-none text-justify">
                                     ${formatDescriptionText(mainText)}
                                 </div>
                             </div>
@@ -224,7 +224,7 @@
                 content.innerHTML = `
                     <div class="text-center py-12">
                         <div class="inline-block p-5 bg-[#FFEDED] rounded-full mb-4">
-                            <i class="fa-solid fa-exclamation-circle text-3xl text-red-500"></i>
+                            <i class="fa-solid fa-exclamation-circle text-2xl text-red-500"></i>
                         </div>
                         <h3 class="text-red-500 font-bold text-xl mb-2">Failed to load content</h3>
                         <p class="text-gray-500">Please try again or check your connection</p>
@@ -281,14 +281,16 @@
     }
     
     /* Prose styling for better readability */
-    .prose p {
-        margin-bottom: 1.2em;
-        line-height: 1.7;
-        text-align: justify;
-        text-justify: inter-word;
-        hyphens: auto;
-        word-spacing: -0.05em;
-    }
+.prose p {
+    font-size: 18px;
+    margin-bottom: 1.2em;
+    line-height: 1.5;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    word-spacing: -0.05em;
+    margin-right: 1.7%;
+}
     
     .prose p:last-child {
         margin-bottom: 0;

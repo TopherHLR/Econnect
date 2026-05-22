@@ -1,7 +1,7 @@
 @extends('layouts.mainLayout')
 
 @section('content')
-<div class="max-w-md mx-auto bg-white p-6 rounded-xl shadow mt-40 text-sm">
+<div class="max-w-md mx-auto bg-white p-6 rounded-xl shadow mt-70 text-sm">
 
     <h2 class="text-xl font-semibold mb-4">Forgot your password?</h2>
 

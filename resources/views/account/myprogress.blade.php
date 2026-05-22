@@ -238,7 +238,7 @@
 
                         <!-- Tooltip -->
                         <div
-                            class="absolute bottom-full mb-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-3 text-sm text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                            class="absolute bottom-full mb-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg p-3 text-sm text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-500">
                             @if ($badge['type'] === 'quest')
                                 Completed {{ $badge['required'] }} {{ Str::plural('quest', $badge['required']) }} to
                                 unlock this badge.

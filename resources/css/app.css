@@ -1120,12 +1120,13 @@ button {
 }
 
 .eco-card {
-    margin-left: 8.5px;
+    margin-left: 8.2px;
     /* adjust value as needed */
 }
 
 .eco-card {
-    @apply relative flex items-start gap-4 p-5 rounded-xl cursor-pointer transition-all duration-300 ease-out;
+    @apply relative flex items-start gap-4 p-5 rounded-xl cursor-pointer transition-all duration-300 ease-out 
+    min-h-[115px] sm:min-h-[135px] md:min-h-[155px] lg:min-h-[175px];
 
     background: rgba(255, 255, 255, 0.95);
     border: 1.5px solid rgba(224, 233, 214, 0.5);
@@ -1134,21 +1135,14 @@ button {
     transform: translateY(0);
 }
 
+
+
 .eco-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
     box-shadow: 0 4px 16px rgba(122, 140, 79, 0.08),
         0 2px 6px rgba(195, 122, 73, 0.04);
     border-color: rgba(122, 140, 79, 0.3);
 }
-
-/* 🌤 Hover: Gentle elevation */
-.eco-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(122, 140, 79, 0.08),
-        0 2px 6px rgba(195, 122, 73, 0.04);
-    border-color: rgba(122, 140, 79, 0.3);
-}
-
 /* 🌾 Active: Subtle press */
 .eco-card:active {
     transform: translateY(0px);
@@ -1156,17 +1150,16 @@ button {
         inset 0 1px 2px rgba(224, 233, 214, 0.3);
 }
 
-/* Card Content - Soft Minimalism Typography */
 .eco-card .eco-title {
-    @apply truncate font-medium text-[#5A4A36];
+    @apply truncate font-extrabold text-2xl text-[#5A4A36];
+    margin-top: 1.7rem;
 }
-
 .eco-card p {
-    @apply text-sm text-gray-600 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis;
+    @apply text-lg text-gray-600 leading-relaxed line-clamp-3 overflow-hidden text-ellipsis;
 }
 
 .eco-card .eco-meta {
-    @apply text-xs text-gray-500 mt-3 pt-3;
+    @apply text-lg text-gray-500 mt-3 pt-3;
     border-top: 1px solid rgba(224, 233, 214, 0.4);
 }
 

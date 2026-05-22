@@ -393,42 +393,40 @@
 
 
 
-    {{-- Main Content --}}
-    <main class="mt-10 ">
-        @include('modal.authModal')
-        @yield('content')
-        @yield('manualImage')
-    </main>
+<main class="flex-1 mt-10">
+    @include('modal.authModal')
+    @yield('content')
+    @yield('manualImage')
+</main>
 
 </body>
 {{-- Footer --}}
 {{-- Footer --}}
 <footer class="mt-16">
+
     <!-- Top Bar -->
     <div class="bg-[#C37A49] text-center py-2 text-white font-medium text-sm tracking-wide">
         Developed by the BuggedOut Team • © {{ date('Y') }}
     </div>
 
-    <!-- Main Footer Section - MOBILE RESPONSIVE -->
-    <div class="bg-[#7F8A4F] text-white px-4 md:px-8 lg:px-20 py-8 md:py-12">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 text-sm leading-relaxed">
+    <!-- Main Footer Section -->
+    <div class="bg-[#7F8A4F] text-white px-4 md:px-8 lg:px-20 py-6 md:py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-10 text-sm leading-relaxed">
 
             <!-- Column 1 -->
-            <div class="text-center sm:text-left">
-                <h3 class="font-bold text-lg md:text-xl mb-3">ECOconnect</h3>
+            <div class="text-center sm:text-left mb-4 sm:mb-0">
+                <h3 class="font-bold text-lg md:text-xl mb-2 md:mb-3">ECOconnect</h3>
                 <p class="text-gray-100 text-xs md:text-sm">
                     Your companion for everyday sustainable living. Built to guide, inspire, and connect eco-conscious
                     individuals.
                 </p>
 
                 <!-- Social Icons -->
-                <div
-                    class="flex justify-center sm:justify-start space-x-4 md:space-x-5 mt-4 md:mt-5 text-base md:text-lg">
+                <div class="flex justify-center sm:justify-start space-x-3 md:space-x-5 mt-2 md:mt-5 text-base md:text-lg">
                     <a href="https://www.facebook.com/profile.php?id=100090120161622"
                         class="hover:text-green-200 transition" target="_blank">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-
                     <a href="https://www.instagram.com/EcoBrew/?fbclid=IwY2xjawOh5dhleHRuA2FlbQIxMABicmlkETFyU2RuWG9Gb3kzSkVmNnpWc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHvLvkrK1EaTByI00utS7TNFikIydMIudrv_yn3IpqdevW0yI2PvZuyvKJV11_aem_dPcvW9XVcdAd5HP0Dqu7YQ#"
                         class="hover:text-green-200 transition" target="_blank">
                         <i class="fab fa-instagram"></i>
@@ -437,57 +435,48 @@
             </div>
 
             <!-- Column 2 -->
-            <div class="text-center sm:text-left">
-                <h3 class="font-semibold text-base md:text-lg mb-3 border-l-0 sm:border-l-4 border-[#C37A49] sm:pl-2">
+            <div class="text-center sm:text-left mb-4 sm:mb-0">
+                <h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3 border-l-0 sm:border-l-4 border-[#C37A49] sm:pl-2">
                     Quick Links
                 </h3>
                 <ul class="space-y-1 md:space-y-2">
                     <li><a href="/" class="hover:text-green-200 transition text-xs md:text-sm">Home</a></li>
-                    <li><a href="/lifestyle" class="hover:text-green-200 transition text-xs md:text-sm">Lifestyle</a>
-                    </li>
+                    <li><a href="/lifestyle" class="hover:text-green-200 transition text-xs md:text-sm">Lifestyle</a></li>
                     <li><a href="/quests" class="hover:text-green-200 transition text-xs md:text-sm">Quests</a></li>
-                    <li><a href="/progress" class="hover:text-green-200 transition text-xs md:text-sm">My Progress</a>
-                    </li>
+                    <li><a href="/progress" class="hover:text-green-200 transition text-xs md:text-sm">My Progress</a></li>
                     <li><a href="/about" class="hover:text-green-200 transition text-xs md:text-sm">About</a></li>
                 </ul>
             </div>
 
             <!-- Column 3 -->
-            <div class="text-center sm:text-left">
-                <h3 class="font-semibold text-base md:text-lg mb-3 border-l-0 sm:border-l-4 border-[#C37A49] sm:pl-2">
+            <div class="text-center sm:text-left mb-4 sm:mb-0">
+                <h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3 border-l-0 sm:border-l-4 border-[#C37A49] sm:pl-2">
                     Learn More
                 </h3>
                 <ul class="space-y-1 md:space-y-2">
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Sustainability
-                            Guides</a></li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Community
-                            Partners</a></li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Educational
-                            Resources</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Sustainability Guides</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Community Partners</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Educational Resources</a></li>
                     <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">FAQs</a></li>
                 </ul>
             </div>
 
             <!-- Column 4 -->
-            <div class="text-center sm:text-left">
-                <h3 class="font-semibold text-base md:text-lg mb-3 border-l-0 sm:border-l-4 border-[#C37A49] sm:pl-2">
+            <div class="text-center sm:text-left mb-4 sm:mb-0">
+                <h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3 border-l-0 sm:border-l-4 border-[#C37A49] sm:pl-2">
                     About & Legal
                 </h3>
-                <ul class="space-y-1 md:space-y-2 mb-3 md:mb-4">
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">About
-                            ECOconnect</a></li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Team Members</a>
-                    </li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Contact Us</a>
-                    </li>
+                <ul class="space-y-1 md:space-y-2 mb-2 md:mb-4">
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">About ECOconnect</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Team Members</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Contact Us</a></li>
                 </ul>
                 <ul class="space-y-1 md:space-y-2">
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Privacy
-                            Policy</a></li>
-                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Terms of Use</a>
-                    </li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-green-200 transition text-xs md:text-sm">Terms of Use</a></li>
                 </ul>
             </div>
+
         </div>
     </div>
 </footer>
@@ -499,8 +488,6 @@
         /* slightly smaller than before */
         max-width: 90%;
         /* almost full width */
-        border-radius: 1rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         transition: transform 0.2s ease;
         /* optional hover zoom */
     }
